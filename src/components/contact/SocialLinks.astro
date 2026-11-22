@@ -1,0 +1,77 @@
+---
+/**
+ * The studio's social profiles as labelled icon buttons (icon plus visible name), for
+ * /contact/ and /newsletter/. The footer has the icon-only row; these pages have room to
+ * name each platform. Profiles come from SOCIALS in src/data/links.ts, in its order.
+ *
+ *   <SocialLinks />
+ *   <SocialLinks exclude={["discord"]} />      when the page features Discord on its own
+ */
+import Icon from "../Icon.astro";
+import { LINKS, SOCIALS, type LinkKey } from "../../data/links";
+
+interface Props {
+  exclude?: LinkKey[];
+  label?: string;
+  class?: string;
+}
+
+const { exclude = [], label = "Luna Wolf Studios on social platforms", class: cls } = Astro.props;
+const items = SOCIALS.filter((s) => !exclude.includes(s.key));
+---
+
+<ul class:list={["socials", cls]} role="list" aria-label={label}>
+  {
+    items.map((s) => (
+      <li>
+        <a class={`social social--${s.key}`} href={LINKS[s.key]} target="_blank" rel="noopener me">
+          <Icon name={s.icon} size={16} />
+          <span>{s.label}</span>
+          <span class="visually-hidden"> (opens in a new tab)</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+  }
+  .social {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 40px;
+    padding: 0.4rem 0.85rem 0.4rem 0.7rem;
+    border-radius: var(--lw-radius-pill);
+    border: 1px solid var(--lw-border);
+    background: var(--lw-surface);
+    /* Brand marks stay in the theme ink, never tinted (archive/research/brand-assets.md). */
+    color: var(--lw-ink);
+    font-size: var(--lw-text-sm);
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    transition: background-color var(--lw-fast) ease, border-color var(--lw-fast) ease, transform var(--lw-fast) ease;
+  }
+  .social:hover {
+    color: var(--lw-ink);
+    border-color: var(--lw-accent-line);
+    background: var(--lw-accent-tint);
+    transform: translateY(-1px);
+  }
+  /* Facebook asks for its blue mark on light grounds (as in the footer). */
+  :global([data-theme="light"]) .social--facebook :global(svg) {
+    color: #0866ff;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .social:hover {
+      transform: none;
+    }
+  }
+</style>

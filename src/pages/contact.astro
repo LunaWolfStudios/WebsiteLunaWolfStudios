@@ -1,0 +1,330 @@
+---
+/**
+ * /contact/ (WordPress URL kept). The owner named "an easy way to contact us" as one of the
+ * three most critical things on the site: the form and the email address are both on the
+ * first screen on desktop, and the hero links straight to both on phones.
+ *
+ * The first screen says what to send and what happens next (we reply by email). No response
+ * time is promised: none is on record. The old page's "Let's create experiences that matter"
+ * is the closing band's title.
+ *
+ * Content: archive/wordpress/pages/contact.md. SEO block: archive/research/seo-plan.md
+ * ("/contact/"). The newsletter band the brief asks for is the footer's own "Follow the pack"
+ * signup, which sits directly under the last section of this page; a second copy here would
+ * repeat it.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import ContactForm from "../components/ContactForm.astro";
+import SocialLinks from "../components/contact/SocialLinks.astro";
+import { SITE } from "../data/site";
+import { ORG_ID, WEBSITE_ID, abs } from "../lib/seo";
+
+const url = "/contact/";
+const title = "Contact Luna Wolf Studios: start a project";
+const description =
+  "Tell us about your game, Unity tool, VR app, or software project. Email support@lunawolfstudios.com or use the form. We are in Newark, Delaware, USA.";
+const location = "Newark, Delaware, USA";
+// Let a narrow card break the address after the @, never inside a word.
+const [emailUser, emailDomain] = SITE.email.split("@");
+
+const routes = [
+  {
+    icon: "rocket",
+    title: "Publishing",
+    href: "/publishing/",
+    text: "Pitch us your demo, early build, or finished game for Steam and Nintendo Switch. Include a link to a build or a trailer.",
+  },
+  {
+    icon: "graduationCap",
+    title: "Internships and bootcamp",
+    href: "/bootcamp/",
+    text: "Our remote internship and 10-week remote bootcamp. Internship applications go by email with a resume and a portfolio.",
+  },
+  {
+    icon: "download",
+    title: "Press kit",
+    href: "/presskit/",
+    text: "Logos, studio facts, and press kits for our games.",
+  },
+];
+
+const jsonLd = [
+  {
+    "@type": "ContactPage",
+    "@id": `${abs(url)}#webpage`,
+    url: abs(url),
+    name: title,
+    description,
+    inLanguage: "en-US",
+    isPartOf: { "@id": WEBSITE_ID },
+    about: { "@id": ORG_ID },
+    // The full Organization, with both contact points, comes from BaseLayout on every page.
+    mainEntity: { "@id": ORG_ID },
+  },
+];
+---
+
+<BaseLayout title={title} description={description} breadcrumbs={[{ label: "Contact", href: url }]} jsonLd={jsonLd}>
+  <PageHero
+    eyebrow="Contact"
+    title="Contact Luna Wolf Studios"
+    lead="Tell us about your game, Unity tool, VR app, or software project, pitch us a game to publish, or ask about our internship and bootcamp. Use the form or email us, and we will write back."
+    size="compact"
+  >
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href="#contact-form">Send a message <Icon name="arrowRight" size={18} /></a>
+      <a class="btn btn--secondary" href={`mailto:${SITE.email}`}><Icon name="mail" size={18} /> Email us</a>
+    </Fragment>
+  </PageHero>
+
+  <Section class="ct-main" tight>
+    <div class="ct-grid">
+      <section class="card ct-form-card" aria-labelledby="ct-form-title">
+        <h2 id="ct-form-title" class="ct-h2">Tell us about your project</h2>
+        <p class="ct-intro">
+          Say what you are building, the platforms, and your timeline. A budget helps if you have one. We reply by
+          email.
+        </p>
+        <ContactForm />
+      </section>
+
+      <section class="card ct-details" aria-labelledby="ct-details-title">
+        <h2 id="ct-details-title" class="ct-h2">Reach us directly</h2>
+        <a class="ct-email" href={`mailto:${SITE.email}`}>
+          <span class="ct-email-icon" aria-hidden="true"><Icon name="mail" size={20} /></span>
+          <span class="ct-email-text">{emailUser}@<wbr />{emailDomain}</span>
+        </a>
+        <dl class="ct-facts">
+          <div>
+            <dt>Studio</dt>
+            <dd>{SITE.legalName}</dd>
+          </div>
+          <div>
+            <dt>Location</dt>
+            <dd>{location}</dd>
+          </div>
+          <div>
+            <dt>Clients</dt>
+            <dd>We work with clients remotely, wherever they are.</dd>
+          </div>
+        </dl>
+        <p class="ct-label">Find us on</p>
+        <SocialLinks label="Luna Wolf Studios on social platforms" />
+      </section>
+    </div>
+  </Section>
+
+  <Section tone="raised" eyebrow="Other questions" title="Press, publishing, and internships">
+    <ul class="grid grid--3 ct-routes" role="list">
+      {
+        routes.map((r, i) => (
+          <li class="card card--link ct-route" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+            <span class="ct-route-icon" aria-hidden="true">
+              <Icon name={r.icon} size={22} />
+            </span>
+            <h3 class="ct-route-title">
+              <a href={r.href}>{r.title}</a>
+            </h3>
+            <p class="ct-route-text">{r.text}</p>
+            <span class="ct-route-go" aria-hidden="true">
+              <Icon name="arrowRight" size={18} />
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <CtaBand
+    title="Let's create experiences that matter"
+    lead="Want to see our work first? Browse the services we offer and the games we have shipped."
+    primary={{ label: "Our services", href: "/services/" }}
+    secondary={{ label: "Our games", href: "/games/" }}
+  />
+</BaseLayout>
+
+<style>
+  .ct-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    gap: clamp(1.25rem, 3vw, 2rem);
+    align-items: start;
+  }
+  .ct-h2 {
+    font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.65rem);
+  }
+
+  /* Form ------------------------------------------------------------------------------ */
+  .ct-form-card {
+    padding: clamp(1.35rem, 3vw, 2.25rem);
+    scroll-margin-top: calc(var(--lw-header-h) + 1rem);
+  }
+  .ct-intro {
+    margin: 0.4rem 0 1.5rem;
+    color: var(--lw-ink-muted);
+  }
+  /* The hero's "Send a message" lands on the form; keep it clear of the sticky header. */
+  .ct-form-card :global(#contact-form) {
+    scroll-margin-top: calc(var(--lw-header-h) + 6rem);
+  }
+
+  /* Details --------------------------------------------------------------------------- */
+  .ct-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: clamp(1.35rem, 3vw, 2rem);
+  }
+  .ct-email {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-accent-line);
+    background: var(--lw-accent-tint);
+    color: var(--lw-ink);
+    text-decoration: none;
+    transition: border-color var(--lw-fast) ease, background-color var(--lw-fast) ease;
+  }
+  .ct-email:hover {
+    color: var(--lw-ink);
+    border-color: var(--lw-accent);
+  }
+  .ct-email-icon {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--lw-btn-bg);
+    color: var(--lw-btn-ink);
+  }
+  .ct-email-text {
+    min-width: 0;
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: clamp(1.02rem, 0.95rem + 0.35vw, 1.2rem);
+    overflow-wrap: break-word;
+  }
+  .ct-facts {
+    display: grid;
+    gap: 0.65rem;
+    margin: 0;
+  }
+  .ct-facts div {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+  .ct-facts dt,
+  .ct-label {
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+    padding-top: 0.2em;
+  }
+  .ct-facts dd {
+    margin: 0;
+    color: var(--lw-ink);
+  }
+  .ct-label {
+    margin-top: 0.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--lw-border);
+  }
+  .ct-details :global(.socials) {
+    margin-top: -0.35rem;
+  }
+
+  /* Quick routes ---------------------------------------------------------------------- */
+  .ct-routes {
+    margin: 0;
+    padding: 0;
+  }
+  .ct-route {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: clamp(1.25rem, 2.4vw, 1.6rem);
+    isolation: isolate;
+  }
+  .ct-route-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0.35rem;
+    border-radius: 12px;
+    color: var(--lw-accent);
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+  }
+  .ct-route-title {
+    font-size: 1.15rem;
+  }
+  .ct-route-title a {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  /* The title link covers the card: one tab stop, one target. */
+  .ct-route-title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .ct-route-title a:focus-visible {
+    outline: none;
+  }
+  .ct-route:has(a:focus-visible) {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: 3px;
+  }
+  .ct-route:hover .ct-route-title a {
+    color: var(--lw-accent);
+  }
+  .ct-route-text {
+    padding-right: 1.75rem;
+    color: var(--lw-ink-muted);
+    line-height: 1.55;
+  }
+  .ct-route-go {
+    position: absolute;
+    right: 1.25rem;
+    bottom: 1.3rem;
+    color: var(--lw-ink-subtle);
+    transition: transform var(--lw-fast) ease, color var(--lw-fast) ease;
+  }
+  .ct-route:hover .ct-route-go {
+    color: var(--lw-accent);
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 1000px) {
+    .ct-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    /* Three short cards stay in one row on tablets rather than leave one orphaned. */
+    .ct-routes {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 760px) {
+    .ct-routes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ct-route:hover .ct-route-go {
+      transform: none;
+    }
+  }
+</style>
