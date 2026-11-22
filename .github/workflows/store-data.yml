@@ -1,0 +1,123 @@
+# Store prices: every hour, read current prices and sales from Steam, the Nintendo eShop and the
+# Unity Asset Store, and redeploy the site only when something changed.
+#
+# How it works. The site is static: prices are baked into the HTML at build time from
+# src/data/store.json, and every build also publishes that data as /store-data.json. Visitors'
+# browsers never contact a store (Steam's API refuses cross-origin requests anyway, and page
+# load comes first). This workflow runs scripts/store-data.mts and compares what the stores say
+# now with the live /store-data.json. If a price, discount, sale end date, free/released flag,
+# Asset Store rating, review count or version differs, it calls deploy.yml, whose build reads
+# the stores again and publishes the new prices. Timestamps are never compared.
+#
+# When prices refresh:
+#   - every hour at minute 17 (away from the top of the hour, when GitHub delays scheduled runs
+#     most; a scheduled run can still start some minutes late);
+#   - on every regular deploy (a push to main), because the build reads the stores first;
+#   - by hand: Actions > "Store prices" > "Run workflow" (or `gh workflow run store-data.yml`),
+#     for example the moment a sale starts.
+#   A sale that ends between checks is also handled in the page: Price switches back to the
+#   regular price in the visitor's browser once a known end time has passed.
+#
+# Cost. This repository is public, and GitHub does not charge for standard GitHub-hosted runners
+# in public repositories, so these runs are free and do not use the included allowance that
+# applies to private repositories:
+# https://docs.github.com/en/billing/concepts/product-billing/github-actions
+# The check job is kept light anyway: a shallow, sparse checkout of scripts/ and src/data/ only,
+# Node 24 running the TypeScript fetcher directly (no npm install, no cache, no artifacts), and
+# the three stores read in parallel with 8 to 12 second timeouts. Measured locally on 2026-11-21
+# the fetcher takes 1.6 to 3.4 s; with checkout, Node setup and one GitHub API call the job
+# should take about 15 to 25 s, so one billed minute (GitHub bills each job by the started
+# minute). A deploy (two short jobs, about 2 to 4 minutes) runs only when a price changed.
+# If the repository is ever made private: hourly is about 730 one-minute runs a month, over a
+# third of the GitHub Free allowance (2,000 Linux minutes, which the billing page now states as
+# $12 of usage at $0.006 a minute). Slow the cron down first.
+#
+# Changing the cadence: edit the cron line below (times are UTC; GitHub's minimum is 5 minutes).
+#   hourly:             '17 * * * *'
+#   every 6 hours:      '17 */6 * * *'
+#   daily:              '30 18 * * *'     (18:30 UTC, just after Steam and Nintendo's 10:00 Pacific changeover)
+#   weekly, Tuesdays:   '30 18 * * 2'
+#
+# Keeping the schedule alive: in a public repository GitHub disables scheduled workflows after
+# 60 days without repository activity; any push to main resets the clock. To switch it back on:
+# Actions tab > "Store prices" in the left sidebar > "Enable workflow", or
+# `gh workflow enable store-data.yml`. Docs:
+# https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/disabling-and-enabling-a-workflow
+#
+# If a store is down or changes shape, the fetcher keeps the live value for that product, logs a
+# warning (shown as an annotation on the run), and still succeeds, so nothing is deployed for it.
+# Debug locally with `npm run store` or `node scripts/store-data.mts --strict`.
+name: Store prices
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+# Nothing by default; each job asks for what it needs.
+permissions: {}
+
+# One run at a time, and a queued run waits rather than cancelling one that is deploying. Not
+# "pages": deploy.yml uses that group, and a caller sharing a group with the workflow it calls
+# deadlocks.
+concurrency:
+  group: store-data
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    permissions:
+      contents: read # sparse checkout
+      pages: read # look up the live site's URL
+    outputs:
+      changed: ${{ steps.compare.outputs.changed }}
+    steps:
+      - name: Checkout scripts/ and src/data/ only
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            src/data
+          persist-credentials: false
+
+      # Node 24 strips TypeScript types itself, so the fetcher runs with no install step.
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # html_url is the full address, sub-path included: https://lunawolfstudios.github.io/
+      # WebsiteLunaWolfStudios/ before the custom domain is attached (a preview build, which
+      # publishes store-data.json under that path too), https://lunawolfstudios.com/ after.
+      - name: Find the live site
+        id: pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if url=$(gh api "repos/${{ github.repository }}/pages" --jq .html_url 2>/dev/null); then
+            echo "Live site: $url"
+            echo "url=${url%/}" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::GitHub Pages is not enabled for this repository yet, so there is no live site to compare with and nothing is deployed."
+          fi
+
+      # Prints every price it read and what differs, then changed=true|false (also written to
+      # $GITHUB_OUTPUT). If /store-data.json is missing from the live site (deployed before the
+      # store data existed), it reports changed=false and says why. Push to main to deploy once.
+      - name: Read the stores and compare with the live site
+        id: compare
+        if: steps.pages.outputs.url != ''
+        run: node scripts/store-data.mts --changed-against "${{ steps.pages.outputs.url }}/store-data.json"
+
+  deploy:
+    needs: check
+    if: needs.check.outputs.changed == 'true'
+    # The reusable workflow can only use the permissions granted here.
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/deploy.yml

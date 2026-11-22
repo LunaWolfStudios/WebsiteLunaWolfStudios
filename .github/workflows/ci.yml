@@ -1,0 +1,42 @@
+# Pull request checks: types and templates, a full build, and the link/SEO lint over dist/.
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      # Same cache as deploy.yml: only changed images are encoded again.
+      - name: Restore the image cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: astro-images-${{ hashFiles('src/assets/**', 'package-lock.json') }}
+          restore-keys: astro-images-
+      - name: Store price parsers
+        run: npm run store:test
+      - name: Astro check
+        run: npm run check
+      - name: Build
+        run: npm run build
+      - name: Check links
+        run: npm run lint:links
