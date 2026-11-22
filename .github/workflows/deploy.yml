@@ -32,9 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -44,7 +44,7 @@ jobs:
       # images that changed (a cold build encodes about 1,100). After npm ci, which empties
       # node_modules.
       - name: Restore the image cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: node_modules/.astro
           key: astro-images-${{ hashFiles('src/assets/**', 'package-lock.json') }}
@@ -54,7 +54,7 @@ jobs:
       # Fails if Pages is not switched on for the repository yet (Source: GitHub Actions).
       - name: Read the GitHub Pages address
         id: pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Build
         # prebuild copies the legacy WordPress uploads into public/ and refreshes store prices.
         # If a store cannot be read, its prices stay as the live site shows them now (on the
@@ -72,7 +72,7 @@ jobs:
           SITE_ORIGIN: ${{ steps.pages.outputs.origin }}
         run: npm run lint:links
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
@@ -85,4 +85,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

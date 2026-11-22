@@ -75,7 +75,7 @@ jobs:
       changed: ${{ steps.compare.outputs.changed }}
     steps:
       - name: Checkout scripts/ and src/data/ only
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 1
           sparse-checkout: |
@@ -85,7 +85,7 @@ jobs:
 
       # Node 24 strips TypeScript types itself, so the fetcher runs with no install step.
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 24
 
