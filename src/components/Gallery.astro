@@ -1,0 +1,458 @@
+---
+/**
+ * Screenshot grid with a full-screen lightbox. A simplified port of Sheep Tag 2's
+ * Screenshots.astro: no carousel, the grid is the overview, and the lightbox has arrows,
+ * ←/→/Home/End/Esc, swipe, a caption and counter, and returns focus to the thumbnail that
+ * opened it. Without JavaScript each thumbnail is a link to the full-size image.
+ *
+ *   ---
+ *   import shot1 from "../assets/games/hypno-halo/shot-1.png";
+ *   const shots = [{ src: shot1, alt: "Hypno Halo: a ring of colour pulses around the halo", caption: "Easy" }];
+ *   ---
+ *   <Gallery images={shots} />
+ *   <Gallery images={shots} columns={2} label="ParaLily screenshots" />
+ *
+ * `src` may also be a file name resolved by src/lib/images.ts. Alt text is required and is
+ * reused in the lightbox; the caption is optional and shows under the enlarged image.
+ *
+ * The lightbox reuses each thumbnail's srcset with sizes="100vw", so the browser fetches a
+ * bigger candidate only when someone enlarges a shot.
+ */
+import { Image, getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Icon from "./Icon.astro";
+import { image } from "../lib/images";
+
+interface Shot {
+  src: ImageMetadata | string;
+  alt: string;
+  caption?: string;
+}
+
+interface Props {
+  images: Shot[];
+  columns?: 2 | 3 | 4;
+  /** Accessible name for the gallery and its viewer. */
+  label?: string;
+  /** Thumbnail aspect ratio. Screenshots are 16/9. */
+  aspect?: string;
+  /**
+   * The `sizes` of a thumbnail, for a caller that restyles the grid (say, two columns on a
+   * phone, where this component's own CSS shows one). Without it the browser is told the
+   * default layout and may fetch a file twice as wide as the slot.
+   */
+  sizes?: string;
+  id?: string;
+  class?: string;
+}
+
+const { images, columns = 3, label = "Screenshots", aspect = "16 / 9", id = "gallery", class: cls } = Astro.props;
+const shots = await Promise.all(
+  images.map(async (s) => {
+    const img = typeof s.src === "string" ? image(s.src) : s.src;
+    // Full-size fallback for the no-JS link: one large JPEG/WebP, not the original PNG.
+    const full = await getImage({ src: img, width: Math.min(1920, img.width), format: "webp", quality: 85 });
+    const widths = [480, 800, 1280, 1920].filter((w) => w < img.width);
+    return { ...s, img, full: full.src, widths: [...widths, Math.min(img.width, 2560)] };
+  }),
+);
+const sizes =
+  Astro.props.sizes ??
+  (columns === 2
+    ? "(max-width: 640px) 100vw, 580px"
+    : columns === 4
+      ? "(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 290px"
+      : "(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 384px");
+---
+
+<div class:list={["gallery", cls]} data-gallery id={id}>
+  <ul class={`gal-grid gal-grid--${columns}`} role="list" aria-label={label} style={`--gal-aspect:${aspect}`}>
+    {
+      shots.map((s, i) => (
+        <li data-reveal style={`--reveal-delay:${Math.min(i, 6) * 60}ms`}>
+          <a
+            class="gal-thumb"
+            href={s.full}
+            data-index={i}
+            data-caption={s.caption ?? ""}
+            aria-label={`Enlarge image ${i + 1} of ${shots.length}: ${s.alt}`}
+          >
+            <Image
+              src={s.img}
+              alt={s.alt}
+              widths={s.widths}
+              sizes={sizes}
+              loading="lazy"
+              decoding="async"
+              class="gal-img"
+            />
+            <span class="gal-zoom" aria-hidden="true">
+              <Icon name="expand" size={18} />
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <dialog class="lightbox" aria-label={`${label} viewer`}>
+    <div class="lb-inner">
+      <figure class="lb-figure">
+        <div class="lb-stage">
+          {/* A 1x1 transparent placeholder keeps the markup valid until the script sets the picture. */}
+          <img
+            class="lb-img"
+            src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+            alt=""
+            sizes="100vw"
+            draggable="false"
+          />
+        </div>
+        {/* Read out when the picture changes: the caption and "3 / 8". */}
+        <figcaption class="lb-bar" aria-live="polite" aria-atomic="true">
+          <span class="lb-caption"></span>
+          <span class="lb-counter"></span>
+        </figcaption>
+      </figure>
+      <button type="button" class="lb-btn lb-prev" aria-label="Previous image">
+        <Icon name="chevronLeft" size={30} />
+      </button>
+      <button type="button" class="lb-btn lb-next" aria-label="Next image">
+        <Icon name="chevronRight" size={30} />
+      </button>
+      <button type="button" class="lb-btn lb-close" aria-label="Close viewer">
+        <Icon name="close" size={24} />
+      </button>
+    </div>
+  </dialog>
+</div>
+
+<style>
+  .gal-grid {
+    display: grid;
+    gap: clamp(0.6rem, 1.6vw, 1rem);
+    margin: 0;
+    padding: 0;
+  }
+  .gal-grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .gal-grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .gal-grid--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  @media (max-width: 1000px) {
+    .gal-grid--3,
+    .gal-grid--4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .gal-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .gal-thumb {
+    position: relative;
+    display: block;
+    border-radius: var(--lw-radius);
+    overflow: hidden;
+    border: 1px solid var(--lw-border);
+    background: var(--lw-media-bg);
+    box-shadow: var(--lw-shadow);
+    cursor: zoom-in;
+    transition: transform 0.2s var(--lw-ease), border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .gal-thumb:hover,
+  .gal-thumb:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--lw-accent-line);
+    box-shadow: var(--lw-shadow-hover);
+  }
+  .gal-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--gal-aspect);
+    object-fit: cover;
+  }
+  .gal-zoom {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    display: inline-grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(4, 7, 10, 0.62);
+    border: 1px solid rgba(238, 247, 247, 0.2);
+    color: #eef7f7;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .gal-thumb:hover .gal-zoom,
+  .gal-thumb:focus-visible .gal-zoom {
+    opacity: 1;
+    transform: none;
+  }
+  @media (hover: none) {
+    .gal-zoom {
+      opacity: 0.9;
+      transform: none;
+    }
+  }
+
+  /* Lightbox: full-bleed, always on the night palette (it frames artwork). */
+  .lightbox {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #eef7f7;
+    overflow: hidden;
+  }
+  .lightbox::backdrop {
+    background: rgba(2, 4, 6, 0.94);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .lightbox[open] {
+      animation: lb-in 0.2s ease-out;
+    }
+    @keyframes lb-in {
+      from {
+        opacity: 0;
+        transform: scale(0.98);
+      }
+    }
+  }
+  .lb-inner {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    padding: clamp(0.75rem, 3vw, 2.5rem) clamp(0.75rem, 7vw, 6rem);
+  }
+  .lb-figure {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    max-width: 100%;
+    margin: 0;
+  }
+  .lb-stage {
+    border-radius: var(--lw-radius);
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+    touch-action: pan-y; /* horizontal drags are ours (swipe), vertical still scrolls */
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .lb-img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: calc(100dvh - 9rem);
+    margin-inline: auto;
+    object-fit: contain;
+    transition: transform 0.2s ease-out, opacity 0.15s ease;
+    -webkit-user-drag: none;
+  }
+  .lb-bar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.2rem;
+    min-height: 1.6em;
+  }
+  .lb-caption {
+    color: #c9d9dc;
+    text-wrap: pretty;
+  }
+  .lb-counter {
+    flex-shrink: 0;
+    margin-left: auto;
+    font-family: var(--lw-font-display);
+    color: #8fa6ab;
+    font-variant-numeric: tabular-nums;
+  }
+  .lb-btn {
+    position: absolute;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid rgba(238, 247, 247, 0.16);
+    border-radius: 50%;
+    background: rgba(11, 20, 26, 0.78);
+    color: #eef7f7;
+    transition: background-color var(--lw-fast) ease, color var(--lw-fast) ease, transform 0.2s ease;
+  }
+  .lb-btn:hover {
+    background: #101c24;
+    color: #81ebe1;
+  }
+  .lb-btn:focus-visible {
+    outline-color: #81ebe1;
+  }
+  .lb-prev,
+  .lb-next {
+    top: 50%;
+    translate: 0 -50%;
+    width: 54px;
+    height: 54px;
+  }
+  .lb-prev {
+    left: clamp(0.5rem, 2vw, 1.75rem);
+  }
+  .lb-next {
+    right: clamp(0.5rem, 2vw, 1.75rem);
+  }
+  .lb-close {
+    top: clamp(0.5rem, 2vw, 1.5rem);
+    right: clamp(0.5rem, 2vw, 1.5rem);
+    width: 46px;
+    height: 46px;
+  }
+  .lb-close:hover {
+    transform: rotate(90deg);
+  }
+  .lightbox.is-single .lb-prev,
+  .lightbox.is-single .lb-next,
+  .lightbox.is-single .lb-counter {
+    display: none;
+  }
+  @media (max-width: 700px) {
+    .lb-prev,
+    .lb-next {
+      top: auto;
+      bottom: 1rem;
+      translate: none;
+      width: 46px;
+      height: 46px;
+    }
+    .lb-inner {
+      padding-bottom: 5rem;
+    }
+  }
+</style>
+
+<script>
+  // One controller per gallery on the page.
+  document.querySelectorAll<HTMLElement>("[data-gallery]").forEach((root) => {
+    const dialog = root.querySelector<HTMLDialogElement>(".lightbox");
+    const img = root.querySelector<HTMLImageElement>(".lb-img");
+    const stage = root.querySelector<HTMLElement>(".lb-stage");
+    const thumbs = Array.from(root.querySelectorAll<HTMLAnchorElement>(".gal-thumb"));
+    if (!dialog || !img || !stage || !thumbs.length || typeof dialog.showModal !== "function") return;
+
+    const captionEl = dialog.querySelector<HTMLElement>(".lb-caption")!;
+    const counterEl = dialog.querySelector<HTMLElement>(".lb-counter")!;
+    const sources = thumbs.map((t) => t.querySelector("img")!);
+    const total = thumbs.length;
+    const wrap = (i: number) => (i + total) % total;
+    let index = 0;
+    let opener: HTMLElement | null = null;
+
+    dialog.classList.toggle("is-single", total === 1);
+
+    /** Warm a neighbour so the next press lands instantly. */
+    const warm = (i: number) => {
+      const from = sources[wrap(i)];
+      const pre = new Image();
+      pre.sizes = "100vw";
+      pre.srcset = from.srcset;
+      pre.src = from.currentSrc || from.src;
+    };
+
+    const show = (i: number) => {
+      index = wrap(i);
+      const from = sources[index];
+      img.srcset = from.srcset;
+      img.src = from.currentSrc || from.src;
+      img.alt = from.alt;
+      captionEl.textContent = thumbs[index].dataset.caption || from.alt;
+      counterEl.textContent = `${index + 1} / ${total}`;
+      img.style.transform = "";
+      if (total > 1) {
+        warm(index + 1);
+        warm(index - 1);
+      }
+    };
+
+    const open = (i: number, from: HTMLElement) => {
+      opener = from;
+      show(i);
+      dialog.showModal();
+      document.body.style.overflow = "hidden";
+    };
+    const close = () => {
+      if (dialog.open) dialog.close();
+    };
+
+    thumbs.forEach((t, i) =>
+      t.addEventListener("click", (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey) return; // let "open in new tab" work
+        e.preventDefault();
+        open(i, t);
+      }),
+    );
+    dialog.querySelector(".lb-prev")?.addEventListener("click", () => show(index - 1));
+    dialog.querySelector(".lb-next")?.addEventListener("click", () => show(index + 1));
+    dialog.querySelector(".lb-close")?.addEventListener("click", close);
+    // Clicks on the dimmed area (not the image or controls) close, like every viewer.
+    dialog.addEventListener("click", (e) => {
+      const t = e.target as HTMLElement;
+      if (t === dialog || t.classList.contains("lb-inner")) close();
+    });
+    dialog.addEventListener("close", () => {
+      document.body.style.overflow = "";
+      opener?.focus({ preventScroll: true });
+    });
+    dialog.addEventListener("keydown", (e) => {
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
+      if (e.key === "ArrowLeft") show(index - 1);
+      else if (e.key === "ArrowRight") show(index + 1);
+      else if (e.key === "Home") show(0);
+      else if (e.key === "End") show(total - 1);
+      else return;
+      e.preventDefault();
+    });
+
+    // Swipe: a horizontal drag past the threshold steps; the image follows the finger a little.
+    let startX = 0;
+    let startY = 0;
+    let dragging = false;
+    stage.addEventListener("pointerdown", (e) => {
+      if (total < 2 || (e.pointerType === "mouse" && e.button !== 0)) return;
+      dragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      stage.setPointerCapture(e.pointerId);
+    });
+    stage.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > Math.abs(e.clientY - startY)) img.style.transform = `translateX(${dx * 0.35}px)`;
+    });
+    const end = (e: PointerEvent) => {
+      if (!dragging) return;
+      dragging = false;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      img.style.transform = "";
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) show(index + (dx < 0 ? 1 : -1));
+    };
+    stage.addEventListener("pointerup", end);
+    stage.addEventListener("pointercancel", end);
+  });
+</script>

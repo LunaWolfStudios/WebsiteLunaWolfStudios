@@ -1,0 +1,235 @@
+---
+/**
+ * A store price, from the snapshot in src/data/store.json (see src/lib/store.ts).
+ *
+ *   <Price offer={getOffer("hypno-halo", "steam")} />                  beside a StoreButton
+ *   <Price slug="scriptable-sheets" store="unity" size="lg" />         product hero
+ *   <Price slug="sheep-tag-2" store="steam" unreleasedLabel="Early Access in 2027" />
+ *   <Price slug="hypno-halo-demo" store="steam" freeLabel="Free demo" />
+ *
+ * States: regular price; on sale (gold "−50%" badge, the regular price struck through, the
+ * sale price, and "Sale ends Dec 2" when the store says when); free ("Free to play"); not
+ * released (nothing, or `unreleasedLabel`). Every amount is a US store price in US dollars:
+ * the element's title and a visually hidden suffix say so; put PRICE_REGION_NOTE from
+ * src/lib/store.ts near a fact sheet.
+ *
+ * A static page can outlive a sale. When the sale has an end date, a few bytes of inline
+ * script run right after the element, before it is painted: if the visitor's clock is past
+ * the end, the regular price is shown instead. No script is emitted for any other state.
+ */
+import {
+  formatPrice,
+  formatSaleEnd,
+  getOffer,
+  isOnSale,
+  type PricedStore,
+  type StoreOffer,
+} from "../lib/store";
+
+interface Props {
+  /** The offer to show. Or pass `slug` and `store` and it is looked up. */
+  offer?: StoreOffer;
+  slug?: string;
+  store?: PricedStore;
+  /** "sm" sits beside a button (default); "lg" is for a product hero. */
+  size?: "sm" | "lg";
+  /** Show "Sale ends Dec 2" when the store gives an end date. Default true. */
+  showEndDate?: boolean;
+  /** Text for a free item. Default "Free to play". */
+  freeLabel?: string;
+  /** Text for an unreleased item. Default: render nothing. */
+  unreleasedLabel?: string;
+  class?: string;
+}
+
+const {
+  offer: given,
+  slug,
+  store,
+  size = "sm",
+  showEndDate = true,
+  freeLabel = "Free to play",
+  unreleasedLabel,
+  class: cls,
+} = Astro.props;
+
+let offer: StoreOffer;
+if (given) offer = given;
+else if (slug && store) offer = getOffer(slug, store);
+else throw new Error("[Price] pass `offer`, or `slug` and `store`.");
+
+const US = "Price on the US store, in US dollars";
+const regular = offer.regularCents;
+const final = offer.finalCents;
+const state = !offer.isReleased
+  ? "unreleased"
+  : offer.isFree
+    ? "free"
+    : isOnSale(offer)
+      ? "sale"
+      : regular !== null
+        ? "regular"
+        : "unreleased";
+const endsAt = state === "sale" && offer.saleEndsAt ? offer.saleEndsAt : null;
+const fmt = (cents: number | null) => (cents === null ? "" : formatPrice(cents, offer.currency));
+
+/** Runs right after the sale element: past the end date, it swaps to the regular price. */
+const SALE_ENDED_JS =
+  '(function(s){var p=s&&s.previousElementSibling;if(p&&Date.now()>=Date.parse(p.getAttribute("data-sale-ends")))p.classList.add("price--ended")})(document.currentScript);';
+---
+
+{
+  state === "unreleased" && unreleasedLabel && (
+    <p class:list={["price", `price--${size}`, "price--note", cls]}>{unreleasedLabel}</p>
+  )
+}
+{
+  state === "free" && (
+    <p class:list={["price", `price--${size}`, cls]}>
+      <span class="price-now">{freeLabel}</span>
+    </p>
+  )
+}
+{
+  state === "regular" && (
+    <p class:list={["price", `price--${size}`, cls]} title={US}>
+      <span class="price-now">
+        {fmt(regular)}
+        <span class="visually-hidden"> USD on the US store</span>
+      </span>
+    </p>
+  )
+}
+{
+  state === "sale" && (
+    <p class:list={["price", `price--${size}`, "price--sale", cls]} title={US} data-sale-ends={endsAt}>
+      <span class="price-badge" aria-hidden="true">
+        &minus;{offer.discountPercent}%
+      </span>
+      <span class="price-deal">
+        <span class="visually-hidden">On sale, {offer.discountPercent}% off. </span>
+        <s class="price-was">
+          <span class="visually-hidden">Was </span>
+          {fmt(regular)}
+        </s>
+        <span class="price-now">
+          <span class="visually-hidden">now </span>
+          {fmt(final)}
+          <span class="visually-hidden"> USD on the US store</span>
+        </span>
+      </span>
+      {endsAt && showEndDate && (
+        <span class="price-ends">
+          Sale ends <time datetime={endsAt}>{formatSaleEnd(endsAt)}</time>
+        </span>
+      )}
+      {endsAt && (
+        <span class="price-after">
+          {fmt(regular)}
+          <span class="visually-hidden"> USD on the US store</span>
+        </span>
+      )}
+    </p>
+  )
+}
+{endsAt && <script is:inline set:html={SALE_ENDED_JS} />}
+
+<style>
+  .price {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem 0.55rem;
+    margin: 0;
+    font-family: var(--lw-font-display);
+    line-height: 1.2;
+    color: var(--lw-ink);
+  }
+  .price-now,
+  .price-after {
+    font-weight: 650;
+    font-size: 1.05rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .price-deal {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    white-space: nowrap;
+  }
+  .price-was {
+    color: var(--lw-ink-subtle);
+    font-weight: 500;
+    font-size: 0.92rem;
+    font-variant-numeric: tabular-nums;
+    text-decoration-thickness: 1.5px;
+  }
+  .price--sale .price-now {
+    color: var(--lw-gold);
+  }
+  .price-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2em 0.55em;
+    border-radius: var(--lw-radius-pill);
+    border: 1px solid color-mix(in srgb, var(--lw-gold) 40%, transparent);
+    background: var(--lw-gold-tint);
+    color: var(--lw-gold);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+  .price-ends {
+    font-family: var(--lw-font-body);
+    font-size: var(--lw-text-xs);
+    color: var(--lw-ink-muted);
+    white-space: nowrap;
+  }
+  .price--note {
+    font-family: var(--lw-font-body);
+    font-size: var(--lw-text-sm);
+    font-weight: 500;
+    color: var(--lw-ink-muted);
+  }
+
+  /* Product hero: the price is a headline; the end date gets its own line. */
+  .price--lg {
+    gap: 0.4rem 0.75rem;
+  }
+  .price--lg .price-now,
+  .price--lg .price-after {
+    font-size: clamp(1.6rem, 1.35rem + 0.9vw, 2.1rem);
+    letter-spacing: -0.01em;
+  }
+  .price--lg .price-was {
+    font-size: 1.15rem;
+  }
+  .price--lg .price-deal {
+    gap: 0.65rem;
+  }
+  .price--lg .price-badge {
+    font-size: 0.95rem;
+  }
+  .price--lg .price-ends {
+    flex-basis: 100%;
+    font-size: var(--lw-text-sm);
+  }
+  .price--lg.price--note {
+    font-size: var(--lw-text-lg);
+  }
+
+  /* After the sale (set by the inline script): show the regular price only. */
+  .price-after {
+    display: none;
+  }
+  .price--ended .price-badge,
+  .price--ended .price-deal,
+  .price--ended .price-ends {
+    display: none;
+  }
+  .price--ended .price-after {
+    display: inline;
+  }
+</style>

@@ -1,0 +1,104 @@
+---
+/**
+ * Dark/light switch for the header. Dark is the default for everyone; the choice is saved
+ * in localStorage under "lw-theme". The <head> script in BaseLayout applies the saved theme
+ * before first paint, so this only handles clicks. Shows a sun in the dark theme (switch to
+ * light) and a moon in the light theme; both icons are in the HTML and CSS picks one, so
+ * nothing changes after load.
+ */
+import Icon from "./Icon.astro";
+
+interface Props {
+  class?: string;
+}
+const { class: cls } = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={["theme-toggle", cls]}
+  data-theme-toggle
+  aria-label="Switch to light theme"
+  title="Switch theme"
+>
+  <Icon name="sun" size={19} class="tt-sun" />
+  <Icon name="moon" size={18} class="tt-moon" />
+</button>
+
+<style>
+  .theme-toggle {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    padding: 0;
+    border: 1px solid var(--lw-border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--lw-ink-muted);
+    transition: color var(--lw-fast) ease, border-color var(--lw-fast) ease, background-color var(--lw-fast) ease;
+  }
+  /* The switch is script-only: without JavaScript it would be a button that does nothing. */
+  :global(:root:not(.js)) .theme-toggle {
+    display: none;
+  }
+  .theme-toggle:hover {
+    color: var(--lw-accent);
+    border-color: var(--lw-accent-line);
+    background: var(--lw-accent-tint);
+  }
+  .theme-toggle :global(svg) {
+    grid-area: 1 / 1;
+    transition: transform 0.35s var(--lw-ease), opacity 0.2s ease;
+  }
+  /* Dark theme: offer the sun. Light theme: offer the moon. Keyed off the nearest themed
+     ancestor, so it is right inside the overlay header too. */
+  .theme-toggle :global(.tt-moon) {
+    opacity: 0;
+    transform: rotate(-40deg) scale(0.6);
+  }
+  :global([data-theme="light"]) .theme-toggle :global(.tt-sun) {
+    opacity: 0;
+    transform: rotate(40deg) scale(0.6);
+  }
+  :global([data-theme="light"]) .theme-toggle :global(.tt-moon) {
+    opacity: 1;
+    transform: none;
+  }
+  /* The overlay header pins itself to dark over the hero; follow the page theme instead. */
+  :global(html[data-theme="light"] .site-header[data-theme="dark"]) .theme-toggle :global(.tt-sun) {
+    opacity: 0;
+    transform: rotate(40deg) scale(0.6);
+  }
+  :global(html[data-theme="light"] .site-header[data-theme="dark"]) .theme-toggle :global(.tt-moon) {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+
+<script>
+  const META = { dark: "#04070a", light: "#f3f8f8" } as const;
+  const root = document.documentElement;
+  const sync = () => {
+    const light = root.dataset.theme === "light";
+    document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach((b) => {
+      b.setAttribute("aria-label", light ? "Switch to dark theme" : "Switch to light theme");
+    });
+  };
+  sync();
+  document.addEventListener("click", (e) => {
+    const btn = (e.target as Element | null)?.closest?.("[data-theme-toggle]");
+    if (!btn) return;
+    const next = root.dataset.theme === "light" ? "dark" : "light";
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem("lw-theme", next);
+    } catch {
+      /* private mode: the choice lasts for this page only */
+    }
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", META[next]);
+    sync();
+  });
+</script>

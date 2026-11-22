@@ -1,0 +1,75 @@
+---
+/**
+ * A founder's headshot in a round frame, framed on the face. Use it wherever a founder's
+ * photo appears small (cards, team strips, the press kit), so all three are cropped the same
+ * way and nobody's face is cut by the circle.
+ *
+ *   <FounderPhoto founder={f} />                 112px circle
+ *   <FounderPhoto founder={f} size={168} />      larger; `size` also picks the image width
+ *   <FounderPhoto founder={f} class="my-photo" /> then size it in CSS: the frame fills its box
+ *
+ * Framing comes from `photoFocus` in src/data/team.ts: where the face is in the photo (x and
+ * y from 0 to 1) and an optional zoom. The photo covers the frame, is scaled by the zoom, and
+ * is moved so the face sits in the middle, never past the photo's own edge.
+ */
+import { Image } from "astro:assets";
+import type { Founder } from "../data/types";
+import { image } from "../lib/images";
+
+interface Props {
+  founder: Founder;
+  /** Largest size the circle is shown at, in CSS pixels (default 112). */
+  size?: number;
+  /** Alt text. Defaults to "Name, role". Pass "" when the name is printed beside it. */
+  alt?: string;
+  eager?: boolean;
+  class?: string;
+}
+
+const { founder, size = 112, alt, eager = false, class: cls } = Astro.props;
+const photo = image(founder.photo);
+const focus = founder.photoFocus ?? { x: 0.5, y: 0.35 };
+const zoom = focus.zoom ?? 1;
+
+const ratio = photo.height / photo.width;
+// Size of the photo as a percentage of the frame: it covers the square, times the zoom.
+const wPct = (ratio >= 1 ? 1 : 1 / ratio) * zoom * 100;
+const hPct = wPct * ratio;
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+const left = clamp(50 - focus.x * wPct, 100 - wPct, 0);
+const top = clamp(50 - focus.y * hPct, 100 - hPct, 0);
+// No wider than the file: small originals are not upscaled at build time.
+const renderWidth = Math.min(photo.width, Math.ceil((size * wPct) / 100));
+---
+
+<span class:list={["founder-photo", cls]} style={`--fp-size:${size}px`}>
+  <Image
+    src={photo}
+    alt={alt ?? `${founder.name}, ${founder.role}`}
+    width={renderWidth}
+    densities={[1, 2]}
+    loading={eager ? "eager" : "lazy"}
+    decoding="async"
+    class="founder-photo-img"
+    style={`width:${wPct.toFixed(2)}%;left:${left.toFixed(2)}%;top:${top.toFixed(2)}%`}
+  />
+</span>
+
+<style>
+  .founder-photo {
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+    width: var(--fp-size);
+    max-width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--lw-bg-raised);
+  }
+  .founder-photo-img {
+    position: absolute;
+    height: auto;
+    max-width: none;
+  }
+</style>

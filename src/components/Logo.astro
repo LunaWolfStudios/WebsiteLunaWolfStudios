@@ -1,0 +1,108 @@
+---
+/**
+ * The studio lockup: the wolf-and-moon emblem plus the single-line "LUNA WOLF STUDIOS"
+ * wordmark. Used by the header (which defines the wordmark path once, `define`) and the
+ * footer (which reuses it through <use>, so the outlines ship once per page).
+ *
+ *   <Logo define />                 header, links home
+ *   <Logo size={44} />              footer
+ *   <Logo wordmark={false} />       emblem only
+ *
+ * The wordmark is outlined vector art (src/lib/wordmark.ts) filled with --lw-wordmark:
+ * wordmark teal in the dark theme, deep teal in the light theme.
+ */
+import { Image } from "astro:assets";
+import emblem from "../assets/logo/lws-emblem-512.png";
+import { WORDMARK } from "../lib/wordmark";
+
+interface Props {
+  /** Emblem size in CSS px. The wordmark scales with it. */
+  size?: number;
+  /** Show the wordmark. It can still be hidden by CSS on narrow phones (`.brand-word`). */
+  wordmark?: boolean;
+  /** Emit the wordmark path with its id. Exactly one Logo per page sets this (the header). */
+  define?: boolean;
+  href?: string;
+  class?: string;
+  eager?: boolean;
+}
+
+const { size = 40, wordmark = true, define = false, href = "/", class: cls, eager = false } = Astro.props;
+// Wordmark height relative to the emblem: the cap height sits at about a third of it.
+const wordH = Math.round(size * 0.36 * 10) / 10;
+const wordW = Math.round((wordH * WORDMARK.width) / WORDMARK.height);
+---
+
+<a href={href} class:list={["brand", cls]} aria-label="Luna Wolf Studios, home" style={`--brand-size:${size}px;--word-w:${wordW}px`}>
+  <Image
+    src={emblem}
+    alt=""
+    class="brand-emblem"
+    width={size}
+    height={size}
+    densities={[1, 2]}
+    loading={eager ? "eager" : "lazy"}
+    decoding="async"
+  />
+  {
+    wordmark && (
+      <svg
+        class="brand-word"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox={WORDMARK.viewBox}
+        width={wordW}
+        height={wordH}
+        aria-hidden="true"
+        focusable="false"
+      >
+        {define ? <path id="lw-wordmark" d={WORDMARK.d} fill="currentColor" /> : <use href="#lw-wordmark" />}
+      </svg>
+    )
+  }
+</a>
+
+<style>
+  .brand {
+    max-width: 100%;
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--brand-size) * 0.3);
+    flex-shrink: 0;
+    color: var(--lw-wordmark);
+    text-decoration: none;
+    border-radius: var(--lw-radius-pill);
+  }
+  .brand:hover {
+    color: var(--lw-wordmark);
+  }
+  .brand-emblem {
+    width: var(--brand-size);
+    height: var(--brand-size);
+    border-radius: 50%;
+    /* The moon gives off a little light of its own. */
+    filter: drop-shadow(0 0 10px color-mix(in srgb, #81ebe1 28%, transparent));
+    transition: transform 0.3s var(--lw-ease), filter 0.3s ease;
+  }
+  .brand:hover .brand-emblem {
+    transform: rotate(-4deg) scale(1.05);
+    filter: drop-shadow(0 0 14px color-mix(in srgb, #81ebe1 45%, transparent));
+  }
+  /* Shrinks with its container on the narrowest screens instead of overflowing. */
+  .brand-word {
+    display: block;
+    flex: 0 1 auto;
+    min-width: 0;
+    width: var(--word-w);
+    max-width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .brand-emblem {
+    flex-shrink: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .brand:hover .brand-emblem {
+      transform: none;
+    }
+  }
+</style>

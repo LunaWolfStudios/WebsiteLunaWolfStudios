@@ -1,0 +1,88 @@
+---
+/**
+ * "Available on" row of official platform logos, shown on their own beside a game's store
+ * buttons (brand rules: the Steam and Nintendo Switch logos may not sit inside a button, but
+ * may stand alone with clear space). See archive/research/brand-assets.md.
+ *
+ *   <AvailableOn platforms={["steam", "switch"]} />
+ *
+ * Steam uses its black logo in the light theme and its white logo in the dark theme (both
+ * files are in the HTML; CSS shows one), at Valve's 50px minimum height. Nintendo Switch uses
+ * the red vignette logo, which works on both grounds. The page (or footer) must carry the
+ * matching trademark line; the footer already does.
+ */
+import { Image } from "astro:assets";
+import steamBlack from "../assets/brands/steam/steam-logo-black.svg";
+import steamWhite from "../assets/brands/steam/steam-logo-white.svg";
+import switchRed from "../assets/brands/nintendo-switch/nintendo-switch-logo-red.svg";
+
+type Platform = "steam" | "switch";
+
+interface Props {
+  platforms: Platform[];
+  label?: string;
+  class?: string;
+}
+
+const { platforms, label = "Available on", class: cls } = Astro.props;
+const H = 50; // Valve: at least 50px tall on screen
+const w = (img: { width: number; height: number }, h: number) => Math.round((img.width / img.height) * h);
+---
+
+<div class:list={["avail", cls]}>
+  <p class="avail-label">{label}</p>
+  <ul class="avail-list" role="list">
+    {
+      platforms.includes("steam") && (
+        <li class="avail-steam">
+          <Image src={steamWhite} alt="Steam" height={H} width={w(steamWhite, H)} class="avail-logo on-dark" style={`height:${H}px`} loading="lazy" />
+          <Image src={steamBlack} alt="Steam" height={H} width={w(steamBlack, H)} class="avail-logo on-light" style={`height:${H}px`} loading="lazy" />
+        </li>
+      )
+    }
+    {
+      platforms.includes("switch") && (
+        <li>
+          <Image src={switchRed} alt="Nintendo Switch" height={64} width={w(switchRed, 64)} class="avail-logo" style="height:64px" loading="lazy" />
+        </li>
+      )
+    }
+  </ul>
+</div>
+
+<style>
+  .avail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+  }
+  .avail-label {
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .avail-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem 2.25rem; /* clear space around each mark */
+    margin: 0;
+    padding: 0;
+  }
+  .avail-logo {
+    display: block;
+    width: auto;
+  }
+  .avail-steam .on-light {
+    display: none;
+  }
+  :global([data-theme="light"]) .avail-steam .on-light {
+    display: block;
+  }
+  :global([data-theme="light"]) .avail-steam .on-dark {
+    display: none;
+  }
+</style>

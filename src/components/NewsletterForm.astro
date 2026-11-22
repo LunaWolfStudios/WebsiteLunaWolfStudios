@@ -1,0 +1,176 @@
+---
+/**
+ * Newsletter signup: one email field, a button, and a consent line linking the privacy
+ * policy. Used in the footer on every page and on /newsletter/.
+ *
+ *   <NewsletterForm />                       inline (field and button on one row)
+ *   <NewsletterForm layout="stacked" />      field above button
+ *
+ * The provider seam is FORMS.newsletter in src/data/site.ts:
+ * - provider "relay" (default): the address is emailed to the studio through the contact
+ *   relay with the subject "Newsletter signup", via fetch with JS, via a plain POST without.
+ * - provider "kit": the form posts to Kit, which sends a confirmation email (double opt-in).
+ *   With JS the visitor stays on the page; without, Kit redirects to /newsletter/?subscribed=1
+ *   (set in the Kit form's settings).
+ * - provider "custom": the form posts to `action` with the address in `emailField` plus
+ *   `hiddenFields`, as a plain form. With `ajax: true` it is sent with fetch instead and the
+ *   visitor stays on the page.
+ */
+import Icon from "./Icon.astro";
+import FormStatus from "./FormStatus.astro";
+import { FORMS, SITE, kitAction, plainEndpoint } from "../data/site";
+
+interface Props {
+  layout?: "inline" | "stacked";
+  id?: string;
+  /** Visible label above the field. Hidden visually when omitted (the placeholder and button explain it). */
+  label?: string;
+  class?: string;
+}
+
+const { layout = "inline", id = "newsletter", label, class: cls } = Astro.props;
+const n = FORMS.newsletter;
+// Kit without a form ID is not configured yet: stay on the relay rather than post nowhere.
+const kit = n.provider === "kit" && n.kitFormId !== "";
+const relay = n.provider === "relay" || (n.provider === "kit" && !kit);
+const action = relay ? plainEndpoint(FORMS.contact.endpoint) : kit ? kitAction(n.kitFormId) : n.action;
+const emailName = relay ? "email" : kit ? "email_address" : n.emailField;
+const mode = relay ? "relay" : kit ? "kit" : n.ajax ? "ajax-post" : "post";
+const next = new URL("/newsletter/?subscribed=1", SITE.url).href;
+// With a provider that confirms by email, the honest success message is "check your inbox".
+const confirms = kit;
+---
+
+<form
+  id={id}
+  class:list={["nl-form", `nl-form--${layout}`, cls]}
+  method="POST"
+  action={action}
+  data-lw-form="newsletter"
+  data-endpoint={relay ? FORMS.contact.endpoint : action}
+  data-mode={mode}
+  data-confirms={confirms ? "true" : undefined}
+>
+  {
+    relay ? (
+      <>
+        <input type="hidden" name="_subject" value="Newsletter signup" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value={next} />
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      </>
+    ) : (
+      <>
+        {Object.entries(n.hiddenFields).map(([k, v]) => <input type="hidden" name={k} value={v} />)}
+        {/* Our own trap. forms.ts reads `_honey` and never forwards it to the provider. */}
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      </>
+    )
+  }
+
+  <label class:list={["field-label", { "visually-hidden": !label }]} for={`${id}-email`}>
+    {label ?? "Email address"}
+  </label>
+  <div class="nl-row">
+    <input
+      class="input nl-input"
+      id={`${id}-email`}
+      name={emailName}
+      type="email"
+      autocomplete="email"
+      inputmode="email"
+      placeholder="you@example.com"
+      required
+      maxlength="200"
+    />
+    <button type="submit" class="btn btn--primary" data-submit data-busy-label="Signing up…">
+      <span data-label>Subscribe</span>
+      <Icon name="arrowRight" size={18} />
+    </button>
+  </div>
+  <p class="nl-consent">
+    Occasional studio news. Unsubscribe any time. See our <a href="/privacy-policy/">privacy policy</a>.
+  </p>
+  <FormStatus />
+</form>
+
+<style>
+  .nl-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: 100%;
+    max-width: 520px;
+  }
+  .nl-row {
+    display: flex;
+    gap: 0.6rem;
+  }
+  .nl-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    border-radius: var(--lw-radius-pill);
+    padding-inline: 1.15rem;
+  }
+  .nl-form--stacked .nl-row {
+    flex-direction: column;
+  }
+  .nl-consent {
+    font-size: var(--lw-text-xs);
+    color: var(--lw-ink-subtle);
+  }
+  .nl-consent a {
+    color: var(--lw-ink-muted);
+  }
+  .nl-form.is-sent .nl-row {
+    display: none;
+  }
+  @media (max-width: 420px) {
+    .nl-row {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script>
+  // This form is in the footer of every page, so its code (src/scripts/forms.ts) is fetched
+  // the first time someone points at or focuses a newsletter form, not on every page view.
+  // Until then the form is a plain HTML form, which works too.
+  const joined = "You are on the list. Thanks for following the pack.";
+  const confirm = "Almost there. Check your inbox and click the link to confirm.";
+  const forms = [...document.querySelectorAll<HTMLFormElement>('form[data-lw-form="newsletter"]')];
+
+  let ready: Promise<void> | undefined;
+  const load = () =>
+    (ready ??= import("../scripts/forms").then(({ enhanceForm, showReturnSuccess }) => {
+      for (const form of forms) {
+        const ok = form.dataset.confirms ? confirm : joined;
+        enhanceForm(form, {
+          success: () => ok,
+          // FormStatus adds "You can also email us at ..." under an error, so the address is not repeated here.
+          failure: "Sorry, that did not go through. Try again in a moment.",
+        });
+        showReturnSuccess(form, "subscribed", ok);
+      }
+    }));
+
+  // Back from a plain (no-JavaScript) submit: show the result at once.
+  if (new URLSearchParams(location.search).has("subscribed")) load();
+
+  for (const form of forms) {
+    form.addEventListener("pointerenter", load, { once: true });
+    form.addEventListener("focusin", load, { once: true });
+    // Submitted before the code arrived (autofill and a fast tap): hold the submit, load,
+    // and send it again through the enhanced path. If the code cannot load, post the form
+    // the ordinary way (`submit()` skips this listener).
+    form.addEventListener("submit", (e) => {
+      if (form.dataset.enhanced) return;
+      e.preventDefault();
+      load().then(
+        () => form.requestSubmit(),
+        () => form.submit(),
+      );
+    });
+  }
+</script>

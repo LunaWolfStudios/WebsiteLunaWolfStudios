@@ -1,0 +1,67 @@
+---
+/**
+ * Visible breadcrumb trail. BaseLayout renders it from its `breadcrumbs` prop (and emits the
+ * matching BreadcrumbList JSON-LD), so pages normally never use this directly.
+ *
+ * Pass the trail without Home; it is added. The last item is the current page.
+ *   breadcrumbs={[{ label: "Services", href: "/services/" }, { label: "Unity development", href: "/services/unity-development/" }]}
+ */
+import Icon from "./Icon.astro";
+
+interface Props {
+  items: Array<{ label: string; href: string }>;
+  class?: string;
+}
+const { items, class: cls } = Astro.props;
+---
+
+<nav class:list={["crumbs", cls]} aria-label="Breadcrumb">
+  <ol role="list">
+    {
+      items.map((item, i) => (
+        <li>
+          {i > 0 && <Icon name="chevronRight" size={14} class="crumb-sep" />}
+          {i === items.length - 1 ? (
+            <span aria-current="page">{item.label}</span>
+          ) : (
+            <a href={item.href}>{item.label}</a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.4rem;
+    margin: 0;
+    padding: 0;
+    font-size: var(--lw-text-sm);
+  }
+  .crumbs li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+  .crumbs a {
+    color: var(--lw-ink-muted);
+    text-decoration: none;
+  }
+  .crumbs a:hover {
+    color: var(--lw-accent);
+    text-decoration: underline;
+  }
+  .crumbs [aria-current] {
+    color: var(--lw-ink);
+    font-weight: 500;
+  }
+  .crumbs :global(.crumb-sep) {
+    color: var(--lw-ink-subtle);
+    flex-shrink: 0;
+  }
+</style>

@@ -1,0 +1,116 @@
+---
+/**
+ * FAQ accordion on native <details>: keyboard and screen-reader support for free, works
+ * without JavaScript, and find-in-page opens the matching answer.
+ *
+ *   <Faq items={[{ q: "Do you sign NDAs?", a: "Yes. ..." }]} />
+ *   <Faq items={faqs} open={0} />          first item open
+ *
+ * Questions are the summary text, not headings: a heading inside <summary> loses its role.
+ * `a` may contain simple HTML (links, <strong>). Pair it with faqLd(items) from
+ * src/lib/seo.ts in the page's jsonLd so the questions are eligible for rich results.
+ * Questions with the same `name` close each other on open (exclusive accordion) where the
+ * browser supports it; set `exclusive={false}` to let several stay open.
+ */
+import Icon from "./Icon.astro";
+
+interface Props {
+  items: Array<{ q: string; a: string }>;
+  open?: number;
+  exclusive?: boolean;
+  id?: string;
+  class?: string;
+}
+
+const { items, open, exclusive = true, id = "faq", class: cls } = Astro.props;
+---
+
+<div class:list={["faq", cls]}>
+  {
+    items.map((item, i) => (
+      <details class="faq-item" name={exclusive ? id : undefined} open={open === i}>
+        <summary class="faq-q">
+          <span class="faq-q-text">{item.q}</span>
+          <span class="faq-icon" aria-hidden="true">
+            <Icon name="plus" size={18} />
+          </span>
+        </summary>
+        <div class="faq-a" set:html={item.a} />
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .faq {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--lw-border);
+  }
+  .faq-item {
+    border-bottom: 1px solid var(--lw-border);
+  }
+  .faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 0.25rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .faq-q::-webkit-details-marker {
+    display: none;
+  }
+  .faq-q-text {
+    font-family: var(--lw-font-display);
+    color: var(--lw-ink);
+    font-size: clamp(1.02rem, 0.98rem + 0.25vw, 1.15rem);
+    font-weight: 600;
+    line-height: 1.35;
+    transition: color var(--lw-fast) ease;
+  }
+  .faq-q:hover .faq-q-text {
+    color: var(--lw-accent);
+  }
+  .faq-icon {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--lw-border-strong);
+    color: var(--lw-accent);
+    transition: transform 0.25s var(--lw-ease), background-color var(--lw-fast) ease;
+  }
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+    background: var(--lw-accent-tint);
+  }
+  .faq-a {
+    padding: 0 3rem 1.3rem 0.25rem;
+    color: var(--lw-ink-muted);
+    line-height: 1.7;
+    max-width: var(--lw-maxw-text);
+  }
+  .faq-a :global(p + p) {
+    margin-top: 0.75rem;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .faq-item[open] .faq-a {
+      animation: faq-open 0.3s var(--lw-ease);
+    }
+    @keyframes faq-open {
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+    }
+  }
+  @media (max-width: 560px) {
+    .faq-a {
+      padding-right: 0.25rem;
+    }
+  }
+</style>

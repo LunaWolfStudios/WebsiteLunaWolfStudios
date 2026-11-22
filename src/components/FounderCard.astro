@@ -1,0 +1,157 @@
+---
+/**
+ * A co-founder card for /about/ and the founder pages: photo, name, role, short blurb,
+ * profile links, and a link to the full bio.
+ *
+ *   {FOUNDERS.map((f) => <FounderCard founder={f} />)}
+ *   <FounderCard founder={f} layout="row" />      photo beside the text, for a single card
+ *
+ * Names follow the site rule: Jeff and Olivia by first name only (CLAUDE.md).
+ */
+import Icon from "./Icon.astro";
+import FounderPhoto from "./FounderPhoto.astro";
+import type { Founder } from "../data/types";
+
+interface Props {
+  founder: Founder;
+  layout?: "stack" | "row";
+  headingLevel?: 2 | 3;
+  class?: string;
+}
+
+const { founder, layout = "stack", headingLevel = 3, class: cls } = Astro.props;
+const H = `h${headingLevel}` as "h2" | "h3";
+---
+
+<article class:list={["founder", "card", `founder--${layout}`, cls]}>
+  <div class="fc-photo">
+    {
+      founder.photo ? (
+        <FounderPhoto founder={founder} size={layout === "row" ? 168 : 112} class="fc-img" />
+      ) : (
+        <span class="fc-initial" aria-hidden="true">{founder.name.charAt(0)}</span>
+      )
+    }
+  </div>
+  <div class="fc-body">
+    <H class="fc-name">{founder.name}</H>
+    <p class="fc-role">{founder.role}</p>
+    <p class="fc-blurb">{founder.blurb}</p>
+    <div class="fc-foot">
+      <a href={founder.page} class="link-arrow">
+        About {founder.name.split(" ")[0]} <Icon name="arrowRight" size={16} />
+      </a>
+      {
+        founder.links.length > 0 && (
+          <ul class="fc-links" role="list">
+            {founder.links.map((l) => (
+              <li>
+                <a href={l.url} target="_blank" rel="noopener" aria-label={`${founder.name} on ${l.label}`} title={l.label}>
+                  <Icon name={l.icon ?? "globe"} size={16} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </div>
+</article>
+
+<style>
+  .founder {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    height: 100%;
+    padding: clamp(1.35rem, 2.4vw, 1.75rem);
+  }
+  .founder--row {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: clamp(1.25rem, 3vw, 2rem);
+  }
+  .fc-photo {
+    position: relative;
+    flex-shrink: 0;
+    width: 112px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    padding: 3px;
+    background: conic-gradient(from 210deg, var(--lw-accent), var(--lw-accent-deep), var(--lw-accent));
+    box-shadow: 0 0 30px var(--lw-glow-strong);
+  }
+  .founder--row .fc-photo {
+    width: clamp(112px, 16vw, 168px);
+  }
+  /* FounderPhoto frames the face (photoFocus in team.ts); here it only fills the ring. */
+  .fc-photo :global(.fc-img),
+  .fc-initial {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid var(--lw-surface);
+  }
+  .fc-initial {
+    display: grid;
+    place-items: center;
+    background: var(--lw-bg-raised);
+    font-family: var(--lw-font-display);
+    font-size: 2.6rem;
+    font-weight: 600;
+    color: var(--lw-accent);
+  }
+  .fc-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+    min-width: 0;
+  }
+  .fc-name {
+    font-size: 1.35rem;
+  }
+  .fc-role {
+    font-size: var(--lw-text-sm);
+    font-weight: 500;
+    color: var(--lw-accent);
+  }
+  .fc-blurb {
+    margin-top: 0.35rem;
+    color: var(--lw-ink-muted);
+    line-height: 1.6;
+  }
+  .fc-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 0.9rem;
+  }
+  .fc-links {
+    display: flex;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+  }
+  .fc-links a {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--lw-border);
+    color: var(--lw-ink-muted);
+  }
+  .fc-links a:hover {
+    color: var(--lw-accent);
+    border-color: var(--lw-accent-line);
+  }
+  @media (max-width: 560px) {
+    .founder--row {
+      flex-direction: column;
+    }
+  }
+</style>

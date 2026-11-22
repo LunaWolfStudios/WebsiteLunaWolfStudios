@@ -1,0 +1,142 @@
+---
+/**
+ * A service card for the services hub, the home page and cross-links between service pages:
+ * icon, title, summary, optional bullets, and a link to the service page.
+ *
+ *   {SERVICES.map((s) => <ServiceCard service={s} />)}
+ *   <ServiceCard service={s} bullets={false} />            compact
+ *   <ServiceCard title="Publishing" summary="..." icon="rocket" href="/publishing/" />
+ *
+ * Either pass a `service` record (src/data/types.ts) or the individual props.
+ */
+import Icon from "./Icon.astro";
+import type { Service } from "../data/types";
+
+interface Props {
+  service?: Service;
+  title?: string;
+  summary?: string;
+  icon?: string;
+  href?: string;
+  items?: string[];
+  /** Show the service's bullets (default true when there are any). */
+  bullets?: boolean;
+  /** Link text; the service title is appended for screen readers. */
+  cta?: string;
+  headingLevel?: 2 | 3;
+  class?: string;
+}
+
+const p = Astro.props;
+const title = p.title ?? p.service?.title ?? "";
+const summary = p.summary ?? p.service?.summary ?? "";
+const icon = p.icon ?? p.service?.icon ?? "gamepad";
+const href = p.href ?? p.service?.page ?? "#";
+const items = p.bullets === false ? [] : (p.items ?? p.service?.bullets ?? []);
+const cta = p.cta ?? "Learn more";
+const H = `h${p.headingLevel ?? 3}` as "h2" | "h3";
+---
+
+<article class:list={["service-card", "card", "card--link", p.class]}>
+  <span class="sc-icon" aria-hidden="true"><Icon name={icon} size={24} /></span>
+  <H class="sc-title"><a href={href} class="sc-link">{title}</a></H>
+  <p class="sc-summary">{summary}</p>
+  {
+    items.length > 0 && (
+      <ul class="sc-list" role="list">
+        {items.map((b) => (
+          <li>
+            <Icon name="check" size={16} class="sc-check" />
+            <span>{b}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  <span class="sc-more" aria-hidden="true">{cta} <Icon name="arrowRight" size={16} /></span>
+</article>
+
+<style>
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: 100%;
+    padding: clamp(1.35rem, 2.4vw, 1.75rem);
+    isolation: isolate;
+  }
+  .sc-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0.35rem;
+    border-radius: 14px;
+    color: var(--lw-accent);
+    background: radial-gradient(circle at 30% 25%, var(--lw-glow-strong), var(--lw-accent-tint) 70%);
+    border: 1px solid var(--lw-accent-line);
+  }
+  .sc-title {
+    font-size: 1.3rem;
+  }
+  .sc-link {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .sc-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: 1;
+  }
+  .sc-link:focus-visible {
+    outline: none;
+  }
+  .service-card:has(.sc-link:focus-visible) {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: 3px;
+  }
+  .service-card:hover .sc-link {
+    color: var(--lw-accent);
+  }
+  .sc-summary {
+    color: var(--lw-ink-muted);
+    line-height: 1.6;
+  }
+  .sc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    font-size: 0.95rem;
+  }
+  .sc-list li {
+    display: flex;
+    gap: 0.55rem;
+    align-items: flex-start;
+  }
+  .sc-list :global(.sc-check) {
+    flex-shrink: 0;
+    margin-top: 0.3rem;
+    color: var(--lw-accent);
+  }
+  .sc-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--lw-accent);
+  }
+  .sc-more :global(svg) {
+    transition: transform var(--lw-fast) ease;
+  }
+  .service-card:hover .sc-more :global(svg) {
+    transform: translateX(3px);
+  }
+</style>

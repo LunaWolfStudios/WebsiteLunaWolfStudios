@@ -1,0 +1,460 @@
+---
+/**
+ * Anatomy of Play as a click-to-load embed.
+ *
+ * Anatomy of Play is our web app: health and fitness games we have worked on, laid out on a
+ * body map (tools.lunawolfstudios.com/anatomy-of-play/). This block shows a picture of the
+ * map with a button. The app itself loads in a frame only when the button is pressed, so the
+ * page asks nothing of the tools site before that (the same rule as video, see VideoCard).
+ * Without JavaScript, or on a modified click, the button is a plain link that opens the app
+ * in a new tab.
+ *
+ *   <Section id="anatomy-of-play" eyebrow="Anatomy of Play" title="..." lead="...">
+ *     <AnatomyOfPlay />
+ *   </Section>
+ *
+ * The page supplies the heading; this is the stage and the bar under it.
+ *
+ * - The stage is the app's own dark ground in both themes, so its colours are fixed, and the
+ *   button on it pins the night palette with data-theme="dark".
+ * - The frame keeps the stage's size, so opening it moves nothing on the page.
+ * - "?embed=1" tells the app it is in a frame: it skips its landing screen and shows the map.
+ * - The frame is sandboxed without top navigation: the app, and the demo one of its projects
+ *   embeds, can open links in new tabs but cannot move this page.
+ * - Once open, "Full screen" (where the browser has it) and "Close" join "Open in a new tab"
+ *   in the bar. Keys pressed inside the frame never reach this page, so those controls come
+ *   straight after the frame in the tab order.
+ */
+import { getImage } from "astro:assets";
+import Icon from "./Icon.astro";
+import { LINKS } from "../data/links";
+import mapWide from "../assets/portfolio/anatomy-of-play-map.png";
+import mapTall from "../assets/portfolio/anatomy-of-play-map-tall.png";
+
+interface Props {
+  class?: string;
+}
+
+const { class: cls } = Astro.props;
+
+const MAP_ALT =
+  "The Anatomy of Play body map: a glowing human figure with labeled hotspots for the eyes, ears, brain, face, upper extremities, hands, pancreas, lower body, and knees.";
+
+// One picture, two crops: the map as a phone lays it out, and from 900 px the wide one.
+const wide = await getImage({ src: mapWide, widths: [480, 720, 960, 1200] });
+const tall = await getImage({ src: mapTall, widths: [400, 600, 800, 1200] });
+
+/** The app's three kinds of game and its own colours for them (its legend). */
+const LEGEND = [
+  { name: "Clinical", text: "Assessment, rehabilitation, and therapy", color: "#00f0ff" },
+  { name: "Education", text: "Games that teach through play", color: "#b026ff" },
+  { name: "Fitness", text: "Physical activity and training", color: "#39ff14" },
+];
+---
+
+<div
+  class:list={["aop", cls]}
+  data-aop
+  data-src={`${LINKS.anatomyOfPlay}?embed=1`}
+  data-frame-title="Anatomy of Play: an interactive body map of serious games"
+  data-reveal
+>
+  <div class="aop-stage" data-aop-stage>
+    <picture>
+      <source
+        media="(min-width: 900px)"
+        srcset={wide.srcSet.attribute}
+        sizes="600px"
+        width={mapWide.width}
+        height={mapWide.height}
+      />
+      <img
+        src={tall.src}
+        srcset={tall.srcSet.attribute}
+        sizes="min(calc(100vw - 2rem), 420px)"
+        width={mapTall.width}
+        height={mapTall.height}
+        alt={MAP_ALT}
+        loading="lazy"
+        decoding="async"
+        class="aop-map"
+      />
+    </picture>
+
+    <div class="aop-cta" data-theme="dark">
+      <a class="btn btn--primary aop-open" href={LINKS.anatomyOfPlay} target="_blank" rel="noopener" data-aop-open>
+        <Icon name="play" size={18} />
+        <span data-aop-open-label>Explore the body map</span>
+      </a>
+      <p class="aop-hint">Opens right here. Nothing to install.</p>
+    </div>
+
+    <ul class="aop-legend" role="list" aria-label="What the label colors mean">
+      {
+        LEGEND.map((l) => (
+          <li style={`--c:${l.color}`}>
+            <span class="aop-dot" aria-hidden="true" />
+            <strong>{l.name}</strong>
+            <span class="aop-legend-text">{l.text}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="aop-bar" data-aop-bar>
+    <p class="aop-note">Anatomy of Play is our web app. It loads from tools.lunawolfstudios.com when you press the button.</p>
+    {/* The two buttons keep their place while they are off (data-off), so the bar is the
+        same height open or closed and nothing under it moves. */}
+    <div class="aop-actions">
+      <button type="button" class="btn btn--ghost btn--sm" data-aop-fullscreen data-off>
+        <Icon name="expand" size={16} />
+        <span data-aop-fullscreen-label>Full screen</span>
+      </button>
+      <button type="button" class="btn btn--ghost btn--sm" data-aop-close data-off>
+        <Icon name="close" size={16} />
+        Close
+      </button>
+      <a class="btn btn--ghost btn--sm aop-newtab" href={LINKS.anatomyOfPlay} target="_blank" rel="noopener">
+        <Icon name="external" size={16} />
+        Open in a new tab
+        <span class="visually-hidden"> (Anatomy of Play)</span>
+      </a>
+    </div>
+  </div>
+  <p class="visually-hidden" role="status" data-aop-status></p>
+</div>
+
+<style>
+  .aop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    /* Clear of the sticky header when the script scrolls the stage into view. */
+    scroll-margin-top: 5.5rem;
+  }
+
+  /* The stage: the app's ground colour and its two soft glows, in both themes. */
+  .aop-stage {
+    position: relative;
+    height: clamp(540px, 84vh, 700px);
+    height: clamp(540px, 84svh, 700px);
+    border-radius: var(--lw-radius-lg);
+    overflow: hidden;
+    isolation: isolate;
+    border: 1px solid rgba(129, 235, 225, 0.16);
+    background:
+      radial-gradient(44% 46% at 50% 20%, rgba(30, 58, 138, 0.24), transparent 72%),
+      radial-gradient(38% 40% at 50% 104%, rgba(88, 28, 135, 0.22), transparent 72%),
+      #0a0a0f;
+    box-shadow: var(--lw-shadow-lg);
+    color: #eef7f7;
+  }
+
+  /* The map is a capture on the same flat ground, so "lighten" lets the glows show through
+     it and leaves no edge where the picture stops. */
+  .aop-map {
+    position: absolute;
+    top: 5%;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    height: 74%;
+    object-fit: contain;
+    mix-blend-mode: lighten;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* The button sits over the foot of the map on a scrim. */
+  .aop-stage::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 1;
+    height: 36%;
+    background: linear-gradient(to top, rgba(10, 10, 15, 0.97) 34%, rgba(10, 10, 15, 0));
+    pointer-events: none;
+  }
+  .aop-cta {
+    position: absolute;
+    z-index: 2;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1.15rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    text-align: center;
+  }
+  .aop-open {
+    min-width: min(100%, 17rem);
+  }
+  .aop-hint {
+    font-size: var(--lw-text-sm);
+    color: #a9c0c4;
+  }
+
+  .aop-legend {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .aop-stage {
+      height: clamp(540px, 76vh, 700px);
+      height: clamp(540px, 76svh, 700px);
+    }
+    /* Where the app itself draws the figure in a frame this size, so the picture and the
+       live map line up when one replaces the other. */
+    .aop-map {
+      top: 8.31%;
+      left: 50%;
+      width: auto;
+      height: 88.6%;
+      transform: translateX(-50%);
+    }
+  }
+
+  /* In between, the button still sits at the foot of the stage, so the figure moves up to
+     stand clear of it. */
+  @media (min-width: 900px) and (max-width: 1179px) {
+    .aop-map {
+      top: 3%;
+      height: 77%;
+    }
+  }
+
+  /* Wide stages have room beside the figure: the button moves to the left of it, the app's
+     legend to the right, and the scrim goes. */
+  @media (min-width: 1180px) {
+    .aop-stage::after {
+      display: none;
+    }
+    .aop-cta {
+      left: clamp(1.75rem, 4vw, 3rem);
+      right: auto;
+      bottom: auto;
+      top: 50%;
+      width: 16.5rem;
+      align-items: flex-start;
+      text-align: left;
+      transform: translateY(-50%);
+    }
+    .aop-legend {
+      position: absolute;
+      z-index: 2;
+      right: clamp(1.75rem, 4vw, 3rem);
+      top: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      width: 15rem;
+      margin: 0;
+      padding: 0;
+      transform: translateY(-50%);
+    }
+    .aop-legend li {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: baseline;
+      gap: 0.1rem 0.65rem;
+    }
+    .aop-dot {
+      width: 0.6rem;
+      height: 0.6rem;
+      border-radius: 50%;
+      background: var(--c);
+      box-shadow: 0 0 10px var(--c);
+    }
+    .aop-legend strong {
+      font-family: var(--lw-font-display);
+      font-weight: 600;
+      color: #eef7f7;
+    }
+    .aop-legend-text {
+      grid-column: 2;
+      font-size: var(--lw-text-sm);
+      line-height: 1.4;
+      color: #a9c0c4;
+    }
+  }
+
+  /* The frame, made by the script. It fades in over the picture once the app has loaded. */
+  .aop-stage :global(.aop-frame) {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .aop.is-open .aop-stage :global(.aop-frame) {
+    opacity: 1;
+    background: #0a0a0f;
+  }
+  .aop.is-open .aop-map,
+  .aop.is-open .aop-cta,
+  .aop.is-open .aop-legend {
+    visibility: hidden;
+  }
+  .aop.is-loading .aop-open {
+    cursor: progress;
+  }
+
+  .aop-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem 1.5rem;
+  }
+  .aop-note {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+  .aop-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-left: auto;
+  }
+  /* Off: out of sight and out of the tab order, but still holding its place. */
+  .aop-actions [data-off] {
+    visibility: hidden;
+  }
+  /* .btn sets display, which would beat the hidden attribute (no full screen in this browser). */
+  .aop-actions [hidden] {
+    display: none;
+  }
+  /* Narrow bars wrap: the link that is always there leads, and the row the two buttons
+     will use stays under it. */
+  @media (max-width: 899px) {
+    .aop-actions {
+      margin-left: -0.9rem;
+    }
+    .aop-newtab {
+      order: -1;
+    }
+  }
+
+  /* Full screen: the stage fills the window and the bar stays at its foot, on the app's
+     ground (the script pins the bar to the night palette while it is there). */
+  .aop:fullscreen {
+    gap: 0;
+    background: #0a0a0f;
+  }
+  .aop:fullscreen .aop-stage {
+    flex: 1;
+    height: auto;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .aop:fullscreen .aop-bar {
+    padding: 0.4rem 0.75rem;
+  }
+  .aop:fullscreen .aop-note {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .aop-stage :global(.aop-frame) {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  for (const root of document.querySelectorAll<HTMLElement>("[data-aop]")) {
+    const stage = root.querySelector<HTMLElement>("[data-aop-stage]");
+    const open = root.querySelector<HTMLAnchorElement>("[data-aop-open]");
+    const label = root.querySelector<HTMLElement>("[data-aop-open-label]");
+    const bar = root.querySelector<HTMLElement>("[data-aop-bar]");
+    const status = root.querySelector<HTMLElement>("[data-aop-status]");
+    const closeBtn = root.querySelector<HTMLButtonElement>("[data-aop-close]");
+    const fsBtn = root.querySelector<HTMLButtonElement>("[data-aop-fullscreen]");
+    const fsLabel = root.querySelector<HTMLElement>("[data-aop-fullscreen-label]");
+    if (!stage || !open || !label || !bar || !status || !closeBtn || !fsBtn || !fsLabel) continue;
+
+    const idleLabel = label.textContent ?? "";
+    let frame: HTMLIFrameElement | null = null;
+    // No full screen for page elements in this browser (iPhone): the button never shows.
+    if (!document.fullscreenEnabled) fsBtn.hidden = true;
+
+    const reset = () => {
+      frame?.remove();
+      frame = null;
+      root.classList.remove("is-loading", "is-open");
+      label.textContent = idleLabel;
+      open.removeAttribute("aria-disabled");
+      closeBtn.dataset.off = "";
+      fsBtn.dataset.off = "";
+      status.textContent = "";
+    };
+
+    open.addEventListener("click", (e) => {
+      // A modified click keeps its usual meaning: the link opens the app in a new tab.
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      if (frame) return;
+
+      const el = document.createElement("iframe");
+      frame = el;
+      el.className = "aop-frame";
+      el.title = root.dataset.frameTitle ?? "Anatomy of Play";
+      el.allow = "fullscreen";
+      el.referrerPolicy = "strict-origin-when-cross-origin";
+      // No allow-top-navigation: nothing in the frame can move this page.
+      el.setAttribute(
+        "sandbox",
+        "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-pointer-lock",
+      );
+      el.addEventListener(
+        "load",
+        () => {
+          if (frame !== el) return;
+          root.classList.replace("is-loading", "is-open");
+          label.textContent = idleLabel;
+          status.textContent = "Anatomy of Play is open. Full screen and Close follow the frame.";
+          el.focus({ preventScroll: true });
+        },
+        { once: true },
+      );
+      el.src = root.dataset.src ?? open.href;
+
+      root.classList.add("is-loading");
+      label.textContent = "Loading the body map";
+      status.textContent = "Loading Anatomy of Play.";
+      open.setAttribute("aria-disabled", "true");
+      delete closeBtn.dataset.off;
+      delete fsBtn.dataset.off;
+      stage.append(el);
+      root.scrollIntoView({ block: "nearest", behavior: reduceMotion.matches ? "auto" : "smooth" });
+    });
+
+    closeBtn.addEventListener("click", () => {
+      if (document.fullscreenElement === root) void document.exitFullscreen();
+      reset();
+      open.focus({ preventScroll: true });
+    });
+
+    fsBtn.addEventListener("click", () => {
+      if (document.fullscreenElement === root) void document.exitFullscreen();
+      else void root.requestFullscreen().catch(() => {});
+    });
+
+    document.addEventListener("fullscreenchange", () => {
+      const on = document.fullscreenElement === root;
+      fsLabel.textContent = on ? "Exit full screen" : "Full screen";
+      // In full screen the bar sits on the app's dark ground, in both themes.
+      if (on) bar.dataset.theme = "dark";
+      else delete bar.dataset.theme;
+    });
+  }
+</script>
