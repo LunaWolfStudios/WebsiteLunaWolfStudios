@@ -1,0 +1,26 @@
+# Home page hero, desktop (16:9), derived from Long Night (Final).
+# Run against a copy of long-night-final.sk:
+#   splashkit derive long-night-final.sk --id hero-desktop --name "Hero (desktop)" --out hero-desktop.sk
+#   splashkit run hero-desktop.recipe --in hero-desktop.sk
+
+# 13.5 s: intro 0..4.5 s, idle loop 4.5..13.5 s (the encoder crossfades the last 1 s into 3.5..4.5 s)
+doc set --duration 13.5 --background '#04070a'
+
+# no wordmark (the site header carries it) and no sound (the hero video is muted)
+layer rm wordmark
+audio rm builtin:night_falls_howl
+
+# frame 0 is the settled sky: fog and snow are already there, nothing fades in
+block rm bg 0
+block rm snow 0
+layer set snow opacity=0.27
+
+# emblem centred at x = 72 %, y = 50 %; moon disc (453 du at scale 1) = 52 % of 810 du
+layer transform badge --x 316.8 --y 0 --scale 0.9298
+
+# breathing: exactly two cycles per 9 s idle segment, so the glow is periodic across the seam
+layer set moon-glow pulseHz=0.2222222
+
+# idle blinks every 4.5 s, clear of the crossfade windows (3.5..4.5 s and 12.5..13.5 s)
+block add wolf blink --at 6.25
+block add wolf blink --at 10.75
