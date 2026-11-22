@@ -1,0 +1,153 @@
+---
+/**
+ * One studio logo file on /presskit/: a preview on a suitable ground, its name, pixel size,
+ * file size, and a download link. A transparent file is previewed twice, on a night tile and
+ * on a paper tile, so press can see it works on both, unless it is marked `darkOnly` (the teal
+ * wordmark, which is too faint on white): then it gets one wide night tile and its note says
+ * so.
+ *
+ *   <LogoCard logo={LOGOS[0]} img={metadata} size="1.8 MB" href="/press/logos/..." />
+ */
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Icon from "../Icon.astro";
+
+interface Props {
+  logo: {
+    label: string;
+    width: number;
+    height: number;
+    transparent: boolean;
+    darkOnly?: boolean;
+    note?: string;
+    alt: string;
+    file: string;
+  };
+  img: ImageMetadata;
+  href: string;
+  size: string;
+  class?: string;
+}
+
+const { logo, img, href, size, class: cls } = Astro.props;
+const wide = logo.transparent;
+const grounds: Array<"dark" | "light"> = logo.transparent && !logo.darkOnly ? ["dark", "light"] : ["dark"];
+// Pane widths: a wide card spans the main column (two panes, or one wide pane); an opaque
+// card is half the column, and the full column on phones. Phones are 390px with ~20px
+// gutters, so half a wide card is about 40vw. The one wide pane is 32:10 and its logo is
+// square, so the logo is drawn at the pane's height, about 30% of its width.
+const sizes = !wide
+  ? "(max-width: 640px) 92vw, (max-width: 900px) 46vw, 380px"
+  : grounds.length === 2
+    ? "(max-width: 900px) 40vw, 380px"
+    : "(max-width: 900px) 30vw, 300px";
+---
+
+<article class:list={["logo-card", "card", { "logo-card--wide": wide, "logo-card--single": wide && grounds.length === 1 }, cls]}>
+  <div class="lc-panes">
+    {
+      grounds.map((g, i) => (
+        <div class:list={["lc-pane", `lc-pane--${g}`]} data-theme={g}>
+          <Image
+            src={img}
+            alt={i === 0 ? logo.alt : ""}
+            widths={[320, 480, 640]}
+            sizes={sizes}
+            loading="lazy"
+            decoding="async"
+            class="lc-img"
+          />
+          {grounds.length === 2 && <span class="lc-ground">{g === "dark" ? "On dark" : "On light"}</span>}
+        </div>
+      ))
+    }
+  </div>
+  <div class="lc-info">
+    <div class="lc-text">
+      <h3 class="lc-title">{logo.label}</h3>
+      <p class="lc-meta">
+        {logo.width}×{logo.height} px · PNG{logo.transparent ? ", transparent" : ""}{size && ` · ${size}`}
+      </p>
+      {logo.note && <p class="lc-meta lc-note">{logo.note}</p>}
+    </div>
+    <a class="btn btn--secondary btn--sm" href={href} download={logo.file} aria-label={`Download ${logo.label} (${logo.width}×${logo.height} PNG)`}>
+      <Icon name="download" size={16} /> Download
+    </a>
+  </div>
+</article>
+
+<style>
+  .logo-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .lc-panes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    border-bottom: 1px solid var(--lw-border);
+  }
+  .logo-card--wide .lc-panes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .logo-card--single .lc-panes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lc-pane {
+    --pad: clamp(0.75rem, 2.5vw, 1.25rem);
+    position: relative;
+    aspect-ratio: 16 / 10;
+  }
+  /* One pane across the whole card: as tall as the two-pane cards above it. */
+  .logo-card--single .lc-pane {
+    aspect-ratio: 32 / 10;
+  }
+  /* Fixed grounds whatever the page theme: the pane pins its own palette (tokens.css). */
+  .lc-pane--dark {
+    background: #000;
+  }
+  .lc-pane--light {
+    background: var(--lw-surface);
+  }
+  /* The file sits inside the fixed pane whatever its own shape (square or 2:1). */
+  .lc-img {
+    position: absolute;
+    inset: var(--pad);
+    width: calc(100% - 2 * var(--pad));
+    height: calc(100% - 2 * var(--pad));
+    object-fit: contain;
+  }
+  .lc-ground {
+    position: absolute;
+    left: 0.6rem;
+    bottom: 0.45rem;
+    font-size: 0.7rem;
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  /* On a phone the panes are too small for a label beside the logo; the grounds speak for themselves. */
+  @media (max-width: 640px) {
+    .lc-ground {
+      display: none;
+    }
+  }
+  .lc-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    padding: 0.9rem 1.1rem 1rem;
+    margin-top: auto;
+  }
+  .lc-title {
+    font-size: 1.05rem;
+  }
+  .lc-meta {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+</style>

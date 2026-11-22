@@ -1,0 +1,762 @@
+---
+/**
+ * /presskit/: the studio press kit, in the presskit() format (dopresskit.com) with the
+ * completeness of presskit.megacatstudios.com: fact sheet, description, history, projects,
+ * videos, images, logo and icon, brand colors, the animated logo, awards and recognition,
+ * selected articles, additional links, team, and contact, with a section menu on the left.
+ * Each product has its own sheet at /presskit/<slug>/ ([slug].astro).
+ *
+ * The Sheep Tag 2 press kit links here for "studio logos and company info", so this page
+ * keeps every file the old one offered (five logos under their old labels, the Soup of
+ * Justice font, the #81ebe1 wordmark colour, the contact). Copy lives in src/data/presskit.ts;
+ * the downloads are written by the "press" step in scripts/build.mts.
+ */
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import Icon from "../../components/Icon.astro";
+import VideoCard from "../../components/VideoCard.astro";
+import Gallery from "../../components/Gallery.astro";
+import AwardBadge from "../../components/AwardBadge.astro";
+import FounderPhoto from "../../components/FounderPhoto.astro";
+import PressKitLayout from "../../components/presskit/PressKitLayout.astro";
+import SplashPlayer from "../../components/presskit/SplashPlayer.astro";
+import LogoCard from "../../components/presskit/LogoCard.astro";
+import { fileSize, typeAndSize } from "../../components/presskit/files";
+import { SITE } from "../../data/site";
+import { LINKS, SOCIALS, withUtm, isExternal } from "../../data/links";
+import { work } from "../../data/games";
+import { TIMELINE } from "../../data/timeline";
+import { STUDIO_AWARDS } from "../../data/awards";
+import { PRESS } from "../../data/reviews";
+import { FOUNDERS } from "../../data/team";
+import { SCRIPTABLE_SHEETS_INTRO, SHEEP_TAG_2_VIDEOS, HYPNO_HALO_VIDEOS, trailerFor } from "../../data/videos";
+import { image } from "../../lib/images";
+import { abs, ORG_ID, WEBSITE_ID } from "../../lib/seo";
+import {
+  ANIMATED_LOGO,
+  CLIENTS,
+  DESCRIPTION,
+  ENGINES,
+  INTERNSHIPS,
+  SERVICES,
+  FONT,
+  HISTORY,
+  LOGOS,
+  LOGO_ZIP,
+  PALETTE,
+  PHOTO_ZIP,
+  PITCH,
+  PRESS_EMAIL,
+  PROJECTS,
+  SHEEP_TAG_2_PRESSKIT,
+  STUDIO_PHOTOS,
+  TIMELINE_SKIP,
+} from "../../data/presskit";
+
+const NEW_TAB = " (opens in a new tab)";
+const logoZipMeta = typeAndSize(`public/press/${LOGO_ZIP.file}`);
+const photoZipMeta = typeAndSize(`public/press/${PHOTO_ZIP.file}`);
+
+// Logo previews come from the canonical files in brand/.
+const brandModules = import.meta.glob<ImageMetadata>("../../../brand/*.png", { eager: true, import: "default" });
+const brandImage = (file: string): ImageMetadata => {
+  const hit = Object.entries(brandModules).find(([p]) => p.endsWith(`/${file}`))?.[1];
+  if (!hit) throw new Error(`Press kit: logo "${file}" is missing from brand/`);
+  return hit;
+};
+const logos = LOGOS.map((l) => ({
+  ...l,
+  img: brandImage(l.src),
+  href: `/press/logos/${l.file}`,
+  size: fileSize(`brand/${l.src}`),
+}));
+// Opaque files first (they sit side by side), then the transparent ones at full width
+// (the dark-only wordmark too: one wide pane, as tall as the two-pane cards).
+const opaqueLogos = logos.filter((l) => !l.transparent);
+const transparentLogos = logos.filter((l) => l.transparent);
+const heroLogo = brandImage("LWS_2048x1024_with-text.png");
+
+const animated = ANIMATED_LOGO.map((a) => ({
+  ...a,
+  href: `/media/press/${a.file}`,
+  size: fileSize(`public/media/press/${a.file}`),
+}));
+
+// Each card shows the product's wide art and links to its project sheet.
+const projects = PROJECTS.map((p) => {
+  const item = work(p.slug);
+  const art = p.art ?? item.wide;
+  return { ...p, item, img: art ? image(art) : undefined, sheet: `/presskit/${p.slug}/` };
+});
+const timeline = TIMELINE.filter((t) => !TIMELINE_SKIP.has(t.date));
+
+const videos = [
+  { video: SHEEP_TAG_2_VIDEOS[0], title: "Sheep Tag 2: Gameplay Trailer" },
+  { video: HYPNO_HALO_VIDEOS[0], title: "Hypno Halo Trailer" },
+  { video: trailerFor("paralily")!, title: "ParaLily: Teaser Trailer" },
+  { video: SCRIPTABLE_SHEETS_INTRO, title: "Scriptable Sheets: Introduction" },
+];
+
+const subjectName = (slug: string) =>
+  slug === "studio" ? "Luna Wolf Studios" : slug === "internship" ? "Internship program" : work(slug).title;
+const monthYear = (iso?: string) =>
+  iso ? new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" }) : "";
+/** BCP 47 codes for coverage written in another language. */
+const LANG_CODES: Record<string, string> = { Belarusian: "be" };
+const coverage = [...PRESS].sort((a, b) => (b.date ?? "0").localeCompare(a.date ?? "0"));
+
+/** Store links carry the site's campaign tags; other external links stay clean. */
+const STORE_HOSTS = /store\.steampowered\.com|assetstore\.unity\.com|nintendo\.com/;
+const outbound = (href: string) => (STORE_HOSTS.test(href) ? withUtm(href, "presskit") : href);
+
+const additionalLinks = [
+  { label: "Luna Wolf Studios on Steam", href: LINKS.steamPublisher, note: "Every game we publish on Steam" },
+  { label: "Unity Asset Store publisher page", href: LINKS.assetStorePublisher, note: "Scriptable Sheets and our Unity tools" },
+  { label: "itch.io", href: LINKS.itch, note: "Jam games, small games, and the intern games" },
+  { label: "YouTube", href: LINKS.youtube, note: "Trailers, gameplay, and Scriptable Sheets tutorials" },
+  { label: "GitHub", href: LINKS.github, note: "Scriptable Sheets docs and our open source" },
+  { label: "Sheep Tag 2 press kit", href: SHEEP_TAG_2_PRESSKIT, note: "The full kit on sheeptag2.com" },
+  { label: "ParaLily press kit", href: LINKS.paralilyPresskit, note: "Team ParaLily's kit on paralilygame.com" },
+  { label: "All games and projects", href: "/games/", note: "Everything we have made and worked on" },
+  { label: "Services", href: "/services/", note: "Game, Unity, VR, and software development for clients" },
+  { label: "About the studio", href: "/about/", note: "The founders and the full story" },
+];
+
+const nav = [
+  { id: "factsheet", label: "Fact sheet" },
+  { id: "description", label: "Description" },
+  { id: "history", label: "History" },
+  { id: "projects", label: "Projects" },
+  { id: "videos", label: "Videos" },
+  { id: "images", label: "Images" },
+  { id: "logos", label: "Logo and icon" },
+  { id: "brand", label: "Font and colors" },
+  { id: "animated-logo", label: "Animated logo" },
+  { id: "recognition", label: "Awards" },
+  { id: "articles", label: "Selected articles" },
+  { id: "links", label: "Additional links" },
+  { id: "team", label: "Team" },
+  { id: "contact", label: "Contact" },
+];
+
+const title = "Press kit: logos, photos, and game art";
+const description =
+  "The Luna Wolf Studios press kit: studio facts, logos, photos, trailers, and a press kit for each game, with screenshots and key art to download in one click.";
+
+const pageUrl = abs("/presskit/");
+const jsonLd = [
+  {
+    "@type": "CollectionPage",
+    "@id": `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: `${title} | ${SITE.name}`,
+    description,
+    isPartOf: { "@id": WEBSITE_ID },
+    about: { "@id": ORG_ID },
+    publisher: { "@id": ORG_ID },
+    inLanguage: "en-US",
+    hasPart: PROJECTS.map((p) => ({ "@type": "WebPage", "@id": `${abs(`/presskit/${p.slug}/`)}#webpage`, url: abs(`/presskit/${p.slug}/`), name: `${work(p.slug).title} press kit` })),
+  },
+  ...LOGOS.map((l) => ({
+    "@type": "ImageObject",
+    "@id": `${pageUrl}#${l.file.replace(/\.png$/, "")}`,
+    name: `Luna Wolf Studios logo: ${l.label}`,
+    contentUrl: abs(`/press/logos/${l.file}`),
+    encodingFormat: "image/png",
+    width: l.width,
+    height: l.height,
+    creditText: SITE.name,
+    creator: { "@id": ORG_ID },
+    copyrightHolder: { "@id": ORG_ID },
+  })),
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={heroLogo}
+  imageAlt="The Luna Wolf Studios logo: a wolf in front of a full moon beside the teal wordmark."
+  breadcrumbs={[{ label: "Press kit", href: "/presskit/" }]}
+  jsonLd={jsonLd}
+>
+  <PageHero
+    eyebrow="Press"
+    title="Luna Wolf Studios press kit"
+    lead="Studio facts, logos, photos, and trailers, and a press kit for each of our games with screenshots and key art. Everything here may be used for coverage of Luna Wolf Studios and its games."
+  >
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href={LOGO_ZIP.href} download={LOGO_ZIP.file}>
+        <Icon name="download" size={18} /> Download logos ({logoZipMeta})
+      </a>
+      <a class="btn btn--secondary" href="#projects">
+        Game press kits <Icon name="arrowRight" size={18} />
+      </a>
+    </Fragment>
+    <Image
+      slot="media"
+      src={heroLogo}
+      alt="The Luna Wolf Studios logo: a wolf in front of a full moon beside the teal wordmark."
+      widths={[480, 720, 1120]}
+      sizes="(max-width: 900px) calc(100vw - 2rem), 560px"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </PageHero>
+
+  <PressKitLayout nav={nav}>
+    <Fragment slot="nav">
+      <a class="btn btn--primary btn--sm" href={LOGO_ZIP.href} download={LOGO_ZIP.file}>
+        <Icon name="download" size={16} /> Logos <span class="nav-meta">{logoZipMeta}</span>
+      </a>
+      <a class="btn btn--secondary btn--sm" href={`mailto:${PRESS_EMAIL}`}>
+        <Icon name="mail" size={16} /> Press contact
+      </a>
+    </Fragment>
+
+    <section id="factsheet" aria-labelledby="factsheet-title">
+      <h2 id="factsheet-title">Fact sheet</h2>
+      <dl class="pk-facts">
+        <div class="pk-fact"><dt>Developer</dt><dd>{SITE.legalName}</dd></div>
+        <div class="pk-fact"><dt>Based in</dt><dd>Newark, Delaware, USA</dd></div>
+        <div class="pk-fact"><dt>Founded</dt><dd>{SITE.founded}, by {SITE.foundedBy}</dd></div>
+        <div class="pk-fact"><dt>Website</dt><dd><a href="/">lunawolfstudios.com</a></dd></div>
+        <div class="pk-fact"><dt>Press and business contact</dt><dd><a href={`mailto:${PRESS_EMAIL}`}>{PRESS_EMAIL}</a></dd></div>
+        <div class="pk-fact"><dt>Engines</dt><dd>{ENGINES}</dd></div>
+        <div class="pk-fact"><dt>Services</dt><dd><a href="/services/">{SERVICES}</a></dd></div>
+        <div class="pk-fact"><dt>Clients</dt><dd>{CLIENTS}</dd></div>
+        <div class="pk-fact"><dt>Internships</dt><dd><a href="/bootcamp/">{INTERNSHIPS}</a></dd></div>
+        <div class="pk-fact">
+          <dt>Releases and press kits</dt>
+          <dd>
+            <ul class="pk-releases" role="list">
+              {
+                projects.map((p) => (
+                  <li>
+                    <a href={p.sheet}>{p.item.title}</a>
+                    <span class="pk-note">{p.item.releaseNote ?? p.item.year}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </dd>
+        </div>
+        <div class="pk-fact">
+          <dt>Social</dt>
+          <dd>
+            <ul class="pk-inline-list" role="list">
+              {
+                SOCIALS.map((s) => (
+                  <li>
+                    <a href={LINKS[s.key]} target="_blank" rel="noopener">{s.label}<span class="visually-hidden">{NEW_TAB}</span></a>
+                  </li>
+                ))
+              }
+            </ul>
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <section id="description" aria-labelledby="description-title">
+      <h2 id="description-title">Description</h2>
+      <p class="pk-pitch">{PITCH}</p>
+      {DESCRIPTION.map((p) => <p>{p}</p>)}
+    </section>
+
+    <section id="history" aria-labelledby="history-title">
+      <h2 id="history-title">History</h2>
+      {HISTORY.map((p) => <p>{p}</p>)}
+      <ol class="pk-timeline" aria-label="Studio timeline">
+        {
+          timeline.map((t) => (
+            <li>
+              <span class="pk-when">{t.when}</span>
+              <span class="pk-what">{t.text}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="pk-more"><a class="link-arrow" href="/about/">The full story on the About page <Icon name="arrowRight" size={16} /></a></p>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+      <p>Each game and tool has its own press kit: fact sheet, screenshots, logo, key art, and trailers, with a zip of everything.</p>
+      <ul class="projects" role="list">
+        {
+          projects.map((p) => (
+            <li class="project card">
+              {p.img && (
+                <a class="pj-art" href={p.sheet} tabindex="-1" aria-hidden="true">
+                  <Image
+                    src={p.img}
+                    alt=""
+                    widths={[440, 720, 880]}
+                    sizes="(max-width: 640px) calc(100vw - 2.5rem), (max-width: 900px) calc(50vw - 2rem), 440px"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </a>
+              )}
+              <div class="pj-head">
+                <h3 class="pj-title"><a href={p.sheet}>{p.item.title}<span class="visually-hidden"> press kit</span></a></h3>
+                <span class="badge badge--neutral">{p.item.releaseNote ?? p.item.year}</span>
+              </div>
+              <p class="pj-line">{p.item.tagline}</p>
+              <p class="pj-credit">{p.credit}</p>
+              <p class="pj-links">
+                <a class="link-arrow" href={p.sheet}>Press kit <Icon name="arrowRight" size={16} /></a>
+                {p.item.page && (
+                  <a href={p.item.page}>
+                    {p.slug === "helix" ? "Project page" : p.slug === "scriptable-sheets" ? "Product page" : "Game page"}
+                    <span class="visually-hidden">: {p.item.title}</span>
+                  </a>
+                )}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="videos" aria-labelledby="videos-title">
+      <h2 id="videos-title">Videos</h2>
+      <SplashPlayer />
+      <h3 class="pk-sub">Trailers</h3>
+      <div class="pk-grid-2">
+        {
+          videos.map((v) => (
+            <VideoCard video={v.video} title={v.title} next={v.video.next} meta={v.video.length} sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 900px) 46vw, 440px" />
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="images" aria-labelledby="images-title">
+      <div class="pk-head">
+        <h2 id="images-title">Images</h2>
+        <a class="btn btn--secondary btn--sm" href={PHOTO_ZIP.href} download={PHOTO_ZIP.file}>
+          <Icon name="download" size={16} /> All photos ({photoZipMeta})
+        </a>
+      </div>
+      <p>The studio at festivals, game jams, and awards. Screenshots and key art are in each game's press kit.</p>
+      <Gallery
+        id="studio-photos"
+        images={STUDIO_PHOTOS.map((p) => ({ src: p.image, alt: p.alt, caption: p.caption }))}
+        columns={4}
+        aspect="4 / 3"
+        label="Studio photos"
+        sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 1000px) 46vw, 240px"
+        class="photos"
+      />
+    </section>
+
+    <section id="logos" aria-labelledby="logos-title">
+      <div class="pk-head">
+        <h2 id="logos-title">Logo and icon</h2>
+        <a class="btn btn--primary btn--sm" href={LOGO_ZIP.href} download={LOGO_ZIP.file}>
+          <Icon name="download" size={16} /> All five logos ({logoZipMeta})
+        </a>
+      </div>
+      <p>
+        Five PNG files: the emblem, the emblem with the wordmark, and the wordmark alone, on black or
+        transparent. Download one, or all five in a single zip.
+      </p>
+      <div class="logo-grid">
+        {opaqueLogos.map((l) => <LogoCard logo={l} img={l.img} href={l.href} size={l.size} />)}
+        {transparentLogos.map((l) => <LogoCard logo={l} img={l.img} href={l.href} size={l.size} class="span-2" />)}
+      </div>
+      <p class="pk-small">Leave clear space around the logo, and do not recolor, stretch, crop, or redraw it.</p>
+    </section>
+
+    <section id="brand" aria-labelledby="brand-title">
+      <h2 id="brand-title">Font and colors</h2>
+      <p>
+        The wordmark is set in <a href={FONT.url} target="_blank" rel="noopener">{FONT.name}<span class="visually-hidden">{NEW_TAB}</span></a>, in
+        wordmark teal <code>#81ebe1</code>. The font is used for the logo only.
+      </p>
+      <div class="palette">
+        {
+          PALETTE.map((g) => (
+            <div class="swatch-group">
+              <h3 class="sg-title">{g.group}</h3>
+              <ul class="swatches" role="list">
+                {g.colors.map((c) => (
+                  <li class="swatch">
+                    <span class="chip" style={`background:${c.hex}`} aria-hidden="true" />
+                    <span class="sw-name">{c.name}</span>
+                    <code class="sw-hex">{c.hex}</code>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="animated-logo" aria-labelledby="animated-logo-title">
+      <h2 id="animated-logo-title">Animated logo</h2>
+      <p>The splash from the videos above, as WebM files for editors.</p>
+      <ul class="downloads" role="list">
+        {
+          animated.map((a) => (
+            <li class="download">
+              <div>
+                <h3 class="dl-title">{a.label}</h3>
+                <span class="dl-what">{a.what}</span>
+              </div>
+              <a class="btn btn--secondary btn--sm" href={a.href} download={a.file}>
+                <Icon name="download" size={16} /> {a.size ? `WebM, ${a.size}` : "WebM"}<span class="visually-hidden">: {a.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="recognition" aria-labelledby="recognition-title">
+      <h2 id="recognition-title">Awards and recognition</h2>
+      <ul class="award-grid" role="list">
+        {
+          STUDIO_AWARDS.map((a) => (
+            <li class="award-card card">
+              <AwardBadge award={a} size="sm" />
+              <span class="award-subject">{a.subject}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="articles" aria-labelledby="articles-title">
+      <h2 id="articles-title">Selected articles</h2>
+      <ul class="pk-coverage" role="list">
+        {
+          coverage.map((c) => (
+            <li>
+              <strong>{c.outlet}</strong>: <a href={c.url} target="_blank" rel="noopener"><span lang={c.language ? LANG_CODES[c.language] : undefined}>{c.title}</span><span class="visually-hidden">{NEW_TAB}</span></a>
+              <span class="pk-meta">
+                {subjectName(c.about)}
+                {c.date && ` · ${monthYear(c.date)}`}
+                {c.language && ` · in ${c.language}`}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="links" aria-labelledby="links-title">
+      <h2 id="links-title">Additional links</h2>
+      <ul class="pk-links" role="list">
+        {
+          additionalLinks.map((l) => (
+            <li>
+              {isExternal(l.href) ? (
+                <a href={outbound(l.href)} target="_blank" rel="noopener">{l.label}<span class="visually-hidden">{NEW_TAB}</span></a>
+              ) : (
+                <a href={l.href}>{l.label}</a>
+              )}
+              <span>{l.note}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="team" aria-labelledby="team-title">
+      <h2 id="team-title">Team</h2>
+      <p>Luna Wolf Studios was founded by three Wilmington University students.</p>
+      <ul class="team" role="list">
+        {
+          FOUNDERS.map((f) => (
+            <li class="member card">
+              <FounderPhoto founder={f} size={72} alt="" />
+              <div>
+                <h3 class="m-name"><a href={f.page}>{f.name}</a></h3>
+                <span class="m-role">{f.role}</span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <dl class="pk-contact">
+        <dt>Press and business</dt>
+        <dd><a href={`mailto:${PRESS_EMAIL}`}>{PRESS_EMAIL}</a></dd>
+        <dt>Projects and services</dt>
+        <dd><a href="/contact/">Contact form</a></dd>
+        <dt>Publishing</dt>
+        <dd><a href="/publishing/">Pitch us your game</a></dd>
+      </dl>
+      <p class="pk-footnote">
+        Assets on this page are provided for coverage of Luna Wolf Studios and its games. Please
+        credit Luna Wolf Studios. Press kit format based on{" "}
+        <a href="https://dopresskit.com/" target="_blank" rel="noopener">presskit()<span class="visually-hidden">{NEW_TAB}</span></a> by Rami Ismail.
+      </p>
+    </section>
+  </PressKitLayout>
+
+  <CtaBand
+    title="Writing about the studio?"
+    lead="Email us with anything this page does not answer, or for a game's press kit you do not see here."
+    primary={{ label: "Email us", href: `mailto:${PRESS_EMAIL}`, icon: "mail" }}
+    secondary={{ label: "About the studio", href: "/about/" }}
+  />
+</BaseLayout>
+
+<style>
+  .nav-meta {
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
+  /* Projects: image cards that open each press kit. */
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+    margin-top: 1.2rem;
+  }
+  .project {
+    --pj-pad-x: 1.2rem;
+    --pj-pad-top: 1.1rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: var(--pj-pad-top) var(--pj-pad-x) 1.15rem;
+    overflow: hidden;
+  }
+  /* The art runs to the card's edges, above the text. */
+  .pj-art {
+    display: block;
+    margin: calc(-1 * var(--pj-pad-top)) calc(-1 * var(--pj-pad-x)) 0.55rem;
+    aspect-ratio: 16 / 9;
+    background: var(--lw-media-bg);
+    border-bottom: 1px solid var(--lw-border);
+    overflow: hidden;
+  }
+  .pj-art :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s var(--lw-ease);
+  }
+  .project:hover .pj-art :global(img) {
+    transform: scale(1.03);
+  }
+  .pj-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .pj-title {
+    font-size: 1.12rem;
+  }
+  .pj-title a {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .pj-title a:hover {
+    color: var(--lw-accent);
+  }
+  .project .pj-line {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .project .pj-credit {
+    margin: 0;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+  .project .pj-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.25rem;
+    margin-top: auto;
+    padding-top: 0.45rem;
+    font-size: var(--lw-text-sm);
+  }
+
+  /* Videos. The splash frame's and video cards' large shadows reach past the column's sides,
+     and the off-screen skipping in global.css (content-visibility: auto) would cut them off
+     at the section's edges; this one section renders normally instead. */
+  #videos {
+    content-visibility: visible;
+  }
+
+  /* Logos */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+  .logo-grid :global(.span-2) {
+    grid-column: 1 / -1;
+  }
+
+  /* Palette */
+  .palette {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+    gap: 1.25rem 1.5rem;
+    margin-top: 1.3rem;
+  }
+  .sg-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+    margin-bottom: 0.6rem;
+  }
+  .swatches {
+    display: grid;
+    gap: 0.45rem;
+  }
+  .swatch {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.92rem;
+  }
+  .chip {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--lw-radius-sm);
+    border: 1px solid var(--lw-border-strong);
+  }
+  .sw-name {
+    color: var(--lw-ink);
+  }
+  .sw-hex {
+    font-size: 0.82rem;
+    color: var(--lw-ink-muted);
+  }
+
+  /* Animated logo downloads */
+  .downloads {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1.2rem;
+  }
+  .download {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    padding: 1rem 1.15rem;
+    border: 1px solid var(--lw-border);
+    border-radius: var(--lw-radius);
+    background: var(--lw-surface);
+  }
+  .download .btn {
+    flex: none;
+  }
+  .dl-title {
+    font-size: 1.02rem;
+  }
+  .dl-what {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: var(--lw-text-sm);
+    line-height: 1.5;
+    color: var(--lw-ink-muted);
+  }
+
+  /* Awards: laurel badges in cards, the subject under each. */
+  .award-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0;
+  }
+  .award-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.1rem 0.75rem 1rem;
+    text-align: center;
+  }
+  .award-subject {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+
+  /* Team */
+  .team {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+    margin-top: 1.2rem;
+  }
+  .member {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.9rem 1rem;
+  }
+  .m-name {
+    font-size: 1.05rem;
+  }
+  .m-name a {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  /* The name link covers the whole card. */
+  .m-name a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .m-name a:hover {
+    color: var(--lw-accent);
+  }
+  .m-role {
+    display: block;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 1100px) {
+    .team {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .projects,
+    .logo-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .download {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pj-art :global(img) {
+      transition: none;
+    }
+    .project:hover .pj-art :global(img) {
+      transform: none;
+    }
+  }
+</style>
