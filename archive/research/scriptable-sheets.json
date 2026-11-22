@@ -1,0 +1,1854 @@
+{
+  "meta": {
+    "accessed": "2026-11-21",
+    "sourcesNote": "Asset Store data from the listing page state (headless Edge) and its review pages; reviews captured by paging the Reviews tab in the browser."
+  },
+  "facts": {
+    "name": "Scriptable Sheets",
+    "tagline": "View your Unity assets in a whole new way. Scriptable Sheets revolutionizes Unity by integrating spreadsheet-like views for all your assets, boosting productivity and simplifying data management.",
+    "listingUrl": "https://assetstore.unity.com/packages/tools/utilities/scriptable-sheets-284559",
+    "assetStoreId": "284559",
+    "category": "Tools/Utilities",
+    "publisher": {
+      "name": "Luna Wolf Studios LLC",
+      "publisherId": "29230",
+      "url": "https://assetstore.unity.com/publishers/29230",
+      "website": "https://lunawolfstudios.com",
+      "supportUrl": "https://lunawolfstudios.com/contact/",
+      "supportEmail": "support@lunawolfstudios.com",
+      "badge": "Organization Verified",
+      "address": "DE, US",
+      "otherAssets": [],
+      "otherAssetsNote": "The publisher page lists one asset (Scriptable Sheets) and \"No public lists available\"."
+    },
+    "price": {
+      "currency": "USD",
+      "regular": "49.99",
+      "currentOnAccessDate": "24.99",
+      "discountPercent": 50,
+      "entitlement": "per seat (\"Seat 1\"; license type \"Extension Asset\")",
+      "saleContext": "Site-wide banner on the publisher page on the access date: \"Our biggest sale of the year is here: Save 50% + Flash Deals up to 95% off.\" Sale end date not shown.",
+      "note": "All prices are exclusive of tax (listing footer).",
+      "launchPrice": "UNVERIFIED"
+    },
+    "license": {
+      "agreement": "Standard Unity Asset Store EULA",
+      "type": "Extension Asset"
+    },
+    "version": {
+      "latest": "1.11.0",
+      "latestReleaseDate": "2026-07-02",
+      "firstPublished": "2024-07-24",
+      "firstPublishedRaw": "2024-07-24T15:59:10Z",
+      "changelog": "https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/CHANGELOG.md",
+      "history": [
+        {
+          "version": "1.11.0",
+          "date": "2026-07-02"
+        },
+        {
+          "version": "1.10.1",
+          "date": "2026-06-25"
+        },
+        {
+          "version": "1.10.0",
+          "date": "2026-06-23"
+        },
+        {
+          "version": "1.9.1",
+          "date": "2026-06-17"
+        },
+        {
+          "version": "1.9.0",
+          "date": "2026-03-12"
+        },
+        {
+          "version": "1.8.0",
+          "date": "2025-11-22"
+        },
+        {
+          "version": "1.7.2",
+          "date": "2025-08-11"
+        },
+        {
+          "version": "1.7.1",
+          "date": "2025-07-08"
+        },
+        {
+          "version": "1.7.0",
+          "date": "2025-07-07"
+        },
+        {
+          "version": "1.6.0",
+          "date": "2025-07-01"
+        },
+        {
+          "version": "1.5.1",
+          "date": "2025-04-25"
+        },
+        {
+          "version": "1.5.0",
+          "date": "2025-04-24"
+        },
+        {
+          "version": "1.4.3",
+          "date": "2025-03-10"
+        },
+        {
+          "version": "1.4.2",
+          "date": "2025-03-03"
+        },
+        {
+          "version": "1.4.1",
+          "date": "2025-02-26"
+        },
+        {
+          "version": "1.4.0",
+          "date": "2025-02-25"
+        },
+        {
+          "version": "1.3.0",
+          "date": "2025-02-19"
+        },
+        {
+          "version": "1.2.1",
+          "date": "2024-09-26"
+        },
+        {
+          "version": "1.2.0",
+          "date": "2024-09-25"
+        },
+        {
+          "version": "1.1.1",
+          "date": "2024-07-31"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2024-07-30"
+        },
+        {
+          "version": "1.0.0",
+          "date": "2024-07-24"
+        }
+      ]
+    },
+    "unity": {
+      "originalUnityVersion": "2022.3.62",
+      "supportedUnityVersionsField": [
+        "2022.3.62"
+      ],
+      "statedSupport": "Supports Unity LTS versions 2020.3 and up. (listing \"Technical details\" and docs)",
+      "unity6Note": "Changelog v1.9.1 (2026-06-17) fixed compiler errors in Unity 6.5 and warnings in Unity 6.4."
+    },
+    "renderPipelines": {
+      "raw": [
+        {
+          "version": "2022.3.62f3",
+          "types": [
+            "standard",
+            "hd",
+            "lightweight",
+            "custom"
+          ],
+          "__typename": "SRP"
+        }
+      ],
+      "interpretation": "Asset Store SRP compatibility record for Unity 2022.3.62f3 lists types standard, hd, lightweight and custom, which the Asset Store displays as Built-in, HDRP, URP and Custom SRP. The tool is Editor only, so pipeline does not affect it.",
+      "interpretationStatus": "The raw values are verified; the display names are Unity's usual mapping and were not seen rendered on the page (the Overview tab did not render in headless Edge)."
+    },
+    "fileSize": {
+      "display": "456.6 KB",
+      "bytes": 467520,
+      "fileCount": 537,
+      "packageType": "unitypackage"
+    },
+    "rating": {
+      "average": 4.91,
+      "averageAsStored": 5,
+      "publisherPageDisplay": "4.9 (34)",
+      "count": 34,
+      "distribution": {
+        "5": 31,
+        "4": 3,
+        "3": 0,
+        "2": 0,
+        "1": 0
+      },
+      "reviewCount": 34
+    },
+    "favorites": {
+      "count": 705,
+      "pageText": "705 users have favourite this asset"
+    },
+    "viewsLastWeekOnAccessDate": 97,
+    "tags": [
+      "ScriptableObject",
+      "google sheets",
+      "Serialization",
+      "Data",
+      "Spreadsheet",
+      "explorer",
+      "Editor",
+      "asset",
+      "Custom",
+      "Tool",
+      "Utility",
+      "table",
+      "Inspector",
+      "Component",
+      "Workflow"
+    ],
+    "listingLinks": [
+      {
+        "label": "Documentation",
+        "url": "https://github.com/LunaWolfStudios/ScriptableSheetsDocs"
+      },
+      {
+        "label": "Forums",
+        "url": "https://discussions.unity.com/t/released-scriptable-sheets/1490189",
+        "note": "Link is on the listing. discussions.unity.com refused automated fetches (403 \"Crawler is not allowed!\"), so the thread content is UNVERIFIED."
+      },
+      {
+        "label": "Video Tutorials",
+        "url": "https://www.youtube.com/playlist?list=PL6G9X1zrT3BLwLA7pbgM5Aam9RrLsrBZp"
+      },
+      {
+        "label": "Email",
+        "url": "mailto:support@lunawolfstudios.com"
+      },
+      {
+        "label": "advanced property-based filters",
+        "url": "https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/DOCUMENTATION.md#advanced-search-filtering"
+      },
+      {
+        "label": "Unity documentation (ScriptableObject)",
+        "url": "https://docs.unity3d.com/Manual/class-ScriptableObject.html"
+      },
+      {
+        "label": "Full changelog",
+        "url": "https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/CHANGELOG.md"
+      },
+      {
+        "label": "Support: Visit site",
+        "url": "https://lunawolfstudios.com/contact/"
+      }
+    ],
+    "linksNotOnListing": "No Discord, GitHub source, or separate website link for the product. GitHub hosts docs only.",
+    "frequentlyBoughtTogether": [
+      "Scriptable Studio Pro (MaharajaStudio)",
+      "DataForge - ScriptableObject Spreadsheet Editor (Ragendom)"
+    ]
+  },
+  "description": {
+    "source": "https://assetstore.unity.com/packages/tools/utilities/scriptable-sheets-284559",
+    "html": "<p ><a href=\"https://github.com/LunaWolfStudios/ScriptableSheetsDocs\" target=\"_blank\">Documentation</a> | <a href=\"https://discussions.unity.com/t/released-scriptable-sheets/1490189\" target=\"_blank\">Forums</a> | <a href=\"https://www.youtube.com/playlist?list=PL6G9X1zrT3BLwLA7pbgM5Aam9RrLsrBZp\" target=\"_blank\">Video Tutorials</a></p></br><p >Questions? Email us at: <a href=\"mailto:support@lunawolfstudios.com\" target=\"_blank\">support@lunawolfstudios.com</a></p></br><p >Inspect your assets in a table list asset explorer, where you can easily manage everything in one window. View and edit your ScriptableObjects, Prefabs, Components, and more. No need for endless searching through folders and Objects.</p></br><p ><strong>Core Features</strong></p><ul><li ><strong>Seamless Integration</strong>: Instantly explore all your new and existing assets, including ScriptableObjects, in a spreadsheet-like view—no coding required.</li><li ><strong>Asset Management</strong>: Select, read, update, and delete Unity Objects within Scriptable Sheets table list view.</li><li ><strong>Batch Create</strong>: Quickly create multiple instances of any ScriptableObject type with a single click.</li><li ><strong>Import/Export</strong>: Easily import CSV, TSV, and other flat file formats. Export to your preferred format, including Json, with options for headers, wrap settings, custom delimiters, and string-to-enum conversions.</li><li ><strong>Copy/Paste</strong>: Copy entire tables, single columns, rows, or cells into any flat file format. Paste data seamlessly back into Scriptable Sheets, simplifying complex data transfers across serialized fields.</li><li ><strong>Serialization</strong>: Visualize serializable classes, complex data, and serialized property types within a multi-column view.</li><li ><strong>Complex Data</strong>: Handles complex Objects with inherited, nested, and generic fields.</li><li ><strong>Managed References</strong>: Edit serialize reference fields with a per-row type dropdown and a column for every concrete subtype's fields.</li><li ><strong>Object References</strong>: Supports Unity Object types such as AudioClips, Materials, Prefabs, ScriptableObjects, and more!</li><li ><strong>Collections</strong>: View and edit serializable arrays and lists in the grid, or flip a single array or list into its own Table (not recommended for very large or deeply nested collections).</li><li ><strong>Read-only fields</strong>: View Asset Paths, GUIDs, and read-only fields for any Unity Object.</li><li ><strong>Sub Assets</strong>: Manage and filter Sub Assets for ScriptableObject types.</li><li ><strong>Addressable Assets</strong>: Compatible with Addressable Asset References and their Sub Assets.</li><li ><strong>Prefab Components</strong>: Filter, view, and edit Components attached to your Prefabs, including Transforms, Colliders, Rigidbodies, and more.</li></ul></br><p ><strong>User Interface</strong></p><ul><li ><strong>Keyboard Navigation</strong>: Familiar spreadsheet-like navigation using tab, enter, shift, and arrow keys.</li><li ><strong>Search Filtering</strong>: Search and filter Objects by directory, name, and even <a href=\"https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/DOCUMENTATION.md#advanced-search-filtering\" target=\"_blank\">advanced property-based filters</a>. Includes additional search settings for case sensitivity and prefixes.</li><li ><strong>Pagination</strong>: Navigate large amounts of Objects with intuitive controls for changing between pages.</li><li ><strong>Hide/Show Columns</strong>: Hide or show specific columns to focus on the data that matters most to you.</li><li ><strong>Resizable Columns</strong>: Adjust column widths to fit your data for a customized view. Includes preset buttons for stretching, compacting, and expanding columns.</li><li ><strong>Adjustable Row Height:</strong> Change the row height to fit your content, including multiline text and asset previews like textures, materials, and models.</li><li ><strong>Sorting</strong>: Sort Unity Objects by any column and property type in the table view, even colors, gradients, animation curves, and read-only fields.</li><li ><strong>Multiple Windows</strong>: Open multiple Scriptable Sheet windows simultaneously, enabling efficient context switching between Unity Object types.</li><li ><strong>Recent Pins</strong>: Recently viewed Unity Object types can be auto pinned for quick access.</li><li ><strong>Session Cache</strong>: Retains the configuration of each Scriptable Sheet across sessions and code changes when possible, but user script modifications may alter results.</li><li ><strong>Lightweight Text Editor</strong>: Includes 'Paste Pad', a lightweight text editor for a quick text editing within Unity.</li><li ><strong>Inspector Compatibility</strong>: Automatically selects Objects in Unity's Inspector and Project windows as you navigate across table cells.</li><li ><strong>Theme Compatibility</strong>: Compatible with both Unity light and dark themes.</li></ul></br><p ><strong>Why Scriptable Sheets?</strong></p><ul><li ><strong>Boost Productivity</strong>: Streamline your workflow with a familiar spreadsheet-like interface tailored for Unity.</li><li ><strong>Powerful Data Editor</strong>: Easily manage, edit, and transfer large amounts of data both in and out of Unity.</li><li ><strong>Advanced Customization</strong>: Tailor Scriptable Sheets to your specific needs with an extensive list of settings and options to choose from.</li><li ><strong>No Coding Required</strong>: Start using Scriptable Sheets right away without any coding and minimal setup. Scriptable Sheets automatically categorizes and organizes all your Unity Asset Types and serializable ScriptableObject types.</li></ul></br><p >To fully leverage all features of Scriptable Sheets, you will want to use Unity's ScriptableObjects. To learn more about ScriptableObjects in Unity, you can visit the official <a href=\"https://docs.unity3d.com/Manual/class-ScriptableObject.html\" target=\"_blank\">Unity documentation</a>.</p></br><p >Elevate your Unity development experience with Scriptable Sheets. Say goodbye to tedious data management and hello to a new level of efficiency and organization.</p>",
+    "markdown": "[Documentation](https://github.com/LunaWolfStudios/ScriptableSheetsDocs) | [Forums](https://discussions.unity.com/t/released-scriptable-sheets/1490189) | [Video Tutorials](https://www.youtube.com/playlist?list=PL6G9X1zrT3BLwLA7pbgM5Aam9RrLsrBZp)\n\nQuestions? Email us at: [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)\n\nInspect your assets in a table list asset explorer, where you can easily manage everything in one window. View and edit your ScriptableObjects, Prefabs, Components, and more. No need for endless searching through folders and Objects.\n\n**Core Features**\n\n- **Seamless Integration**: Instantly explore all your new and existing assets, including ScriptableObjects, in a spreadsheet-like view—no coding required.\n- **Asset Management**: Select, read, update, and delete Unity Objects within Scriptable Sheets table list view.\n- **Batch Create**: Quickly create multiple instances of any ScriptableObject type with a single click.\n- **Import/Export**: Easily import CSV, TSV, and other flat file formats. Export to your preferred format, including Json, with options for headers, wrap settings, custom delimiters, and string-to-enum conversions.\n- **Copy/Paste**: Copy entire tables, single columns, rows, or cells into any flat file format. Paste data seamlessly back into Scriptable Sheets, simplifying complex data transfers across serialized fields.\n- **Serialization**: Visualize serializable classes, complex data, and serialized property types within a multi-column view.\n- **Complex Data**: Handles complex Objects with inherited, nested, and generic fields.\n- **Managed References**: Edit serialize reference fields with a per-row type dropdown and a column for every concrete subtype's fields.\n- **Object References**: Supports Unity Object types such as AudioClips, Materials, Prefabs, ScriptableObjects, and more!\n- **Collections**: View and edit serializable arrays and lists in the grid, or flip a single array or list into its own Table (not recommended for very large or deeply nested collections).\n- **Read-only fields**: View Asset Paths, GUIDs, and read-only fields for any Unity Object.\n- **Sub Assets**: Manage and filter Sub Assets for ScriptableObject types.\n- **Addressable Assets**: Compatible with Addressable Asset References and their Sub Assets.\n- **Prefab Components**: Filter, view, and edit Components attached to your Prefabs, including Transforms, Colliders, Rigidbodies, and more.\n\n**User Interface**\n\n- **Keyboard Navigation**: Familiar spreadsheet-like navigation using tab, enter, shift, and arrow keys.\n- **Search Filtering**: Search and filter Objects by directory, name, and even [advanced property-based filters](https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/DOCUMENTATION.md#advanced-search-filtering). Includes additional search settings for case sensitivity and prefixes.\n- **Pagination**: Navigate large amounts of Objects with intuitive controls for changing between pages.\n- **Hide/Show Columns**: Hide or show specific columns to focus on the data that matters most to you.\n- **Resizable Columns**: Adjust column widths to fit your data for a customized view. Includes preset buttons for stretching, compacting, and expanding columns.\n- **Adjustable Row Height:** Change the row height to fit your content, including multiline text and asset previews like textures, materials, and models.\n- **Sorting**: Sort Unity Objects by any column and property type in the table view, even colors, gradients, animation curves, and read-only fields.\n- **Multiple Windows**: Open multiple Scriptable Sheet windows simultaneously, enabling efficient context switching between Unity Object types.\n- **Recent Pins**: Recently viewed Unity Object types can be auto pinned for quick access.\n- **Session Cache**: Retains the configuration of each Scriptable Sheet across sessions and code changes when possible, but user script modifications may alter results.\n- **Lightweight Text Editor**: Includes 'Paste Pad', a lightweight text editor for a quick text editing within Unity.\n- **Inspector Compatibility**: Automatically selects Objects in Unity's Inspector and Project windows as you navigate across table cells.\n- **Theme Compatibility**: Compatible with both Unity light and dark themes.\n\n**Why Scriptable Sheets?**\n\n- **Boost Productivity**: Streamline your workflow with a familiar spreadsheet-like interface tailored for Unity.\n- **Powerful Data Editor**: Easily manage, edit, and transfer large amounts of data both in and out of Unity.\n- **Advanced Customization**: Tailor Scriptable Sheets to your specific needs with an extensive list of settings and options to choose from.\n- **No Coding Required**: Start using Scriptable Sheets right away without any coding and minimal setup. Scriptable Sheets automatically categorizes and organizes all your Unity Asset Types and serializable ScriptableObject types.\n\nTo fully leverage all features of Scriptable Sheets, you will want to use Unity's ScriptableObjects. To learn more about ScriptableObjects in Unity, you can visit the official [Unity documentation](https://docs.unity3d.com/Manual/class-ScriptableObject.html).\n\nElevate your Unity development experience with Scriptable Sheets. Say goodbye to tedious data management and hello to a new level of efficiency and organization."
+  },
+  "technicalDetails": {
+    "source": "https://assetstore.unity.com/packages/tools/utilities/scriptable-sheets-284559",
+    "html": "<ul><li ><strong>Full Source Code</strong>: Power-users can customize Scriptable Sheets to fit their specific needs.</li><li ><strong>Samples</strong>: Select from a variety of sample projects to see Scriptable Sheets in action and accelerate your learning curve with ScriptableObjects.</li><li ><strong>Unit Tests</strong>: Ensure reliability and robustness with a comprehensive suite of unit tests.</li><li ><strong>User Settings</strong>: Leverages the \"UserSettings\" folder for user-specific preferences.</li><li ><strong>Immediate Mode GUI</strong>: Uses Unity's IMGUI system for specific features not available in UI Toolkit.</li><li ><strong>Editor Only: </strong>Functions only in the Editor and is completely stripped in builds, except for the provided Samples.</li><li ><strong>Unity LTS Support</strong>: Supports Unity LTS versions 2020.3 and up.</li></ul></br><p >Get Scriptable Sheets today and transform the way you work with Unity assets!</p>",
+    "markdown": "- **Full Source Code**: Power-users can customize Scriptable Sheets to fit their specific needs.\n- **Samples**: Select from a variety of sample projects to see Scriptable Sheets in action and accelerate your learning curve with ScriptableObjects.\n- **Unit Tests**: Ensure reliability and robustness with a comprehensive suite of unit tests.\n- **User Settings**: Leverages the \"UserSettings\" folder for user-specific preferences.\n- **Immediate Mode GUI**: Uses Unity's IMGUI system for specific features not available in UI Toolkit.\n- **Editor Only:** Functions only in the Editor and is completely stripped in builds, except for the provided Samples.\n- **Unity LTS Support**: Supports Unity LTS versions 2020.3 and up.\n\nGet Scriptable Sheets today and transform the way you work with Unity assets!"
+  },
+  "releaseNotesOnListing": {
+    "source": "https://assetstore.unity.com/packages/tools/utilities/scriptable-sheets-284559",
+    "markdown": "**v1.11.0**\n\n**Features**\n\n- Added a Collection Table Depth setting to discover collections nested deeper within serializable class fields.\n\n- Added an option to the Project window context menu to open the selected asset in Scriptable Sheets.\n\n- Added the ability to double-click an Object reference to open that Object in Scriptable Sheets.\n\n- Added a Batch Select context menu option to open or delete multiple Sheets at once from a single popup.\n\n- Added a setting for Headers to always discard the first row on import regardless of column names matching.\n\n- Google Sheets Importers can now target a specific folder so an importer only imports into the assets within that folder.\n\n- The import button now shows a dropdown to choose between importers when more than one targets the selected type.\n\n**Fixes**\n\n- Fixed a crash when toggling Show Column Index during an import.\n\n- Fixed import header row not being stripped when the column index was shown.\n\n- Fixed an asset import worker warning when Auto Generate created Objects.\n\n- Fixed delete not removing an auto generated Object directly after an import or paste.\n\n**v1.10.1**\n\n**Fixes**\n\n- Fixed Collection Tables not rendering serialize reference elements.\n\n- Added new serialize reference samples to validate fixes.\n\n- Fixed the Collection Table dropdown staying active when switching to a type with no instances.\n\n- Fixed the create button being hidden for a type with no instances after viewing a Collection Table.\n\n- Fixed Collection Table sorting so the Index and field columns order the element rows within each group.\n\n- Fixed noisy array element warnings when pasting into serialize reference fields with uneven array sizes.\n\n- Fixed arrow key navigation getting stuck on empty cells.\n\n- Fixed arrow key navigation not working properly with docked columns.\n\n- Fixed arrow key navigation and click selection for Addressable Asset cells.\n\n- Click selection on read-only cells now properly highlights the cell.\n\n**v1.10.0**\n\n**Features**\n\n- Added Collection Tables to expand a single array or list field into a table of rows, grouped by Object.\n\n- Google Sheets Importers can now target a specific collection table.\n\n- Added Serialize Reference support to display columns for every concrete subtype with a per-row type dropdown.\n\n- Added a Managed Type Columns option to the column header context menu to toggle which Serialize Reference subtype columns are shown.\n\n- Added an Auto Generate setting to automatically create ScriptableObjects when importing or pasting more rows than exist.\n\n- Property filters can now be chained together with & (and) and | (or) operators.\n\n- Property filters can now reference columns by index using a $ prefix.\n\n- Added settings to display the row and column index using spreadsheet style letters.\n\n- Added an alphanumeric reference of the selected cell to the left of the search bar.\n\n- The selected page is now saved and restored per Object type and sheet.\n\n- The selected type is now remembered per Sheet Asset and restored when switching back.\n\n- Added Ctrl/Cmd + Left/Right Arrow shortcuts to navigate between pages.\n\n- Added a column header context menu option to set a custom header text color.\n\n- Added a Paste Pad toolbar with various actions and rich text formatting options.\n\n- Added a Paste Pad line number setting and a find/replace with a case sensitivity toggle.\n\n- Added new Paste Pad Settings Window.\n\n- Added an inline play button to preview AudioClips.\n\n- Asset previews and thumbnails now display for Addressable Asset References.\n\n- Added a Map Asset Preview option to the column header context menu to change asset previews.\n\n- Added an Asset Preview Depth workload setting to control how deep the Map Asset Preview menu explores.\n\n- Column header context menu actions now support undo/redo operations.\n\n- Added a Hidden Sub Assets setting to include hidden sub-assets that aren't shown under their main asset.\n\n**Fixes**\n\n- Fixed the selected page resetting when entering play mode.\n\n- Fixed property filters on the Name field for certain Prefab Components.\n\n- Fixed missing script warnings logged while scanning hidden sub-assets.\n\n- Improved table rendering performance and reduced per-frame allocations on large sheets.\n\n- Improved search filtering performance.\n\n**v1.9.1**\n\n**Fixes**\n\n- Fixed compiler errors in Unity 6.5 and warnings in Unity 6.4 caused by the deprecated GetInstanceID API.\n\n- Fixed serialization analyzer warnings in Unity 6.5 for the settings and window session state types.\n\n- Pasted and imported percentage values now parse into number fields instead of failing.\n\n**v1.9.0**\n\n**Features**\n\n- New Best Fit setting that displays the maximum size of each array.\n\n- Override Array Size is now enabled by default.\n\n- Added buttons to add or remove elements from arrays.\n\n- Added column header context menu items to hide, copy, or filter by the selected column.\n\n- Added support for docking the Actions and Name columns via their context menus.\n\n- Added scan settings to exclude specific folders and asset types.\n\n- Search bar now expands based on the length of the search text.\n\n**Fixes**\n\n- Column header context menu now lists columns with the same name separately.\n\n- Fixed an issue causing the column headers to grow with the row height.\n\n- Fixed an issue with the column visibility popup horizontal scrollbar not appearing.\n\n- Fixed a Unity warning that occurred when too many context menu items were present.\n\n- Fixed an issue where showing the row index could cause the Actions column to overlap Name.\n\n**v1.8.0**\n\n**Features**\n\n- ScriptableObject fields with no assigned asset now include an option to create and assign a new instance.\n\n- Unity's Localization fields now show intuitive table and entry fields instead of raw IDs.\n\n- Increased the max override size for arrays.\n\n- Newly created Objects are now auto selected.\n\n**Fixes**\n\n- Fixed an issue where Google Sheets Importers ignored the visible columns setting.\n\nFull changelog available [here](https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/CHANGELOG.md)."
+  },
+  "listingMedia": [
+    {
+      "type": "youtube",
+      "id": "r_FJBZjHUpA",
+      "url": "https://www.youtube.com/watch?v=r_FJBZjHUpA",
+      "localThumbnail": "video-r_FJBZjHUpA.jpg"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/7b2a2c72-6f8b-47fb-85c7-f768d52f8f07_scaled.jpg",
+      "localFile": "screenshot-01.jpg"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/148d0251-f3a4-4867-b2f6-089cd67c7358_scaled.jpg",
+      "localFile": "screenshot-02.jpg"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/04786628-8600-436d-b5f9-0342a06eca51_scaled.jpg",
+      "localFile": "screenshot-03.jpg"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/bfc2530d-8099-4630-a7b3-91806a3a5841_scaled.jpg",
+      "localFile": "screenshot-04.jpg"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/aee08e62-8772-4915-bafd-24eac47d7443_scaled.jpg",
+      "localFile": "screenshot-05.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "mteCjA1r3pM",
+      "url": "https://www.youtube.com/watch?v=mteCjA1r3pM",
+      "localThumbnail": "video-mteCjA1r3pM.jpg"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/87ae433e-961f-4f04-b382-517c8abbaf59_scaled.jpg",
+      "localFile": "screenshot-06.jpg"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/50c9f314-72a5-44db-8696-633abb6b7711_scaled.jpg",
+      "localFile": "screenshot-07.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "N9Uwz-fwnLI",
+      "url": "https://www.youtube.com/watch?v=N9Uwz-fwnLI",
+      "localThumbnail": "video-N9Uwz-fwnLI.jpg"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/3fc055dc-6c7d-472b-bd8d-bc46677d08fd_scaled.jpg",
+      "localFile": "screenshot-08.jpg"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/e6a9bed9-2847-4539-b10c-0cc6359e5d71_scaled.jpg",
+      "localFile": "screenshot-09.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "G0BHLhTyYaA",
+      "url": "https://www.youtube.com/watch?v=G0BHLhTyYaA",
+      "localThumbnail": "video-G0BHLhTyYaA.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "sopJAKQNJeU",
+      "url": "https://www.youtube.com/watch?v=sopJAKQNJeU",
+      "localThumbnail": "video-sopJAKQNJeU.jpg"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/3586cfc1-e94e-474c-8ee2-7a1deb1064de_scaled.jpg",
+      "localFile": "screenshot-10.jpg"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/79da08ec-415b-4d64-991d-7278a0ec9168_scaled.jpg",
+      "localFile": "screenshot-11.jpg"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/1cc88868-b5e1-426e-8a64-d86040bfd775_scaled.jpg",
+      "localFile": "screenshot-12.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "g2O8dtBUn3Y",
+      "url": "https://www.youtube.com/watch?v=g2O8dtBUn3Y",
+      "localThumbnail": "video-g2O8dtBUn3Y.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "6f5wtxGv534",
+      "url": "https://www.youtube.com/watch?v=6f5wtxGv534",
+      "localThumbnail": "video-6f5wtxGv534.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "m1YgPSdQiLQ",
+      "url": "https://www.youtube.com/watch?v=m1YgPSdQiLQ",
+      "localThumbnail": "video-m1YgPSdQiLQ.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "bDEzlEbm2MA",
+      "url": "https://www.youtube.com/watch?v=bDEzlEbm2MA",
+      "localThumbnail": "video-bDEzlEbm2MA.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "xsYu1ppPGWo",
+      "url": "https://www.youtube.com/watch?v=xsYu1ppPGWo",
+      "localThumbnail": "video-xsYu1ppPGWo.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "zuawA3XLSAA",
+      "url": "https://www.youtube.com/watch?v=zuawA3XLSAA",
+      "localThumbnail": "video-zuawA3XLSAA.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "GKOAzSoqr9g",
+      "url": "https://www.youtube.com/watch?v=GKOAzSoqr9g",
+      "localThumbnail": "video-GKOAzSoqr9g.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "87hi32dq-kw",
+      "url": "https://www.youtube.com/watch?v=87hi32dq-kw",
+      "localThumbnail": "video-87hi32dq-kw.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "NOdoRur7B4E",
+      "url": "https://www.youtube.com/watch?v=NOdoRur7B4E",
+      "localThumbnail": "video-NOdoRur7B4E.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "q6il9WTZ5ZQ",
+      "url": "https://www.youtube.com/watch?v=q6il9WTZ5ZQ",
+      "localThumbnail": "video-q6il9WTZ5ZQ.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "tHzB1EbyYk8",
+      "url": "https://www.youtube.com/watch?v=tHzB1EbyYk8",
+      "localThumbnail": "video-tHzB1EbyYk8.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "wzI1M-I6sJA",
+      "url": "https://www.youtube.com/watch?v=wzI1M-I6sJA",
+      "localThumbnail": "video-wzI1M-I6sJA.jpg"
+    },
+    {
+      "type": "youtube",
+      "id": "eLHztXQKbDM",
+      "url": "https://www.youtube.com/watch?v=eLHztXQKbDM",
+      "localThumbnail": "video-eLHztXQKbDM.jpg"
+    }
+  ],
+  "reviews": {
+    "source": "https://assetstore.unity.com/packages/tools/utilities/scriptable-sheets-284559#reviews",
+    "total": 34,
+    "selectedCount": 12,
+    "publisherReplyAccount": "aFeesh",
+    "items": [
+      {
+        "id": "609248",
+        "reviewer": "raimbow10",
+        "rating": 5,
+        "date": "2026-04-18",
+        "dateRaw": "2026-04-18T14:52:59Z",
+        "title": "Request for batch processing: Remove row export limits and support auto-generation of ScriptableObjects.",
+        "text": "I am writing to suggest improvements regarding the data export and import workflow.\n\nCurrent issues:\n\nExport Limit: The export function is restricted by the current Row Size (e.g., if the Row Size is set to 40, only 40 items are exported). This forces users to repeat the import/export process multiple times for large datasets, which is highly inefficient.\n\nMissing Feature (Auto-generation): When importing a TSV or CSV file containing new data (e.g., adding 1,000 rows in Excel to a 10-row sample), the system does not automatically create the corresponding ScriptableObject assets for the new entries.\n\nRequested Improvements:\n\nBatch Export: Please allow all data to be exported at once, regardless of the Row Size setting in the inspector.\n\nAuto-generation on Import: Please implement a feature where the tool automatically creates new ScriptableObject assets if the imported file contains rows that do not currently exist in the project.\n\nImproving these features would significantly enhance the workflow for developers managing large-scale data.",
+        "versionReviewed": "1.9.0",
+        "helpfulVotes": 0,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2026-06-23",
+            "text": "Thanks for the detailed review and thoughtful suggestions!\n\nFor batch export, this is actually already supported. Under Data Transfer settings you can disable “Page Rows Only” and “Visible Columns Only” to export all rows and columns regardless of what is currently shown in the table.\n\nAuto generation of ScriptableObjects on import is now supported as of version 1.10.0 just enable \"Auto Generation\" under Object Management settings."
+          }
+        ]
+      },
+      {
+        "id": "608628",
+        "reviewer": "shakyrivers",
+        "rating": 5,
+        "date": "2026-04-15",
+        "dateRaw": "2026-04-15T09:08:41Z",
+        "title": "Great Scriptable Object Manager",
+        "text": "If you use a lot of scriptable objects and need to compare, change or sift through the data this is the way to do it.\n\nMy only request if possible would be for coloured headers so it's easier to differentiate columns at a glance and be easier on the eyes.\n\nUpdate: They added coloured headers, tyvm. You can also play audio inline too which is nice. Good updates all round.",
+        "versionReviewed": "1.11.0",
+        "helpfulVotes": 1,
+        "selected": true,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2026-06-23",
+            "text": "Thanks for the kind review!\n\nColored headers are now supported in v1.10.0, just right click the column header and choose \"Header Color\"."
+          }
+        ]
+      },
+      {
+        "id": "598154",
+        "reviewer": "karinarigby",
+        "rating": 5,
+        "date": "2026-02-19",
+        "dateRaw": "2026-02-19T14:33:37Z",
+        "title": "Incredible - amazing time saver",
+        "text": "This is an excellent tool and is well worth the spend for how much convenience it offers, I can already see how much it's going to help the asset management with the rest of my interdisciplinary team.\n\nThere are a lot of thoughtful features and customizations, good documentation, and I like that the asset is actively maintained.\n\nAs others have mentioned the developer is very quick to respond and supportive which is greatly appreciated.\n\nOnly minor piece of feedback is that the UI for the tool itself isn't extendable by design out of the box (i.e., can't add additional buttons in the Scriptable Sheets window) but that's not a dealbreaker or anything, just a nice-to-have. The developer was quick to support with workarounds when I brought this up.\n\nIf you need to display your Scriptable Objects in a tabular way, this is it👏👏",
+        "versionReviewed": "1.8.0",
+        "helpfulVotes": 1,
+        "selected": true,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2026-02-20",
+            "text": "Thank you so much for your thoughtful review and feedback! I'm glad I was able to help answer your questions!"
+          }
+        ]
+      },
+      {
+        "id": "591116",
+        "reviewer": "Rockaso",
+        "rating": 5,
+        "date": "2026-01-10",
+        "dateRaw": "2026-01-10T16:51:36Z",
+        "title": "One of the most useful assets you can get",
+        "text": "This is very helpful it let's you easily set up game configurations and specifications.\nGoing from excel to unity back and fort let's you speed up your workflow and be more organized.\nMakes game dev feel less cumbersome.\nThe dev answers questions very quickly and gives an excellent support.",
+        "versionReviewed": "1.8.0",
+        "helpfulVotes": 1,
+        "selected": true,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2026-01-10",
+            "text": "Thank you very much for your kind review!"
+          }
+        ]
+      },
+      {
+        "id": "584906",
+        "reviewer": "AGrunt",
+        "rating": 5,
+        "date": "2025-12-08",
+        "dateRaw": "2025-12-08T18:43:59Z",
+        "title": "Super Useful",
+        "text": "Very useful asset. There are somethings that could be done to make it a touch better. Perhaps I'll compile a list together to send over. Another thing is the great and fast support that answers all you questions. This will save me many hours.",
+        "versionReviewed": "1.8.0",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-12-08",
+            "text": "Thank you so much for your review! I’m glad I could help, and I’d be happy to look at any feedback you’d like to share."
+          }
+        ]
+      },
+      {
+        "id": "584760",
+        "reviewer": "The_3D_Lunatic",
+        "rating": 5,
+        "date": "2025-12-08",
+        "dateRaw": "2025-12-08T04:32:01Z",
+        "title": "Quite useful!",
+        "text": "I needed to work with a lot of data which I prepared in Excel (because it's more convenient for me) and exported as .csv files. Scriptable Sheets let me import the data and view it in a very nice way inside Unity. I'm quite happy with the product and would recommend it!",
+        "versionReviewed": "1.8.0",
+        "helpfulVotes": 1,
+        "selected": true,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-12-08",
+            "text": "Thank you very much for the kind review!"
+          }
+        ]
+      },
+      {
+        "id": "581664",
+        "reviewer": "shnary",
+        "rating": 4,
+        "date": "2025-11-24",
+        "dateRaw": "2025-11-24T12:10:06Z",
+        "title": "Very good but have some problems",
+        "text": "I think this asset is very good, but a couple of issues keep me from giving it 5 stars:\n\n1- When working with big SOs, the inspector becomes extremely slow and hard to use.\n\n2- Row and column limit (only 20 rows displayed at once with no way to increase it without causing performance bottlenecks). If you have 100+ ScriptableObjects, you constantly need to click through “Previous/Next” pages, which slows down workflow.\n\nIf these are improved, this would easily be a 5-star asset for me.",
+        "versionReviewed": "1.8.0",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "Thank you for the review. Here are some tips that address your concerns!\n\nYou can increase the number of visible rows and columns under Workload Settings.\n\nIf you're trying to render 1000+ cells in full screen there will be a performance dip. Scriptable Sheets makes use of virtualization for rendering. So you can improve performance by reducing your window size or increasing the row line height.\n\nMy best recommendation though is to create and save different Sheet layouts. You can toggle on/off only the columns you need and save that layout. This not only makes it easier edit the data that matters the most to you, but it will also vastly improve performance even when 100 rows are displayed at once.\n\nI would highly recommend watching the videos and reading the documentation for more performance tips."
+          }
+        ]
+      },
+      {
+        "id": "581330",
+        "reviewer": "simpleandhappy",
+        "rating": 5,
+        "date": "2025-11-23",
+        "dateRaw": "2025-11-23T04:08:41Z",
+        "title": "Good",
+        "text": "+ Works out of the box\n+ Responsive developer\n+ Recently added SO creation by derived type\n+ Google export\n+ Column hiding",
+        "versionReviewed": "1.7.2",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "Thank you so much for your nice review! I'm glad I was able to add the features you were looking for! Your feedback is greatly appreciated!"
+          }
+        ]
+      },
+      {
+        "id": "571334",
+        "reviewer": "Quevanto",
+        "rating": 5,
+        "date": "2025-09-27",
+        "dateRaw": "2025-09-27T07:53:23Z",
+        "title": "Amazing asset if your game relies heavily on Scriptable Objects",
+        "text": "I use scriptable objects to represent items, quests, in-game events, npc types, factions, weapons, cosmetic items etc. any type of a thing you can imagine. This is incredibly powerful for my kind of a workflow. Being able to see every single member of a scriptable object in one view lets me see the bigger picture much more easily. Highly recommend this one. Also video tutorials on Youtube are great. They basically cover every feature you need to know.",
+        "versionReviewed": "1.7.2",
+        "helpfulVotes": 2,
+        "selected": true,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "Thank you very much for your review! I'm happy to hear you found the video tutorials helpful and that Scriptable Sheets has made your development easier!"
+          }
+        ],
+        "oldSiteComparison": {
+          "oldSiteText": "This is incredibly powerful for my kind of a workflow. Being able to see every single member of a scriptable object in one view lets me see the bigger picture much more easily. Highly recommend this one.",
+          "difference": "Excerpt. Words match the original exactly, but the old site drops the first sentence (\"I use scriptable objects to represent items, ...\") and the last two (\"Also video tutorials on Youtube are great. They basically cover every feature you need to know.\") without marking the cuts."
+        }
+      },
+      {
+        "id": "570806",
+        "reviewer": "softwhiskey8",
+        "rating": 5,
+        "date": "2025-09-24",
+        "dateRaw": "2025-09-24T18:04:40Z",
+        "title": "worth every penny",
+        "text": "not to mention the dev responds very quickly on any questions related to the asset\nw",
+        "versionReviewed": "1.7.2",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "Thank you for the kind review!"
+          }
+        ]
+      },
+      {
+        "id": "566317",
+        "reviewer": "DarkCitizen",
+        "rating": 4,
+        "date": "2025-08-28",
+        "dateRaw": "2025-08-28T07:41:42Z",
+        "title": "Nice tool but can be even better!",
+        "text": "The asset definitely makes working with ScriptableObjects easier, but I’m still missing the functionality I was hoping for — the kind of feature that would make this a dream asset for me.\n\nMy game relies heavily on composed ScriptableObjects, meaning I create game entities from different parts (i.e., ScriptableObjects). The process of creating new child SOs is quite tedious: first, you need to create an SO by selecting the correct type from a long list, then you have to go to the parent and search for the newly created one to assign it as the parent SO’s property. This has to be done for every child SO.\n\nIn the Godot engine, for example, the same procedure is much easier. When you select a parent resource (similar to a ScriptableObject in Unity), you can create a new child directly within the parent, and you don’t even have to choose the type, since it only shows the one that is defined for this specific property. I really miss this functionality in Unity. If it’s possible to add this feature to the asset, that would be super awesome!",
+        "versionReviewed": "1.7.2",
+        "helpfulVotes": 0,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-22",
+            "text": "Thank you for the feedback! This feature has been added in v1.8.0. ScriptableObject fields with no assigned asset now include an option to create and assign a new instance."
+          }
+        ]
+      },
+      {
+        "id": "565821",
+        "reviewer": "dlberk",
+        "rating": 5,
+        "date": "2025-08-23",
+        "dateRaw": "2025-08-23T14:58:29Z",
+        "title": "A Must Have!",
+        "text": "If you are dealing with a lot of scriptable objects then this asset is a must have. It will speed up the process of creating all your assets rather than using the cumbersome Unity Inspector interface.\n\nThe creators are also very responsive with support questions!",
+        "versionReviewed": "1.7.1",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "Thank you very much for your nice review!"
+          }
+        ]
+      },
+      {
+        "id": "563272",
+        "reviewer": "Introfernal",
+        "rating": 5,
+        "date": "2025-07-28",
+        "dateRaw": "2025-07-28T11:51:45Z",
+        "title": "Fantastic!",
+        "text": "Fantastic!",
+        "versionReviewed": "1.7.1",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "Thank you for your review!"
+          }
+        ]
+      },
+      {
+        "id": "563239",
+        "reviewer": "sharebophar",
+        "rating": 4,
+        "date": "2025-07-28",
+        "dateRaw": "2025-07-28T02:17:16Z",
+        "title": "并不是预想的功能",
+        "text": "我的ScriptableObject都是List,以为可以对这个List显示为Sheet样式，但是看来并不行，他只是针对每个scriptableobject进行显示，如果是这样我就需要把List拆成一个个item,但是谁会把配置表做成一个个item文件呢？而且对so的字段数量有限制",
+        "versionReviewed": "1.7.1",
+        "helpfulVotes": 3,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2026-06-23",
+            "text": "Thank you for your feedback.\n\nAs of v1.10.0 you can display arrays and lists in a table view with the new \"Collection Tables\" feature.\n\nYou can also adjust the number of columns and array elements displayed under Workload settings."
+          }
+        ]
+      },
+      {
+        "id": "560846",
+        "reviewer": "Off0",
+        "rating": 5,
+        "date": "2025-07-06",
+        "dateRaw": "2025-07-06T08:24:27Z",
+        "title": "Perfect tool for managing",
+        "text": "Edit: After posting my review, the developer reached out and answered my questions. I really appreciate to get support for this tool and I'm sure its deserves 5 stars.\n\nI'm very satisfied with the tool and how it works it performs exactly as expected. \n\nIt's perfect for daily things with this you can quickly find your way around thanks to the available documentation and plenty of tutorial videos.",
+        "versionReviewed": "1.5.1",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-07-06",
+            "text": "I'm glad I was able to help! Thank you for the review!"
+          }
+        ]
+      },
+      {
+        "id": "559170",
+        "reviewer": "OneMoreName",
+        "rating": 5,
+        "date": "2025-06-19",
+        "dateRaw": "2025-06-19T17:57:50Z",
+        "title": "Very powerful tool and quick support from the devs",
+        "text": "This will really speed up your Scriptable Objects editing, creation etc. I haven't even gotten to use its full feature set yet.\n\nI encountered a small problem and contacted the support team and got a helpful solution in less than a day!",
+        "versionReviewed": "1.5.1",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "Thank you very much for your review!"
+          }
+        ]
+      },
+      {
+        "id": "555725",
+        "reviewer": "FTVStudios",
+        "rating": 5,
+        "date": "2025-05-20",
+        "dateRaw": "2025-05-20T06:27:41Z",
+        "title": "The most useful tool I have in my arsenal!",
+        "text": "The most useful tool I have in my arsenal especially for my TCG game is Scriptable Sheets! \n\nThe amount of pure hours I've saved just from navigating from SO folder to SO folder is just insane. This tool literally lays out EVERYTHING for every single one of my Trading Cards so that I can just EASILY edit information, details, graphics, effects, etc all in one place... \n\nIf your game uses alot of scriptable objects, then this tool will legit save you probably at least 10-30 hours of time going back and forth creating cards or whatever, by the time you have completed your game.\n\nAbsolutely a priceless tool to have in your toolkit!",
+        "versionReviewed": "1.2.1",
+        "helpfulVotes": 4,
+        "selected": true,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "I'm happy to hear Scriptable Sheets has improved your workflow! Thank you so much for the review!"
+          }
+        ]
+      },
+      {
+        "id": "554812",
+        "reviewer": "elasto",
+        "rating": 5,
+        "date": "2025-05-12",
+        "dateRaw": "2025-05-12T13:27:34Z",
+        "title": "Works well",
+        "text": "This asset does everything I need and the dev replied immediately when I needed something clarified. \n\nCan't fault it!",
+        "versionReviewed": "1.5.1",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "I'm glad I could help and thank you for the kind review!"
+          }
+        ]
+      },
+      {
+        "id": "554038",
+        "reviewer": "VeryBadPenny",
+        "rating": 5,
+        "date": "2025-05-05",
+        "dateRaw": "2025-05-05T22:04:03Z",
+        "title": "A great Power Tool for ScriptableObject fans",
+        "text": "I use a lot of ScriptableObjects and they're basically data, so a spreadsheet format looks and feels like a big step forward.\n\nI was a bit wary of all the bubbly reviews for this \"Really amazing asset! ...etc.\" but I have 27 types of S.O. in my current project, varying from enum-like usages (a named object of a specific type so I get a nice drop-down in the inspector) up to one which has 20+ data members/fields and functions/methods built into it (and I currently have 96 instances of just that type in my project). This asset really helps manage them all.\n\nAfter using repeatedly for a few days, it feels almost feature-complete. Some items like a variable-length list inside your S.O. just don't translate easily to column format and the author just shows you the first one by default [edit: this behavior can be changed in the settings! amazing]\n\nAlso, I'd written import/export (e.g. to CSV) tools for my own S.O's but this even has that, and probably does it better than mine.\n\nFootnote: I also like that it's completely drop-in/out and doesn't need to move with my project if I share work (e.g. in game jams) with people who do not have a license. That offsets the slight frowny-face when I saw it's an \"extension asset\" which I understand requires one license per seat/user.",
+        "versionReviewed": "1.5.1",
+        "helpfulVotes": 6,
+        "selected": true,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "I really appreciate the generous review! Thank you!\n\nEdit: I wanted to add that starting in v1.10.0 support for arrays has been vastly improved with the addition of Collection Tables."
+          }
+        ]
+      },
+      {
+        "id": "553850",
+        "reviewer": "haruyou",
+        "rating": 5,
+        "date": "2025-05-04",
+        "dateRaw": "2025-05-04T12:38:00Z",
+        "title": "買って安心。",
+        "text": "scriptableSheetは使い方が簡単でチュートリアル動画がたくさんです。機能の更新も多いので買っておくことをおすすめします。すクリプタブルオブジェクトのパラメーターを大量に書き換える場合時短に貢献してくれるでしょう。\n買ってよかったと思えるアセットでした。",
+        "versionReviewed": "1.5.1",
+        "helpfulVotes": 2,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "Thank you very much for your review!"
+          }
+        ]
+      },
+      {
+        "id": "553100",
+        "reviewer": "Chamchi2960",
+        "rating": 5,
+        "date": "2025-04-27",
+        "dateRaw": "2025-04-27T19:35:06Z",
+        "title": "The best asset!",
+        "text": "Really amazing asset! You won't regret investing in it\nand it's really worth the price..",
+        "versionReviewed": "1.5.1",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "Thank you for your kind review!"
+          }
+        ]
+      },
+      {
+        "id": "553034",
+        "reviewer": "tataataa",
+        "rating": 5,
+        "date": "2025-04-27",
+        "dateRaw": "2025-04-27T02:40:09Z",
+        "title": "Awesome Asset, Great Support!",
+        "text": "Amazing tool! The developer added the feature I asked for, making column toggling much easier.\nI also love being able to open multiple sheets in different windows — super handy!\nHighly recommended!",
+        "versionReviewed": "1.5.1",
+        "helpfulVotes": 2,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-11-24",
+            "text": "Thank you so much for the review! I'm glad I was able to add the features you were looking for!"
+          }
+        ]
+      },
+      {
+        "id": "546776",
+        "reviewer": "Katerlad",
+        "rating": 5,
+        "date": "2025-02-28",
+        "dateRaw": "2025-02-28T00:16:53Z",
+        "title": "I Cant Express Enough How AMAZING this asset is! A MUST for projects with a lot of ScriptableObjects/Assets.",
+        "text": "If you work with ScriptableObjects, or any serializable asset supported by this tool that you want to edit in List format, this is the asset to buy!\n\nFeature Rich!\nGreat Support!\nIntuitive!\n\nUnity should have this functionality built in! \n- Don't hesitate to buy you will not be disappointed!",
+        "versionReviewed": "1.4.0",
+        "helpfulVotes": 5,
+        "selected": true,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-02-28",
+            "text": "I really appreciate the review! It's incredibly rewarding to hear feedback like this!"
+          }
+        ],
+        "oldSiteComparison": {
+          "oldSiteText": "I can’t express enough how AMAZING this asset is! If you work with ScriptableObjects, or any serializable asset supported by this tool that you want to edit in List format, this is the asset to buy!",
+          "difference": "Merged and edited. The first sentence is the review TITLE, rewritten: the original title reads \"I Cant Express Enough How AMAZING this asset is! A MUST for projects with a lot of ScriptableObjects/Assets.\" The old site changes the casing, adds an apostrophe (\"can’t\"), and drops the title's second sentence. The rest is the first paragraph of the body, verbatim. The body's remaining lines (\"Feature Rich! / Great Support! / Intuitive! / Unity should have this functionality built in! / - Don't hesitate to buy you will not be disappointed!\") are omitted."
+        }
+      },
+      {
+        "id": "546628",
+        "reviewer": "RestingOwl",
+        "rating": 5,
+        "date": "2025-02-26",
+        "dateRaw": "2025-02-26T20:33:34Z",
+        "title": "Quite powerful - especially for larger projects",
+        "text": "If you organize data using scriptable objects in your project, this asset is going to be a huge time saver.\n\nThis tool makes it really easy for us to view/filter/search/edit across different data types. We do this quite often, so we're using this pretty much every day.\n\nDefinitely a must have asset in my opinion!",
+        "versionReviewed": "1.4.0",
+        "helpfulVotes": 2,
+        "selected": true,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-02-28",
+            "text": "That's really great to hear and exactly what Scriptable Sheets is aimed for! Thank you for the kind review!"
+          }
+        ],
+        "oldSiteComparison": {
+          "oldSiteText": "Quite powerful – especially for larger projects. If you organize data using scriptable objects in your project, this asset is going to be a huge time saver. Definitely a must have asset in my opinion!",
+          "difference": "Merged and cut. The first sentence is the review TITLE (\"Quite powerful - especially for larger projects\"), with the hyphen turned into an en dash and a period added. The middle paragraph of the body (\"This tool makes it really easy for us to view/filter/search/edit across different data types. We do this quite often, so we're using this pretty much every day.\") is omitted without marking the cut."
+        }
+      },
+      {
+        "id": "542018",
+        "reviewer": "JackmanA",
+        "rating": 5,
+        "date": "2025-01-15",
+        "dateRaw": "2025-01-15T15:57:49Z",
+        "title": "Fantastic asset!",
+        "text": "We use a lot of scriptable objects in our projects and this made it super easy to dive through and edit them!",
+        "versionReviewed": "1.0.0",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-01-15",
+            "text": "Thanks for the kind words. It means a lot!"
+          }
+        ]
+      },
+      {
+        "id": "539639",
+        "reviewer": "bromanguy",
+        "rating": 5,
+        "date": "2024-12-23",
+        "dateRaw": "2024-12-23T20:44:27Z",
+        "title": "Great so far",
+        "text": "I've messed around with it for a little bit. It's really really good and will save you a ton of time if you work with a lot of scriptable objects",
+        "versionReviewed": "1.2.1",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2025-01-15",
+            "text": "I'm thrilled to hear that it's saving you time! Thanks for the feedback!"
+          }
+        ]
+      },
+      {
+        "id": "535809",
+        "reviewer": "eggmanpoop",
+        "rating": 5,
+        "date": "2024-11-18",
+        "dateRaw": "2024-11-18T18:55:34Z",
+        "title": "Nice!",
+        "text": "This asset seems like it will help me tremendously with workflow as I use a lot of SO. Awesome!",
+        "versionReviewed": "1.2.1",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2024-12-01",
+            "text": "That's awesome to hear! Thank you for the review."
+          }
+        ]
+      },
+      {
+        "id": "535162",
+        "reviewer": "viennguyentri",
+        "rating": 5,
+        "date": "2024-11-11",
+        "dateRaw": "2024-11-11T14:46:12Z",
+        "title": "Good asset, Excellent Support!",
+        "text": "The asset overall does what it promises so it is okay, but the support is amazing. After I encounter a bug and send out the email, the dev (Jeff) helped me to troubleshoot it and actively contact other asset's owner which caused the problem in the first place to come back to me with a solution ASAP even that wasn't Scriptable Sheets bug!",
+        "versionReviewed": "1.2.1",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2024-11-11",
+            "text": "Glad we were able to help! Thank you so much for the review!"
+          }
+        ]
+      },
+      {
+        "id": "533365",
+        "reviewer": "deleo",
+        "rating": 5,
+        "date": "2024-10-24",
+        "dateRaw": "2024-10-24T06:25:43Z",
+        "title": "Great!",
+        "text": "So it's come to this: I've reached the age where I get excited about an embedded spreadsheet tool. smh\n\nThis is amazing! It helps structure my endless number of Scriptable Objects in my scene. Was about to write something myself, but this is well worth the money! <3",
+        "versionReviewed": "1.2.1",
+        "helpfulVotes": 4,
+        "selected": true,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2024-10-28",
+            "text": "This is wonderful to hear! Thank you so much for the review!"
+          }
+        ],
+        "oldSiteComparison": {
+          "oldSiteText": "So it’s come to this: I’ve reached the age where I get excited about an embedded spreadsheet tool. smh This is amazing! It helps structure my endless number of Scriptable Objects in my scene. Was about to write something myself, but this is well worth the money! <3",
+          "difference": "Full text, matches. Only typographic changes: the paragraph break after \"smh\" is collapsed and straight apostrophes became curly (WordPress smart quotes)."
+        }
+      },
+      {
+        "id": "530609",
+        "reviewer": "unity_N-J7jf21GvXprQ",
+        "rating": 5,
+        "date": "2024-09-27",
+        "dateRaw": "2024-09-27T08:56:05Z",
+        "title": "Handy asset with great support",
+        "text": "I've been looking for a way to manage my SO-heavy projects by writing my own editors and managers. This asset handles all of that in a simple and easy to work with format that is very recognizable to designers. \n\nOn top of being a great asset that will find a use in most projects, the support has been great - with developers providing updates based on feedback. \n\nKeep it up!",
+        "versionReviewed": "1.2.1",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2024-09-29",
+            "text": "I appreciate the feedback! It's encouraging to know that it's making a positive impact on your workflow with Scriptable Objects in Unity. Thanks for the support!"
+          }
+        ]
+      },
+      {
+        "id": "530547",
+        "reviewer": "cwk17",
+        "rating": 5,
+        "date": "2024-09-26",
+        "dateRaw": "2024-09-26T19:07:45Z",
+        "title": "Works!",
+        "text": "Does what it says it does and the developer is very responsive and open to improvements.",
+        "versionReviewed": "1.1.1",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2024-09-29",
+            "text": "I'm happy to hear that! Thank you for the review."
+          }
+        ]
+      },
+      {
+        "id": "528275",
+        "reviewer": "ZZBrent",
+        "rating": 5,
+        "date": "2024-09-03",
+        "dateRaw": "2024-09-03T15:46:34Z",
+        "title": "Literally game changing!",
+        "text": "I am building out a TCG.  I keep all of my cards in spreadsheets so that I can immediately add cards as inspiration strikes.  However, previously I needed to copy and paste the values from Google Sheets into the Unity UI.  But now I can use this!  It lets me import for my first iteration of cards, and then it lets me look at a sheet view of all of my cards for making edits as I test things.  I can make bulk changes instantly here, where it would take me 15-30 minutes before.  This helps my development go faster, which is key for ensuring my game actually gets finished and published!",
+        "versionReviewed": "1.1.1",
+        "helpfulVotes": 3,
+        "selected": true,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2024-09-29",
+            "text": "Thank you for the review! That’s great to hear how much time it’s saving you! Best of luck with your trading card game!"
+          }
+        ]
+      },
+      {
+        "id": "525446",
+        "reviewer": "Vomiann",
+        "rating": 5,
+        "date": "2024-08-04",
+        "dateRaw": "2024-08-04T12:27:31Z",
+        "title": "Excellent asset!",
+        "text": "Excellent asset. Simplifies work with a large number of scriptable objects. The author of the asset promptly responds and adds new functionality. Thanks to the author for his work.",
+        "versionReviewed": "1.0.0",
+        "helpfulVotes": 1,
+        "selected": false,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2024-08-06",
+            "text": "We're glad Scriptable Sheets is simplifying your work, and we appreciate your kind words about our responsiveness. Thanks for your support!"
+          }
+        ]
+      },
+      {
+        "id": "524614",
+        "reviewer": "nhagialas",
+        "rating": 5,
+        "date": "2024-07-26",
+        "dateRaw": "2024-07-26T17:49:54Z",
+        "title": "An amazing productivity tool",
+        "text": "Scriptable sheets is an amazing way to clearly organize our assets in the engine. The import / export functionality is extremely helpful for games with large sets of assets, and it also helps how intuitive it is to use! Couldn't recommend it more!",
+        "versionReviewed": "1.0.0",
+        "helpfulVotes": 1,
+        "selected": true,
+        "publisherReply": [
+          {
+            "by": "aFeesh",
+            "date": "2024-08-06",
+            "text": "Thanks so much for your wonderful review! We're thrilled to hear you're enjoying Scriptable Sheets and finding it helpful. Your recommendation means a lot to us!"
+          }
+        ]
+      }
+    ]
+  },
+  "documentation": {
+    "location": "https://github.com/LunaWolfStudios/ScriptableSheetsDocs",
+    "files": {
+      "readme": "https://github.com/LunaWolfStudios/ScriptableSheetsDocs",
+      "documentation": "https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/DOCUMENTATION.md",
+      "changelog": "https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/CHANGELOG.md",
+      "faq": "https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/DOCUMENTATION.md#faq",
+      "tableOfContents": "https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/DOCUMENTATION.md#table-of-contents"
+    },
+    "packageName": "com.lunawolfstudios.scriptablesheets (Package Manager display name \"LWS Scriptable Sheets\")",
+    "prerequisites": [
+      "com.unity.nuget.newtonsoft-json",
+      "com.unity.test-framework"
+    ],
+    "open": "Window -> Scriptable Sheets",
+    "settings": "Edit -> Project Settings -> Preferences -> Scriptable Sheets, or right-click a window title and choose \"Open Settings Window\"",
+    "samples": [
+      "All Samples",
+      "Collections",
+      "Component Explorer",
+      "Component Presets",
+      "Deep Inheritance",
+      "Localization",
+      "RPG",
+      "Sampler"
+    ],
+    "unitTests": "Scriptable Sheets includes several hundred Unit Tests that cover key parts of the tool.",
+    "editorOnly": "Functions only in the Editor and is completely stripped in builds, except for the provided Samples.",
+    "limitationsWorthKnowing": [
+      "No formulas for filling cells.",
+      "Custom property drawers and property attributes are ignored in the table (an experimental Rendering Overrides setting can change this).",
+      "Settings are not persisted before Unity 2020.1, so Unity 2020.3 and up is recommended.",
+      "`uint` and `ulong` fields need Unity 2022.1 or later."
+    ]
+  },
+  "videos": {
+    "playlist": "https://www.youtube.com/playlist?list=PL6G9X1zrT3BLwLA7pbgM5Aam9RrLsrBZp",
+    "playlistTitle": "Scriptable Sheets",
+    "count": 20,
+    "items": [
+      {
+        "position": 1,
+        "id": "r_FJBZjHUpA",
+        "title": "Scriptable Sheets: Introduction",
+        "length": "1:31",
+        "lengthSeconds": 91,
+        "published": "2024-08-25",
+        "publishedRaw": "2024-08-25T20:46:49-07:00",
+        "url": "https://www.youtube.com/watch?v=r_FJBZjHUpA",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-r_FJBZjHUpA.jpg",
+        "viewsOnAccessDate": 2855
+      },
+      {
+        "position": 2,
+        "id": "G0BHLhTyYaA",
+        "title": "Scriptable Sheets: Getting Started",
+        "length": "0:52",
+        "lengthSeconds": 52,
+        "published": "2024-07-10",
+        "publishedRaw": "2024-07-10T20:06:15-07:00",
+        "url": "https://www.youtube.com/watch?v=G0BHLhTyYaA",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-G0BHLhTyYaA.jpg",
+        "viewsOnAccessDate": 2214
+      },
+      {
+        "position": 3,
+        "id": "sopJAKQNJeU",
+        "title": "Scriptable Sheets: Basic Navigation",
+        "length": "1:09",
+        "lengthSeconds": 69,
+        "published": "2024-07-10",
+        "publishedRaw": "2024-07-10T20:09:16-07:00",
+        "url": "https://www.youtube.com/watch?v=sopJAKQNJeU",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-sopJAKQNJeU.jpg",
+        "viewsOnAccessDate": 1617
+      },
+      {
+        "position": 4,
+        "id": "g2O8dtBUn3Y",
+        "title": "Scriptable Sheets: Accessing Settings",
+        "length": "0:29",
+        "lengthSeconds": 29,
+        "published": "2024-07-10",
+        "publishedRaw": "2024-07-10T20:13:52-07:00",
+        "url": "https://www.youtube.com/watch?v=g2O8dtBUn3Y",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-g2O8dtBUn3Y.jpg",
+        "viewsOnAccessDate": 1030
+      },
+      {
+        "position": 5,
+        "id": "6f5wtxGv534",
+        "title": "Scriptable Sheets: Copy-Paste",
+        "length": "0:35",
+        "lengthSeconds": 35,
+        "published": "2024-07-10",
+        "publishedRaw": "2024-07-10T20:17:29-07:00",
+        "url": "https://www.youtube.com/watch?v=6f5wtxGv534",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-6f5wtxGv534.jpg",
+        "viewsOnAccessDate": 859
+      },
+      {
+        "position": 6,
+        "id": "m1YgPSdQiLQ",
+        "title": "Scriptable Sheets: Unity Layout",
+        "length": "0:27",
+        "lengthSeconds": 27,
+        "published": "2024-07-10",
+        "publishedRaw": "2024-07-10T20:20:21-07:00",
+        "url": "https://www.youtube.com/watch?v=m1YgPSdQiLQ",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-m1YgPSdQiLQ.jpg",
+        "viewsOnAccessDate": 731
+      },
+      {
+        "position": 7,
+        "id": "bDEzlEbm2MA",
+        "title": "Scriptable Sheets: Paste Pad",
+        "length": "0:55",
+        "lengthSeconds": 55,
+        "published": "2024-07-10",
+        "publishedRaw": "2024-07-10T20:22:01-07:00",
+        "url": "https://www.youtube.com/watch?v=bDEzlEbm2MA",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-bDEzlEbm2MA.jpg",
+        "viewsOnAccessDate": 603
+      },
+      {
+        "position": 8,
+        "id": "xsYu1ppPGWo",
+        "title": "Scriptable Sheets: Google Sheets",
+        "length": "0:36",
+        "lengthSeconds": 36,
+        "published": "2024-07-10",
+        "publishedRaw": "2024-07-10T20:24:28-07:00",
+        "url": "https://www.youtube.com/watch?v=xsYu1ppPGWo",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-xsYu1ppPGWo.jpg",
+        "viewsOnAccessDate": 1462
+      },
+      {
+        "position": 9,
+        "id": "zuawA3XLSAA",
+        "title": "Scriptable Sheets: Data Transfer Settings",
+        "length": "3:58",
+        "lengthSeconds": 238,
+        "published": "2024-07-11",
+        "publishedRaw": "2024-07-11T15:21:43-07:00",
+        "url": "https://www.youtube.com/watch?v=zuawA3XLSAA",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-zuawA3XLSAA.jpg",
+        "viewsOnAccessDate": 851
+      },
+      {
+        "position": 10,
+        "id": "GKOAzSoqr9g",
+        "title": "Scriptable Sheets: Object Settings",
+        "length": "2:10",
+        "lengthSeconds": 130,
+        "published": "2024-07-11",
+        "publishedRaw": "2024-07-11T15:23:50-07:00",
+        "url": "https://www.youtube.com/watch?v=GKOAzSoqr9g",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-GKOAzSoqr9g.jpg",
+        "viewsOnAccessDate": 525
+      },
+      {
+        "position": 11,
+        "id": "87hi32dq-kw",
+        "title": "Scriptable Sheets: User Interface Settings",
+        "length": "2:53",
+        "lengthSeconds": 173,
+        "published": "2024-07-11",
+        "publishedRaw": "2024-07-11T15:25:44-07:00",
+        "url": "https://www.youtube.com/watch?v=87hi32dq-kw",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-87hi32dq-kw.jpg",
+        "viewsOnAccessDate": 451
+      },
+      {
+        "position": 12,
+        "id": "NOdoRur7B4E",
+        "title": "Scriptable Sheets: Table Nav Settings",
+        "length": "1:10",
+        "lengthSeconds": 70,
+        "published": "2024-07-11",
+        "publishedRaw": "2024-07-11T15:27:19-07:00",
+        "url": "https://www.youtube.com/watch?v=NOdoRur7B4E",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-NOdoRur7B4E.jpg",
+        "viewsOnAccessDate": 324
+      },
+      {
+        "position": 13,
+        "id": "tHzB1EbyYk8",
+        "title": "Scriptable Sheets: Supported Types",
+        "length": "1:05",
+        "lengthSeconds": 65,
+        "published": "2024-07-31",
+        "publishedRaw": "2024-07-31T14:54:11-07:00",
+        "url": "https://www.youtube.com/watch?v=tHzB1EbyYk8",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-tHzB1EbyYk8.jpg",
+        "viewsOnAccessDate": 487
+      },
+      {
+        "position": 14,
+        "id": "q6il9WTZ5ZQ",
+        "title": "Scriptable Sheets: Workload Settings (Rows and Columns)",
+        "length": "0:48",
+        "lengthSeconds": 48,
+        "published": "2024-07-11",
+        "publishedRaw": "2024-07-11T15:28:37-07:00",
+        "url": "https://www.youtube.com/watch?v=q6il9WTZ5ZQ",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-q6il9WTZ5ZQ.jpg",
+        "viewsOnAccessDate": 378
+      },
+      {
+        "position": 15,
+        "id": "wzI1M-I6sJA",
+        "title": "Scriptable Sheets: Scriptable Objects",
+        "length": "3:07",
+        "lengthSeconds": 187,
+        "published": "2024-07-31",
+        "publishedRaw": "2024-07-31T15:03:24-07:00",
+        "url": "https://www.youtube.com/watch?v=wzI1M-I6sJA",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-wzI1M-I6sJA.jpg",
+        "viewsOnAccessDate": 703
+      },
+      {
+        "position": 16,
+        "id": "eLHztXQKbDM",
+        "title": "Scriptable Sheets: Search Filters",
+        "length": "1:56",
+        "lengthSeconds": 116,
+        "published": "2024-07-31",
+        "publishedRaw": "2024-07-31T15:22:14-07:00",
+        "url": "https://www.youtube.com/watch?v=eLHztXQKbDM",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-eLHztXQKbDM.jpg",
+        "viewsOnAccessDate": 441
+      },
+      {
+        "position": 17,
+        "id": "N9Uwz-fwnLI",
+        "title": "Scriptable Sheets: What's New",
+        "length": "1:30",
+        "lengthSeconds": 90,
+        "published": "2025-04-24",
+        "publishedRaw": "2025-04-24T23:23:21-07:00",
+        "url": "https://www.youtube.com/watch?v=N9Uwz-fwnLI",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-N9Uwz-fwnLI.jpg",
+        "viewsOnAccessDate": 1322
+      },
+      {
+        "position": 18,
+        "id": "zGyRCzYJAhM",
+        "title": "Scriptable Sheets Case Study: TCG Engine",
+        "length": "3:20",
+        "lengthSeconds": 200,
+        "published": "2025-05-02",
+        "publishedRaw": "2025-05-02T17:56:24-07:00",
+        "url": "https://www.youtube.com/watch?v=zGyRCzYJAhM",
+        "inAssetStoreListing": false,
+        "thumbnail": "src/assets/scriptable-sheets/video-zGyRCzYJAhM.jpg",
+        "viewsOnAccessDate": 475
+      },
+      {
+        "position": 19,
+        "id": "PKhTuOgsXJ8",
+        "title": "Scriptable Sheets Case Study: DOTS Survivors",
+        "length": "3:06",
+        "lengthSeconds": 186,
+        "published": "2025-11-23",
+        "publishedRaw": "2025-11-23T16:09:25-08:00",
+        "url": "https://www.youtube.com/watch?v=PKhTuOgsXJ8",
+        "inAssetStoreListing": false,
+        "thumbnail": "src/assets/scriptable-sheets/video-PKhTuOgsXJ8.jpg",
+        "viewsOnAccessDate": 168
+      },
+      {
+        "position": 20,
+        "id": "mteCjA1r3pM",
+        "title": "Scriptable Sheets: What's New 2026",
+        "length": "3:04",
+        "lengthSeconds": 184,
+        "published": "2026-06-23",
+        "publishedRaw": "2026-06-23T15:43:27-07:00",
+        "url": "https://www.youtube.com/watch?v=mteCjA1r3pM",
+        "inAssetStoreListing": true,
+        "thumbnail": "src/assets/scriptable-sheets/video-mteCjA1r3pM.jpg",
+        "viewsOnAccessDate": 224
+      }
+    ]
+  },
+  "unityAwards": {
+    "edition": "17th Unity Awards (Unity Awards 2025)",
+    "status": "Nominee in two categories; not a winner. Unity's results list non-winning nominees under \"Runner-ups\".",
+    "entries": [
+      {
+        "category": "Best Development Tool",
+        "group": "Unity Asset Store",
+        "nomineeListing": "Scriptable Sheets, Luna Wolf Studios LLC",
+        "resultsListing": "Runner-ups: vHierarchy 2 , Behavior Designer Pro , Scriptable Sheets , Timeline Mixer , Magic Time , Photon Quantum - Deterministic Game Engine , Sub-Assets Toolbox",
+        "winner": "Code Monkey Toolkit",
+        "categoryDescription": "These Asset Store tools extend Unity’s capabilities to boost your productivity and push performance to the next level.",
+        "howDecided": "Public vote (Games, Asset Store, and Community categories)."
+      },
+      {
+        "category": "Breakthrough Publisher",
+        "group": "Unity Asset Store",
+        "nomineeListing": "Luna Wolf Studios LLC",
+        "resultsListing": "Runner-ups: Josh Stubblefield , October Studio , Kyle Rhoads , Luna Wolf Studios LLC , Idle Games Studio , Friday Night Studio , Honda Motor Co.",
+        "winner": "Kay Lousberg",
+        "alternateOfficialName": "Breakthrough Asset Award* (name used in the awards page FAQ category list; the nominee list and results use \"Breakthrough Publisher\")",
+        "categoryDescription": "Breakthrough Asset Award* Honoring an Asset Store publisher whose work has made a strong impact on the Unity community. Chosen by our internal team, it recognizes new talent whose creativity and quality quickly stood out.",
+        "whatsNewDescription": "Breakthrough Asset Award (Asset Store): This award celebrates a first-time Asset Store publisher whose work has made a strong impact on the Unity community. Chosen by our internal team from eligible submissions, it recognizes new talent whose creativity and quality quickly stood out.",
+        "howDecided": "Internal vote (asterisk category: \"voted internally, and will be evaluated by an internal awards panel composed of Unity employees\")."
+      }
+    ],
+    "timeline": {
+      "nominationsOpen": "2025-08-12 09:00 PT to 2025-09-23 16:00 PT (official rules section 4)",
+      "nomineesAnnounced": "2025-11-05 (Unity YouTube video \"2025 Unity Award Nominees\" and Unity Discussions post)",
+      "votingCloses": "November 21, 2025 per the awards page and the nominee video description; the Unity Discussions post says \"Voting closes November 22\"",
+      "showcase": "December 2, 2025 per the awards page FAQ (\"The winners will be announced live during the Unity Awards Showcase on December 2nd, 2025.\")",
+      "winnersBlogPost": "2025-12-09 (\"Celebrating excellence: Unity Awards 2025 winners\")"
+    },
+    "selectionProcess": "Rules section 8: an internal award committee \"will select up to eight (8) nominees per category\"; \"The final winners will be chosen by public vote, with exception to internal award categories\". Awards page FAQ: \"Nominees are announced through internal selection, and voting opens to the general public and community.\" (awards.unity.com)",
+    "assetStoreEligibility": "Awards page FAQ: \"Asset Store: First released on the Asset Store between July 1, 2024 to June 30, 2025.\" Scriptable Sheets was first published 2024-07-24, inside that window. (The official rules page states the same window with a typo: \"between July 1, 2025, and June 30, 2025\".)",
+    "badges": {
+      "rulesSection9": "The Unity Award nominees and winners in each category will receive digital badges to share on their storefronts and socials.",
+      "rulesSection12": "Winners of the Program are entitled to use the title “[category] Unity Awards Winner 2025,” “17th Unity Awards Winner [category],” as well as the corresponding digital badge, logo and word and figurative mark for global advertising purposes upon consultation with Unity. Any additional trademark guidelines provided by Unity must be strictly followed. Modifying, changing, or isolating any parts of the logo or the word and figurative mark is not permitted.",
+      "assessment": "Nominees are told they receive a digital badge \"to share on their storefronts and socials\". Section 12 grants title and logo use to winners only. No published nominee-specific usage terms were found. The badge file itself is not public and is not in archive/; it would have come to the studio from Unity directly.",
+      "status": "Badge file UNVERIFIED / not obtained."
+    },
+    "stats": [
+      "700+ project submissions",
+      "14,000 community voters",
+      "36,000+ votes cast"
+    ],
+    "sources": [
+      {
+        "label": "Unity blog: Celebrating excellence: Unity Awards 2025 winners (Dec 9, 2025)",
+        "url": "https://unity.com/blog/17th-unity-awards-wrap-up-2025-winners-revealed"
+      },
+      {
+        "label": "Unity Awards page, nominee period snapshot (Nov 16, 2025), FAQ \"Where can I find the complete list of this year's nominees?\"",
+        "url": "https://web.archive.org/web/20251116091028/https://unity.com/awards"
+      },
+      {
+        "label": "Unity Awards page, results snapshot (Dec 20, 2025)",
+        "url": "https://web.archive.org/web/20251220155901/https://unity.com/awards"
+      },
+      {
+        "label": "17th Unity Awards Program Official Rules",
+        "url": "https://unity.com/legal/unity-awards-program-official-rules"
+      },
+      {
+        "label": "Unity YouTube: 2025 Unity Award Nominees (Nov 5, 2025, 1:55)",
+        "url": "https://www.youtube.com/watch?v=GeKXRU6MVEg"
+      },
+      {
+        "label": "Unity Discussions: The Unity Awards 2025 Nominees are here - Vote now on your Favorites (Nov 5, 2025; does not name nominees in text)",
+        "url": "https://discussions.unity.com/t/the-unity-awards-2025-nominees-are-here-vote-now-on-your-favorites/1693983"
+      },
+      {
+        "label": "Unity Awards submission site (process steps)",
+        "url": "https://awards.unity.com/"
+      }
+    ],
+    "liveAwardsPageNote": "On the access date https://unity.com/awards returns 308 Permanent Redirect to /made-with-unity, so the nominee list survives only in the Wayback Machine snapshots and the winners blog post. No 18th (2026) Unity Awards announcement was found."
+  },
+  "kodecoTutorials": [
+    {
+      "title": "Audio tutorial for Unity: the Audio Mixer",
+      "oldSiteTitle": "Audio Tutorial for Unity: the Audio Mixer",
+      "url": "https://www.kodeco.com/532-audio-tutorial-for-unity-the-audio-mixer",
+      "resolves": true,
+      "date": "2017-07-07",
+      "dateAsShown": "Jul 7 2017",
+      "byline": "By Jeff [the page prints his surname].",
+      "notes": "Page shows \"5 (9) · 1 Review\"."
+    },
+    {
+      "title": "How to Make a Match 3 Game in Unity",
+      "url": "https://www.kodeco.com/673-how-to-make-a-match-3-game-in-unity",
+      "resolves": true,
+      "date": "2017-04-12",
+      "dateAsShown": "Apr 12 2017",
+      "byline": "By Jeff [the page prints his surname].",
+      "notes": ""
+    },
+    {
+      "title": "ScriptableObject Tutorial: Getting Started",
+      "url": "https://www.kodeco.com/2826197-scriptableobject-tutorial-getting-started",
+      "resolves": true,
+      "date": "2019-07-19",
+      "dateAsShown": "Jul 19 2019",
+      "byline": "By Ben MacKinnon .",
+      "notes": "Current byline is the updater. Page note: \"Update May 2019: This tutorial was updated to Unity 2019.1 by Ben MacKinnon. Original post by Jeff [the page prints his surname] .\" The shown date is the update, not the original post date (original date UNVERIFIED)."
+    },
+    {
+      "title": "Unity Cheat Sheet and Quick Reference 2018",
+      "url": "https://www.kodeco.com/227-unity-cheat-sheet-and-quick-reference-2018",
+      "resolves": true,
+      "date": "2018-01-19",
+      "dateAsShown": "Jan 19 2018",
+      "byline": "By Jeff [the page prints his surname].",
+      "notes": "Tagged \"C# 6, Unity 2017.x, Unity\"."
+    },
+    {
+      "title": "How to Create a Tower Defense Game in Unity – Part 1",
+      "oldSiteTitle": "How to Create a Tower Defense Game in Unity",
+      "url": "https://www.kodeco.com/269-how-to-create-a-tower-defense-game-in-unity-part-1",
+      "resolves": true,
+      "date": "2017-12-08",
+      "dateAsShown": "Dec 8 2017",
+      "byline": "By Jeff [the page prints his surname].",
+      "notes": "Update, not original authorship. Page note: \"Update note: This tutorial has been updated to Unity 2017.1 by Jeff [the page prints his surname]. The original tutorial was written by Barbara Reichart.\""
+    }
+  ],
+  "youtubeTutorial": {
+    "id": "ryXwG1j4rhI",
+    "title": "[Unity + FREE] Setup a Bug Reporter in Unity using Trello",
+    "oldSiteTitle": "Setup a Bug Reporter in Unity using Trello",
+    "url": "https://www.youtube.com/watch?v=ryXwG1j4rhI",
+    "channel": "Luna Wolf Studios",
+    "published": "2018-02-28",
+    "length": "2:41",
+    "viewsOnAccessDate": 2614,
+    "thumbnail": "src/assets/scriptable-sheets/video-ryXwG1j4rhI.jpg"
+  },
+  "images": [
+    {
+      "file": "logo.png",
+      "source": "archive/wordpress/media/2024/07/title.png (old site; linked to the Asset Store listing)",
+      "width": 1372,
+      "height": 569,
+      "bytes": 72098,
+      "note": "Scriptable Sheets title logo, copied from the old WordPress site"
+    },
+    {
+      "file": "key-image.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/key-image/ab1fa260-1c19-4611-a66f-5424018e0ada.jpg",
+      "width": 1950,
+      "height": 1300,
+      "bytes": 418595,
+      "note": "Asset Store key image (\"big\"), the largest key image offered"
+    },
+    {
+      "file": "key-image-social.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/key-image/ef52f18e-3a68-44ff-9825-1ad13c090cbf.jpg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 127964,
+      "note": "Asset Store key image (\"facebook\" social share crop)"
+    },
+    {
+      "file": "icon.png",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/key-image/6ee410e6-8d82-4eee-829b-ab750def472d.png",
+      "width": 160,
+      "height": 160,
+      "bytes": 33434,
+      "note": "Asset Store key image (\"icon\")"
+    },
+    {
+      "file": "screenshot-01.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/7b2a2c72-6f8b-47fb-85c7-f768d52f8f07_scaled.jpg",
+      "width": 1200,
+      "height": 800,
+      "bytes": 234323,
+      "note": "Asset Store listing screenshot, \"_scaled\" size (largest the CDN serves; unscaled originals return 403)"
+    },
+    {
+      "file": "screenshot-02.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/148d0251-f3a4-4867-b2f6-089cd67c7358_scaled.jpg",
+      "width": 1200,
+      "height": 800,
+      "bytes": 198295,
+      "note": "Asset Store listing screenshot, \"_scaled\" size (largest the CDN serves; unscaled originals return 403)"
+    },
+    {
+      "file": "screenshot-03.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/04786628-8600-436d-b5f9-0342a06eca51_scaled.jpg",
+      "width": 1200,
+      "height": 800,
+      "bytes": 194621,
+      "note": "Asset Store listing screenshot, \"_scaled\" size (largest the CDN serves; unscaled originals return 403)"
+    },
+    {
+      "file": "screenshot-04.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/bfc2530d-8099-4630-a7b3-91806a3a5841_scaled.jpg",
+      "width": 1200,
+      "height": 800,
+      "bytes": 237038,
+      "note": "Asset Store listing screenshot, \"_scaled\" size (largest the CDN serves; unscaled originals return 403)"
+    },
+    {
+      "file": "screenshot-05.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/aee08e62-8772-4915-bafd-24eac47d7443_scaled.jpg",
+      "width": 1200,
+      "height": 800,
+      "bytes": 302314,
+      "note": "Asset Store listing screenshot, \"_scaled\" size (largest the CDN serves; unscaled originals return 403)"
+    },
+    {
+      "file": "screenshot-06.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/87ae433e-961f-4f04-b382-517c8abbaf59_scaled.jpg",
+      "width": 1200,
+      "height": 800,
+      "bytes": 202956,
+      "note": "Asset Store listing screenshot, \"_scaled\" size (largest the CDN serves; unscaled originals return 403)"
+    },
+    {
+      "file": "screenshot-07.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/50c9f314-72a5-44db-8696-633abb6b7711_scaled.jpg",
+      "width": 1200,
+      "height": 800,
+      "bytes": 356288,
+      "note": "Asset Store listing screenshot, \"_scaled\" size (largest the CDN serves; unscaled originals return 403)"
+    },
+    {
+      "file": "screenshot-08.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/3fc055dc-6c7d-472b-bd8d-bc46677d08fd_scaled.jpg",
+      "width": 1200,
+      "height": 800,
+      "bytes": 219516,
+      "note": "Asset Store listing screenshot, \"_scaled\" size (largest the CDN serves; unscaled originals return 403)"
+    },
+    {
+      "file": "screenshot-09.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/e6a9bed9-2847-4539-b10c-0cc6359e5d71_scaled.jpg",
+      "width": 1200,
+      "height": 675,
+      "bytes": 247536,
+      "note": "Asset Store listing screenshot, \"_scaled\" size (largest the CDN serves; unscaled originals return 403)"
+    },
+    {
+      "file": "screenshot-10.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/3586cfc1-e94e-474c-8ee2-7a1deb1064de_scaled.jpg",
+      "width": 1200,
+      "height": 675,
+      "bytes": 201548,
+      "note": "Asset Store listing screenshot, \"_scaled\" size (largest the CDN serves; unscaled originals return 403)"
+    },
+    {
+      "file": "screenshot-11.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/79da08ec-415b-4d64-991d-7278a0ec9168_scaled.jpg",
+      "width": 1200,
+      "height": 675,
+      "bytes": 252505,
+      "note": "Asset Store listing screenshot, \"_scaled\" size (largest the CDN serves; unscaled originals return 403)"
+    },
+    {
+      "file": "screenshot-12.jpg",
+      "source": "https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/1cc88868-b5e1-426e-8a64-d86040bfd775_scaled.jpg",
+      "width": 1200,
+      "height": 675,
+      "bytes": 220911,
+      "note": "Asset Store listing screenshot, \"_scaled\" size (largest the CDN serves; unscaled originals return 403)"
+    },
+    {
+      "file": "video-r_FJBZjHUpA.jpg",
+      "source": "https://i.ytimg.com/vi/r_FJBZjHUpA/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 81265,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Introduction"
+    },
+    {
+      "file": "video-G0BHLhTyYaA.jpg",
+      "source": "https://i.ytimg.com/vi/G0BHLhTyYaA/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 84290,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Getting Started"
+    },
+    {
+      "file": "video-sopJAKQNJeU.jpg",
+      "source": "https://i.ytimg.com/vi/sopJAKQNJeU/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 85212,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Basic Navigation"
+    },
+    {
+      "file": "video-g2O8dtBUn3Y.jpg",
+      "source": "https://i.ytimg.com/vi/g2O8dtBUn3Y/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 87149,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Accessing Settings"
+    },
+    {
+      "file": "video-6f5wtxGv534.jpg",
+      "source": "https://i.ytimg.com/vi/6f5wtxGv534/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 81208,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Copy-Paste"
+    },
+    {
+      "file": "video-m1YgPSdQiLQ.jpg",
+      "source": "https://i.ytimg.com/vi/m1YgPSdQiLQ/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 80960,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Unity Layout"
+    },
+    {
+      "file": "video-bDEzlEbm2MA.jpg",
+      "source": "https://i.ytimg.com/vi/bDEzlEbm2MA/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 79759,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Paste Pad"
+    },
+    {
+      "file": "video-xsYu1ppPGWo.jpg",
+      "source": "https://i.ytimg.com/vi/xsYu1ppPGWo/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 83799,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Google Sheets"
+    },
+    {
+      "file": "video-zuawA3XLSAA.jpg",
+      "source": "https://i.ytimg.com/vi/zuawA3XLSAA/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 88429,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Data Transfer Settings"
+    },
+    {
+      "file": "video-GKOAzSoqr9g.jpg",
+      "source": "https://i.ytimg.com/vi/GKOAzSoqr9g/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 84559,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Object Settings"
+    },
+    {
+      "file": "video-87hi32dq-kw.jpg",
+      "source": "https://i.ytimg.com/vi/87hi32dq-kw/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 88981,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: User Interface Settings"
+    },
+    {
+      "file": "video-NOdoRur7B4E.jpg",
+      "source": "https://i.ytimg.com/vi/NOdoRur7B4E/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 85945,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Table Nav Settings"
+    },
+    {
+      "file": "video-tHzB1EbyYk8.jpg",
+      "source": "https://i.ytimg.com/vi/tHzB1EbyYk8/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 85025,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Supported Types"
+    },
+    {
+      "file": "video-q6il9WTZ5ZQ.jpg",
+      "source": "https://i.ytimg.com/vi/q6il9WTZ5ZQ/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 86637,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Workload Settings (Rows and Columns)"
+    },
+    {
+      "file": "video-wzI1M-I6sJA.jpg",
+      "source": "https://i.ytimg.com/vi/wzI1M-I6sJA/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 86445,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Scriptable Objects"
+    },
+    {
+      "file": "video-eLHztXQKbDM.jpg",
+      "source": "https://i.ytimg.com/vi/eLHztXQKbDM/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 81673,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: Search Filters"
+    },
+    {
+      "file": "video-N9Uwz-fwnLI.jpg",
+      "source": "https://i.ytimg.com/vi/N9Uwz-fwnLI/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 81466,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: What's New"
+    },
+    {
+      "file": "video-zGyRCzYJAhM.jpg",
+      "source": "https://i.ytimg.com/vi/zGyRCzYJAhM/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 88649,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets Case Study: TCG Engine"
+    },
+    {
+      "file": "video-PKhTuOgsXJ8.jpg",
+      "source": "https://i.ytimg.com/vi/PKhTuOgsXJ8/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 91568,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets Case Study: DOTS Survivors"
+    },
+    {
+      "file": "video-mteCjA1r3pM.jpg",
+      "source": "https://i.ytimg.com/vi/mteCjA1r3pM/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 111010,
+      "note": "YouTube thumbnail (maxresdefault) for Scriptable Sheets: What's New 2026"
+    },
+    {
+      "file": "video-ryXwG1j4rhI.jpg",
+      "source": "https://i.ytimg.com/vi/ryXwG1j4rhI/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 81142,
+      "note": "YouTube thumbnail (maxresdefault) for [Unity + FREE] Setup a Bug Reporter in Unity using Trello"
+    }
+  ],
+  "unverified": [
+    "Launch or original introductory price: no source found. Only the regular price ($49.99) and the sale price on the access date ($24.99) are verified.",
+    "End date of the current 50% sale.",
+    "Render pipeline display names (Built-in / HDRP / URP / Custom SRP): inferred from the raw SRP record (standard, hd, lightweight, custom); not seen rendered.",
+    "The listing gallery counter reads \"1 / 31\", but the listing data holds 30 media items (12 screenshots, 18 videos). The 31st item is unidentified.",
+    "Unity Discussions release thread (https://discussions.unity.com/t/released-scriptable-sheets/1490189): blocked automated fetches with 403, content not read.",
+    "Unity Awards nominee badge: the rules say nominees receive a digital badge, but the file and any nominee-specific usage terms were not found publicly or in archive/.",
+    "Whether the \"2025 Unity Award Nominees\" video shows Scriptable Sheets or Luna Wolf Studios on screen (video not watched; the text nominee list is verified).",
+    "The original 2017/2018 publish date of the ScriptableObject tutorial on Kodeco (page shows the July 2019 update date)."
+  ],
+  "decisionsForOrchestrator": [
+    "Awards wording. The owner said \"nominated\", which matches the official record. Unity's own results page labels non-winning nominees \"Runner-ups\". Suggested public wording: \"Nominee, Best Development Tool, 17th Unity Awards (2025)\" and \"Luna Wolf Studios: Nominee, Breakthrough Publisher, Unity Awards 2025\". Do not say \"winner\" or \"finalist\". \"Runner-up\" is also accurate per Unity's wording, but could read as second place; the orchestrator should pick one term.",
+    "Category name. The nominee list and results say \"Breakthrough Publisher\"; the awards FAQ category list calls the same award \"Breakthrough Asset Award*\". Use \"Breakthrough Publisher\" (the name on the published results).",
+    "Badge. Ask the owner for the official digital nominee badge Unity sent. Do not recreate a Unity laurel. Section 12 title/logo rights are for winners only; showing the nominee badge is covered only by the section 9 line about sharing it on \"storefronts and socials\".",
+    "Surname. Kodeco credits \"Jeff [the page prints his surname]\" and the Kodeco URLs contain no name, but CLAUDE.md says Jeff goes by first name only on the site. Link the tutorials without printing the surname, or get the owner's OK.",
+    "Kodeco credit accuracy. The ScriptableObject tutorial is now bylined Ben MacKinnon (\"Original post by Jeff [the page prints his surname]\"), and the Tower Defense Part 1 tutorial was an update of Barbara Reichart's original. Describe them as \"original author\" and \"updated\" respectively, not as sole authorship.",
+    "Reviews. The old site edited two quotes (Katerlad and RestingOwl merge the review title into the body; Quevanto and RestingOwl drop sentences without marks). CLAUDE.md requires exact reproduction: use the verbatim title and body from this file, or mark cuts with an ellipsis.",
+    "Rating display. Unity stores the average as 5 (rounded) but the publisher page shows 4.9 (31 five-star + 3 four-star = 4.91). Say \"4.9 out of 5 from 34 reviews\" or \"34 reviews, 31 of them five-star\"; avoid \"5 stars\".",
+    "Price. $24.99 is a sale price on the access date. Show the regular $49.99, or no price, and link to the listing for the current price.",
+    "Unity version wording. The listing says \"Supports Unity LTS versions 2020.3 and up\"; the listing's \"Original Unity version\" is 2022.3.62 (Unity does not say what this field means beyond its label). Use the 2020.3+ claim, citing the listing."
+  ]
+}

@@ -1,0 +1,1219 @@
+{
+  "generated": "2026-11-21",
+  "notes": [
+    "One object per project in `projects`. Facts carry their source URLs in `sources`. `roleAsStated` quotes the old WordPress site (archive/wordpress/pages/*.md, archive/blog/*.md) word for word; nothing else is a source for roles.",
+    "linkStatus values: OK (HTTP 200 at the listed URL), REDIRECT (works, lands elsewhere), BOT-BLOCKED (site refuses automated clients; existence confirmed another way), LOGIN-WALLED, DEAD (with replacement).",
+    "cover paths are relative to the repo root. coverShape is landscape unless noted. extraImages are the old-site portrait/banner art copied in.",
+    "UNVERIFIED marks anything not confirmed from a live official page or the old site.",
+    "Second pass 2026-11-21: projects with \"secondPass\": true were re-researched; their url, linkStatus, cover, and description supersede the first pass."
+  ],
+  "projects": [
+    {
+      "slug": "lanebreak",
+      "group": "Showcase and client games",
+      "title": "Lanebreak",
+      "owner": "Peloton",
+      "type": "game",
+      "platforms": [
+        "Peloton Bike",
+        "Peloton Bike+"
+      ],
+      "years": "2022",
+      "description": "A gaming-inspired workout on the Peloton Bike and Bike+: riders steer a wheel along a six-lane track with the resistance knob, chasing points through music-driven levels. It arrived for All-Access Members on February 17, 2022.",
+      "url": "https://www.onepeloton.com/bike/lanebreak",
+      "linkStatus": "OK (200). The Games and Home pages link https://www.onepeloton.com/en-AU/blog/lanebreak instead, also 200.",
+      "cover": "src/assets/portfolio/lanebreak.jpg",
+      "coverShape": "landscape 1200x630",
+      "extraImages": [
+        "src/assets/portfolio/lanebreak-portrait.jpg"
+      ],
+      "listedBy": [
+        "jeff",
+        "studio"
+      ],
+      "roleAsStated": "Jeff's page, Health and Fitness Games: \"Lanebreak by Peloton\". Games and Home pages: showcase tile, no role stated.",
+      "sources": [
+        "https://www.onepeloton.com/bike/lanebreak",
+        "https://www.onepeloton.com/en-AU/blog/lanebreak"
+      ]
+    },
+    {
+      "slug": "cell-to-singularity",
+      "group": "Showcase and client games",
+      "title": "Cell to Singularity - Evolution Never Ends",
+      "owner": "Computer Lunch",
+      "type": "game",
+      "platforms": [
+        "iOS",
+        "Android",
+        "Windows",
+        "macOS",
+        "Web browser"
+      ],
+      "years": "2019 (current iOS listing date); Steam release Nov 3, 2021",
+      "description": "An idle clicker game about the evolution of life: start as a single cell and upgrade biology, intellect, and technology until a civilization reaches the brink of technological singularity.",
+      "url": "https://celltosingularity.com/",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/cell-to-singularity.jpg",
+      "coverShape": "landscape 1920x1080 (official press-kit screenshot \"1. Cells_Tardigrade.png\", no UI). The press kit has no key-art folder (folders: GIFs, Logos, Press Releases, Screenshots, Trailers).",
+      "extraImages": [
+        "src/assets/portfolio/cell-to-singularity-steam-hero.jpg",
+        "src/assets/portfolio/cell-to-singularity-portrait.jpg"
+      ],
+      "listedBy": [
+        "jeff",
+        "studio"
+      ],
+      "roleAsStated": "Jeff's page, Indie Games: \"Cell to Singularity by Computer Lunch\". Games and Home pages: showcase tile, no role stated.",
+      "sources": [
+        "https://celltosingularity.com/",
+        "https://store.steampowered.com/app/977400/",
+        "https://apps.apple.com/us/app/cell-to-singularity-evolution/id1327555461",
+        "https://play.google.com/store/apps/details?id=com.computerlunch.evolution",
+        "https://drive.google.com/drive/folders/1S2MF8mYFM5jP3AiZ-iNSojO0pkv1ZsWB"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "travelers-refrain",
+      "group": "Showcase and client games",
+      "title": "Traveler's Refrain",
+      "owner": "Red Essence Games (developer); indie.io (publisher)",
+      "type": "game",
+      "platforms": [
+        "Windows (Steam)"
+      ],
+      "years": "2025 (released Apr 11, 2025)",
+      "description": "A song-casting, story-driven action RPG: wield a magical instrument, explore a forbidden forest, and help Traveler reunite with his lost love while defying the mecha-goddesses of fate.",
+      "url": "https://store.steampowered.com/app/2679660/Travelers_Refrain/",
+      "linkStatus": "OK (200). Store name is spelled \"Traveler's Refrain\"; the old site writes \"Travelers Refrain\".",
+      "cover": "src/assets/portfolio/travelers-refrain.jpg",
+      "coverShape": "landscape 616x353",
+      "extraImages": [
+        "src/assets/portfolio/travelers-refrain-portrait.jpg"
+      ],
+      "listedBy": [
+        "jeff",
+        "studio"
+      ],
+      "roleAsStated": "Jeff's page, Indie Games: \"Travelers Refrain by Red Essence Games\". Games and Home pages: showcase tile, no role stated.",
+      "sources": [
+        "https://store.steampowered.com/app/2679660/Travelers_Refrain/",
+        "https://store.steampowered.com/api/appdetails?appids=2679660"
+      ]
+    },
+    {
+      "slug": "citytopia",
+      "group": "Showcase and client games",
+      "title": "Citytopia",
+      "owner": "Atari with developer Nvizzio Creations at launch (TouchTapPlay, Feb 1, 2019); published by Reliance Games in collaboration with Atari since Nov 2022 (PocketGamer.biz); current store developer Reliance Entertainment Studios UK Pvt Ltd",
+      "type": "game",
+      "platforms": [
+        "iOS",
+        "Android"
+      ],
+      "years": "2019. Sources: iOS launch by Atari and Nvizzio reported Feb 1, 2019 (TouchTapPlay); current App Store listing date May 30, 2019 (Apple); Reliance publishing deal announced Nov 16, 2022 (PocketGamer.biz)",
+      "description": "A mobile city-building game from the makers of RollerCoaster Tycoon Touch: unlock neighborhoods, place buildings, and collect card packs to grow a hamlet into a sprawling city.",
+      "url": "https://nvizzio.com/game/citytopia/",
+      "linkStatus": "OK (200). Nvizzio page has no store links. Stores (200): https://apps.apple.com/us/app/citytopia-build-your-own-city/id1460807595 (Reliance Games, updated Nov 6, 2026) and https://play.google.com/store/apps/details?id=com.atari.mobile.citytopia (Reliance Entertainment Studios UK Pvt Ltd, updated Nov 6, 2026). Not on Steam.",
+      "cover": "src/assets/portfolio/citytopia.jpg",
+      "coverShape": "landscape 3200x1800 (official store screenshot with 'Build your city' caption)",
+      "extraImages": [
+        "src/assets/portfolio/citytopia-portrait.jpg"
+      ],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Indie Games: \"Citytopia by Reliance Games\".",
+      "sources": [
+        "https://nvizzio.com/game/citytopia/",
+        "https://apps.apple.com/us/app/citytopia-build-your-own-city/id1460807595",
+        "https://play.google.com/store/apps/details?id=com.atari.mobile.citytopia",
+        "https://www.touchtapplay.com/build-your-dream-city-in-ataris-citytopia-now-on-ios/",
+        "http://www.pocketgamer.biz/reliance-games-partners-with-atari-to-publish-city-builder-and-management-game-citytopia/"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "genfanad",
+      "group": "Showcase and client games",
+      "title": "Genfanad: A Generic Fantasy Adventure",
+      "owner": "Rose Tinted Games LLC",
+      "type": "game",
+      "platforms": [
+        "Web browser (per 2022 trailer)",
+        "Windows, macOS, Linux (Steam, upcoming)"
+      ],
+      "years": "Sources disagree: the official Release Date Trailer (Aug 31, 2022) announced a browser release on September 27, 2022; Steam currently lists the release date as \"To be announced\". Alpha trailer Jul 16, 2021; Kickstarter launch trailer May 31, 2022.",
+      "description": "An MMORPG and trading-card-game hybrid where deckbuilding meets bosses, dungeons, and cooperative quests; players level skills, upgrade gear, and collect cards.",
+      "url": "https://genfanad.com/",
+      "linkStatus": "REDIRECT: genfanad.com now forwards to the Steam page https://store.steampowered.com/app/1976290/Genfanad_A_Generic_Fantasy_Adventure/ (200)",
+      "cover": "src/assets/portfolio/genfanad.jpg",
+      "coverShape": "landscape 616x353",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page, Indie Games: \"Genfanad — Rose Tinted Games\". Separately, Additional Industry Experience: \"Rose Tinted Games — Marketing Consultant: Social media marketing, influencer outreach, paid advertising, public relations, email campaigns, marketing automation, and content creation.\" (the page does not tie that line to Genfanad by name).",
+      "sources": [
+        "https://store.steampowered.com/app/1976290/Genfanad_A_Generic_Fantasy_Adventure/",
+        "https://www.youtube.com/watch?v=pqXv3wsS_EM"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "robo-puzzle-smash",
+      "group": "Showcase and client games",
+      "title": "Robo Puzzle Smash",
+      "owner": "Pxlplz",
+      "type": "game",
+      "platforms": [
+        "Windows",
+        "macOS",
+        "Linux (Steam)"
+      ],
+      "years": "2018 (released Nov 15, 2018)",
+      "description": "A competitive block-dropping puzzle game: drop blocks, rotate your field to match colors, and set up combos against an opponent.",
+      "url": "https://store.steampowered.com/app/792850/Robo_Puzzle_Smash/",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/robo-puzzle-smash.jpg",
+      "coverShape": "landscape 616x353",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page, Indie Games: \"Robo Puzzle Smash — Pxlplz\"; Additional Industry Experience: \"Robo Puzzle Smash — PR & Community Consultant: Public relations, community engagement, and promotional support.\"",
+      "sources": [
+        "https://store.steampowered.com/app/792850/Robo_Puzzle_Smash/"
+      ]
+    },
+    {
+      "slug": "save-samia",
+      "group": "Showcase and client games",
+      "title": "Save Samia",
+      "owner": "LaToya Forever (LaToya's Life); App Store seller IWL Enterprises Inc.",
+      "type": "game",
+      "platforms": [
+        "iOS",
+        "Android",
+        "Facebook (per the 2017 old-site blog; listings now gone)"
+      ],
+      "years": "2016 (released October 7, 2016, per the old blog); last App Store update Sep 24, 2019 (version 1.2, archived listing)",
+      "description": "An endless runner made for YouTube creator LaToya Forever: help her daughter Samia past obstacles and traps through the streets of Toronto, unlock characters from the LaToya's Life channel, and climb the leaderboard.",
+      "url": "https://www.youtube.com/watch?v=UOKxWUQqUD4&t=58s",
+      "linkStatus": "OK (200) for the old-site YouTube link (a Stud 456 gameplay video). The game is delisted: App Store id1144180928 and Google Play com.latoyaforever.savesamia are gone, no Play or App Store search hit, savesamia.com does not answer. Archived: App Store http://web.archive.org/web/20220625224501/https://apps.apple.com/us/app/save-samia/id1144180928 , Google Play http://web.archive.org/web/20200306200444/https://play.google.com/store/apps/details?id=com.latoyaforever.savesamia , site http://web.archive.org/web/20220703050130/https://savesamia.com/",
+      "cover": "src/assets/portfolio/save-samia.jpg",
+      "coverShape": "landscape 2688x1242 (App Store screenshot, title screen; image still served by Apple's CDN)",
+      "extraImages": [
+        "src/assets/portfolio/save-samia-portrait.png"
+      ],
+      "listedBy": [
+        "jeff",
+        "jeremy",
+        "studio"
+      ],
+      "roleAsStated": "Jeff's page: \"Save Samia by LaToya Forever\". Jeremy's page: \"Save Samia — LaToya Forever\". Games page: tile. Old blog post archive/blog/2017-02-05-save-samia-endless-arcade-runner.md: \"Luna Wolf Studios headed the development process\"; team list names Jeff \"(student) project lead and programmer\" and Jeremy \"(student) on 3D assets\" (the post uses surnames).",
+      "sources": [
+        "https://www.youtube.com/watch?v=UOKxWUQqUD4",
+        "archive/blog/2017-02-05-save-samia-endless-arcade-runner.md",
+        "http://web.archive.org/web/20220625224501/https://apps.apple.com/us/app/save-samia/id1144180928",
+        "http://web.archive.org/web/20220703050130/https://savesamia.com/"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "fruit-slinger",
+      "group": "Showcase and client games",
+      "title": "Fruit Slinger",
+      "owner": "Exalt Games (YouTube channel 'Exalt Games'; the video calls the studio Exalt Game Studios)",
+      "type": "game",
+      "platforms": [
+        "iOS",
+        "Android (per the trailer title)"
+      ],
+      "years": "2014 (trailer uploaded Aug 12, 2014; Technical.ly reported on Oct 10, 2014 that it was \"recently released on both mobile platforms\")",
+      "description": "A family-friendly Wild West target-practice game: help Sheriff Larry the Lemur by slinging fruit at moving targets, with 60+ unlockable challenges and four play modes.",
+      "url": "https://www.youtube.com/watch?v=Xto2EFAmkeg",
+      "linkStatus": "OK (200) for the trailer. No current store listing: App Store and Google Play searches return only unrelated games (Visigo's \"Fruit Slinger – Juicy Shooter\", Animal Jam's mini-game); no Wayback copy of a store page found. Release confirmed by Technical.ly: https://technical.ly/delaware/2014/10/10/exalt-games-wilmington-u-incubator/ and an iPhone review video (2014-10-02): https://www.youtube.com/watch?v=gzdTNJagmBI",
+      "cover": "src/assets/portfolio/fruit-slinger.jpg",
+      "coverShape": "landscape 1280x720 (YouTube thumbnail)",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page, Indie Games: \"Fruit Slinger — Exalt Games\".",
+      "sources": [
+        "https://www.youtube.com/watch?v=Xto2EFAmkeg",
+        "https://technical.ly/delaware/2014/10/10/exalt-games-wilmington-u-incubator/"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "warcodes",
+      "group": "Showcase and client games",
+      "title": "Warcodes - AI RPG Game",
+      "owner": "Cozy Orchards, LLC (App Store seller, Google Play developer \"COZY ORCHARDS LLC\", official YouTube channel \"Cozy Orchards (Warcodes)\"). Emergent Worlds (https://emergentworlds.com/), the client the old site names, presents itself as an AI-native game studio and links \"Play Warcodes\" to warcodes.app; the corporate relationship is not stated.",
+      "type": "game",
+      "platforms": [
+        "iOS",
+        "Android",
+        "Windows (Google Play Games, per the Play listing)"
+      ],
+      "years": "2024 (App Store release Oct 9, 2024)",
+      "description": "A mobile creature-collecting battler: scan barcodes on everyday products to generate one-of-a-kind AI-made monsters, build teams, and battle other players.",
+      "url": "https://warcodes.app/",
+      "linkStatus": "No link on the old site. Official site https://warcodes.app/ (200); App Store https://apps.apple.com/us/app/warcodes/id6670556885 and Google Play https://play.google.com/store/apps/details?id=com.cozyorchards.warcodes (200, updated Sep 26, 2026); Emergent Worlds https://emergentworlds.com/ links to warcodes.app. Not on Steam.",
+      "cover": "src/assets/portfolio/warcodes.jpg",
+      "coverShape": "landscape 1280x720 (thumbnail of the official trailer \"Create monsters from real world products (Warcodes)\", Cozy Orchards channel, 2025-08-16)",
+      "extraImages": [
+        "src/assets/portfolio/warcodes-square.png"
+      ],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page, Professional Software Development Experience: \"Emergent Worlds — Unity Developer (2025). Developed achievement systems, progression logic, reusable C# data structures, and user interfaces for Warcodes, a mobile game.\"",
+      "sources": [
+        "https://warcodes.app/",
+        "https://apps.apple.com/us/app/warcodes/id6670556885",
+        "https://www.gamespress.com/Warcodes-Just-Got-Its-Own-Universe-with-the-Welcome-to-Warcodia-Update",
+        "https://emergentworlds.com/",
+        "https://www.youtube.com/watch?v=bQRtEhLVFLg",
+        "https://play.google.com/store/apps/details?id=com.cozyorchards.warcodes"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "beacon-of-hope",
+      "group": "Showcase and client games",
+      "title": "Beacon of Hope",
+      "owner": "Damocles Thread Development (Kickstarter creator)",
+      "type": "game",
+      "platforms": [
+        "UNVERIFIED"
+      ],
+      "years": "2015 (Kickstarter campaign Sep 30 - Oct 30, 2015)",
+      "description": "A logic game about eliminating corrosion and lighting beacons in a neon, computer-themed world. Its 2015 Kickstarter from Newark, Delaware raised $2,094 of a $9,000 goal and was not funded.",
+      "url": "https://www.kickstarter.com/projects/673212907/beacon-of-hope",
+      "linkStatus": "NOT DEAD: Kickstarter shows a Cloudflare \"Performing security verification\" page to headless Edge as well as to curl, so liveness cannot be judged automatically. Kicktraq mirrors the campaign: https://www.kicktraq.com/projects/673212907/beacon-of-hope/ . No Wayback snapshot.",
+      "cover": "src/assets/portfolio/beacon-of-hope.jpg",
+      "coverShape": "4:3 640x480 (Kickstarter project photo; caption reads 'Game footage is alpha')",
+      "extraImages": [
+        "src/assets/portfolio/beacon-of-hope-portrait.jpg"
+      ],
+      "listedBy": [
+        "studio"
+      ],
+      "roleAsStated": "Games page, Game Jam Graveyard: tile linking the Kickstarter, no role stated.",
+      "sources": [
+        "https://www.kicktraq.com/projects/673212907/beacon-of-hope/"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "ok-ko-under-siege",
+      "group": "Showcase and client games",
+      "title": "OK K.O.! Under Siege",
+      "owner": "Cartoon Network",
+      "type": "game",
+      "platforms": [
+        "UNVERIFIED (the video describes a mobile game)"
+      ],
+      "years": "2018 (video uploaded 2018-03-17)",
+      "description": "A game made at Cartoon Network's game jam for a new OK K.O.! Let's Be Heroes mobile game; the linked Cartoon Network video goes behind the scenes of that jam.",
+      "url": "https://www.youtube.com/watch?v=52Ly5DmDsvk",
+      "linkStatus": "OK (200). Video title: \"Building a NEW Game: Game Jam | OK K.O.! Let's Be Heroes | Cartoon Network\". The Cartoon Network video does not use the name \"Under Siege\"; a Wilmington University post of June 19, 2018 lists \"LWPT Under Siege\" among Luna Wolf Studios' games. No store listing found.",
+      "cover": "src/assets/portfolio/ok-ko-under-siege.jpg",
+      "coverShape": "landscape 1280x720 (YouTube thumbnail)",
+      "extraImages": [
+        "src/assets/portfolio/ok-ko-under-siege-portrait.jpg"
+      ],
+      "listedBy": [
+        "jeff",
+        "jeremy",
+        "studio"
+      ],
+      "roleAsStated": "Jeff's page, Game Jams: \"OK K.O.! Under Siege by Cartoon Network\". Jeremy's page, Game Jams: \"OK K.O.! Under Siege — Cartoon Network\". Games page: tile.",
+      "sources": [
+        "https://www.youtube.com/watch?v=52Ly5DmDsvk",
+        "https://blog.wilmu.edu/news/2018/06/19/games-inspire-science-super-heroes/"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "saebovr",
+      "group": "Health, therapy, and training",
+      "title": "SaeboVR",
+      "owner": "Barron Associates (developer); sold by Saebo",
+      "type": "VR therapy software",
+      "platforms": [
+        "Microsoft Kinect (PC)"
+      ],
+      "years": "Saebo article dated July 11, 2017; efficacy study Feb 2016 - Feb 2017 (Barron)",
+      "description": "Upper-extremity rehabilitation software for stroke survivors built around activities of daily living: a Microsoft Kinect tracks shoulder and elbow movement, and a virtual assistant guides patients through simulated self-care tasks with real-time feedback.",
+      "url": "https://www.saebo.com/blogs/clinical-article/benefits-virtual-reality-stroke-rehabilitation",
+      "linkStatus": "OK (200). Saebo article \"Benefits of Virtual Reality for Stroke Rehabilitation\" (dated July 11, 2017) describes Saebo VR; used as the link at the owner's direction. The old Games-page link https://www.saebo.com/products/saebovr returns 429 to curl (throttle) but renders as \"404 Not Found – Saebo\" (og:url /404) in headless Edge, so the product page itself is gone; archive: http://web.archive.org/web/20251013153632/https://www.saebo.com/products/saebovr. Barron page still 200.",
+      "cover": "src/assets/portfolio/saebovr.jpg",
+      "coverShape": "landscape 2560x1440 (Saebo product image, still served by Saebo's CDN)",
+      "extraImages": [
+        "src/assets/portfolio/saebovr-banner.jpg",
+        "src/assets/portfolio/saebovr-article.jpg"
+      ],
+      "listedBy": [
+        "jeff",
+        "studio"
+      ],
+      "roleAsStated": "Jeff's page, Health and Fitness Games: \"SaeboVR by Barron Associates\". Games page, Immersive Experiences: banner, no role stated.",
+      "sources": [
+        "https://www.barron-associates.com/about/projects/saebovr-upper-extremity-therapy-software/",
+        "http://web.archive.org/web/20251013153632/https://www.saebo.com/products/saebovr",
+        "https://www.saebo.com/blogs/clinical-article/benefits-virtual-reality-stroke-rehabilitation"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "kneebright",
+      "group": "Health, therapy, and training",
+      "title": "KneeBRIGHT (Knee Biofeedback Rehabilitation Interface for Game-based Home Therapy)",
+      "owner": "Barron Associates",
+      "type": "VR therapy software",
+      "platforms": [
+        "UNVERIFIED (home system with wireless EMG sensors)"
+      ],
+      "years": "UNVERIFIED on Barron's page; the studio's own Anatomy of Play exhibition lists 2019",
+      "description": "A home rehabilitation system for knee osteoarthritis that pairs wireless electromyography (EMG) biofeedback with video games to guide progressive muscle-strengthening exercise. Supported by NIH NIAMS; a pilot with 19 patients showed significant gains in torque, engagement, and exercise duration.",
+      "url": "https://www.barron-associates.com/about/projects/kneebright/",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/kneebright.jpg",
+      "coverShape": "landscape 1983x1078",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Health and Fitness Games: \"KneeBRIGHT by Barron Associates\".",
+      "sources": [
+        "https://www.barron-associates.com/about/projects/kneebright/",
+        "https://tools.lunawolfstudios.com/anatomy-of-play/"
+      ]
+    },
+    {
+      "slug": "move-it",
+      "group": "Health, therapy, and training",
+      "title": "MOVE-IT (Motivating Occupational Virtual Experiences In Therapy for kids)",
+      "owner": "Barron Associates",
+      "type": "VR therapy software",
+      "platforms": [
+        "UNVERIFIED (therapy software plus a custom smart toy)"
+      ],
+      "years": "2020 (NIH Phase II SBIR award announced Sep 30, 2020). The studio's Anatomy of Play exhibition says 2018; conflict UNVERIFIED.",
+      "description": "A telehealth gaming system for children with hemiplegia: therapy software and a custom smart toy deliver skill-targeted mini-games for home exercise with remote monitoring, funded by an NIH Phase II SBIR grant.",
+      "url": "https://www.barron-associates.com/awards/barron-associates-to-develop-telehealth-system-for-pediatric-upper-extremity-therapy/",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/move-it.png",
+      "coverShape": "landscape but SMALL 281x191 (largest gameplay image Barron publishes; its media library has nothing larger)",
+      "extraImages": [
+        "src/assets/portfolio/move-it-smart-toy.png"
+      ],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Health and Fitness Games: \"MOVE-IT by Barron Associates\".",
+      "sources": [
+        "https://www.barron-associates.com/awards/barron-associates-to-develop-telehealth-system-for-pediatric-upper-extremity-therapy/",
+        "https://www.barron-associates.com/wp-content/uploads/2019/10/moveit.png"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "icare",
+      "group": "Health, therapy, and training",
+      "title": "iCare (Vision Therapy Based on Computer Gaming)",
+      "owner": "Barron Associates",
+      "type": "VR therapy software",
+      "platforms": [
+        "Computer with webcam and red-cyan anaglyph glasses"
+      ],
+      "years": "UNVERIFIED on Barron's page (NEI-sponsored trial expected to finish Summer 2020); the studio's Anatomy of Play exhibition lists 2018",
+      "description": "A video game system for vision therapy in children with amblyopia or convergence insufficiency: a webcam tracks anaglyph glasses so mini-games keep a consistent visual challenge, and therapy progress unlocks an open world.",
+      "url": "https://www.barron-associates.com/about/projects/vision-therapy-based-on-computer-gaming/",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/icare.png",
+      "coverShape": "landscape 774x540 (Barron media library image, uploaded 2018-10-18: dragon open world with a mini-game board)",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Health and Fitness Games: \"iCARE by Barron Associates\".",
+      "sources": [
+        "https://www.barron-associates.com/about/projects/vision-therapy-based-on-computer-gaming/",
+        "https://www.barron-associates.com/wp-content/uploads/2018/10/iCare.png"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "flexsledding",
+      "group": "Health, therapy, and training",
+      "title": "mTrigger Flex Sledding",
+      "owner": "mTrigger, LLC",
+      "type": "game",
+      "platforms": [
+        "Android (Google Play)",
+        "iOS (App Store)"
+      ],
+      "years": "2019 (App Store release Mar 9, 2019); Google Play package com.mTrigger.FlexSledding2023; Play updated Sep 22, 2026; iOS version 1.84 of Sep 28, 2026",
+      "description": "A biofeedback therapy game for the mTrigger wireless EMG system: patients flex their muscles to steer a sled past rocks and collect medals, with reps and contract/relax times set per exercise.",
+      "url": "https://play.google.com/store/apps/details?id=com.mTrigger.FlexSledding2023",
+      "linkStatus": "OK (200). Google Play \"mTrigger Flex Sledding\" by Mtrigger, LLC; also on the App Store: https://apps.apple.com/us/app/mtrigger-flex-sledding/id1438462797 (seller mTrigger, LLC). The old site linked the company home page https://www.mtrigger.com/ (200).",
+      "cover": "src/assets/portfolio/flexsledding.jpg",
+      "coverShape": "landscape 889x500 (Google Play screenshot, title screen)",
+      "extraImages": [
+        "src/assets/portfolio/flexsledding-icon.png"
+      ],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page, Health and VR Games: \"FlexSledding — mTrigger\"; intro: \"I've also contributed to educational games for Legends of Learning, rehabilitation software including Flex Sledding for the mTrigger, and independent games such as Haberdashery.\"",
+      "sources": [
+        "https://play.google.com/store/apps/details?id=com.mTrigger.FlexSledding2023",
+        "https://apps.apple.com/us/app/mtrigger-flex-sledding/id1438462797"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "helix",
+      "group": "Health, therapy, and training",
+      "title": "HELIX (Hearing EvaLuation using Immersive eXtended reality)",
+      "owner": "Luna Wolf Studios",
+      "type": "VR therapy software",
+      "platforms": [
+        "Oculus Quest 2",
+        "Web dashboard"
+      ],
+      "years": "2023 (pilot study with ~30 subjects in 2023; page published 2023-09-01)",
+      "description": "A VR hearing assessment for auditory processing disorder that turns digits-in-noise, pure-tone, and sound-localization tests into games, with a HIPAA-compliant AWS backend and a web dashboard for providers. Initial funding came from the Delaware Bioscience CAT grant program.",
+      "url": "https://lunawolfstudios.com/helix/",
+      "linkStatus": "OK (200). Grant link cited on the page: https://research.udel.edu/dbi-cat-grant-program/ (200; page title 'Delaware Bioscience Center for Advanced Technology (CAT) Grant Program', State-funded awards of $10,000-150,000; it does not list HELIX).",
+      "cover": "src/assets/games/helix/helix-pure-tone.jpg",
+      "coverShape": "landscape 1920x1080",
+      "extraImages": [
+        "src/assets/games/helix/helix-digits-in-noise.jpg"
+      ],
+      "listedBy": [
+        "jeff",
+        "jeremy"
+      ],
+      "roleAsStated": "Jeff's page: \"HELIX by Luna Wolf Studios\". Jeremy's page: \"HELIX — Luna Wolf Studios\" and \"At Luna Wolf Studios, I've helped develop, fund, and publish projects including HELIX, a gamified virtual reality hearing assessment developed in collaboration with Nemours Children's Hospital\". The HELIX page says \"Our team consists of experienced audiologists and VR developers\".",
+      "sources": [
+        "https://lunawolfstudios.com/helix/",
+        "https://research.udel.edu/dbi-cat-grant-program/"
+      ]
+    },
+    {
+      "slug": "asurion-vr-soft-skills-training",
+      "group": "Health, therapy, and training",
+      "title": "Asurion VR soft-skills training",
+      "owner": "Asurion",
+      "type": "VR training",
+      "platforms": [
+        "Meta Quest 2"
+      ],
+      "years": "2021",
+      "description": "A virtual reality soft-skills training experience for Meta Quest 2 with 360-degree video, composited actors, backend activity tracking, and analytics (old-site wording; no public page).",
+      "url": null,
+      "linkStatus": "No link on the old site.",
+      "cover": null,
+      "coverShape": "none",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page: \"Asurion — VR Developer & Simulation Designer (2021). Designed and developed a virtual reality soft-skills training experience for Meta Quest 2, integrating 360-degree video, composited actors, backend activity tracking, and analytics.\"",
+      "sources": [
+        "archive/wordpress/pages/about-jeremy.md"
+      ]
+    },
+    {
+      "slug": "syneos-health-unity-work",
+      "group": "Health, therapy, and training",
+      "title": "Syneos Health Unity work",
+      "owner": "Syneos Health",
+      "type": "app",
+      "platforms": [
+        "Apple Vision Pro (Shader Graph materials)"
+      ],
+      "years": "2025",
+      "description": "Unity software for healthcare and pharmaceutical applications, including Apple Vision Pro Shader Graph materials, Figma-based interfaces, and Chinese-language localization (old-site wording; no public page).",
+      "url": null,
+      "linkStatus": "No link on the old site.",
+      "cover": null,
+      "coverShape": "none",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page: \"Syneos Health — Unity Developer (2025). Developed Unity software for healthcare and pharmaceutical applications, including Apple Vision Pro Shader Graph materials, implementation of Figma-based interfaces, and localization for Chinese-language users.\"",
+      "sources": [
+        "archive/wordpress/pages/about-jeremy.md"
+      ]
+    },
+    {
+      "slug": "smu-mixed-reality",
+      "group": "Health, therapy, and training",
+      "title": "Southern Methodist University mixed-reality software",
+      "owner": "Southern Methodist University",
+      "type": "app",
+      "platforms": [
+        "Meta Quest 2",
+        "Stereolabs ZED depth cameras"
+      ],
+      "years": "2024",
+      "description": "Interactive mixed-reality software integrating Stereolabs ZED depth cameras with Meta Quest 2 hardware (old-site wording; no public page).",
+      "url": null,
+      "linkStatus": "No link on the old site.",
+      "cover": null,
+      "coverShape": "none",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page: \"Southern Methodist University — Unity Developer (2024). Worked on interactive mixed-reality software integrating Stereolabs ZED depth cameras with Meta Quest 2 hardware.\"",
+      "sources": [
+        "archive/wordpress/pages/about-jeremy.md"
+      ]
+    },
+    {
+      "slug": "neurosparks",
+      "group": "Education",
+      "title": "NeuroSPARKS",
+      "owner": "Barron Associates",
+      "type": "game",
+      "platforms": [
+        "UNVERIFIED (controlled by arm-muscle EMG sensors)"
+      ],
+      "years": "2022 (won the 2022 Back to School Tech & Learning Award of Excellence); the studio's Anatomy of Play exhibition lists 2021",
+      "description": "An NIH-funded game system for middle school science, controlled by sensors that read arm muscle activity. It includes Neurobots (life science) and Total Energy (physical science) and won a 2022 Tech & Learning Award of Excellence.",
+      "url": "https://www.barron-associates.com/about/projects/neurosparks/",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/neurosparks.png",
+      "coverShape": "landscape 772x461 (Neurobots screenshot)",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Educational Games: \"NeuroSPARKS by Barron Associates\".",
+      "sources": [
+        "https://www.barron-associates.com/about/projects/neurosparks/"
+      ]
+    },
+    {
+      "slug": "empathie",
+      "group": "Education",
+      "title": "EMPATHIE",
+      "owner": "Barron Associates",
+      "type": "game",
+      "platforms": [
+        "UNVERIFIED (uses a wireless EMG sensor as the controller)"
+      ],
+      "years": "2021 (pilot testing post, Aug 31, 2021); NIH Phase II award announced May 31, 2023",
+      "description": "An educational game that gives middle school students an immersive look at life with a motor disability and promotes design thinking about mobility challenges, controlled by a wireless EMG sensor. A pilot with 48 students showed significant learning gains.",
+      "url": "https://www.barron-associates.com/research-updates/barron-associates-completes-pilot-testing-with-middle-school-students-for-empathie-video-game/",
+      "linkStatus": "OK (200)",
+      "cover": null,
+      "coverShape": "none: neither Barron post has an image",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Educational Games: \"EMPATHIE by Barron Associates\".",
+      "sources": [
+        "https://www.barron-associates.com/research-updates/barron-associates-completes-pilot-testing-with-middle-school-students-for-empathie-video-game/",
+        "https://www.barron-associates.com/awards/barron-associates-receives-nih-phase-ii-award-to-develop-empathie-video-game-for-middle-school-students/"
+      ]
+    },
+    {
+      "slug": "lab-rat",
+      "group": "Education",
+      "title": "Lab Rat (series on Legends of Learning: Lab Rat Molecule Maker, Lab Rat Fungus Muncher, Lab Rat Math Cannon)",
+      "owner": "Legends of Learning",
+      "type": "game",
+      "platforms": [
+        "Web (Legends of Learning classroom platform)"
+      ],
+      "years": "UNVERIFIED (Wilmington University reported on June 19, 2018 that Luna Wolf Studios had made five Legends of Learning games; it does not name them)",
+      "description": "A series of instructional games on Legends of Learning hosted by the scientist rat Ratilda: Molecule Maker (form molecules with the Moleculizer 2000), Fungus Muncher (asexual vs. sexual reproduction across six labs), and Math Cannon (word problems with math symbols).",
+      "url": "https://teachers.legendsoflearning.com/assignments/b256f087/atoms-and-elements",
+      "linkStatus": "Old link https://www.legendsoflearning.com/ is the publisher home page (200). Legends of Learning has no standalone game pages; the Lab Rat games appear in public lesson pages (200): Molecule Maker https://teachers.legendsoflearning.com/assignments/b256f087/atoms-and-elements , Fungus Muncher https://teachers.legendsoflearning.com/assignments/6f615c8b/reproduction-assignment , Math Cannon https://teachers.legendsoflearning.com/assignments/304ba5b7/investigate-the-concept-of-variables-5-19a-assignment . Not on Google Play or the App Store. Which Lab Rat titles the old site means is not stated.",
+      "cover": "src/assets/portfolio/lab-rat.png",
+      "coverShape": "SQUARE 400x400 (Legends of Learning game thumbnail, Molecule Maker); no landscape art exists",
+      "extraImages": [
+        "src/assets/portfolio/lab-rat-fungus-muncher.png",
+        "src/assets/portfolio/lab-rat-math-cannon.png",
+        "src/assets/portfolio/lab-rat-portrait.jpg"
+      ],
+      "listedBy": [
+        "jeff",
+        "jeremy",
+        "studio"
+      ],
+      "roleAsStated": "Jeff's page: \"Lab Rat by Legends of Learning\". Jeremy's page: \"Lab Rat — Legends of Learning\" and \"I've also contributed to educational games for Legends of Learning\". Games page, Game Jam Graveyard: tile.",
+      "sources": [
+        "https://teachers.legendsoflearning.com/assignments/b256f087/atoms-and-elements",
+        "https://teachers.legendsoflearning.com/assignments/6f615c8b/reproduction-assignment",
+        "https://teachers.legendsoflearning.com/assignments/304ba5b7/investigate-the-concept-of-variables-5-19a-assignment",
+        "https://blog.wilmu.edu/news/2018/06/19/games-inspire-science-super-heroes/"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "eternia-the-quest",
+      "group": "Education",
+      "title": "Eternia: The Quest",
+      "owner": "Luna Wolf Studios",
+      "type": "game",
+      "platforms": [
+        "UNVERIFIED (downloadable .zip)"
+      ],
+      "years": "UNVERIFIED",
+      "description": "UNVERIFIED: the link is a Google Drive download named \"Eternia The Quest_v1.0.zip\"; no description exists online.",
+      "url": "https://drive.google.com/file/d/0B6OjWEv_hksBM0o1LU5oUFlwVms/view?resourcekey=0-CzXsv1vOcxscbg1AceeyjA",
+      "linkStatus": "OK (200; file 'Eternia The Quest_v1.0.zip' not trashed). Not downloaded.",
+      "cover": null,
+      "coverShape": "none",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page, Educational Games: \"Eternia: The Quest — Luna Wolf Studios\".",
+      "sources": [
+        "https://drive.google.com/file/d/0B6OjWEv_hksBM0o1LU5oUFlwVms/view?resourcekey=0-CzXsv1vOcxscbg1AceeyjA"
+      ]
+    },
+    {
+      "slug": "harry-potter-the-exhibition",
+      "group": "Experiences and apps",
+      "title": "Harry Potter: The Exhibition",
+      "owner": "Harry Potter: The Exhibition (press images credited 'Photo provided by Harry Potter™: The Exhibition'); world premiere at The Franklin Institute",
+      "type": "museum exhibition",
+      "platforms": [
+        "In-person exhibition (The Franklin Institute, Philadelphia)"
+      ],
+      "years": "2022 (Feb 18 - Sep 18, 2022 at The Franklin Institute)",
+      "description": "A behind-the-scenes touring exhibition celebrating the characters, settings, and beasts of Harry Potter, Fantastic Beasts, and the wider Wizarding World, with personalized interactive technology. It premiered at The Franklin Institute in 2022.",
+      "url": "https://fi.edu/en/press-room/press-kits/harry-potter-the-exhibition",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/harry-potter-the-exhibition-banner.jpg",
+      "coverShape": "wide 3000x1012, 153 KB (the press page's key-art header with the title; higher-resolution original of the old site's banner). The 5.4 MB press still from the first pass was removed.",
+      "extraImages": [],
+      "listedBy": [
+        "studio"
+      ],
+      "roleAsStated": "Games page, Immersive Experiences: banner linking the press kit, no role stated.",
+      "sources": [
+        "https://fi.edu/en/press-room/press-kits/harry-potter-the-exhibition",
+        "https://en.wikipedia.org/wiki/Harry_Potter:_The_Exhibition"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "realize",
+      "group": "Experiences and apps",
+      "title": "Realize (App Store name: Realize.Design: Home Makeover)",
+      "owner": "Realize.Design Inc. (App Store seller); listed developer Realize It LLC (US)",
+      "type": "app",
+      "platforms": [
+        "iPhone",
+        "iPad (iOS 13+); listing removed"
+      ],
+      "years": "UNVERIFIED (old site gives 2020 for the contract)",
+      "description": "A room-design and shopping app: scan a room in a minute or two, furnish it in 3D with real products from real décor brands, share designs, and buy everything through an in-app cart (archived App Store listing and site).",
+      "url": "https://www.realize.design/",
+      "linkStatus": "DEAD in a browser too: www.realize.design is a CNAME to Webflow (proxy-ssl.webflow.com) and the TLS handshake fails (headless Edge renders nothing); realize.design returns 403 (openresty); App Store id1562027549 returns 404 and is absent from the iTunes lookup in us/gb/ca/nz/es/br; no Google Play listing found. Archives: site http://web.archive.org/web/20260614171549/https://www.realize.design/ ; App Store http://web.archive.org/web/20230206234327/https://apps.apple.com/us/app/realizedesign/id1562027549",
+      "cover": "src/assets/portfolio/realize-banner.jpg",
+      "coverShape": "wide 1500x506 (old-site banner; no other art found)",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy",
+        "studio"
+      ],
+      "roleAsStated": "Jeremy's page, Apps & Interactive Software: \"Realize — Realize Design\"; Professional experience: \"Realize Design — Unity Developer (2020). Developed Unity UI systems, backend integrations, HTTP/JSON-driven functionality, and cross-platform application features, including troubleshooting and testing on iOS and Android.\" Games page: banner.",
+      "sources": [
+        "http://web.archive.org/web/20260614171549/https://www.realize.design/",
+        "http://web.archive.org/web/20230206234327/https://apps.apple.com/us/app/realizedesign/id1562027549"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "preston-and-steve-campout-for-hunger",
+      "group": "Experiences and apps",
+      "title": "Preston & Steve Campout for Hunger",
+      "owner": "Wilmington University (per old site)",
+      "type": "UNVERIFIED",
+      "platforms": [
+        "UNVERIFIED"
+      ],
+      "years": "UNVERIFIED",
+      "description": "UNVERIFIED: the linked Facebook video cannot be viewed without logging in, so the project itself could not be confirmed. Camp Out for Hunger is WMMR radio's annual Preston & Steve food drive for Philabundance in Philadelphia.",
+      "url": "https://www.facebook.com/PrestonAndSteve/videos/1545993895479466/",
+      "linkStatus": "LOGIN-WALLED: HTTP 200, but the video content is not shown to logged-out visitors.",
+      "cover": null,
+      "coverShape": "none",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page, Health and VR Games: \"Preston & Steve Campout for Hunger — Wilmington University\".",
+      "sources": [
+        "https://www.facebook.com/PrestonAndSteve/videos/1545993895479466/",
+        "https://www.cordish.com/News/Articles/2021110_WMMR_Philadelphias-Preston-Steves-Camp-Out-For-Hunger-2021"
+      ]
+    },
+    {
+      "slug": "anatomy-of-play",
+      "group": "Web apps",
+      "title": "Anatomy of Play",
+      "owner": "Luna Wolf Studios",
+      "type": "web app",
+      "platforms": [
+        "Web"
+      ],
+      "years": "UNVERIFIED",
+      "description": "An interactive web exhibition, \"Portfolio Exhibition By Jeff\", of serious games for health and fitness, organized by body region with summaries, highlights, and media for each game.",
+      "url": "https://tools.lunawolfstudios.com/anatomy-of-play/",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/anatomy-of-play.png",
+      "coverShape": "landscape 1280x800 screenshot",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Web Apps: \"Anatomy of Play – Serious Games for Health and Fitness.\"",
+      "sources": [
+        "https://tools.lunawolfstudios.com/anatomy-of-play/"
+      ]
+    },
+    {
+      "slug": "fishwatch",
+      "group": "Web apps",
+      "title": "FishWatch",
+      "owner": "Luna Wolf Studios",
+      "type": "web app",
+      "platforms": [
+        "Web"
+      ],
+      "years": "UNVERIFIED",
+      "description": "A stopwatch web app with start, lap, and reset controls under the tagline \"Every second makes a ripple\".",
+      "url": "https://tools.lunawolfstudios.com/fishwatch",
+      "linkStatus": "OK (200, redirects to the trailing-slash URL https://tools.lunawolfstudios.com/fishwatch/)",
+      "cover": "src/assets/portfolio/fishwatch.png",
+      "coverShape": "landscape 1280x800 screenshot",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Web Apps: \"FishWatch – Every second makes a ripple.\"",
+      "sources": [
+        "https://tools.lunawolfstudios.com/fishwatch/"
+      ]
+    },
+    {
+      "slug": "reel-gains",
+      "group": "Web apps",
+      "title": "Reel Gains",
+      "owner": "Luna Wolf Studios",
+      "type": "web app",
+      "platforms": [
+        "Web"
+      ],
+      "years": "UNVERIFIED",
+      "description": "A workout tracker: start workouts, follow plans, browse exercises, and see a consistency calendar of past sessions.",
+      "url": "https://tools.lunawolfstudios.com/reel-gains",
+      "linkStatus": "OK (200, redirects to https://tools.lunawolfstudios.com/reel-gains/)",
+      "cover": "src/assets/portfolio/reel-gains.png",
+      "coverShape": "landscape 1280x800 screenshot (mobile-width layout centered, empty state)",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Web Apps: \"Reel Gains – Track every rep. Catch every gain.\"",
+      "sources": [
+        "https://tools.lunawolfstudios.com/reel-gains/"
+      ]
+    },
+    {
+      "slug": "finchat",
+      "group": "Web apps",
+      "title": "FinChat",
+      "owner": "Luna Wolf Studios (GitHub organization LunaWolfStudios)",
+      "type": "web app",
+      "platforms": [
+        "Web (self-hosted Node.js server behind NGINX)"
+      ],
+      "years": "2026 (repository created Feb 9, 2026)",
+      "description": "An open-source, self-hosted chat app with channels, search filters, and light and dark themes, built in TypeScript with a Node.js server; MIT licensed.",
+      "url": "https://github.com/LunaWolfStudios/finchat",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/finchat.jpg",
+      "coverShape": "near-square 1275x1169 (desktop screenshot from the repo's screenshots/ folder)",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Web Apps: \"FinChat – No nets. No traps. Just chat.\"",
+      "sources": [
+        "https://github.com/LunaWolfStudios/finchat"
+      ]
+    },
+    {
+      "slug": "fresh-catch",
+      "group": "Web apps",
+      "title": "Fresh Catch",
+      "owner": "Luna Wolf Studios",
+      "type": "web app",
+      "platforms": [
+        "Web"
+      ],
+      "years": "UNVERIFIED",
+      "description": "A shopping-list app: add items to lists such as Grocery, check them off as purchased, and clear the done items.",
+      "url": "https://tools.lunawolfstudios.com/fresh-catch/",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/fresh-catch.png",
+      "coverShape": "landscape 1280x800 screenshot",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Web Apps: \"Fresh Catch – Fresh List. Fresh Catch.\"",
+      "sources": [
+        "https://tools.lunawolfstudios.com/fresh-catch/"
+      ]
+    },
+    {
+      "slug": "lifequest",
+      "group": "Web apps",
+      "title": "LifeQuest: The Next Level",
+      "owner": "Luna Wolf Studios",
+      "type": "web app",
+      "platforms": [
+        "Web"
+      ],
+      "years": "UNVERIFIED",
+      "description": "A browser game about adulthood skills: mentor characters guide players through mini-games on budgeting, hygiene, nutrition, time management, recycling, boundaries, professionalism, and coping skills.",
+      "url": "https://games.lunawolfstudios.com/lifequest-the-next-level/dist/index.html",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/lifequest.png",
+      "coverShape": "landscape 1280x800 screenshot (title screen)",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Web Apps: \"LifeQuest – The Next Level.\"",
+      "sources": [
+        "https://games.lunawolfstudios.com/lifequest-the-next-level/dist/index.html"
+      ]
+    },
+    {
+      "slug": "madlads-tic-tac-toe",
+      "group": "Web apps",
+      "title": "Madlads Tic Tac Toe",
+      "owner": "Luna Wolf Studios",
+      "type": "web app",
+      "platforms": [
+        "Web"
+      ],
+      "years": "UNVERIFIED",
+      "description": "A browser tic-tac-toe variant for 1 to 8 players: get three win tokens in a row while expanding the board, placing triangle and rectangle blockers, protecting cells with dots, and crushing opponents' blocks.",
+      "url": "https://games.lunawolfstudios.com/madlads-tic-tac-toe/",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/madlads-tic-tac-toe.png",
+      "coverShape": "landscape 1280x800 screenshot taken after dismissing the How to Play dialog",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Indie Games: \"Madlads Tic Tac Toe by Luna Wolf Studios\".",
+      "sources": [
+        "https://games.lunawolfstudios.com/madlads-tic-tac-toe/"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "witch-hunter-the-invisible-world",
+      "group": "Tabletop and screen credits",
+      "title": "Witch Hunter: The Invisible World. Live Action Rules (AAE2505)",
+      "owner": "Alligator Alley Entertainment",
+      "type": "tabletop",
+      "platforms": [
+        "Paperback book, 146 pages"
+      ],
+      "years": "2018 (publication date January 9, 2018)",
+      "description": "A live-action role-playing adaptation of the Witch Hunter: The Invisible World RPG, written by Eric Wiener, with everything needed to set a cadre of Witch Hunters against the Adversary.",
+      "url": "https://www.amazon.com/Witch-Hunter-Invisible-World-AAE2505/dp/1931374988",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/witch-hunter-the-invisible-world.jpg",
+      "coverShape": "PORTRAIT 900x1357 (book cover)",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page, Tabletop and Live Action Games: \"Witch Hunter: The Invisible World — Alligator Alley Entertainment\".",
+      "sources": [
+        "https://www.amazon.com/Witch-Hunter-Invisible-World-AAE2505/dp/1931374988"
+      ]
+    },
+    {
+      "slug": "the-underground-a-sam-and-fuzzy-rpg",
+      "group": "Tabletop and screen credits",
+      "title": "The Underground: A Sam & Fuzzy RPG",
+      "owner": "Damocles Thread Development",
+      "type": "tabletop",
+      "platforms": [
+        "Tabletop RPG"
+      ],
+      "years": "2014 (Kickstarter Nov 12 - Dec 13, 2014)",
+      "description": "A tabletop role-playing game based on the long-running Sam & Fuzzy webcomic, where players become ninjas, vampires, or gerbils. Its Kickstarter raised $34,358 from 729 backers against a $17,000 goal.",
+      "url": "https://www.kickstarter.com/projects/673212907/the-underground-a-sam-and-fuzzy-rpg",
+      "linkStatus": "NOT DEAD: Kickstarter shows a Cloudflare security-verification page to headless Edge and curl. Wayback copy of 2026-03-05 shows the live campaign page: http://web.archive.org/web/20260305171617/https://www.kickstarter.com/projects/673212907/the-underground-a-sam-and-fuzzy-rpg",
+      "cover": "src/assets/portfolio/the-underground-a-sam-and-fuzzy-rpg.jpg",
+      "coverShape": "landscape 1024x576 (Kickstarter's 16:9 crop of the 1536x1152 key art)",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page, Tabletop and Live Action Games: \"The Underground: Sam and Fuzzy RPG — Damocles Thread Development\". Additional Industry Experience: \"Damocles Thread Development — Social Media Director: Community management and social media promotion.\" (not tied to a title).",
+      "sources": [
+        "http://web.archive.org/web/20260305171617/https://www.kickstarter.com/projects/673212907/the-underground-a-sam-and-fuzzy-rpg"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "tempters-an-infernally-clever-board-game",
+      "group": "Tabletop and screen credits",
+      "title": "Tempters: An Infernally Clever Board Game",
+      "owner": "Damocles Thread Development",
+      "type": "tabletop",
+      "platforms": [
+        "Board game, 2-5 players"
+      ],
+      "years": "2014 (Kickstarter funded July 4, 2014)",
+      "description": "A competitive board game for 2-5 players who play demons, from Mammon to Lilith, racing to tempt souls into hell over about 90 minutes while contending with the forces of heaven. Its Kickstarter from Philadelphia raised $15,060 of a $15,000 goal.",
+      "url": "https://www.kickstarter.com/projects/673212907/tempters-an-infernally-clever-board-game",
+      "linkStatus": "NOT DEAD: Kickstarter shows a Cloudflare security-verification page to headless Edge and curl. Wayback copy: http://web.archive.org/web/20140903120046/https://www.kickstarter.com/projects/673212907/tempters-an-infernally-clever-board-game",
+      "cover": "src/assets/portfolio/tempters-an-infernally-clever-board-game.jpg",
+      "coverShape": "4:3 640x480 (Kickstarter project photo)",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page, Tabletop and Live Action Games: \"Tempters: An Infernally Clever Board Game — Damocles Thread Development\". Additional Industry Experience: \"Damocles Thread Development — Social Media Director: Community management and social media promotion.\" (not tied to a title).",
+      "sources": [
+        "http://web.archive.org/web/20140903120046/https://www.kickstarter.com/projects/673212907/tempters-an-infernally-clever-board-game"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "hustle",
+      "group": "Tabletop and screen credits",
+      "title": "Hustle",
+      "owner": "Netflix",
+      "type": "film/TV",
+      "platforms": [
+        "Film (Netflix)"
+      ],
+      "years": "2022",
+      "description": "A 2022 American sports comedy-drama starring Adam Sandler as an NBA scout who discovers a raw talent in Spain.",
+      "url": "https://www.imdb.com/title/tt8009428/",
+      "linkStatus": "NOT DEAD: IMDb returns 403 to headless Edge and a 202 WAF challenge to curl. The title ID is confirmed by Wikidata Q103377646 (IMDb ID tt8009428).",
+      "cover": null,
+      "coverShape": "none (not requested)",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page, Acting — Background Character: \"Hustle — Adam Sandler, Netflix\".",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Hustle_(2022_film)",
+        "https://www.wikidata.org/wiki/Q103377646"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "mare-of-easttown",
+      "group": "Tabletop and screen credits",
+      "title": "Mare of Easttown",
+      "owner": "HBO",
+      "type": "film/TV",
+      "platforms": [
+        "TV miniseries (HBO)"
+      ],
+      "years": "2021 (aired April 18 - May 30, 2021)",
+      "description": "An HBO crime drama miniseries starring Kate Winslet as a detective investigating a murder in a small town outside Philadelphia.",
+      "url": "https://www.imdb.com/title/tt10155688/",
+      "linkStatus": "NOT DEAD: IMDb returns 403 to headless Edge and a 202 WAF challenge to curl. The title ID is confirmed by Wikidata Q61040213 (IMDb ID tt10155688).",
+      "cover": null,
+      "coverShape": "none (not requested)",
+      "extraImages": [],
+      "listedBy": [
+        "jeremy"
+      ],
+      "roleAsStated": "Jeremy's page, Acting — Background Character: \"Mare of Easttown — Kate Winslet, HBO\".",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mare_of_Easttown",
+        "https://www.wikidata.org/wiki/Q61040213"
+      ],
+      "secondPass": true
+    },
+    {
+      "slug": "audio-tutorial-for-unity-the-audio-mixer",
+      "group": "Tutorials",
+      "title": "Audio tutorial for Unity: the Audio Mixer",
+      "owner": "Kodeco",
+      "type": "tutorial",
+      "platforms": [
+        "Web article"
+      ],
+      "years": "2017 (released Jul 7, 2017)",
+      "description": "How to use Unity's Audio Mixer to route, group, and mix game audio.",
+      "url": "https://www.kodeco.com/532-audio-tutorial-for-unity-the-audio-mixer",
+      "linkStatus": "OK (200). Kodeco byline: Jeff (with surname).",
+      "cover": "src/assets/portfolio/audio-tutorial-for-unity-the-audio-mixer.png",
+      "coverShape": "landscape 640x320 (Kodeco social header, raywenderlich.com branding)",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Tutorials and Assets: listed as \"Audio Tutorial for Unity: the Audio Mixer\" (no role wording).",
+      "sources": [
+        "https://www.kodeco.com/532-audio-tutorial-for-unity-the-audio-mixer"
+      ]
+    },
+    {
+      "slug": "how-to-make-a-match-3-game-in-unity",
+      "group": "Tutorials",
+      "title": "How to Make a Match 3 Game in Unity",
+      "owner": "Kodeco",
+      "type": "tutorial",
+      "platforms": [
+        "Web article"
+      ],
+      "years": "2017 (released Apr 12, 2017)",
+      "description": "A Unity tutorial that builds a Match 3 game.",
+      "url": "https://www.kodeco.com/673-how-to-make-a-match-3-game-in-unity",
+      "linkStatus": "OK (200). Kodeco byline: Jeff (with surname).",
+      "cover": "src/assets/portfolio/how-to-make-a-match-3-game-in-unity.png",
+      "coverShape": "landscape 640x320 (Kodeco social header)",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Tutorials and Assets: listed as \"How to Make a Match 3 Game in Unity\".",
+      "sources": [
+        "https://www.kodeco.com/673-how-to-make-a-match-3-game-in-unity"
+      ]
+    },
+    {
+      "slug": "scriptableobject-tutorial-getting-started",
+      "group": "Tutorials",
+      "title": "ScriptableObject Tutorial: Getting Started",
+      "owner": "Kodeco",
+      "type": "tutorial",
+      "platforms": [
+        "Web article"
+      ],
+      "years": "2019 (current version released Jul 19, 2019; updated to Unity 2019.1 in May 2019); original publication date UNVERIFIED",
+      "description": "How to create and use ScriptableObjects in Unity to streamline workflow, reduce memory use, and decouple code.",
+      "url": "https://www.kodeco.com/2826197-scriptableobject-tutorial-getting-started",
+      "linkStatus": "OK (200). Current byline is Ben MacKinnon; the page says \"Update May 2019: This tutorial was updated to Unity 2019.1 by Ben MacKinnon. Original post by\" Jeff (with surname), and lists Jeff as Author.",
+      "cover": "src/assets/portfolio/scriptableobject-tutorial-getting-started.png",
+      "coverShape": "landscape 1800x900 (Kodeco social header)",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Tutorials and Assets: listed as \"ScriptableObject Tutorial: Getting Started\".",
+      "sources": [
+        "https://www.kodeco.com/2826197-scriptableobject-tutorial-getting-started"
+      ]
+    },
+    {
+      "slug": "unity-cheat-sheet-and-quick-reference-2018",
+      "group": "Tutorials",
+      "title": "Unity Cheat Sheet and Quick Reference 2018",
+      "owner": "Kodeco",
+      "type": "tutorial",
+      "platforms": [
+        "Web article (downloadable cheat sheet)"
+      ],
+      "years": "2018 (released Jan 19, 2018)",
+      "description": "A Unity cheat sheet and quick reference for questions that come up again and again while using Unity.",
+      "url": "https://www.kodeco.com/227-unity-cheat-sheet-and-quick-reference-2018",
+      "linkStatus": "OK (200). Kodeco byline: Jeff (with surname).",
+      "cover": "src/assets/portfolio/unity-cheat-sheet-and-quick-reference-2018.png",
+      "coverShape": "landscape 1800x900 (Kodeco social header)",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Tutorials and Assets: listed as \"Unity Cheat Sheet and Quick Reference 2018\".",
+      "sources": [
+        "https://www.kodeco.com/227-unity-cheat-sheet-and-quick-reference-2018"
+      ]
+    },
+    {
+      "slug": "how-to-create-a-tower-defense-game-in-unity",
+      "group": "Tutorials",
+      "title": "How to Create a Tower Defense Game in Unity – Part 1",
+      "owner": "Kodeco",
+      "type": "tutorial",
+      "platforms": [
+        "Web article"
+      ],
+      "years": "2017 (released Dec 8, 2017)",
+      "description": "Part 1 of a tutorial that builds a 2D tower defense game in Unity.",
+      "url": "https://www.kodeco.com/269-how-to-create-a-tower-defense-game-in-unity-part-1",
+      "linkStatus": "OK (200). Kodeco byline: Jeff (with surname); the page says \"This tutorial has been updated to Unity 2017.1 by\" Jeff and \"The original tutorial was written by Barbara Reichart.\"",
+      "cover": "src/assets/portfolio/how-to-create-a-tower-defense-game-in-unity.png",
+      "coverShape": "landscape 640x320 (Kodeco social header)",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Tutorials and Assets: listed as \"How to Create a Tower Defense Game in Unity\".",
+      "sources": [
+        "https://www.kodeco.com/269-how-to-create-a-tower-defense-game-in-unity-part-1"
+      ]
+    },
+    {
+      "slug": "setup-a-bug-reporter-in-unity-using-trello",
+      "group": "Tutorials",
+      "title": "[Unity + FREE] Setup a Bug Reporter in Unity using Trello",
+      "owner": "Luna Wolf Studios (YouTube channel @lunawolfstudios)",
+      "type": "tutorial",
+      "platforms": [
+        "YouTube video"
+      ],
+      "years": "2018 (uploaded 2018-02-28)",
+      "description": "A video tutorial for Trello Poster, a free, open-source Unity tool that lets a game and its players create Trello cards directly, for example as a bug reporter.",
+      "url": "https://www.youtube.com/watch?v=ryXwG1j4rhI",
+      "linkStatus": "OK (200)",
+      "cover": "src/assets/portfolio/setup-a-bug-reporter-in-unity-using-trello.jpg",
+      "coverShape": "landscape 1280x720 (YouTube thumbnail, a Unity editor screenshot)",
+      "extraImages": [],
+      "listedBy": [
+        "jeff"
+      ],
+      "roleAsStated": "Jeff's page, Tutorials and Assets: listed as \"Setup a Bug Reporter in Unity using Trello\".",
+      "sources": [
+        "https://www.youtube.com/watch?v=ryXwG1j4rhI"
+      ]
+    }
+  ],
+  "oliviaAreasOfWork": {
+    "source": "archive/wordpress/pages/about-olivia.md",
+    "note": "Olivia's page lists no projects or links. Recorded exactly as written.",
+    "items": [
+      "Enterprise Backend Systems — High-availability APIs and services built for production scale across multiple industry verticals",
+      "Platform Modernization — Legacy rewrites, on-prem to cloud migrations, and platform version upgrades",
+      "High-Throughput Data Systems — Pipelines and services designed to process millions of records reliably under sustained load",
+      "Cross-Team Collaboration — Delivered projects as part of large multi-team engineering organizations"
+    ]
+  }
+}

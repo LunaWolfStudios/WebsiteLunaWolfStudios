@@ -1,0 +1,1322 @@
+{
+  "generated": "2026-11-21",
+  "rules": {
+    "titleMax": 60,
+    "descriptionMin": 140,
+    "descriptionMax": 160
+  },
+  "allValid": true,
+  "pages": [
+    {
+      "route": "/",
+      "primaryKeyword": "game development studio",
+      "secondaryKeywords": [
+        "game development company",
+        "game and software development studio",
+        "Unity development studio",
+        "VR development studio",
+        "serious games developer",
+        "game studio Delaware"
+      ],
+      "title": "Game and software development studio | Luna Wolf Studios",
+      "titleLength": 56,
+      "description": "Luna Wolf Studios builds games, Unity tools, VR apps, and custom software for clients and ships its own games. An independent studio in Newark, Delaware.",
+      "descriptionLength": 153,
+      "h1": "Game and software development studio",
+      "outline": [
+        "What we build for clients",
+        "Our own games and tools",
+        "Projects we've built with partners",
+        "What clients and players say",
+        "Our trusted pack",
+        "Awards and recognition",
+        "Publishing and teaching",
+        "Start a project"
+      ],
+      "internalLinks": [
+        "/services/",
+        "/services/game-development/",
+        "/services/unity-development/",
+        "/services/unity-editor-tools/",
+        "/services/vr-ar-development/",
+        "/services/serious-games/",
+        "/services/software-development/",
+        "/scriptable-sheets/",
+        "/sheep-tag-2/",
+        "/hypno-halo/",
+        "/helix/",
+        "/publishing/",
+        "/bootcamp/",
+        "/about/",
+        "/contact/"
+      ],
+      "schema": [
+        "Organization (full node, @id https://lunawolfstudios.com/#organization)",
+        "WebSite (@id https://lunawolfstudios.com/#website, publisher -> Organization)",
+        "WebPage"
+      ],
+      "faqs": [],
+      "notes": "Lead with the offer, not the mood: one line under the H1 such as 'We build games, Unity tools, VR apps, and software for clients, and we ship our own.' Keep 'Luna Wolf Studios' and 'Newark, Delaware' in visible text above the fold. In 'Awards and recognition', say Scriptable Sheets and the studio were 'recognized at the 17th Unity Awards' until the official term is verified, plus the Haberdashery nominations. 'What clients and players say' uses the archived 'Our Howling Reviews' quotes exactly, with source and link: the Freelancer.com client review first, then one Asset Store review and one press quote. 600 to 900 words."
+    },
+    {
+      "route": "/services/",
+      "primaryKeyword": "game development services",
+      "secondaryKeywords": [
+        "hire game developers",
+        "Unity development services",
+        "AR/VR app development",
+        "serious game development",
+        "custom software development",
+        "game development company USA"
+      ],
+      "title": "Game, Unity, and VR development services | Luna Wolf Studios",
+      "titleLength": 60,
+      "description": "Hire Luna Wolf Studios to design and build games, Unity tools, VR and AR apps, serious games for health and education, and web or cloud software.",
+      "descriptionLength": 145,
+      "h1": "Game, Unity, VR, and software development services",
+      "outline": [
+        "What we build",
+        "Who we work with: studios, health teams, schools, and businesses",
+        "Projects that prove it",
+        "What clients say",
+        "How a project works",
+        "Ways to work with us",
+        "Questions clients ask",
+        "Tell us about your project"
+      ],
+      "internalLinks": [
+        "/services/game-development/",
+        "/services/unity-development/",
+        "/services/unity-editor-tools/",
+        "/services/vr-ar-development/",
+        "/services/serious-games/",
+        "/services/software-development/",
+        "/helix/",
+        "/scriptable-sheets/",
+        "/sheep-tag-2/",
+        "/about/",
+        "/contact/"
+      ],
+      "schema": [
+        "WebPage (CollectionPage)",
+        "ItemList of the six Service nodes",
+        "Service x6 (provider -> Organization @id)",
+        "BreadcrumbList",
+        "FAQPage (understanding only; no Google rich result since May 2026)"
+      ],
+      "faqs": [
+        {
+          "q": "What does Luna Wolf Studios build for clients?",
+          "guidance": "List the six service lines in one sentence and name one shipped project for each (Sheep Tag 2, Unity CI/CD and streaming work, Scriptable Sheets, HELIX, SaeboVR or Lanebreak, the web apps)."
+        },
+        {
+          "q": "How much does it cost to hire a game development studio?",
+          "guidance": "Say cost depends on scope, platforms, and team size and that we quote after a first call; publish no figures unless the owner supplies them."
+        },
+        {
+          "q": "Do you work with small teams and first-time clients?",
+          "guidance": "Owner decision; if yes, point to the indie and education work (Legends of Learning, intern projects, The Brave Hearts II) as evidence."
+        },
+        {
+          "q": "Can you join a project that is already in progress?",
+          "guidance": "Yes for Unity projects, as co-development; cite contract work on existing games such as Cell to Singularity and Citytopia as contributions, not as our own titles."
+        },
+        {
+          "q": "Where are you based, and do you work remotely?",
+          "guidance": "Newark, Delaware, USA; the team works remotely (the internship and bootcamp are remote); state in-person availability only if the owner confirms it."
+        }
+      ],
+      "notes": "Hub, 700 to 1,000 words. One card per service with a named project on each card; Unity development and Unity editor tools are separate cards with separate one-line pitches (engineering vs. tools). 'What clients say' carries the Freelancer.com review from the archive, quoted exactly. 'Ways to work with us' only after the owner confirms the engagement models."
+    },
+    {
+      "route": "/services/game-development/",
+      "primaryKeyword": "game development company",
+      "secondaryKeywords": [
+        "game co-development studio",
+        "indie game development studio for hire",
+        "multiplayer game development",
+        "port game to Nintendo Switch",
+        "Steam release support",
+        "hire game developers"
+      ],
+      "title": "Game development and co-development | Luna Wolf Studios",
+      "titleLength": 55,
+      "description": "We design, build, and ship PC, console, and online multiplayer games, or join your team as a co-development partner. Our games are on Steam and Switch.",
+      "descriptionLength": 151,
+      "h1": "Game development and co-development services",
+      "outline": [
+        "Games we build for you: prototypes, full games, and updates",
+        "Co-development: we join your team and your pipeline",
+        "Online multiplayer, from netcode to servers",
+        "Releasing on Steam and Nintendo Switch",
+        "Games we've worked on",
+        "What clients say",
+        "How a game project runs",
+        "Questions about hiring a game studio",
+        "Start your game"
+      ],
+      "internalLinks": [
+        "/services/unity-editor-tools/",
+        "/sheep-tag-2/",
+        "/hypno-halo/",
+        "/paralily/",
+        "/the-brave-hearts-ii-false-skies/",
+        "/games/",
+        "/services/unity-development/",
+        "/publishing/",
+        "/about-jeremy/",
+        "/contact/"
+      ],
+      "schema": [
+        "Service (serviceType 'Video game development', provider -> Organization, areaServed Worldwide)",
+        "BreadcrumbList",
+        "FAQPage (understanding only)"
+      ],
+      "faqs": [
+        {
+          "q": "How much does it cost to hire a game development studio?",
+          "guidance": "Explain the cost drivers (scope, platforms, art, multiplayer) and that we quote per project after a call; no invented ranges."
+        },
+        {
+          "q": "What is the difference between co-development and outsourcing?",
+          "guidance": "Co-development means our developers work inside your repo, tools, and schedule; outsourcing hands off a defined piece. Say which the studio offers (owner to confirm)."
+        },
+        {
+          "q": "Can you build an online multiplayer game?",
+          "guidance": "Yes: Sheep Tag 2 supports up to 32 players online on Photon Quantum with prediction and rollback, US, EU, and AU servers, and bots."
+        },
+        {
+          "q": "Can you help release our game on Steam?",
+          "guidance": "Yes: we released Hypno Halo on Steam and handled Steam integration, achievements, Steam Cloud, and release QA for The Brave Hearts II as its publisher."
+        },
+        {
+          "q": "Can you port our game to Nintendo Switch?",
+          "guidance": "We have released our own games (Hypno Halo, ParaLily) on Nintendo Switch; say porting a client game is case by case and needs the client's platform access; add the Nintendo trademark note."
+        },
+        {
+          "q": "Which engines do you use?",
+          "guidance": "Unity and C# first; Jeremy also works in Unreal Engine 5 and C++ (about-jeremy). Do not claim Godot or others."
+        },
+        {
+          "q": "Who owns the code and the game when the project ends?",
+          "guidance": "Owner decision; state the studio's actual contract position or leave this question out."
+        }
+      ],
+      "notes": "Head term 'game development company' is dominated by large outsourcers; the page wins on long-tail: 'indie game co-development studio', 'Unity multiplayer game developer', 'Steam release help'. Label client titles (Cell to Singularity, Citytopia, Travelers Refrain, Lanebreak) as games we contributed to; they are not ours. 'What clients say' uses the Freelancer.com review by Sqe187, quoted exactly with a link to freelancer.com/u/LunaWolfStudios.html. The review does not name a project, so do not attach it to one."
+    },
+    {
+      "route": "/services/unity-development/",
+      "primaryKeyword": "Unity development company",
+      "secondaryKeywords": [
+        "hire Unity developers",
+        "Unity developers for hire",
+        "Unity game developer for hire",
+        "Unity multiplayer development",
+        "Unity CI/CD pipeline",
+        "Unity WebRTC streaming"
+      ],
+      "title": "Hire Unity developers for games and apps | Luna Wolf Studios",
+      "titleLength": 60,
+      "description": "Hire Unity developers for gameplay, multiplayer, VR, and mobile, plus CI/CD, cloud streaming, upgrades, and updates after launch. Over a decade in Unity.",
+      "descriptionLength": 153,
+      "h1": "Unity development services",
+      "outline": [
+        "What we build in Unity",
+        "Joining your existing Unity project",
+        "Multiplayer and networking in Unity",
+        "VR, AR, and mobile builds",
+        "Build automation, CI/CD, and cloud streaming",
+        "Upgrades, optimization, and post-release support",
+        "Questions about hiring Unity developers",
+        "Talk to a Unity developer"
+      ],
+      "internalLinks": [
+        "/services/unity-editor-tools/",
+        "/sheep-tag-2/",
+        "/services/vr-ar-development/",
+        "/services/game-development/",
+        "/about-jeff/",
+        "/about-jeremy/",
+        "/bootcamp/",
+        "/contact/"
+      ],
+      "schema": [
+        "Service (serviceType 'Unity development', provider -> Organization)",
+        "BreadcrumbList",
+        "FAQPage (understanding only)"
+      ],
+      "faqs": [
+        {
+          "q": "Can we hire Unity developers to join our team?",
+          "guidance": "Owner decision on team extension; if offered, say how (part time or full time, remote, US time zones)."
+        },
+        {
+          "q": "Which Unity versions and render pipelines do you work with?",
+          "guidance": "Name only what the team uses (archive: Unity 6, URP, Shader Graph); do not list every version."
+        },
+        {
+          "q": "Can you speed up our Unity builds and releases?",
+          "guidance": "Yes: Jeff built containerized infrastructure and CI/CD pipelines that automated Unity builds across web, mobile, and VR (about-jeff)."
+        },
+        {
+          "q": "Can a Unity app run in a browser without a download?",
+          "guidance": "Yes: we have streamed interactive Unity 3D simulations over low-bandwidth networks with AWS and WebRTC; do not name the client."
+        },
+        {
+          "q": "Can you upgrade or optimize an older Unity project?",
+          "guidance": "Yes: Jeremy's work covers optimization and post-release support, and Haberdashery is being modernized on current Unity (about-jeremy); give no speed-up numbers."
+        },
+        {
+          "q": "Do you also build custom editor tools?",
+          "guidance": "One sentence: yes, it is a separate service; link to /services/unity-editor-tools/ and do not repeat that page's content here."
+        },
+        {
+          "q": "Do you also work in Unreal Engine?",
+          "guidance": "Yes, Jeremy works in Unreal Engine 5 and teaches it; keep Unity as the lead specialty."
+        }
+      ],
+      "notes": "Covers Unity engineering and support in general and targets hire-intent phrases. It must not target 'custom Unity editor tools', 'editor extensions', or 'pipeline tooling': mention tools in one short paragraph inside 'What we build in Unity' that links to /services/unity-editor-tools/ with the anchor 'custom Unity editor tools'. 'Over a decade in Unity' rests on Jeff's 'over a decade' and Jeremy's 'over 11 years' with Unity as his primary engine (founder pages). Head terms are agency territory; the long tail is 'Unity multiplayer developer', 'Unity developer for VR health apps'."
+    },
+    {
+      "route": "/services/unity-editor-tools/",
+      "primaryKeyword": "custom Unity editor tools",
+      "secondaryKeywords": [
+        "Unity editor extensions",
+        "Unity editor tool development",
+        "Unity tools programmer for hire",
+        "Unity pipeline and workflow tools",
+        "custom Unity inspectors and editor windows",
+        "Unity asset import pipeline"
+      ],
+      "title": "Custom Unity editor tools and extensions | Luna Wolf Studios",
+      "titleLength": 60,
+      "description": "We build custom Unity editor tools, extensions, and pipeline tooling that save your team time. Makers of Scriptable Sheets, recognized at the 17th Unity Awards.",
+      "descriptionLength": 160,
+      "h1": "Custom Unity editor tools and extensions",
+      "outline": [
+        "Tools we build: editor windows, inspectors, and data editors",
+        "Pipeline and workflow tooling: importers, validators, and editor automation",
+        "Scriptable Sheets, our own tool on the Unity Asset Store",
+        "What developers say about our tools",
+        "How a tool project works",
+        "Questions about custom Unity tools",
+        "Tell us what slows your team down"
+      ],
+      "internalLinks": [
+        "/scriptable-sheets/",
+        "/services/unity-development/",
+        "/services/game-development/",
+        "/about-jeff/",
+        "/about-jeremy/",
+        "/contact/"
+      ],
+      "schema": [
+        "Service (serviceType 'Unity editor tool development', provider -> Organization)",
+        "BreadcrumbList",
+        "FAQPage (understanding only)"
+      ],
+      "faqs": [
+        {
+          "q": "What is a custom Unity editor tool?",
+          "guidance": "Code that runs inside the Unity Editor (windows, inspectors, menu items, importers) so a team does repeated work faster; it does not ship in the game build, as Scriptable Sheets' listing notes for itself."
+        },
+        {
+          "q": "What kinds of editor tools can you build?",
+          "guidance": "Name archive-backed examples: a spreadsheet data editor (Scriptable Sheets), an asset import pipeline with scene generation and diagnostics (Jeremy's PS1 asset importer R&D), and an in-editor bug reporter (Jeff's Trello tutorial video)."
+        },
+        {
+          "q": "Can you build tools for designers who don't code?",
+          "guidance": "Yes; Scriptable Sheets lets anyone edit game data in a table, with copy and paste from Google Sheets and other flat files (Asset Store listing and forum thread)."
+        },
+        {
+          "q": "Can you extend or fix a tool our team already built?",
+          "guidance": "Owner decision; if yes, say we start by reading the existing code and agreeing what to keep."
+        },
+        {
+          "q": "Will the tool work with our Unity version?",
+          "guidance": "We build for the version the client uses; cite only versions the team confirms, and Scriptable Sheets' supported versions from its live listing."
+        },
+        {
+          "q": "What do we get at handover?",
+          "guidance": "Describe what the studio delivers (source, docs, a walkthrough); Scriptable Sheets ships with documentation on GitHub and a video walkthrough as the model. Owner confirms."
+        },
+        {
+          "q": "Who owns the source code of a custom tool?",
+          "guidance": "Owner decision; state the studio's contract position or leave this question out."
+        }
+      ],
+      "notes": "Owns 'custom Unity editor tools', 'Unity editor extensions', and 'pipeline and workflow tooling' (tools that run inside the editor). Build servers and CI/CD stay on /services/unity-development/; link there for them. The SERP for these is Fiverr gigs and Unity docs, with no studio pages. Proof order: Scriptable Sheets (Asset Store; say 'recognized at the 17th Unity Awards' until the official term is verified), the four archived Asset Store reviews quoted exactly (Quevanto, Katerlad, deleo, RestingOwl) with the link to the listing's reviews, Jeff's Kodeco ScriptableObject tutorial, and the PS1 importer R&D (a research project, not a product). Do not add Review markup for Asset Store reviews (Google does not allow reviews copied from other sites). 1,000 to 1,500 words."
+    },
+    {
+      "route": "/services/vr-ar-development/",
+      "primaryKeyword": "VR development company",
+      "secondaryKeywords": [
+        "AR/VR app development",
+        "Meta Quest app development",
+        "VR training simulation development",
+        "medical VR development",
+        "Unity VR developer",
+        "mixed reality development"
+      ],
+      "title": "VR and AR app development studio | Luna Wolf Studios",
+      "titleLength": 52,
+      "description": "We build VR and AR apps in Unity for Meta Quest and other headsets: health assessments, therapy, training, and games, with web dashboards and secure data.",
+      "descriptionLength": 154,
+      "h1": "VR and AR app development",
+      "outline": [
+        "What we build in VR and AR",
+        "VR for health assessment and therapy",
+        "VR training and simulation",
+        "Mixed reality and new headsets",
+        "Motion capture, EMG, and other inputs",
+        "Dashboards and data behind the headset",
+        "Questions about VR development",
+        "Plan your VR project"
+      ],
+      "internalLinks": [
+        "/helix/",
+        "/services/serious-games/",
+        "/services/unity-development/",
+        "/services/software-development/",
+        "/about-jeff/",
+        "/about-jeremy/",
+        "/contact/"
+      ],
+      "schema": [
+        "Service (serviceType 'VR and AR app development', provider -> Organization)",
+        "BreadcrumbList",
+        "FAQPage (understanding only)"
+      ],
+      "faqs": [
+        {
+          "q": "Which VR headsets do you develop for?",
+          "guidance": "Name only archive-backed hardware: Meta Quest 2 (HELIX, Asurion training, SMU mixed reality) and Apple Vision Pro shader work (Syneos); say others on request."
+        },
+        {
+          "q": "How long does it take to make a VR app?",
+          "guidance": "Describe phases (prototype, pilot, release) and that timing depends on scope; give no invented durations."
+        },
+        {
+          "q": "Can VR be used for medical assessment or therapy?",
+          "guidance": "Yes: HELIX gamifies hearing tests for auditory processing disorder and had a pilot study with about 30 subjects in 2023; SaeboVR is upper-extremity therapy software."
+        },
+        {
+          "q": "Can a VR app send results to a web dashboard?",
+          "guidance": "Yes: HELIX encrypts and uploads results to a backend on AWS (RDS, S3, EC2) and shows them in a provider web dashboard."
+        },
+        {
+          "q": "How do you protect patient data in a VR app?",
+          "guidance": "Describe HELIX: encryption in transit and storage on HIPAA-compliant AWS services, as the archive words it; do not claim certification or audits."
+        },
+        {
+          "q": "Do you build AR apps for phones and tablets?",
+          "guidance": "Keep modest: the founders have AR and mixed reality experience (about-jeremy); name a shipped AR project only if the owner supplies one."
+        }
+      ],
+      "notes": "Several VR credits (Asurion, SMU, Syneos) are Jeremy's contract work outside the studio (about-jeremy says 'In addition to my work at Luna Wolf Studios'). Present them as 'our founders have built', not as studio clients."
+    },
+    {
+      "route": "/services/serious-games/",
+      "primaryKeyword": "serious game development",
+      "secondaryKeywords": [
+        "serious games developer",
+        "healthcare game development",
+        "VR rehabilitation games",
+        "educational game development company",
+        "gamification development",
+        "fitness game development"
+      ],
+      "title": "Serious games for health and education | Luna Wolf Studios",
+      "titleLength": 58,
+      "description": "We design and build serious games for therapy, fitness, assessment, and learning, working with clinicians and researchers. Work includes HELIX and SaeboVR.",
+      "descriptionLength": 155,
+      "h1": "Serious game development for health, education, and training",
+      "outline": [
+        "What a serious game is",
+        "Games for therapy and rehabilitation",
+        "Games for assessment: HELIX",
+        "Fitness games",
+        "Educational games",
+        "Working with clinicians, researchers, and grant teams",
+        "Questions about serious games",
+        "Start a serious game"
+      ],
+      "internalLinks": [
+        "/helix/",
+        "/services/vr-ar-development/",
+        "/services/software-development/",
+        "/about-jeff/",
+        "/games/",
+        "/contact/"
+      ],
+      "schema": [
+        "Service (serviceType 'Serious game development', provider -> Organization)",
+        "BreadcrumbList",
+        "FAQPage (understanding only)"
+      ],
+      "faqs": [
+        {
+          "q": "What is a serious game?",
+          "guidance": "A game made mainly to teach, train, assess, or treat rather than only to entertain; one sentence, then link to examples."
+        },
+        {
+          "q": "Can video games help with physical therapy?",
+          "guidance": "Point to the therapy software built with Barron Associates (SaeboVR, KneeBRIGHT, MOVE-IT) and Flex Sledding for the mTrigger; avoid clinical outcome claims beyond the archive."
+        },
+        {
+          "q": "Can you work with our clinical or research team?",
+          "guidance": "Yes: HELIX was built with audiologists and Nemours Children's Health and funded by a DBI CAT grant; Barron Associates projects were research-led."
+        },
+        {
+          "q": "Can the game track progress for clinicians or teachers?",
+          "guidance": "Yes: HELIX's dashboard tracks results over time, and Jeff's systems helped clinicians track patient progress remotely (about-jeff)."
+        },
+        {
+          "q": "Do you make educational games for schools?",
+          "guidance": "Yes: Lab Rat for Legends of Learning, plus NeuroSPARKS and EMPATHIE with Barron Associates."
+        },
+        {
+          "q": "Can a serious game use motion tracking or other controllers?",
+          "guidance": "Yes: we have integrated motion capture, electromyography, and other alternative controls (about-jeff)."
+        },
+        {
+          "q": "Do you build fitness games?",
+          "guidance": "Yes: Jeff worked on Peloton's Lanebreak; describe our role only as the owner confirms it."
+        }
+      ],
+      "notes": "The studio's strongest proof. Keep Jeff's 'FDA-approved treatments' sentence only as he wrote it, without tying it to a named product. Barron Associates project pages are public and can be linked. Under 'Fitness games', the archived press quotes about Lanebreak (PCMag, Engadget, The Verge) can be quoted exactly with source links; make clear they review Peloton's product and state our role only as the owner confirms it."
+    },
+    {
+      "route": "/services/software-development/",
+      "primaryKeyword": "custom software development company",
+      "secondaryKeywords": [
+        "web app development",
+        "Node.js backend development",
+        "NestJS development company",
+        "legacy system modernization",
+        "cloud migration services",
+        "AWS backend development"
+      ],
+      "title": "Custom software and web app development | Luna Wolf Studios",
+      "titleLength": 59,
+      "description": "We build web apps, APIs, and cloud backends in Node.js, TypeScript, and NestJS, and move legacy systems to modern platforms. Games are not all we build.",
+      "descriptionLength": 152,
+      "h1": "Custom software and web app development",
+      "outline": [
+        "What we build: web apps, APIs, dashboards, and tools",
+        "Backend and cloud engineering",
+        "Modernizing legacy systems",
+        "Dashboards for games, devices, and health apps",
+        "Web apps we've shipped",
+        "Our stack",
+        "Questions about custom software",
+        "Describe your project"
+      ],
+      "internalLinks": [
+        "/about-olivia/",
+        "/helix/",
+        "/services/unity-development/",
+        "/services/vr-ar-development/",
+        "/about-jeff/",
+        "/contact/"
+      ],
+      "schema": [
+        "Service (serviceType 'Custom software development', provider -> Organization)",
+        "BreadcrumbList",
+        "FAQPage (understanding only)"
+      ],
+      "faqs": [
+        {
+          "q": "Do you build software that isn't a game?",
+          "guidance": "Yes: web apps (Anatomy of Play, FishWatch, Reel Gains, Fresh Catch), the HELIX dashboard and backend, and enterprise backend work by Olivia."
+        },
+        {
+          "q": "Which languages and frameworks do you use?",
+          "guidance": "Node.js, TypeScript, NestJS, Go, Python, SQL, cloud infrastructure as code, plus C# and Unity; Swift from earlier iOS work (about-olivia)."
+        },
+        {
+          "q": "Can you modernize or migrate an old system?",
+          "guidance": "Yes: Olivia's work covers legacy rewrites, on-prem to cloud migrations, and platform upgrades on systems processing millions of records daily."
+        },
+        {
+          "q": "Can you build a web dashboard for our app or device?",
+          "guidance": "Yes: HELIX's web dashboard has accounts, assignments, calendars, and charts for providers and patients."
+        },
+        {
+          "q": "Do you maintain software after launch?",
+          "guidance": "Owner decision; state the support offer only if the studio provides one."
+        },
+        {
+          "q": "Do you work with small businesses?",
+          "guidance": "Owner decision; answer with the kinds of clients the studio wants."
+        }
+      ],
+      "notes": "Olivia's enterprise work (finance, logistics, sports media, utilities, education) was for employers, not studio clients; say 'our team has built' and name no companies. Head term is unwinnable; target 'NestJS development', 'Node.js backend', 'legacy modernization' long tail."
+    },
+    {
+      "route": "/games/",
+      "primaryKeyword": "Luna Wolf Studios games",
+      "secondaryKeywords": [
+        "indie games made in Delaware",
+        "Sheep Tag 2",
+        "Hypno Halo",
+        "ParaLily",
+        "games published by Luna Wolf Studios"
+      ],
+      "title": "Our games and projects | Luna Wolf Studios",
+      "titleLength": 42,
+      "description": "Games from Luna Wolf Studios: Sheep Tag 2, Hypno Halo, ParaLily, and The Brave Hearts II, plus projects with Peloton, Barron Associates, and Nemours.",
+      "descriptionLength": 149,
+      "h1": "Our games and projects",
+      "outline": [
+        "Our games",
+        "Games we publish",
+        "Projects with clients and partners",
+        "Health and research projects",
+        "Game jams and intern games",
+        "Play more on itch.io and Newgrounds",
+        "Want a game like these?"
+      ],
+      "internalLinks": [
+        "/sheep-tag-2/",
+        "/hypno-halo/",
+        "/paralily/",
+        "/the-brave-hearts-ii-false-skies/",
+        "/haberdashery/",
+        "/target-crack/",
+        "/helix/",
+        "/bootcamp/",
+        "/publishing/",
+        "/services/game-development/",
+        "/contact/"
+      ],
+      "schema": [
+        "CollectionPage",
+        "ItemList of VideoGame (each item url -> its page)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "Separate the studio's own games, the games it publishes, and client contributions, with a label on each card (Kitfox and Finji do not, and lose clarity). Archived quotes usable here: Catherine Dellosa's Pocket Gamer line on Cell to Singularity (archive spells the name 'Cathering'; check the source before printing). Two quotes do not say which game they review (Zach at Everything Action, linked to a 2017 'Gamebox 2.0' article, and an anonymous MAGFest MIVS judge); confirm the game with the owner before using them."
+    },
+    {
+      "route": "/scriptable-sheets/",
+      "primaryKeyword": "Scriptable Sheets",
+      "secondaryKeywords": [
+        "Unity ScriptableObject editor",
+        "ScriptableObject spreadsheet",
+        "edit ScriptableObjects in a table",
+        "Unity data table editor",
+        "bulk edit ScriptableObjects",
+        "Unity spreadsheet editor"
+      ],
+      "title": "Scriptable Sheets: edit ScriptableObjects in a spreadsheet",
+      "titleLength": 58,
+      "description": "Scriptable Sheets is a Unity editor tool that lists ScriptableObjects and other assets in a spreadsheet so you can sort, edit, copy, and paste them in bulk.",
+      "descriptionLength": 156,
+      "h1": "Scriptable Sheets: a spreadsheet editor for Unity ScriptableObjects",
+      "outline": [
+        "What Scriptable Sheets does",
+        "Features",
+        "Copy and paste from Google Sheets, CSV, and more",
+        "Video walkthrough",
+        "Recognized at the 17th Unity Awards",
+        "What developers say",
+        "Documentation and support",
+        "Get Scriptable Sheets on the Unity Asset Store",
+        "Need a custom Unity tool?"
+      ],
+      "internalLinks": [
+        "/services/unity-editor-tools/",
+        "/services/unity-development/",
+        "/about-jeff/",
+        "/contact/",
+        "/newsletter/"
+      ],
+      "schema": [
+        "SoftwareApplication (applicationCategory DeveloperApplication, operatingSystem 'Windows, macOS, Linux (Unity Editor)', offers USD price, publisher -> Organization)",
+        "aggregateRating only if the page shows the live Asset Store rating and count",
+        "VideoObject (walkthrough r_FJBZjHUpA)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "Take version support, price, and features from the live Asset Store listing at build time (it shows 1.11.0, released Jul 2, 2026; 34 ratings; price changes during sales). Keep the price out of static copy or source it from src/data. Autocomplete shows 'scriptable sheets unity free download', so this page should rank above piracy sites for the brand term. 'What developers say' uses the four Asset Store reviews archived in 'Our Howling Reviews', quoted exactly with the reviewer name and the listing link; show them as quotes, not as Review markup. 'Need a custom Unity tool?' links to /services/unity-editor-tools/."
+    },
+    {
+      "route": "/sheep-tag-2/",
+      "primaryKeyword": "Sheep Tag 2",
+      "secondaryKeywords": [
+        "Sheep Tag 2 Steam",
+        "Sheep Tag standalone game",
+        "Warcraft III Sheep Tag",
+        "Sheep vs. Wolves multiplayer",
+        "Photon Quantum game"
+      ],
+      "title": "Sheep Tag 2, our online multiplayer game | Luna Wolf Studios",
+      "titleLength": 60,
+      "description": "Sheep Tag 2 is our free-to-play Sheep vs. Wolves strategy game for up to 32 players online, built in Unity on Photon Quantum. Early Access on Steam in 2027.",
+      "descriptionLength": 156,
+      "h1": "Sheep Tag 2: Sheep vs. Wolves for up to 32 players",
+      "outline": [
+        "What Sheep Tag 2 is",
+        "From Warcraft III mod to standalone game",
+        "How we built the multiplayer",
+        "Level editor and Steam Workshop",
+        "Funded on Kickstarter",
+        "Wishlist on Steam and visit sheeptag2.com",
+        "Need multiplayer for your game?"
+      ],
+      "internalLinks": [
+        "/services/game-development/",
+        "/services/unity-development/",
+        "/about-jeff/",
+        "/games/",
+        "/presskit/",
+        "/contact/"
+      ],
+      "schema": [
+        "VideoGame (url https://www.sheeptag2.com/, sameAs Steam app 537680, author/publisher -> Organization, gamePlatform, playMode MultiPlayer, numberOfPlayers max 32)",
+        "VideoObject (gameplay trailer ABIVaCo3QX4)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "sheeptag2.com is the game's home and must keep ranking for 'Sheep Tag 2'. Write short, original copy (do not paste the sister site's press kit text), point the VideoGame url at https://www.sheeptag2.com/, and frame the page as 'a game we built', with a link to the multiplayer service."
+    },
+    {
+      "route": "/hypno-halo/",
+      "primaryKeyword": "Hypno Halo",
+      "secondaryKeywords": [
+        "Hypno Halo Nintendo Switch",
+        "Hypno Halo Steam",
+        "minimalist score attack game",
+        "Hypno Halo review",
+        "Hypno Halo press kit"
+      ],
+      "title": "Hypno Halo: minimalist score attack game | Luna Wolf Studios",
+      "titleLength": 60,
+      "description": "Hypno Halo is a minimalist score attack game with 300+ handcrafted levels, 90+ minutes of electronic music, and shared co-op controls. On Steam and Switch.",
+      "descriptionLength": 155,
+      "h1": "Hypno Halo",
+      "outline": [
+        "About Hypno Halo",
+        "Features",
+        "Trailer",
+        "Screenshots",
+        "Press and reviews",
+        "Music",
+        "Logo and press assets",
+        "Get Hypno Halo on Steam and Nintendo Switch"
+      ],
+      "internalLinks": [
+        "/games/",
+        "/services/game-development/",
+        "/presskit/",
+        "/contact/"
+      ],
+      "schema": [
+        "VideoGame (+SoftwareApplication type if offers are added; gamePlatform PC, Nintendo Switch; sameAs Steam 3847950 and Nintendo eShop)",
+        "VideoObject (trailer GiCsebs_FK4)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "Existing indexed URL with press links pointing to it; keep the press list and quotes exactly as archived. The home page reviews add a second curator quote (SOKOL, Steam curator) to the OFEN quote already on the archived page; use both exactly."
+    },
+    {
+      "route": "/paralily/",
+      "primaryKeyword": "ParaLily",
+      "secondaryKeywords": [
+        "ParaLily game",
+        "ParaLily Nintendo Switch",
+        "ParaLily Steam",
+        "puzzle platformer parallel universes"
+      ],
+      "title": "ParaLily: a precision puzzle platformer | Luna Wolf Studios",
+      "titleLength": 59,
+      "description": "ParaLily is a precision and puzzle platformer about a girl's journey through parallel universes to save a friend. Available on Steam and Nintendo Switch.",
+      "descriptionLength": 153,
+      "h1": "ParaLily",
+      "outline": [
+        "About ParaLily",
+        "Trailer and screenshots",
+        "Who made it",
+        "Get ParaLily on Steam and Nintendo Switch"
+      ],
+      "internalLinks": [
+        "/games/",
+        "/services/game-development/",
+        "/about-jeff/",
+        "/contact/"
+      ],
+      "schema": [
+        "VideoGame (sameAs Steam 1156760, Nintendo eShop, paralilygame.com)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "Facts are thin in the archive (only 'ParaLily by Luna Wolf Studios'). The game's own site credits 'Team ParaLily'. Confirm the description, platforms, and credits with the owner before writing. Do not use Jeff's surname, which appears on paralilygame.com."
+    },
+    {
+      "route": "/the-brave-hearts-ii-false-skies/",
+      "primaryKeyword": "The Brave Hearts II: False Skies",
+      "secondaryKeywords": [
+        "Brave Hearts 2 False Skies",
+        "The Brave Hearts II Steam",
+        "voice-acted top-down shoot 'em up",
+        "Connor Butler game"
+      ],
+      "title": "The Brave Hearts II: False Skies | Luna Wolf Studios",
+      "titleLength": 52,
+      "description": "The Brave Hearts II: False Skies is a voice-acted top-down shoot 'em up by Connor Butler, who came through our internship. We published it on Steam.",
+      "descriptionLength": 148,
+      "h1": "The Brave Hearts II: False Skies",
+      "outline": [
+        "About the game",
+        "Trailer",
+        "From our internship program to Steam: Connor Butler's game",
+        "What we did as publisher",
+        "Get it on Steam",
+        "Publish your game with us"
+      ],
+      "internalLinks": [
+        "/publishing/",
+        "/bootcamp/",
+        "/games/",
+        "/about-jeremy/",
+        "/contact/"
+      ],
+      "schema": [
+        "VideoGame (author Person 'Connor Butler', publisher -> Organization, datePublished 2026-08-27, sameAs Steam 4918650)",
+        "VideoObject if a trailer is embedded",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "Facts from about-jeremy and the Steam page: developer Connor Butler, publisher Luna Wolf Studios, released Aug 27, 2026, Windows. The owner confirmed that Connor Butler came through the studio's student internship program; say so plainly once, without inventing the year or the intern project."
+    },
+    {
+      "route": "/helix/",
+      "primaryKeyword": "VR hearing assessment",
+      "secondaryKeywords": [
+        "HELIX VR",
+        "virtual reality hearing test",
+        "auditory processing disorder VR assessment",
+        "digits-in-noise test VR",
+        "Nemours VR hearing"
+      ],
+      "title": "HELIX: a VR hearing assessment game | Luna Wolf Studios",
+      "titleLength": 55,
+      "description": "HELIX turns hearing tests into VR games on Meta Quest to help assess auditory processing disorder, with a web dashboard for providers. Built with Nemours.",
+      "descriptionLength": 154,
+      "h1": "HELIX: a VR hearing assessment for auditory processing disorder",
+      "outline": [
+        "The problem with traditional hearing tests",
+        "How HELIX works",
+        "Hearing tests in VR: digits-in-noise, pure tone, and sound localization",
+        "A web dashboard for providers and patients",
+        "Secure data on AWS",
+        "Funding and pilot study",
+        "Build a health app with us"
+      ],
+      "internalLinks": [
+        "/services/serious-games/",
+        "/services/vr-ar-development/",
+        "/services/software-development/",
+        "/about-jeremy/",
+        "/about-jeff/",
+        "/contact/"
+      ],
+      "schema": [
+        "Article (case study; about -> HELIX as SoftwareApplication without offers)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "Expand the acronym once: Hearing EvaLuation using Immersive eXtended reality. 'Oculus Quest 2' is now 'Meta Quest 2'. 'Nemours' credit comes from about-jeremy ('in collaboration with Nemours Children's Hospital')."
+    },
+    {
+      "route": "/haberdashery/",
+      "primaryKeyword": "Haberdashery game",
+      "secondaryKeywords": [
+        "Haberdashery endless runner",
+        "sheep hat game",
+        "Haberdashery itch.io",
+        "Haberdashery Newgrounds"
+      ],
+      "title": "Haberdashery, a sheep endless runner | Luna Wolf Studios",
+      "titleLength": 56,
+      "description": "Haberdashery is a fast endless runner: guide a sheep past rocks, spike pits, and a dragon while you collect hat boxes, coins, and more than 30 hats.",
+      "descriptionLength": 148,
+      "h1": "Haberdashery",
+      "outline": [
+        "About Haberdashery",
+        "Trailer and screenshots",
+        "What players and judges said",
+        "Awards and nominations",
+        "Play on PC or the web",
+        "History: GameACon, Delaware Innovation Week, and festivals"
+      ],
+      "internalLinks": [
+        "/games/",
+        "/about/",
+        "/contact/"
+      ],
+      "schema": [
+        "VideoGame (sameAs itch.io, Newgrounds, IndieDB)",
+        "VideoObject (U7Wu3ZkDE7g)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "Nominations: Boston Festival of Indie Games (2015) and Delaware's Indie Video Game of the Year (Delaware Innovation Awards 2016, archive/blog/2017-02-05-plan-c-diw-ecrb-t2g.md, with a Technical.ly link). Quotes from 'Our Howling Reviews', exactly as archived: Vinny Parisi (IndieGameMagazine), Ruthiepee (Haberdashery iOS review), an anonymous Boston FIG judge, Jason Morano (ECRB Game Jam judge 2016), and RenfieldHarker (Newgrounds). The iOS review means there was an iOS release; say it is no longer listed unless the owner confirms it is. Produced with Geek Monster Games."
+    },
+    {
+      "route": "/target-crack/",
+      "primaryKeyword": "Target Crack game",
+      "secondaryKeywords": [
+        "tap target arcade game",
+        "speed and precision arcade game",
+        "Target Crack itch.io"
+      ],
+      "title": "Target Crack: tap-to-crack arcade game | Luna Wolf Studios",
+      "titleLength": 58,
+      "description": "Target Crack is a speed and precision arcade game: tap targets to crack them in three game modes, earn achievements, and take on friends on leaderboards.",
+      "descriptionLength": 153,
+      "h1": "Target Crack",
+      "outline": [
+        "About Target Crack",
+        "Trailer and screenshots",
+        "Where to play"
+      ],
+      "internalLinks": [
+        "/games/",
+        "/contact/"
+      ],
+      "schema": [
+        "VideoGame",
+        "VideoObject (1mg7KmJ6nwE)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "The archive does not say where Target Crack is available now; name a platform or store only if the owner confirms it."
+    },
+    {
+      "route": "/about/",
+      "primaryKeyword": "Luna Wolf Studios",
+      "secondaryKeywords": [
+        "about Luna Wolf Studios",
+        "game studio Newark Delaware",
+        "Delaware game development company",
+        "independent game studio founded 2015"
+      ],
+      "title": "About Luna Wolf Studios, a Delaware game studio",
+      "titleLength": 47,
+      "description": "Luna Wolf Studios is an independent game and software studio in Newark, Delaware, founded in 2015 by three Wilmington University students. Meet the pack.",
+      "descriptionLength": 153,
+      "h1": "About Luna Wolf Studios",
+      "outline": [
+        "Our story",
+        "What we do",
+        "The founders",
+        "Clients and partners",
+        "Awards and recognition",
+        "Teaching and community",
+        "Work with us"
+      ],
+      "internalLinks": [
+        "/about-jeff/",
+        "/about-jeremy/",
+        "/about-olivia/",
+        "/services/",
+        "/games/",
+        "/bootcamp/",
+        "/presskit/",
+        "/contact/"
+      ],
+      "schema": [
+        "AboutPage (about/mainEntity -> Organization @id)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "This page carries the local signal: Newark, Delaware; Wilmington University; founded January 2015. Do not create a separate thin 'Delaware game studio' page. 'Awards and recognition': recognized at the 17th Unity Awards (Scriptable Sheets and the studio; neutral wording until verified); Haberdashery nominated at the Boston Festival of Indie Games (2015) and for Delaware Indie Game of the Year; 1st place at the Wilmington University East Coast Reboot 48-Hour Game Jam (2015), listed on Jeremy's page, so confirm whether it was a studio team win before crediting the studio. Jeremy's 2025 Neurodiversity Employment Inclusion Excellence Award (University of Delaware) is personal; mention it in his founder card, not as a studio award. 'Teaching and community' can name the universities Jeremy teaches at."
+    },
+    {
+      "route": "/about-jeff/",
+      "primaryKeyword": "Jeff Luna Wolf Studios",
+      "secondaryKeywords": [
+        "Unity and XR engineer",
+        "serious games for health developer",
+        "Kodeco Unity tutorials",
+        "Unity cloud streaming WebRTC"
+      ],
+      "title": "Jeff, co-founder and Unity engineer | Luna Wolf Studios",
+      "titleLength": 55,
+      "description": "Jeff co-founded Luna Wolf Studios and has spent over a decade building Unity, XR, and health games, cloud streaming platforms, and Unity editor tools.",
+      "descriptionLength": 150,
+      "h1": "Jeff, co-founder of Luna Wolf Studios",
+      "outline": [
+        "About Jeff",
+        "Health and fitness games",
+        "Educational games",
+        "Indie games",
+        "Game jams",
+        "Web apps",
+        "Tutorials and assets",
+        "Contact"
+      ],
+      "internalLinks": [
+        "/services/unity-editor-tools/",
+        "/helix/",
+        "/scriptable-sheets/",
+        "/sheep-tag-2/",
+        "/hypno-halo/",
+        "/paralily/",
+        "/services/unity-development/",
+        "/services/serious-games/",
+        "/about/",
+        "/contact/"
+      ],
+      "schema": [
+        "ProfilePage (mainEntity Person: name 'Jeff', jobTitle 'Co-founder', worksFor -> Organization, sameAs LinkedIn and GitHub from the archive)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "Jeff goes by first name only on the site. The archived LinkedIn and GitHub links stay; they work as Person sameAs."
+    },
+    {
+      "route": "/about-jeremy/",
+      "primaryKeyword": "Jeremy Bregermann",
+      "secondaryKeywords": [
+        "game design professor",
+        "Unity and Unreal developer",
+        "Rowan of Bramblebrook",
+        "AI-assisted game development"
+      ],
+      "title": "Jeremy Bregermann, lead game designer | Luna Wolf Studios",
+      "titleLength": 57,
+      "description": "Jeremy Bregermann is co-founder and lead game designer at Luna Wolf Studios, a Unity and Unreal developer, and a university game design professor.",
+      "descriptionLength": 146,
+      "h1": "Jeremy Bregermann, co-founder and lead game designer",
+      "outline": [
+        "About Jeremy",
+        "Game development, engineering, and AI",
+        "Current projects and recent releases",
+        "Professional software development",
+        "University teaching and curriculum",
+        "Previous academic appointments",
+        "Additional industry experience",
+        "Awards and recognition",
+        "Portfolio",
+        "Contact"
+      ],
+      "internalLinks": [
+        "/services/unity-editor-tools/",
+        "/helix/",
+        "/sheep-tag-2/",
+        "/the-brave-hearts-ii-false-skies/",
+        "/haberdashery/",
+        "/bootcamp/",
+        "/services/game-development/",
+        "/about/",
+        "/contact/"
+      ],
+      "schema": [
+        "ProfilePage (mainEntity Person: name 'Jeremy Bregermann', jobTitle 'Co-founder and Lead Game Designer', worksFor -> Organization, award [his four listed awards and nominations], sameAs linkedin.com/in/bregermann, github.com/bregermann, bregermann.itch.io)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "The regenerated archive has the full page: previous appointments (Salem Community College 2019-2022, Delaware College of Art and Design 2020, Digital Media Institute 2023), additional industry experience, awards (2025 Neurodiversity Employment Inclusion Excellence Award, University of Delaware; 2015 1st place, Wilmington University East Coast Reboot 48-Hour Game Jam; 2015 Boston Festival of Indie Games nomination for Haberdashery; Delaware Indie Game of the Year nomination for Haberdashery), the full portfolio, and the contact block. Keep the portfolio as grouped lists with descriptive link text. The acting credits and tabletop games can stay on this page but do not belong on service pages."
+    },
+    {
+      "route": "/about-olivia/",
+      "primaryKeyword": "Olivia Luna Wolf Studios",
+      "secondaryKeywords": [
+        "enterprise backend engineer",
+        "Node.js NestJS engineer",
+        "platform modernization",
+        "high-throughput data systems"
+      ],
+      "title": "Olivia, co-founder and backend engineer | Luna Wolf Studios",
+      "titleLength": 59,
+      "description": "Olivia co-founded Luna Wolf Studios and has close to a decade of enterprise backend work in Node.js, TypeScript, and NestJS, including legacy modernization.",
+      "descriptionLength": 156,
+      "h1": "Olivia, co-founder of Luna Wolf Studios",
+      "outline": [
+        "About Olivia",
+        "Areas of work",
+        "Stack",
+        "Contact"
+      ],
+      "internalLinks": [
+        "/services/software-development/",
+        "/about/",
+        "/contact/"
+      ],
+      "schema": [
+        "ProfilePage (mainEntity Person: name 'Olivia', jobTitle 'Co-founder', worksFor -> Organization)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": ""
+    },
+    {
+      "route": "/publishing/",
+      "primaryKeyword": "indie game publisher",
+      "secondaryKeywords": [
+        "indie game publishers accepting submissions",
+        "publish my game on Steam",
+        "publish a game on Nintendo Switch",
+        "pitch your game to a publisher",
+        "what does an indie game publisher do"
+      ],
+      "title": "Indie game publisher open to pitches | Luna Wolf Studios",
+      "titleLength": 56,
+      "description": "Building a game? Pitch it to us. We help indie developers bring games to Steam and Nintendo Switch, from demo to release. We published The Brave Hearts II.",
+      "descriptionLength": 155,
+      "h1": "Indie game publishing: pitch us your game",
+      "outline": [
+        "What we do as a publisher",
+        "Games we've published",
+        "From intern to published developer: The Brave Hearts II",
+        "Steam and Nintendo Switch",
+        "What to send us",
+        "How we review pitches",
+        "Questions about publishing",
+        "Submit your game"
+      ],
+      "internalLinks": [
+        "/the-brave-hearts-ii-false-skies/",
+        "/bootcamp/",
+        "/hypno-halo/",
+        "/paralily/",
+        "/services/game-development/",
+        "/about-jeremy/",
+        "/contact/"
+      ],
+      "schema": [
+        "Service (serviceType 'Video game publishing', provider -> Organization)",
+        "BreadcrumbList",
+        "FAQPage (understanding only)"
+      ],
+      "faqs": [
+        {
+          "q": "Do I need a publisher to release my game on Steam?",
+          "guidance": "No; say plainly that developers can self-publish, and list what we add (Steam setup and integration, build checks, achievements, Steam Cloud, release QA)."
+        },
+        {
+          "q": "What does an indie game publisher do?",
+          "guidance": "List only the work we actually did for The Brave Hearts II and our own releases; add marketing or funding only if the owner confirms we offer it."
+        },
+        {
+          "q": "Can you help me release my game on Nintendo Switch?",
+          "guidance": "We have released our own games on Switch (Hypno Halo, ParaLily); say we work with developers toward Switch and keep the Nintendo trademark note."
+        },
+        {
+          "q": "Does my game have to be finished before I pitch it?",
+          "guidance": "No: the old page accepts demos, early builds, and finished games."
+        },
+        {
+          "q": "What should I include in my pitch?",
+          "guidance": "Point to the submission form; list its fields once the owner confirms them (build or video, platform, stage, contact)."
+        },
+        {
+          "q": "What share of revenue does a publisher take?",
+          "guidance": "Owner decision; state the studio's terms or say terms are agreed per game."
+        },
+        {
+          "q": "Do you only publish games made by your interns?",
+          "guidance": "No: the submission form is open to any indie developer; The Brave Hearts II's developer, Connor Butler, came through our internship, which shows the path is real."
+        }
+      ],
+      "notes": "Competes with publisher list articles (Udonis, Reddit) and big indie publishers; realistic target is the brand plus 'indie publisher accepting submissions' long tail, and developers who find The Brave Hearts II on Steam."
+    },
+    {
+      "route": "/bootcamp/",
+      "primaryKeyword": "remote game development internship",
+      "secondaryKeywords": [
+        "game dev internship remote",
+        "Unity internship remote",
+        "game development bootcamp online",
+        "Unity bootcamp for beginners",
+        "learn game development for beginners",
+        "game design internship college credit"
+      ],
+      "title": "Remote game dev internship and bootcamp | Luna Wolf Studios",
+      "titleLength": 59,
+      "description": "Join our remote game development internship to ship a game demo with a small team, or learn Unity and C# from scratch in our 10-week online bootcamp.",
+      "descriptionLength": 149,
+      "h1": "Remote game development internship and bootcamp",
+      "outline": [
+        "Two ways to learn with the pack",
+        "Remote internship program",
+        "Games our interns shipped",
+        "From intern to Steam release: The Brave Hearts II",
+        "What interns say",
+        "How to apply",
+        "Introductory game dev bootcamp (10 weeks, online)",
+        "What you'll learn",
+        "Who teaches",
+        "Questions about the internship and bootcamp"
+      ],
+      "internalLinks": [
+        "/the-brave-hearts-ii-false-skies/",
+        "/publishing/",
+        "/about-jeff/",
+        "/about-jeremy/",
+        "/games/",
+        "/newsletter/",
+        "/contact/"
+      ],
+      "schema": [
+        "Course (bootcamp; provider -> Organization; hasCourseInstance courseMode 'online', duration P10W)",
+        "VideoObject (0uA_8o4aLjQ)",
+        "BreadcrumbList",
+        "FAQPage (understanding only)"
+      ],
+      "faqs": [
+        {
+          "q": "Is the internship paid?",
+          "guidance": "No, it is unpaid; say so up front."
+        },
+        {
+          "q": "Can I get college credit for the internship?",
+          "guidance": "Possibly, depending on your school's policy."
+        },
+        {
+          "q": "When does the internship run?",
+          "guidance": "Typically late May to mid August; past cohorts also ran in spring (RAILBOUND, Spring 2026)."
+        },
+        {
+          "q": "Do I need experience to join?",
+          "guidance": "The internship suits students who have already built games; the bootcamp is for beginners, career changers, and hobbyists."
+        },
+        {
+          "q": "What do I need for the bootcamp?",
+          "guidance": "A laptop or desktop that can run Unity; one live class a week plus weekly assignments, for 10 weeks."
+        },
+        {
+          "q": "How much does the bootcamp cost?",
+          "guidance": "The archive only says a deposit reserves a spot; the owner must supply the price or the page says to email for details."
+        }
+      ],
+      "notes": "No JobPosting markup for now (no dated, open posting exists); add it as a follow-up when a season opens, with datePosted and validThrough. 'Who teaches': Jeremy teaches game design at the University of Illinois Urbana-Champaign, Wilmington University, and West Virginia University, and previously at Salem Community College, Delaware College of Art and Design, and Digital Media Institute (about-jeremy). The Brave Hearts II block: Connor Butler came through the internship and the studio published his game on Steam (owner-confirmed)."
+    },
+    {
+      "route": "/contact/",
+      "primaryKeyword": "contact Luna Wolf Studios",
+      "secondaryKeywords": [
+        "hire a game development studio",
+        "game development quote",
+        "Unity development quote",
+        "start a game project"
+      ],
+      "title": "Contact Luna Wolf Studios: start a project",
+      "titleLength": 42,
+      "description": "Tell us about your game, Unity tool, VR app, or software project. Email support@lunawolfstudios.com or use the form. We are in Newark, Delaware, USA.",
+      "descriptionLength": 149,
+      "h1": "Contact Luna Wolf Studios",
+      "outline": [
+        "Tell us about your project",
+        "What to include",
+        "Other questions: press, publishing, internships"
+      ],
+      "internalLinks": [
+        "/services/",
+        "/publishing/",
+        "/bootcamp/",
+        "/presskit/"
+      ],
+      "schema": [
+        "ContactPage",
+        "Organization contactPoint (email, contactType 'sales' and 'customer support')",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": ""
+    },
+    {
+      "route": "/newsletter/",
+      "primaryKeyword": "Luna Wolf Studios newsletter",
+      "secondaryKeywords": [
+        "Sheep Tag 2 news",
+        "Scriptable Sheets updates",
+        "indie game studio newsletter"
+      ],
+      "title": "Luna Wolf Studios newsletter",
+      "titleLength": 28,
+      "description": "Sign up for the Luna Wolf Studios newsletter for news on Sheep Tag 2, Scriptable Sheets updates, new releases, and openings in our internship and bootcamp.",
+      "descriptionLength": 155,
+      "h1": "Get the Luna Wolf Studios newsletter",
+      "outline": [
+        "What you'll get",
+        "Sign up",
+        "Privacy"
+      ],
+      "internalLinks": [
+        "/privacy-policy/",
+        "/games/",
+        "/scriptable-sheets/",
+        "/bootcamp/"
+      ],
+      "schema": [
+        "WebPage",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "Index it only if it has the short 'what you'll get' copy; a bare form page can carry noindex."
+    },
+    {
+      "route": "/presskit/",
+      "primaryKeyword": "Luna Wolf Studios press kit",
+      "secondaryKeywords": [
+        "Luna Wolf Studios logo",
+        "Luna Wolf Studios press",
+        "studio fact sheet"
+      ],
+      "title": "Press kit: logos and studio facts | Luna Wolf Studios",
+      "titleLength": 53,
+      "description": "Download Luna Wolf Studios logos, the wordmark font and color, and studio facts for press, plus links to press kits for Hypno Halo, Sheep Tag 2, and others.",
+      "descriptionLength": 156,
+      "h1": "Luna Wolf Studios press kit",
+      "outline": [
+        "Fact sheet",
+        "Awards and recognition",
+        "Selected press quotes",
+        "Logos",
+        "Font and color",
+        "Game press kits",
+        "Press contact"
+      ],
+      "internalLinks": [
+        "/hypno-halo/",
+        "/sheep-tag-2/",
+        "/about/",
+        "/contact/"
+      ],
+      "schema": [
+        "WebPage",
+        "ImageObject for each logo (contentUrl, width, height)",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": "Awards list: recognized at the 17th Unity Awards (neutral wording until verified), Haberdashery's Boston FIG 2015 and Delaware Indie Game of the Year nominations, and the 2015 ECRB game jam win if the owner confirms it was the studio's. Press quotes come from 'Our Howling Reviews', exactly as archived, with outlet and link."
+    },
+    {
+      "route": "/privacy-policy/",
+      "primaryKeyword": "Luna Wolf Studios privacy policy",
+      "secondaryKeywords": [],
+      "title": "Privacy policy | Luna Wolf Studios",
+      "titleLength": 34,
+      "description": "How Luna Wolf Studios collects, uses, and protects personal data on this website, in our games, and in our newsletter, and how to contact us about it.",
+      "descriptionLength": 150,
+      "h1": "Privacy policy",
+      "outline": [
+        "Copy the archived policy's sections as they are"
+      ],
+      "internalLinks": [
+        "/contact/",
+        "/newsletter/"
+      ],
+      "schema": [
+        "WebPage",
+        "BreadcrumbList"
+      ],
+      "faqs": [],
+      "notes": ""
+    }
+  ]
+}

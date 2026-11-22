@@ -1,0 +1,377 @@
+{
+  "checked": "2026-11-21",
+  "notes": "Store data read in the US store on the checked date. Companion notes: archive/research/games-steam.md. Image sources: src/assets/games/<slug>/SOURCES.md. Steam Deck: Valve returns category 0 (Unknown, not reviewed) for all four games.",
+  "sources": {
+    "steamApi": "https://store.steampowered.com/api/appdetails?appids=<id>&l=english&cc=us",
+    "steamAssetsApi": "https://api.steampowered.com/IStoreBrowseService/GetItems/v1/",
+    "steamDeckApi": "https://store.steampowered.com/saleaction/ajaxgetdeckappcompatibilityreport?nAppID=<id>",
+    "steamNews": "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=<id>",
+    "steamSearchDeveloper": "https://store.steampowered.com/search/?developer=Luna%20Wolf%20Studios",
+    "steamSearchPublisher": "https://store.steampowered.com/search/?publisher=Luna%20Wolf%20Studios"
+  },
+  "games": [
+    {
+      "slug": "sheep-tag-2",
+      "title": "Sheep Tag 2",
+      "factsSource": "S:/Unity/WebsiteSheepTag2/src/data/ (presskit.ts, site.ts, links.ts, videos.ts, screenshots.ts)",
+      "developer": "Luna Wolf Studios",
+      "publisher": "Luna Wolf Studios",
+      "release": {
+        "label": "Early Access coming 2027",
+        "labelSource": "presskit.ts FACTSHEET",
+        "steam": { "date": "2027-02-02", "displayed": "Feb 2, 2027", "comingSoon": true, "earlyAccess": true, "source": "Steam API 537680; Steam assets API" }
+      },
+      "price": { "label": "Free-to-play, never pay-to-win", "steamIsFree": true },
+      "platforms": ["Windows", "macOS", "Linux"],
+      "store": "Steam",
+      "genreLabel": "Asymmetric multiplayer strategy & survival",
+      "players": "Up to 32 online, or solo vs. bots",
+      "engine": "Unity",
+      "languages": "English (more planned)",
+      "steamGenres": ["Action", "Indie", "Strategy", "Free To Play", "Early Access"],
+      "steamTags": ["Early Access", "Free to Play", "RTS", "Action RTS", "Indie", "Survival", "Multiplayer", "Singleplayer", "Base Building", "MOBA", "Level Editor", "Team-Based", "PvP", "PvE", "Building", "Action", "Strategy", "Fantasy", "Werewolves", "Top-Down"],
+      "reviewSummary": { "label": "No user reviews", "count": 0, "checked": "2026-11-21" },
+      "steamDeck": "Unknown (not reviewed by Valve)",
+      "shortDescriptionSteam": "Your friends are sheep. You are the wolf. Hunt them down as they build ridiculous farm fortresses to keep you out. Sheep Tag 2 is a Free-To-Play chaotic team-based RTS that's easy to learn and brutal to master. Play solo with bots or battle multiplayer with up to 32 players. Build. Hunt. Survive.",
+      "tagline": "The classic cat-and-mouse game!",
+      "siteDescription": "The classic cat-and-mouse game! It's Sheep vs. Wolves in this unique blend of real-time strategy and survival. Party online with friends or play it solo against bots!",
+      "pitch": "The classic cat-and-mouse game! It's Sheep vs. Wolves in a unique blend of real-time strategy and survival. Party with up to 32 players online.",
+      "links": {
+        "steam": "https://store.steampowered.com/app/537680/Sheep_Tag_2",
+        "soundtrack": "https://store.steampowered.com/app/2151350/Sheep_Tag_2_Original_Soundtrack",
+        "supporterPack": "https://store.steampowered.com/app/5538360/Sheep_Tag_2_Supporter_Pack/",
+        "website": "https://www.sheeptag2.com/",
+        "kickstarter": "https://www.kickstarter.com/projects/lunawolfstudios/sheep-tag-2",
+        "workshop": "https://steamcommunity.com/app/537680/workshop/",
+        "discord": "https://discord.gg/jNf5RsaZPp",
+        "x": "https://x.com/sheeptag2",
+        "bluesky": "https://bsky.app/profile/lunawolfstudios.bsky.social",
+        "facebook": "https://facebook.com/sheeptag2",
+        "instagram": "https://instagram.com/sheeptag2",
+        "youtube": "https://www.youtube.com/channel/UCzw57oNyk0mCeVSoi-UCUBQ",
+        "twitch": "https://twitch.tv/directory/game/Sheep%20Tag%202",
+        "indiedb": "https://www.indiedb.com/games/sheep-tag-2"
+      },
+      "kickstarter": { "funded": "2021-11", "raised": "$10,072", "backers": 65, "source": "presskit.ts HISTORY" },
+      "trailer": { "youtubeId": "ABIVaCo3QX4", "title": "Sheep Tag 2 - Official Gameplay Trailer (Early Access 2027)" },
+      "videos": [
+        { "youtubeId": "ABIVaCo3QX4", "title": "Gameplay Trailer", "poster": "video-poster-gameplay-trailer.jpg" },
+        { "youtubeId": "9eJ0F5nIWL0", "title": "Cinematic Teaser", "poster": "video-poster-cinematic-teaser.jpg" },
+        { "youtubeId": "JwVvkdnIIQg", "title": "Sheep Survive. Wolves Hunt.", "poster": "video-poster-sheep-survive-wolves-hunt.jpg" },
+        { "youtubeId": "ZAj3N36xC4k", "title": "An Approachable RTS", "poster": "video-poster-an-approachable-rts.jpg" },
+        { "youtubeId": "_IQO36AQHe0", "title": "Play as Sheep or Wolf", "poster": "video-poster-play-as-sheep-or-wolf.jpg" },
+        { "youtubeId": "7OzmgL1tVVg", "title": "Play Online, Solo, or Both", "poster": "video-poster-play-online-solo-or-both.jpg" },
+        { "youtubeId": "PjNLCQmYS1c", "title": "Build Your Battlegrounds", "poster": "video-poster-build-your-battlegrounds.jpg" },
+        { "youtubeId": "b-kbfnlHRtY", "title": "Twenty Years in the Making", "poster": "video-poster-twenty-years-in-the-making.jpg" }
+      ],
+      "credits": [
+        { "name": "Jeff", "role": "Creator - Design, Programming & Production" },
+        { "name": "Quaternius", "role": "3D Art & Animation", "url": "https://quaternius.com/" },
+        { "name": "Nik Hagialas", "role": "Illustration, Concept & UI Art", "url": "https://www.nikhagialasart.com/" },
+        { "name": "Baelex Metcalf", "role": "Original Soundtrack" },
+        { "name": "Lazerwolph", "role": "Original Soundtrack" },
+        { "name": "M", "role": "Original Soundtrack" },
+        { "name": "Sara Sherlock", "role": "Sound Effects" }
+      ],
+      "coverage": [
+        { "outlet": "WTii (YouTube)", "title": "Sheep Tag 2 - interview & gameplay showcase", "url": "https://www.youtube.com/watch?v=ZGcLcwCXzj0" }
+      ],
+      "steamDataIssue": "Steam movie 257505643 is named '   Skip navigation Search    Create   Avatar image Sheep Tag 2 - Official Gameplay Trailer (Early Access 2027)' (pasted YouTube text).",
+      "images": {
+        "folder": "src/assets/games/sheep-tag-2/",
+        "keyArt": { "file": "key-art.png", "size": "2560x1440" },
+        "logo": { "file": "logo.png", "size": "1280x720", "transparent": true },
+        "capsule": { "file": "capsule-600x900.png", "size": "600x900" },
+        "header": { "file": "header.png", "size": "460x215" },
+        "hero": { "file": "hero.png", "size": "1920x620" },
+        "icon": { "file": "icon-256.png", "size": "256x256" },
+        "trailerPoster": { "file": "video-poster-gameplay-trailer.jpg", "size": "1280x720" },
+        "screenshots": [
+          { "file": "screenshot-01.png", "size": "2560x1440", "original": "st2-screenshot-00.png", "caption": "Thirty two players, one pasture, and a farm on every patch of grass.", "alt": "A 32 player game seen from high above, with hundreds of farms filling a green terrain around the pen in the middle." },
+          { "file": "screenshot-02.png", "size": "2560x1440", "original": "st2-screenshot-01.png", "caption": "Lunar Strike takes a base apart.", "alt": "Playing as a Wolf, meteors rain down on a Sheep base while the pack waits at its edge." },
+          { "file": "screenshot-03.png", "size": "2560x1440", "original": "st2-screenshot-02.png", "caption": "Fortify your farms when the pack shows up.", "alt": "A Sheep casts Fortify in the middle of a huge grid of farms on ReVoLuTiOn as Wolves close in from the right." },
+          { "file": "screenshot-04.png", "size": "2560x1440", "original": "st2-screenshot-04.png", "caption": "Fighting over the pen on Fire and Ice.", "alt": "Sheep and Wolves clash around the pen on a snowy terrain ringed by ice and lava." },
+          { "file": "screenshot-05.png", "size": "2560x1440", "original": "st2-screenshot-06.png", "caption": "Hunt as a Wolf.", "alt": "Playing as a Wolf, the hunter chases a Sheep between its farms, with the Wolf's abilities and gold on the HUD." },
+          { "file": "screenshot-06.png", "size": "2560x1440", "original": "st2-screenshot-08.png", "caption": "Night raids on the pen.", "alt": "At night a meteor falls toward the pen while Sheep rush in to free the Spirits held there." },
+          { "file": "screenshot-07.png", "size": "2560x1440", "original": "st2-screenshot-13.png", "caption": "The Floor Is Lava.", "alt": "Sheep build on a small island of rock in the middle of a terrain made of lava." },
+          { "file": "screenshot-08.png", "size": "2560x1440", "original": "st2-screenshot-14.png", "caption": "Dress your Sheep in the Wardrobe.", "alt": "In the Wardrobe, a Sheep up on its hind legs tries on a Mushroom hat and Bass Slippers." }
+        ]
+      }
+    },
+    {
+      "slug": "hypno-halo",
+      "title": "Hypno Halo",
+      "developer": "Luna Wolf Studios",
+      "publisher": "Luna Wolf Studios",
+      "releases": [
+        { "platform": "Steam (Windows, macOS, Linux)", "date": "2025-10-21", "source": "Steam API 3847950; Steam news 'Hypno Halo Launch Day!'" },
+        { "platform": "Steam demo (app 4029810)", "date": "2025-10-02", "source": "Steam search; Steam API 4029810" },
+        { "platform": "Nintendo Switch (US eShop)", "date": "2025-11-25", "source": "https://www.nintendo.com/us/store/products/hypno-halo-switch/" }
+      ],
+      "prices": [
+        { "store": "Steam", "usd": 19.99 },
+        { "store": "Nintendo eShop US", "usd": 19.99 }
+      ],
+      "platforms": ["Windows", "macOS", "Linux", "Nintendo Switch"],
+      "nintendoSwitch2": "Supported - Game behavior is consistent with Nintendo Switch.",
+      "steamGenres": ["Action", "Casual", "Indie"],
+      "steamTags": ["Psychedelic", "Casual", "Colorful", "Score Attack", "Abstract", "Action", "Indie", "Arcade", "Rhythm", "2D", "Minimalist", "Atmospheric", "Music", "Difficult", "Fast-Paced", "Replay Value", "Great Soundtrack", "Addictive", "Co-op"],
+      "nintendoTags": ["Action", "Play for a high score", "Meet up and play together", "Play together on one console"],
+      "players": { "steam": ["Single-player", "Multi-player", "Co-op", "Shared/Split Screen Co-op", "Shared/Split Screen"], "switch": "Single system (1-8)" },
+      "controller": { "steam": "Full controller support; DualShock and DualSense; Keyboard Only, Mouse Only, and Touch Only options", "switch": "TV, tabletop, handheld modes; touch screen" },
+      "steamDeck": { "valve": "Unknown (not reviewed)", "studioClaim": "Steam post 'Hypno Halo on Steam Deck!' 2025-10-06; old site says 'Steam Deck compatible'", "status": "UNVERIFIED" },
+      "steamFeatures": ["Steam Achievements", "Steam Cloud", "Stats", "Steam Leaderboards", "Remote Play on TV", "Remote Play Together", "Family Sharing", "Color Alternatives", "Custom Volume Controls", "Adjustable Difficulty", "Subtitle Options"],
+      "achievements": { "steam": 56 },
+      "languages": {
+        "steam": ["English (full audio)", "French", "Italian", "German", "Spanish - Spain", "Japanese", "Korean", "Polish", "Portuguese - Brazil", "Portuguese - Portugal", "Russian", "Simplified Chinese", "Spanish - Latin America", "Thai", "Traditional Chinese", "Turkish", "Ukrainian"],
+        "switch": ["Japanese", "French", "German", "Italian", "Spanish", "Korean", "Portuguese", "Russian", "Simplified Chinese", "Latin American Spanish", "Brazilian Portuguese", "Traditional Chinese", "American English"]
+      },
+      "rating": { "esrb": "E (Everyone)", "source": "Nintendo eShop" },
+      "switchFileSize": "307 MB",
+      "reviewSummary": { "label": "Positive", "percentPositive": 100, "count": 10, "checked": "2026-11-21" },
+      "shortDescriptionSteam": "Hypno Halo is a minimalist score attack game.",
+      "openingLine": "There’s only one shape that’s perfect, eternal, and completely unbothered: the halo.",
+      "warningSteam": "BUT SERIOUSLY PLAYERS WITH PHOTOSENSITIVITY AND THOSE SUSCEPTIBLE TO MOTION SICKNESS SHOULD STAY AWAY!",
+      "aboutTextNote": "The rest of the Steam About text is parody; its 'features' are not real features.",
+      "features": {
+        "source": "archive/wordpress/pages/hypno-halo.md",
+        "items": [
+          "Tackle 300+ handcrafted levels and 51 bonus challenges across 6 difficulties",
+          "Immerse yourself in 90+ minutes of electronic and techno music",
+          "Unlock 50+ achievements and climb the leaderboards",
+          "Full controller and touch screen support",
+          "Steam Deck compatible",
+          "Share controls with friends for co-op chaos",
+          "Discover secret endings and hidden surprises"
+        ]
+      },
+      "music": [
+        { "name": "Damiano Baldoni", "url": "https://soundcloud.com/damiano_baldoni" },
+        { "name": "Rik4k", "url": "https://soundcloud.com/rik4k" },
+        { "name": "Zane Little", "url": "https://soundcloud.com/zane-little" }
+      ],
+      "links": {
+        "steam": "https://store.steampowered.com/app/3847950/Hypno_Halo/",
+        "steamDemo": "https://store.steampowered.com/app/4029810/",
+        "nintendo": "https://www.nintendo.com/us/store/products/hypno-halo-switch/",
+        "website": "https://lunawolfstudios.com/hypno-halo/"
+      },
+      "trailer": {
+        "youtubeId": "GiCsebs_FK4",
+        "title": "Hypno Halo Trailer",
+        "steamMovieId": 257162614,
+        "steamHls": "https://video.akamai.steamstatic.com/store_trailers/3847950/1701632394/278ef97c88a437567b4b35ff9d5c9f820ae59602/1751078263/hls_264_master.m3u8"
+      },
+      "press": [
+        { "outlet": "Everything Action", "title": "Let the colors take control in Hypno Halo", "author": "Chris C", "date": "2025-10-07", "url": "https://everythingaction.com/2025/10/07/let-the-colors-take-control-in-hypno-halo/", "verified": true },
+        { "outlet": "Games Ardor", "title": "Top Steam Games to Look Out for in October 2025", "url": "https://gamesardor.net/top-steam-games-to-look-out-for-in-october-2025/#hypno-halo", "verified": "page loads; mention not re-read" },
+        { "outlet": "The Mimic's Veil Podcast", "title": "Episode 73", "url": "https://pocketcasts.com/podcast/the-mimics-veil/581efcf0-2c7d-013d-44ba-0affe62ed029/roid-rage-feat-metroid-prime-4-beyond-the-berlin-apartment-simogo-legacy-collection/b300ab7f-f089-4e12-b7a7-a958a84053d9", "verified": false },
+        { "outlet": "Higher Plain Games (YouTube)", "title": "Hypno Halo - Review | Psychedelic Flow State Hedonism [EPILEPSY WARNING]", "url": "https://www.youtube.com/watch?v=Zynq6cc5uTI", "verified": true },
+        { "outlet": "Russ Play", "title": "Review (Belarusian)", "url": "https://russplay.com/reviews/hypno-halo/", "verified": "page loads" }
+      ],
+      "quotes": [
+        { "text": "Take some mushrooms, turn out all the lights, blast the music, and just zone out for a good long while", "attribution": "MIVS Judge 2025", "source": "archive/wordpress/pages/hypno-halo.md", "verified": false },
+        { "text": "This game is an absolute TRIP and I hate how addicting it is xD. Even when my fingers were exhausted, I kept playing because it was tons of fun. The music was sufficiently epic to inspire me to keep playing & trying my hardest", "attribution": "MIVS Judge 2025", "source": "archive/wordpress/pages/hypno-halo.md", "verified": false },
+        { "text": "Hypno Halo mesmerizes with minimalist design and pure mechanics. The loop feels meditative and addictive. Halo aesthetics soothe and pull you into chasing high scores…", "attribution": "OFEN™", "url": "https://steamcommunity.com/groups/O-F-E-N/curation/app/3847950/", "source": "archive/wordpress/pages/hypno-halo.md", "verified": false },
+        { "text": "Maddeningly simple. Press buttons to match coloured halos before they vanish. Love how it gets faster before adding a new colour in, slowing down, and then ramping up again. Flow state gaming glory.", "attribution": "Higher Plain Games (Steam Curator, Recommended)", "url": "https://store.steampowered.com/curators/curatorsreviewing/?appid=3847950", "verified": true }
+      ],
+      "images": {
+        "folder": "src/assets/games/hypno-halo/",
+        "capsule": { "file": "capsule-600x900.jpg", "size": "600x900" },
+        "header": { "file": "header.jpg", "size": "920x430" },
+        "hero": { "file": "hero.jpg", "size": "3840x1240" },
+        "mainCapsule": { "file": "capsule-616x353.jpg", "size": "1232x706" },
+        "keyArt": { "file": "key-art.png", "size": "2560x1440", "note": "title logo on background" },
+        "logo": null,
+        "icon": { "file": "icon-1024.png", "size": "1024x1024" },
+        "trailerPoster": { "file": "trailer-poster.jpg", "size": "599x337" },
+        "featuredImage": { "file": "featured-image.png", "size": "1232x706" },
+        "capsuleWordpress": { "file": "capsule-600x900-wordpress.png", "size": "600x900" },
+        "screenshots": ["screenshot-01.jpg", "screenshot-02.jpg", "screenshot-03.jpg", "screenshot-04.jpg", "screenshot-05.jpg", "screenshot-06.jpg", "screenshot-07.jpg", "screenshot-08.jpg"],
+        "screenshotSize": "1920x1080",
+        "wordpressScreenshots": ["wp-screenshot-easy-50.png", "wp-screenshot-medium-69.png", "wp-screenshot-medium-98.png", "wp-screenshot-hard-113.png"]
+      }
+    },
+    {
+      "slug": "paralily",
+      "title": "ParaLily",
+      "what": "2D side-scrolling precision and puzzle platformer; Lily shifts between parallel universes to chase her stuffed dinosaur Patches. Released as a first chapter.",
+      "developer": "Team ParaLily",
+      "publisher": { "steam": ["Team ParaLily", "Luna Wolf Studios"], "nintendo": "Luna Wolf Studios" },
+      "team": [
+        { "name": "Nate Flynn", "role": "Artist" },
+        { "name": "Jeff", "role": "Programmer", "note": "Luna Wolf Studios co-founder; paralilygame.com prints his full name, the studio site uses first name only" }
+      ],
+      "lwsRole": "Publisher on Nintendo Switch; co-publisher on Steam; co-founder Jeff is one of the two developers",
+      "teamFounded": "March, 2017",
+      "releases": [
+        { "platform": "Steam (Windows)", "date": "2021-11-09", "source": "Steam API 1156760; ParaLily press kit" },
+        { "platform": "Nintendo Switch (US eShop)", "date": "2022-02-02", "source": "https://www.nintendo.com/us/store/products/paralily-switch/" }
+      ],
+      "prices": [
+        { "store": "Steam", "usd": 3.99 },
+        { "store": "Nintendo eShop US", "usd": 4.99 }
+      ],
+      "platforms": ["Windows", "Nintendo Switch"],
+      "otherPlatformsFound": "none (no macOS, Linux, Xbox, PlayStation, or mobile)",
+      "steamGenres": ["Action", "Adventure", "Indie"],
+      "steamTags": ["Action", "Indie", "Adventure", "Platformer", "Female Protagonist", "Difficult", "Dark", "2D", "Atmospheric", "Singleplayer", "Horror", "Surreal", "Psychological Horror", "Puzzle", "Design & Illustration", "Stylized", "Sci-fi", "Side Scroller", "Cute", "Puzzle Platformer"],
+      "players": "Single-player",
+      "controller": "Full controller support (Steam); TV, tabletop, handheld, touch screen (Switch)",
+      "steamDeck": "Unknown (not reviewed by Valve)",
+      "achievements": { "steam": 7 },
+      "languages": ["English"],
+      "rating": { "esrb": "E (Everyone)", "descriptors": ["Mild Fantasy Violence"], "source": "Nintendo eShop" },
+      "reviewSummary": { "label": "8 user reviews (no score yet)", "count": 8, "checked": "2026-11-21" },
+      "shortDescriptionSteam": "Help Lily survive the paranormal and rescue a friend, on her strange journey through a series of parallel universes, in this special blend of precision and puzzle platforming. Avoid horrifying enemies, collect magical glyphs, and discover the connection between Lily and the parallel universes.",
+      "headlineNintendo": "Help Lily survive the paranormal and rescue a friend, on her strange journey through a series of parallel universes.",
+      "siteTagline": "ParaLily – A girls strange journey through parallaxing parallel universes, to save a friend, and survive the paranormal!",
+      "longDescription": "ParaLily is one little girl’s adventure to retrieve her dear stuffed dinosaur Patches, who in the middle of the night sprung to life and took off through a mysterious door. This strange journey will take Lily through a set of dangerous and terrifying parallel universes, as she attempts to retrieve her little stuffed runaway. Lily can shift between the parallel universes at will; which will help her avoid danger, and solve puzzles while traversing the paranormal universes.",
+      "features": [
+        "Familiar platforming and side-scrolling action.",
+        "Hand-drawn environments, characters, and animations.",
+        "Innovative parallel universe shifting mechanics.",
+        "Collectibles, puzzles, and hidden pathways.",
+        "Creative multi-layered level designs."
+      ],
+      "history": "In early 2017, Nate approached Jeff with a prototype of ParaLily. Having worked on many games together before, and seeing the potential of the prototype, Jeff joined Nate in developing ParaLily.",
+      "awards": [
+        { "text": "Best in Show at Replay FX", "place": "Pittsburgh, PA", "dates": "July 26-29, 2018", "source": "https://paralilygame.com/ and https://paralilygame.com/presskit/" }
+      ],
+      "events": [
+        { "text": "First playable at A Video Game Con (2017)", "source": "http://everythingaction.com/2017/09/21/gamebox-2-0-leatherface-legacy-edition/" }
+      ],
+      "quotes": [
+        { "text": "It’s like going deeper in Inception, and it’s extremely fun to play.", "attribution": "Zach, Everything Action", "url": "http://everythingaction.com/2017/09/21/gamebox-2-0-leatherface-legacy-edition/", "verified": true },
+        { "text": "This game is spectacular. The puzzles are amazing, the art is amazing, the story is compelling and captivating. The game is very polished and a joy to play!", "attribution": "MAGFest MIVS Judge", "url": "http://super.magfest.org/mivs/", "source": "https://paralilygame.com/presskit/", "verified": false },
+        { "text": "ParaLily is the perfect balance of difficulty and skill with an innovative new mechanic of shifting between visually stunning, dynamic parallel universes. Must play for precision platformers.", "attribution": "Beta Tested, Game Reviewed", "url": "http://betatestedgamereviewed.com/game-reviews/post/1297102/paralily-difficult-universe-phasing-platformer/", "source": "https://paralilygame.com/presskit/", "verified": false }
+      ],
+      "links": {
+        "website": "https://paralilygame.com/",
+        "presskit": "https://paralilygame.com/presskit/",
+        "devlog": "https://paralilygame.com/devlog/",
+        "steam": "https://store.steampowered.com/app/1156760/ParaLily/",
+        "nintendo": "https://www.nintendo.com/us/store/products/paralily-switch/",
+        "indiedb": "https://www.indiedb.com/games/paralily",
+        "discord": "https://discord.gg/AtSY8SG",
+        "twitter": "https://twitter.com/ParaLilyGame",
+        "facebook": "https://www.facebook.com/ParaLilyGame/",
+        "instagram": "https://www.instagram.com/paralilygame/",
+        "speedrun": "http://speedrun.com/paralily",
+        "email": "info@paralilygame.com"
+      },
+      "trailer": {
+        "youtubeId": "JcMM36wFX1U",
+        "title": "ParaLily - Teaser Trailer",
+        "steamMovieId": 256761403,
+        "steamHls": "https://video.akamai.steamstatic.com/store_trailers/1156760/242017/dbff115dd43a8ec0c99e866214c01132cfaa17ae/1751196654/hls_264_master.m3u8"
+      },
+      "otherVideos": [{ "youtubeId": "28aCV77kxBM", "title": "ParaLily WIP Indie Game Preview Footage" }],
+      "images": {
+        "folder": "src/assets/games/paralily/",
+        "capsule": { "file": "capsule-600x900.jpg", "size": "600x900" },
+        "header": { "file": "header.jpg", "size": "460x215" },
+        "hero": { "file": "hero.jpg", "size": "1920x620" },
+        "mainCapsule": { "file": "capsule-616x353.jpg", "size": "616x353" },
+        "keyArt": { "file": "key-art.jpg", "size": "1920x1080", "source": "Nintendo eShop hero" },
+        "keyArtWithUrl": { "file": "key-art-with-url.png", "size": "1618x911" },
+        "logo": { "file": "logo-1024x512.jpg", "size": "1024x512", "transparent": false },
+        "presskitHeader": { "file": "presskit-header.png", "size": "1200x240" },
+        "award": { "file": "award-replay-fx-2018-best-in-show.jpg", "size": "1024x1024" },
+        "trailerPoster": { "file": "trailer-poster.jpg", "size": "293x164", "note": "too small for a poster" },
+        "screenshots": ["screenshot-01.jpg", "screenshot-02.jpg", "screenshot-03.jpg", "screenshot-04.jpg", "screenshot-05.jpg", "screenshot-06.jpg", "screenshot-07.jpg", "screenshot-08.jpg", "screenshot-09.jpg", "screenshot-10.jpg"],
+        "screenshotSize": "1920x1080"
+      }
+    },
+    {
+      "slug": "the-brave-hearts-ii-false-skies",
+      "title": "The Brave Hearts II: False Skies",
+      "developer": "Connor Butler",
+      "developerFormerIntern": { "claim": "former Luna Wolf Studios student intern", "status": "UNVERIFIED" },
+      "publisher": "Luna Wolf Studios",
+      "releases": [
+        { "platform": "Steam (Windows)", "date": "2026-08-27", "source": "Steam API 4918650" }
+      ],
+      "prices": [{ "store": "Steam", "usd": 9.99 }],
+      "platforms": ["Windows"],
+      "steamGenres": ["Action"],
+      "steamTags": ["Action", "Shoot 'Em Up", "Top-Down Shooter", "Arcade", "Shooter", "2D", "Flight", "Singleplayer", "Dialogue Heavy", "Narrative", "Story Rich", "Controller", "Score Attack", "Retro", "Old School", "Linear", "War", "Military", "Combat", "Quick-Time Events"],
+      "players": "Single-player",
+      "controller": "Full controller support; DualShock and DualSense",
+      "steamDeck": "Unknown (not reviewed by Valve)",
+      "steamFeatures": ["Steam Achievements", "Custom Volume Controls", "Stereo Sound", "Steam Cloud", "Family Sharing"],
+      "achievements": { "steam": 20 },
+      "languages": ["English (full audio)"],
+      "reviewSummary": { "label": "No user reviews", "count": 0, "checked": "2026-11-21" },
+      "website": null,
+      "supportEmail": "support@lunawolfstudios.com",
+      "shortDescriptionSteam": "Take to the skies in a fully voice-acted, story-driven top-down shoot 'em up. Battle enemy squadrons, survive intense arcade missions, master multiple aircraft, and push your score higher across campaign, training, hardcore, and endless modes.",
+      "openingLine": "Take to the skies once more, fight new drone threats, and become a Brave Heart once again.",
+      "features": {
+        "campaign": ["Fully voice-acted story campaign spanning 3+ hours", "30 visual novel styled cutscenes", "Story-driven mission progression", "High-intensity dogfights and boss encounters", "In-game QTE moments and dynamic combat sequences"],
+        "squad": ["4 unique teammates, each with special abilities", "Strategic ability cooldowns and synergy in combat"],
+        "gameplay": ["Fast-paced arcade-style top-down aerial combat", "21 aircraft to unlock and fly, including variants and skins", "9 powerful combat pickups", "Variety of maps and environmental conditions", "Fuel, ammo, and heat management systems for tactical depth", "Reputation Points system", "Branching Mission Choices", "Checkpoint System"],
+        "modes": ["Campaign Mode – Fully voiced narrative experience", "Training Mode – Learn flight systems and combat basics", "Hardcore Mode – Increased enemy aggression and challenge", "FreePlay Mode – Practice combat freely", "Endless Mode – Survive escalating waves of drone attacks"],
+        "extras": ["In-game database covering aircraft, enemies, characters, and lore", "Achievements to unlock as you progress", "Jukebox mode to listen to the full soundtrack anytime", "Movie browser to replay any cutscene from the campaign", "Fully customizable pilot name system", "Full Controller Support", "Highscore System for every Mission and Extra Mode"],
+        "characters": ["Wade Sullivan", "Roman Fox", "Clara Willis", "Elizabeth Fryer", "Spencer Hannigan"]
+      },
+      "lwsWork": { "text": "Steam publishing and platform integration, Windows build verification, Steam achievements, Steam Cloud configuration, controller usability, and release quality assurance", "source": "archive/wordpress/pages/about-jeremy.md" },
+      "links": { "steam": "https://store.steampowered.com/app/4918650/The_Brave_Hearts_II_False_Skies/" },
+      "trailer": {
+        "youtubeId": null,
+        "title": "The Brave Hearts II: False Skies - Official Trailer",
+        "steamMovieId": 257369977,
+        "steamHls": "https://video.akamai.steamstatic.com/store_trailers/4918650/49150408/54639638da5ae7eeb62671ac3176caed962e75ef/1783117767/hls_264_master.m3u8",
+        "steamDashH264": "https://video.akamai.steamstatic.com/store_trailers/4918650/49150408/54639638da5ae7eeb62671ac3176caed962e75ef/1783117767/dash_h264.mpd"
+      },
+      "updates": [{ "date": "2026-09-01", "title": "Gameplay and Controller UI Fix" }],
+      "press": [],
+      "firstGame": {
+        "title": "The Brave Hearts",
+        "url": "https://connor0453.itch.io/the-brave-hearts",
+        "store": "itch.io only (not on Steam)",
+        "platforms": ["Windows", "macOS"],
+        "price": "Name your own price",
+        "developers": ["Connor Butler", "Ryan Ketchum"],
+        "release": { "date": "2025-12-05", "source": "https://gamebrain.co/game/the-brave-hearts", "status": "UNVERIFIED" },
+        "lwsCredited": false
+      },
+      "images": {
+        "folder": "src/assets/games/the-brave-hearts-ii-false-skies/",
+        "capsule": { "file": "capsule-600x900.jpg", "size": "600x900" },
+        "header": { "file": "header.jpg", "size": "920x430" },
+        "hero": { "file": "hero.jpg", "size": "3840x1240", "note": "abstract pattern, no characters or logo" },
+        "mainCapsule": { "file": "capsule-616x353.jpg", "size": "1232x706" },
+        "logo": null,
+        "keyArt": null,
+        "trailerPoster": { "file": "trailer-poster.jpg", "size": "600x337" },
+        "screenshots": ["screenshot-01.jpg", "screenshot-02.jpg", "screenshot-03.jpg", "screenshot-04.jpg", "screenshot-05.jpg", "screenshot-06.jpg", "screenshot-07.jpg", "screenshot-08.jpg", "screenshot-09.jpg", "screenshot-10.jpg"],
+        "screenshotSize": "1920x1080"
+      }
+    }
+  ],
+  "steamApps": [
+    { "appid": 537680, "name": "Sheep Tag 2", "type": "game", "role": ["developer", "publisher"], "release": "Feb 2, 2027 (coming soon)", "price": "Free to play", "url": "https://store.steampowered.com/app/537680/Sheep_Tag_2/" },
+    { "appid": 2151350, "name": "Sheep Tag 2 Original Soundtrack", "type": "music", "role": ["developer", "publisher"], "release": "Dec 31, 2022", "price": "$4.99", "url": "https://store.steampowered.com/app/2151350/Sheep_Tag_2_Original_Soundtrack/" },
+    { "appid": 5538360, "name": "Sheep Tag 2 Supporter Pack", "type": "dlc", "role": ["developer", "publisher"], "release": "Nov 11, 2026", "price": "$39.99", "url": "https://store.steampowered.com/app/5538360/Sheep_Tag_2_Supporter_Pack/" },
+    { "appid": 3847950, "name": "Hypno Halo", "type": "game", "role": ["developer", "publisher"], "release": "Oct 21, 2025", "price": "$19.99", "url": "https://store.steampowered.com/app/3847950/Hypno_Halo/" },
+    { "appid": 4029810, "name": "Hypno Halo Demo", "type": "demo", "role": ["developer", "publisher"], "release": "Oct 2, 2025", "price": "Free", "url": "https://store.steampowered.com/app/4029810/" },
+    { "appid": 1156760, "name": "ParaLily", "type": "game", "role": ["co-publisher"], "developer": "Team ParaLily", "release": "Nov 9, 2021", "price": "$3.99", "url": "https://store.steampowered.com/app/1156760/ParaLily/" },
+    { "appid": 4918650, "name": "The Brave Hearts II: False Skies", "type": "game", "role": ["publisher"], "developer": "Connor Butler", "release": "Aug 27, 2026", "price": "$9.99", "url": "https://store.steampowered.com/app/4918650/The_Brave_Hearts_II_False_Skies/" }
+  ],
+  "nintendoApps": [
+    { "name": "Hypno Halo", "role": ["developer", "publisher"], "release": "2025-11-25", "price": "$19.99", "url": "https://www.nintendo.com/us/store/products/hypno-halo-switch/" },
+    { "name": "ParaLily", "role": ["publisher"], "developer": "Team ParaLily", "release": "2022-02-02", "price": "$4.99", "url": "https://www.nintendo.com/us/store/products/paralily-switch/" }
+  ],
+  "unverified": [
+    "Connor Butler as a former Luna Wolf Studios student intern",
+    "The Brave Hearts (first game) release date, Dec 5, 2025 (third-party aggregator only)",
+    "Hypno Halo 'Steam Deck compatible' (studio claim; Valve rating Unknown)",
+    "MIVS judge quotes for Hypno Halo and ParaLily, and whether either game was submitted to or selected for MIVS",
+    "OFEN curator quote for Hypno Halo (not re-read)",
+    "Beta Tested, Game Reviewed quote for ParaLily (site down)",
+    "The Mimic's Veil podcast and Games Ardor mentions of Hypno Halo (not re-read)",
+    "Sheep Tag 2 Steam date Feb 2, 2027 vs repo 'Early Access coming 2027'",
+    "Transparent logos for Hypno Halo, ParaLily, and The Brave Hearts II (not found)"
+  ]
+}
