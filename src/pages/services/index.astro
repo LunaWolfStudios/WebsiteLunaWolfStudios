@@ -1,0 +1,313 @@
+---
+/**
+ * /services/: the services hub. The six services as large cards, the offers next to them,
+ * who we have worked with, how a project runs, why the studio, what clients say, and the
+ * questions clients ask. Short service copy is in src/data/services.ts; the hub's own copy is
+ * HUB in src/data/servicePages.ts.
+ *
+ * JSON-LD: CollectionPage with an ItemList of the six Service nodes (the same @ids the service
+ * pages use) and FAQPage; BaseLayout adds Organization, WebSite and the BreadcrumbList.
+ */
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Section from "../../components/Section.astro";
+import ServiceCard from "../../components/ServiceCard.astro";
+import PartnerCloud from "../../components/PartnerCloud.astro";
+import Reviews from "../../components/Reviews.astro";
+import FaqSection from "../../components/FaqSection.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import Icon from "../../components/Icon.astro";
+import ProcessSteps from "../../components/services/ProcessSteps.astro";
+import { SERVICES, ADJACENT_OFFERS } from "../../data/services";
+import { HUB } from "../../data/servicePages";
+import { PARTNERS } from "../../data/partners";
+import { REVIEWS } from "../../data/reviews";
+import { SITE } from "../../data/site";
+import { image } from "../../lib/images";
+import { abs, faqLd, WEBSITE_ID, ORG_ID } from "../../lib/seo";
+
+const url = "/services/";
+const heroMain = image("games/sheep-tag-2/key-art.jpg");
+const heroTool = image("scriptable-sheets/screenshot-01.jpg");
+const heroVr = image("games/helix/helix-pure-tone-crop.jpg");
+
+const reviews = HUB.reviews.map((id) => REVIEWS.find((r) => r.id === id)!);
+const faqs = HUB.faq.map((f) => ({ q: f.q, a: f.a }));
+
+const scriptableSheets = {
+  title: "Scriptable Sheets",
+  summary:
+    "Our own spreadsheet editor for Unity assets, sold on the Unity Asset Store and a nominee for Best Development Tool at the 17th Unity Awards. Proof that we ship the tools we build.",
+  icon: "sheet",
+  href: "/scriptable-sheets/",
+};
+
+const jsonLd = [
+  {
+    "@type": "CollectionPage",
+    "@id": `${abs(url)}#webpage`,
+    url: abs(url),
+    name: `${HUB.title} | ${SITE.name}`,
+    description: HUB.description,
+    isPartOf: { "@id": WEBSITE_ID },
+    about: { "@id": ORG_ID },
+    mainEntity: { "@id": `${abs(url)}#services` },
+  },
+  {
+    "@type": "ItemList",
+    "@id": `${abs(url)}#services`,
+    name: "Luna Wolf Studios services",
+    numberOfItems: SERVICES.length,
+    itemListElement: SERVICES.map((s, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      // A reference only: each service page defines its own Service node in full.
+      item: { "@type": "Service", "@id": `${abs(s.page)}#service`, name: s.title, url: abs(s.page) },
+    })),
+  },
+  faqLd(faqs),
+];
+---
+
+<BaseLayout
+  title={HUB.title}
+  description={HUB.description}
+  image={heroMain}
+  imageAlt="Sheep Tag 2 key art: Sheep and Wolves in front of a farmhouse."
+  breadcrumbs={[{ label: "Services", href: url }]}
+  jsonLd={jsonLd}
+>
+  <PageHero eyebrow="Services" title={HUB.h1} lead={HUB.lead}>
+    <Fragment slot="actions">
+      <a class="btn btn--primary btn--lg" href="/contact/">
+        Start a project
+        <Icon name="arrowRight" size={18} />
+      </a>
+      <a class="btn btn--secondary btn--lg" href="#services">See the six services</a>
+    </Fragment>
+    <div slot="media" class="mosaic">
+      <Image
+        src={heroMain}
+        alt="Sheep Tag 2 key art: Sheep and Wolves in front of a farmhouse."
+        widths={[480, 720, 960, 1160]}
+        sizes="(max-width: 900px) calc(100vw - 32px), 570px"
+        loading="eager"
+        fetchpriority="high"
+        class="mosaic-main"
+      />
+      <Image
+        src={heroTool}
+        alt="Scriptable Sheets in the Unity Editor: every asset and component in its own table."
+        widths={[280, 420, 560]}
+        sizes="(max-width: 900px) calc(50vw - 24px), 280px"
+        class="mosaic-small"
+      />
+      <Image
+        src={heroVr}
+        alt="HELIX, our VR hearing assessment: animals along a path in the pure tone test."
+        widths={[280, 420, 560]}
+        sizes="(max-width: 900px) calc(50vw - 24px), 280px"
+        class="mosaic-small"
+      />
+    </div>
+  </PageHero>
+
+  <Section
+    id="services"
+    title="What we build"
+    lead={HUB.servicesLead}
+  >
+    <ul class="svc-grid" role="list">
+      {
+        SERVICES.map((s, i) => (
+          <li data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
+            <ServiceCard service={s} items={s.bullets.slice(0, 3)} cta={HUB.cardCta[s.slug] ?? `${s.title} services`} />
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section
+    id="also"
+    title="Also from the pack"
+    lead="Two more ways to work with us, and the tool that shows how we build tools."
+    tone="raised"
+  >
+    <ul class="also-grid" role="list">
+      {
+        ADJACENT_OFFERS.map((s, i) => (
+          <li data-reveal style={`--reveal-delay:${i * 70}ms`}>
+            <ServiceCard service={s} bullets={false} cta={s.title} />
+          </li>
+        ))
+      }
+      <li data-reveal style="--reveal-delay:140ms">
+        <ServiceCard
+          title={scriptableSheets.title}
+          summary={scriptableSheets.summary}
+          icon={scriptableSheets.icon}
+          href={scriptableSheets.href}
+          bullets={false}
+          cta="See Scriptable Sheets"
+        />
+      </li>
+    </ul>
+  </Section>
+
+  <Section
+    id="partners"
+    title="Who we work with: studios, health teams, schools, and businesses"
+    lead="Our trusted pack: the companies, health and research organizations, and schools we have worked with as partners and clients."
+    align="center"
+  >
+    <PartnerCloud partners={PARTNERS} size="sm" label="Partners and clients" />
+  </Section>
+
+  <Section
+    id="process"
+    title="How a project works"
+    lead="From your first email to support after launch. The same five steps whether we build the whole thing or join your team."
+    tone="raised"
+  >
+    <ProcessSteps />
+  </Section>
+
+  <Section id="why" title="Why Luna Wolf Studios">
+    <ul class="why-grid" role="list">
+      {
+        HUB.why.map((w, i) => (
+          <li class="why" data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
+            <h3 class="why-title">{w.title}</h3>
+            <p class="why-text" set:html={w.html} />
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section
+    id="reviews"
+    title="What clients say"
+    lead="A client review from Freelancer.com and two Unity Asset Store reviews of Scriptable Sheets."
+    tone="raised"
+  >
+    <Reviews reviews={reviews} label="What clients say" />
+  </Section>
+
+  <FaqSection title="Questions clients ask" items={faqs}>
+    <Fragment slot="more">
+      Answers to what clients ask most. For anything else, email
+      <a href="mailto:support@lunawolfstudios.com">support@lunawolfstudios.com</a> or use the
+      <a href="/contact/">contact form</a>.
+    </Fragment>
+  </FaqSection>
+
+  <CtaBand
+    title="Tell us about your project"
+    lead="A game, a Unity tool, a VR app, a serious game, or software. Send us the goal, the platforms, your timeline, and a budget range if you have one."
+    primary={{ label: "Start a project", href: "/contact/" }}
+    secondary={{ label: "Email us", href: "mailto:support@lunawolfstudios.com", icon: "mail" }}
+  />
+</BaseLayout>
+
+<style>
+  /* Hero mosaic: one large image over two small ones. */
+  .mosaic {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  .mosaic :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-border);
+    box-shadow: var(--lw-shadow);
+  }
+  .mosaic :global(.mosaic-main) {
+    grid-column: span 2;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--lw-radius-lg);
+    box-shadow: var(--lw-shadow-lg);
+  }
+  .mosaic :global(.mosaic-small) {
+    aspect-ratio: 16 / 10;
+  }
+
+  .svc-grid,
+  .also-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+  }
+  .svc-grid :global(.service-card) {
+    padding: clamp(1.5rem, 2.6vw, 2rem);
+  }
+  .svc-grid :global(.sc-title) {
+    font-size: 1.45rem;
+  }
+  @media (max-width: 1000px) {
+    .svc-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .also-grid {
+      grid-template-columns: minmax(0, 1fr);
+      max-width: 640px;
+    }
+  }
+  @media (max-width: 640px) {
+    .svc-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.75rem, 3.2vw, 2.5rem) clamp(1.5rem, 3.5vw, 3rem);
+    margin: 0;
+    padding: 0;
+  }
+  .why {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--lw-border);
+  }
+  .why::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 2.25rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--lw-gold);
+  }
+  .why-title {
+    font-size: 1.2rem;
+    line-height: 1.3;
+  }
+  .why-text {
+    color: var(--lw-ink-muted);
+    line-height: 1.6;
+  }
+  @media (max-width: 900px) {
+    .why-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 560px) {
+    .why-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+</style>

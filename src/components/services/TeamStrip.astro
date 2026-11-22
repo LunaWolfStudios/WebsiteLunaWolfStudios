@@ -1,0 +1,114 @@
+---
+/**
+ * Who you'll work with: the founders a service draws on, each with a photo, a one-line note
+ * written for that service, and a link to their page.
+ *
+ *   <TeamStrip people={[{ slug: "jeff", note: "..." }]} />
+ */
+import Icon from "../Icon.astro";
+import FounderPhoto from "../FounderPhoto.astro";
+import { founder } from "../../data/team";
+import type { FounderSlug } from "../../data/types";
+
+interface Props {
+  people: Array<{ slug: FounderSlug; note: string }>;
+  class?: string;
+}
+
+const { people, class: cls } = Astro.props;
+const items = people.map((p) => ({ f: founder(p.slug), note: p.note }));
+---
+
+<ul class:list={["team-strip", cls]} role="list">
+  {
+    items.map(({ f, note }) => (
+      <li class="ts-person card card--link">
+        <FounderPhoto founder={f} size={64} alt="" class="ts-photo" />
+        <div class="ts-text">
+          <h4 class="ts-name">
+            <a href={f.page} class="ts-link">
+              {f.name}
+            </a>
+          </h4>
+          <p class="ts-role">{f.role}</p>
+          <p class="ts-note">{note}</p>
+        </div>
+        <span class="ts-go" aria-hidden="true">
+          <Icon name="arrowRight" size={16} />
+        </span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .team-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+  .ts-person {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem 2.5rem 1rem 1rem;
+    isolation: isolate;
+  }
+  /* FounderPhoto frames the face; this only adds the ring. */
+  .ts-person :global(.ts-photo) {
+    box-shadow: 0 0 0 1px var(--lw-border-strong);
+  }
+  .ts-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+  .ts-name {
+    font-size: 1.08rem;
+  }
+  .ts-link {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .ts-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .ts-link:focus-visible {
+    outline: none;
+  }
+  .ts-person:has(.ts-link:focus-visible) {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: 3px;
+  }
+  .ts-person:hover .ts-link {
+    color: var(--lw-accent);
+  }
+  .ts-role {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-accent);
+    font-weight: 500;
+  }
+  .ts-note {
+    margin-top: 0.25rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--lw-ink-muted);
+  }
+  .ts-go {
+    position: absolute;
+    right: 1rem;
+    top: 1.15rem;
+    color: var(--lw-ink-subtle);
+    transition: transform var(--lw-fast) ease, color var(--lw-fast) ease;
+  }
+  .ts-person:hover .ts-go {
+    color: var(--lw-accent);
+    transform: translateX(3px);
+  }
+</style>

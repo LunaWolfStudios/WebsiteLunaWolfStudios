@@ -1,0 +1,282 @@
+---
+/**
+ * A project that backs a service claim: its art, whose project it is, the title, and what it
+ * proves. The whole card is one link.
+ *
+ *   <ProofCard item={{ slug: "helix", kicker: "Our project", note: "..." }} />
+ *   <ProofCard item={...} featured />          horizontal, spans two grid columns
+ *
+ * Title, art, role and link come from games.ts (`work(slug)`); the item can override each.
+ * A project with no art is a compact text card (a small icon beside the kicker, an accent rule
+ * on top), never an empty picture frame. `hasArt(item)` tells the page which kind a card is,
+ * so text cards can share a row of their own.
+ * When the link goes somewhere other than the project itself (a founder page), the link is the
+ * visible `linkLabel`, not the title, so the link text says where it goes.
+ */
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import { work } from "../../data/games";
+import { withUtm, isExternal } from "../../data/links";
+import type { ProofItem } from "../../data/servicePages";
+import { maybeImage } from "../../lib/images";
+
+interface Props {
+  item: ProofItem;
+  featured?: boolean;
+}
+
+const { item, featured = false } = Astro.props;
+const g = item.slug ? work(item.slug) : undefined;
+const title = item.title ?? g?.title ?? "";
+const artRef = item.image ?? g?.wide ?? g?.cover;
+const art = item.icon && !item.image ? undefined : maybeImage(artRef, g ? `games/${g.slug}` : undefined);
+const rawHref = item.href ?? g?.page ?? g?.links[0]?.url;
+const external = rawHref ? isExternal(rawHref) : false;
+const href = rawHref && external ? withUtm(rawHref, "services") : rawHref;
+const role = item.roleBy && g?.role ? `${item.roleBy}: ${g.role}` : undefined;
+const labelLink = Boolean(item.linkLabel);
+// The featured card crops 16:9 art into a near-square panel, so it asks for a wider file.
+const sizes = featured
+  ? "(max-width: 640px) calc(100vw - 32px), 760px"
+  : "(max-width: 640px) calc(100vw - 32px), (max-width: 1000px) 46vw, 380px";
+---
+
+<article
+  class:list={[
+    "proof-card",
+    "card",
+    { "card--link": href, "proof-card--featured": featured && art, "proof-card--text": !art },
+  ]}
+>
+  {
+    art && (
+      <div class="pc-art">
+        <Image
+          src={art}
+          alt=""
+          widths={featured ? [480, 760, 1140] : [380, 570, 760]}
+          sizes={sizes}
+          loading="lazy"
+          decoding="async"
+          class:list={["pc-img", { "pc-img--contain": item.contain }]}
+          style={item.imagePosition ? `object-position:${item.imagePosition}` : undefined}
+        />
+      </div>
+    )
+  }
+  <div class="pc-body">
+    <p class="pc-kicker">
+      {
+        !art && (
+          <span class="pc-chip" aria-hidden="true">
+            <Icon name={item.icon ?? "briefcase"} size={16} />
+          </span>
+        )
+      }
+      {item.kicker}
+    </p>
+    <h3 class="pc-title">
+      {
+        href && !labelLink ? (
+          <a href={href} class="pc-link" target={external ? "_blank" : undefined} rel={external ? "noopener" : undefined}>
+            {title}
+            {external && <span class="visually-hidden"> (opens in a new tab)</span>}
+          </a>
+        ) : (
+          title
+        )
+      }
+    </h3>
+    {item.note && <p class="pc-note">{item.note}</p>}
+    {role && <p class="pc-role">{role}</p>}
+    {
+      href && (
+        <p class="pc-go">
+          {labelLink ? (
+            <a
+              href={href}
+              class="pc-link pc-link--label"
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener" : undefined}
+            >
+              {item.linkLabel}
+              {external && <span class="visually-hidden"> (opens in a new tab)</span>}
+              <Icon name="arrowRight" size={16} />
+            </a>
+          ) : (
+            <span class="pc-go-icon" aria-hidden="true">
+              {external ? <Icon name="external" size={16} /> : <Icon name="arrowRight" size={18} />}
+            </span>
+          )}
+        </p>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .proof-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .pc-art {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--lw-media-bg);
+    overflow: hidden;
+    border-bottom: 1px solid var(--lw-border);
+  }
+  .pc-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--lw-ease);
+  }
+  .pc-img--contain {
+    object-fit: contain;
+    padding: 0.75rem;
+  }
+  .proof-card:hover .pc-img {
+    transform: scale(1.035);
+  }
+  .pc-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+    padding: 1.05rem 1.2rem 1.15rem;
+  }
+  .pc-kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: var(--lw-text-xs);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .pc-title {
+    font-size: 1.2rem;
+  }
+  .pc-link {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  /* The link covers the whole card: one tab stop, one target. */
+  .pc-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .pc-link:focus-visible {
+    outline: none;
+  }
+  .proof-card:has(.pc-link:focus-visible) {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: 3px;
+  }
+  .proof-card:hover .pc-title .pc-link {
+    color: var(--lw-accent);
+  }
+  .pc-note {
+    color: var(--lw-ink-muted);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  .pc-role {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+  .pc-go {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 0.4rem;
+  }
+  .pc-go-icon {
+    display: inline-flex;
+    color: var(--lw-ink-subtle);
+    transition: transform var(--lw-fast) ease, color var(--lw-fast) ease;
+  }
+  .proof-card:hover .pc-go-icon {
+    color: var(--lw-accent);
+    transform: translateX(3px);
+  }
+  .pc-link--label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--lw-accent);
+  }
+  .pc-link--label :global(svg) {
+    transition: transform var(--lw-fast) ease;
+  }
+  .proof-card:hover .pc-link--label :global(svg) {
+    transform: translateX(3px);
+  }
+
+  /* Text card: no picture to show, so the words are the card. A thin accent rule on top and a
+     small icon chip beside the kicker; the link sits at the foot, left-aligned. */
+  .proof-card--text {
+    border-top: 2px solid var(--lw-accent-line);
+  }
+  .proof-card--text .pc-body {
+    padding: 1.15rem 1.25rem 1.2rem;
+  }
+  .proof-card--text .pc-go {
+    justify-content: flex-start;
+  }
+  .pc-chip {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    color: var(--lw-accent);
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+  }
+
+  /* Featured: art beside the text, spanning two grid columns. */
+  @media (min-width: 641px) {
+    .proof-card--featured {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    }
+    .proof-card--featured .pc-art {
+      aspect-ratio: auto;
+      min-height: 240px;
+      border-bottom: 0;
+      border-right: 1px solid var(--lw-border);
+    }
+    /* Out of flow, so the art fills whatever height the text and the row give it. */
+    .proof-card--featured .pc-img {
+      position: absolute;
+      inset: 0;
+    }
+    .proof-card--featured .pc-body {
+      padding: 1.5rem 1.5rem 1.35rem;
+      justify-content: flex-start;
+    }
+    .proof-card--featured .pc-title {
+      font-size: 1.45rem;
+    }
+    .proof-card--featured .pc-note {
+      font-size: 1rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .proof-card:hover .pc-img {
+      transform: none;
+    }
+  }
+</style>

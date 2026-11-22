@@ -1,0 +1,653 @@
+---
+/**
+ * The template for the six service pages: every page has the same section order and is
+ * written as data in src/data/servicePages.ts (the short version of each service is in
+ * services.ts).
+ *
+ *   <ServicePage slug="unity-development" />
+ *
+ * Order: hero (h1, lead, proof line, Start a project, See related work) / what we do /
+ * the service's own deeper sections from the SEO plan outline / the Anatomy of Play body
+ * map, where the page has one (`explore`) / proof (#work) / tools and
+ * platforms / how an engagement runs and who you'll work with / FAQ / related services /
+ * closing call to action.
+ *
+ * JSON-LD: Service (provider is the organization, by @id) and FAQPage; BaseLayout adds
+ * Organization, WebSite and the BreadcrumbList.
+ */
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../PageHero.astro";
+import Section from "../Section.astro";
+import FaqSection from "../FaqSection.astro";
+import CtaBand from "../CtaBand.astro";
+import Icon from "../Icon.astro";
+import Reviews from "../Reviews.astro";
+import ReviewCard from "../ReviewCard.astro";
+import StoreButton from "../StoreButton.astro";
+import AnatomyOfPlay from "../AnatomyOfPlay.astro";
+import CapabilityGrid from "./CapabilityGrid.astro";
+import ProofCard from "./ProofCard.astro";
+import ProcessSteps from "./ProcessSteps.astro";
+import StackChips from "./StackChips.astro";
+import TeamStrip from "./TeamStrip.astro";
+import RelatedServices from "./RelatedServices.astro";
+import { service } from "../../data/services";
+import { servicePage, type ProofItem } from "../../data/servicePages";
+import { REVIEWS } from "../../data/reviews";
+import { work as workItem } from "../../data/games";
+import { withUtm } from "../../data/links";
+import { image, maybeImage } from "../../lib/images";
+import { serviceLd, faqLd } from "../../lib/seo";
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const p = servicePage(slug);
+const s = service(slug);
+const heroImg = image(p.hero.image);
+const work = p.work;
+const reviews = (work.reviews?.ids ?? []).map((id) => REVIEWS.find((r) => r.id === id)!);
+const feature = work.feature;
+const featureImg = feature ? image(feature.image) : undefined;
+
+// Cards with art go in the picture grid; projects with no art become text cards in a row of
+// their own under it, so no picture card sits beside an empty frame (same rule as ProofCard).
+const hasArt = (it: ProofItem) => {
+  if (it.icon && !it.image) return false;
+  const g = it.slug ? workItem(it.slug) : undefined;
+  return Boolean(maybeImage(it.image ?? g?.wide ?? g?.cover, g ? `games/${g.slug}` : undefined));
+};
+const artItems = work.items.filter(hasArt);
+const textItems = work.items.filter((it) => !hasArt(it));
+
+// Grid shape by count, so no row ends with an orphan: 5 cards lead with a featured one
+// spanning two columns; 4 and 2 sit two by two; 3, 6 and 9 fill rows of three.
+const n = artItems.length;
+const gridClass = n === 4 || n === 2 ? "proof-grid--2" : "proof-grid--3";
+const focusImages = p.focus.map((f) => (f.image ? image(f.image) : undefined));
+
+// Sections after the hero alternate between the ground and the raised band.
+let band = 0;
+const tone = () => (band++ % 2 === 0 ? "default" : "raised") as "default" | "raised";
+
+const jsonLd = [
+  serviceLd({
+    name: s.title,
+    description: p.description,
+    url: s.page,
+    serviceType: p.serviceType,
+    areaServed: "Worldwide",
+    offers: p.what.items.map((c) => c.title),
+  }),
+  faqLd(p.faq.items),
+];
+---
+
+<BaseLayout
+  title={p.title}
+  description={p.description}
+  image={heroImg}
+  imageAlt={p.hero.alt}
+  breadcrumbs={[
+    { label: "Services", href: "/services/" },
+    { label: s.title, href: s.page },
+  ]}
+  jsonLd={jsonLd}
+>
+  <PageHero eyebrow="Services" title={p.h1} lead={p.lead}>
+    <ul class="proof-line" role="list" aria-label="Proof">
+      {
+        p.proofLine.map((line) => (
+          <li>
+            <Icon name="check" size={16} />
+            <span>{line}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <Fragment slot="actions">
+      <a class="btn btn--primary btn--lg" href="/contact/">
+        Start a project
+        <Icon name="arrowRight" size={18} />
+      </a>
+      <a class="btn btn--secondary btn--lg" href="#work">See related work</a>
+    </Fragment>
+    <Image
+      slot="media"
+      src={heroImg}
+      alt={p.hero.alt}
+      widths={[480, 720, 960, 1160]}
+      sizes="(max-width: 900px) calc(100vw - 32px), 570px"
+      loading="eager"
+      fetchpriority="high"
+      class="hero-img"
+      style={p.hero.position ? `object-position:${p.hero.position}` : undefined}
+    />
+  </PageHero>
+
+  {/* What we do */}
+  <Section id="what" title={p.what.title} lead={p.what.lead} tone={tone()}>
+    <CapabilityGrid items={p.what.items} />
+    {
+      p.what.note && (
+        <p class="cap-note" data-reveal>
+          <span class="cap-note-icon" aria-hidden="true">
+            <Icon name="wrench" size={20} />
+          </span>
+          <span set:html={p.what.note} />
+        </p>
+      )
+    }
+  </Section>
+
+  {/* The service's own deeper sections (SEO plan H2 outline) */}
+  {
+    p.focus.length > 0 && (
+      <div class:list={["section", "focus-band", { "section--raised": tone() === "raised" }]}>
+        <div class="wrap">
+          {p.focus.map((f, i) => (
+            <section class="focus" id={`focus-${i + 1}`} aria-labelledby={`focus-${i + 1}-title`}>
+              <h2 id={`focus-${i + 1}-title`} class="focus-title" data-reveal>
+                {f.title}
+              </h2>
+              <div class="focus-body" data-reveal style="--reveal-delay:80ms">
+                <div class="focus-text">
+                  {f.html.map((para) => (
+                    <p set:html={para} />
+                  ))}
+                </div>
+                {focusImages[i] || f.points?.length ? (
+                  <div class:list={["focus-media", { "focus-media--pair": focusImages[i] && f.points?.length }]}>
+                    {focusImages[i] && (
+                      <Image
+                        src={focusImages[i]!}
+                        alt={f.imageAlt ?? ""}
+                        widths={[480, 720, 960, 1280]}
+                        sizes={f.points?.length
+                          ? "(max-width: 640px) calc(100vw - 32px), (max-width: 900px) 52vw, 420px"
+                          : "(max-width: 900px) calc(100vw - 32px), 640px"}
+                        loading="lazy"
+                        decoding="async"
+                        class="focus-img"
+                      />
+                    )}
+                    {f.points?.length ? (
+                      <div class="focus-aside card">
+                        {f.pointsTitle && <h3 class="focus-aside-title">{f.pointsTitle}</h3>}
+                        <ul
+                          class:list={["focus-points", { "focus-points--2": !focusImages[i] && f.points.length % 2 === 0 }]}
+                          role="list"
+                        >
+                          {f.points.map((pt) => (
+                            <li>
+                              <Icon name="check" size={16} />
+                              <span>{pt}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            </section>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  {/* The Anatomy of Play body map (serious games): a picture until its button is pressed */}
+  {
+    p.explore && (
+      <Section id="anatomy-of-play" eyebrow="Anatomy of Play" title={p.explore.title} lead={p.explore.lead} tone={tone()}>
+        <AnatomyOfPlay />
+      </Section>
+    )
+  }
+
+  {/* Proof */}
+  <Section id="work" title={work.title} lead={work.lead} tone={tone()}>
+    {
+      feature && featureImg && (
+        <div class="feature card" data-reveal>
+          <div class="feature-art">
+            <Image
+              src={featureImg}
+              alt={feature.imageAlt}
+              widths={[480, 720, 960, 1200]}
+              sizes="(max-width: 900px) calc(100vw - 32px), 600px"
+              loading="lazy"
+              decoding="async"
+              class="feature-img"
+            />
+          </div>
+          <div class="feature-body">
+            <h3 class="feature-title">{feature.title}</h3>
+            {feature.award && (
+              <a class="badge badge--gold feature-award" href={withUtm(feature.award.href, "services")} target="_blank" rel="noopener">
+                <Icon name="award" size={14} />
+                {feature.award.label}
+                <span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            )}
+            {feature.html.map((para) => (
+              <p class="feature-text" set:html={para} />
+            ))}
+            <ul class="focus-points" role="list">
+              {feature.points.map((pt) => (
+                <li>
+                  <Icon name="check" size={16} />
+                  <span>{pt}</span>
+                </li>
+              ))}
+            </ul>
+            <div class="feature-actions">
+              <a class="btn btn--primary" href={feature.page.href}>
+                {feature.page.label}
+                <Icon name="arrowRight" size={18} />
+              </a>
+              {feature.store && <StoreButton kind={feature.store.kind} href={feature.store.href} placement="services" />}
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    {work.itemsTitle && <h3 class="sub-title">{work.itemsTitle}</h3>}
+    {
+      n > 0 && (
+        <ul class:list={["proof-grid", gridClass, { "proof-grid--lead": n === 5 }]} role="list">
+          {artItems.map((item, i) => (
+            <li data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
+              <ProofCard item={item} featured={n === 5 && i === 0} />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    {
+      textItems.length > 0 && (
+        <ul class:list={["text-grid", { "text-grid--one": textItems.length === 1, "text-grid--two": textItems.length === 2 }]} role="list">
+          {textItems.map((item, i) => (
+            <li data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
+              <ProofCard item={item} />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      work.more && (
+        <p class="work-more">
+          <a class="link-arrow" href={work.more.href}>
+            {work.more.label}
+            <Icon name="arrowRight" size={18} />
+          </a>
+        </p>
+      )
+    }
+
+    {
+      work.reviews && reviews.length > 0 && (
+        <div class:list={["work-reviews", { "work-reviews--single": reviews.length === 1 }]}>
+          <div class="work-reviews-head">
+            <h3 class="sub-title">{work.reviews.title}</h3>
+            {work.reviews.lead && <p class="sub-lead">{work.reviews.lead}</p>}
+          </div>
+          {reviews.length === 1 ? (
+            <div data-reveal>
+              <ReviewCard review={reviews[0]} showAbout={false} />
+            </div>
+          ) : (
+            <Reviews reviews={reviews} label={work.reviews.title} class:list={[{ "reviews-2up": reviews.length === 4 }]} />
+          )}
+        </div>
+      )
+    }
+  </Section>
+
+  {/* Tools and platforms */}
+  <Section id="stack" title={p.stack.title} lead={p.stack.lead} tone={tone()}>
+    <StackChips groups={p.stack.groups} />
+  </Section>
+
+  {/* How an engagement runs, and who you'll work with */}
+  <Section id="process" title={p.process.title} lead={p.process.lead} tone={tone()}>
+    <ProcessSteps steps={p.process.steps} />
+    <div class="team">
+      <h3 class="sub-title">Who you'll work with</h3>
+      <TeamStrip people={p.team} />
+    </div>
+  </Section>
+
+  {/* FAQ */}
+  <FaqSection title={p.faq.title} items={p.faq.items} tone={tone()}>
+    <Fragment slot="more">
+      Answers to what clients ask most. For anything else, email
+      <a href="mailto:support@lunawolfstudios.com">support@lunawolfstudios.com</a> or use the
+      <a href="/contact/">contact form</a>.
+    </Fragment>
+  </FaqSection>
+
+  {/* Related services */}
+  <Section id="related" title="Related services" tone={tone()} tight>
+    <RelatedServices items={p.related} />
+  </Section>
+
+  <CtaBand
+    eyebrow={s.title}
+    title={p.cta.title}
+    lead={p.cta.lead}
+    primary={{ label: "Start a project", href: "/contact/" }}
+    secondary={{ label: "See all services", href: "/services/" }}
+  />
+</BaseLayout>
+
+<style>
+  /* Hero ---------------------------------------------------------------------------------- */
+  .proof-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    margin: 0.1rem 0 0;
+    padding: 0;
+  }
+  .proof-line li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: var(--lw-text-sm);
+    font-weight: 500;
+    color: var(--lw-ink);
+  }
+  .proof-line :global(svg) {
+    flex-shrink: 0;
+    color: var(--lw-accent);
+  }
+  .hero-img {
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  /* What we do ---------------------------------------------------------------------------- */
+  .cap-note {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+    margin-top: clamp(2rem, 4vw, 2.75rem);
+    padding: 1.1rem 1.25rem;
+    max-width: 820px;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-accent-line);
+    background: var(--lw-accent-tint);
+    line-height: 1.6;
+  }
+  .cap-note-icon {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    color: var(--lw-accent);
+    border: 1px solid var(--lw-accent-line);
+  }
+
+  /* Focus sections: one band, each block an editorial row (heading left, text right) ------ */
+  .focus {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.45fr);
+    gap: 1.25rem clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .focus + .focus {
+    margin-top: clamp(2.75rem, 5.5vw, 4rem);
+    padding-top: clamp(2.75rem, 5.5vw, 4rem);
+    border-top: 1px solid var(--lw-border);
+  }
+  .focus-title {
+    font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.2rem);
+  }
+  .focus-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 0;
+  }
+  .focus-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 68ch;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--lw-ink-muted);
+  }
+  .focus-text :global(strong) {
+    color: var(--lw-ink);
+  }
+  /* A picture of the thing the block describes, alone or beside its fact list. */
+  .focus-media {
+    display: grid;
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+    align-items: start;
+  }
+  .focus-media--pair {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  }
+  .focus-img {
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-border);
+    box-shadow: var(--lw-shadow);
+  }
+  @media (max-width: 640px) {
+    .focus-media--pair {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .focus-aside {
+    padding: clamp(1.15rem, 2.2vw, 1.5rem);
+  }
+  .focus-aside-title {
+    font-size: 1rem;
+    margin-bottom: 0.85rem;
+  }
+  .focus-aside .focus-points--2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem 1.5rem;
+  }
+  @media (max-width: 900px) {
+    .focus {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .focus-aside .focus-points--2 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .focus-points {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+  }
+  .focus-points li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+  .focus-points :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.22rem;
+    color: var(--lw-accent);
+  }
+  /* Proof ------------------------------------------------------------------------------------ */
+  .feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    overflow: hidden;
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  /* The screenshots carry their own captions, so the art is never cropped: it sits whole,
+     centred on the media panel. */
+  .feature-art {
+    display: grid;
+    place-items: center;
+    background: var(--lw-media-bg);
+    border-right: 1px solid var(--lw-border);
+  }
+  .feature-img {
+    width: 100%;
+    height: auto;
+  }
+  .feature-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .feature-title {
+    font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  }
+  .feature-award {
+    white-space: normal;
+    text-decoration: none;
+  }
+  .feature-award:hover {
+    color: var(--lw-gold);
+    border-color: var(--lw-gold);
+  }
+  .feature-text {
+    color: var(--lw-ink-muted);
+    line-height: 1.65;
+  }
+  .feature-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.4rem;
+  }
+  @media (max-width: 900px) {
+    .feature {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .feature-art {
+      border-right: 0;
+      border-bottom: 1px solid var(--lw-border);
+    }
+  }
+
+  .sub-title {
+    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.55rem);
+    margin-bottom: 1.25rem;
+  }
+  .sub-lead {
+    margin: -0.6rem 0 1.25rem;
+    color: var(--lw-ink-muted);
+  }
+
+  .proof-grid {
+    display: grid;
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+  }
+  .proof-grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .proof-grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .proof-grid--lead > li:first-child {
+    grid-column: span 2;
+  }
+  @media (max-width: 1000px) {
+    .proof-grid--3 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .proof-grid--3,
+    .proof-grid--2 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .proof-grid--lead > li:first-child {
+      grid-column: auto;
+    }
+  }
+
+  /* Projects with no art: compact text cards, three to a row, under the picture grid. */
+  .text-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+    margin: clamp(1rem, 2.2vw, 1.5rem) 0 0;
+    padding: 0;
+  }
+  .text-grid--one {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .text-grid--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 1000px) {
+    .text-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .work-more {
+    margin-top: 1.75rem;
+  }
+
+  .work-reviews {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  /* One review: heading beside the quote rather than a lone card under it. */
+  .work-reviews--single {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.45fr);
+    gap: 1rem clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+    padding-top: clamp(2.5rem, 5vw, 3.5rem);
+    border-top: 1px solid var(--lw-border);
+  }
+  .work-reviews--single .sub-lead {
+    margin: 0;
+  }
+  @media (max-width: 900px) {
+    .work-reviews--single {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  /* Four reviews read better two by two than three and an orphan. */
+  .work-reviews :global(.reviews-2up) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 760px) {
+    .work-reviews :global(.reviews-2up) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Process and team -------------------------------------------------------------------------- */
+  .team {
+    margin-top: clamp(2.75rem, 5.5vw, 3.75rem);
+  }
+
+</style>
