@@ -1,0 +1,284 @@
+---
+/**
+ * A wide project card for the projects a founder page describes at length: art (or a video
+ * poster that plays in the Theater) beside a status line, the title, paragraphs, a technology
+ * line, recognition, and links.
+ *
+ *   <FeatureProject slug="rowan-of-bramblebrook" status="Playable prototype, in development"
+ *     paragraphs={[...]} tech="Unity 6, C#" links={[{ label: "Play on itch.io", context: "Rowan of Bramblebrook", url }]} />
+ *
+ * `flip` puts the art on the right. Without art it is a single-column text card.
+ * Link labels stay short ("View on Steam") because the card title already names the project;
+ * `context` adds the project's name for screen readers after the visible label, and links that
+ * open a new tab say so.
+ */
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import AwardBadge from "../AwardBadge.astro";
+import type { Award } from "../../data/types";
+import { work } from "../../data/games";
+import { ALL_VIDEOS } from "../../data/videos";
+import { maybeImage } from "../../lib/images";
+import { isExternal } from "../../data/links";
+
+interface Props {
+  slug: string;
+  /** Title override (the founder page's own name for it). */
+  title?: string;
+  status?: string;
+  credit?: string;
+  paragraphs: string[];
+  tech?: string;
+  links?: Array<{ label: string; url: string; icon?: string; primary?: boolean; context?: string }>;
+  awards?: Award[];
+  flip?: boolean;
+  headingLevel?: 3 | 4;
+}
+
+const { slug, status, credit, paragraphs, tech, links = [], awards = [], flip = false, headingLevel = 3 } = Astro.props;
+const w = work(slug);
+const title = Astro.props.title ?? w.title;
+const art = maybeImage(w.wide ?? w.cover ?? w.icon, `games/${w.slug}`);
+const contain = !w.wide && (w.cover ? w.coverShape !== "landscape" : true);
+const videoId = w.videoId;
+const videoTitle = videoId ? (ALL_VIDEOS.find((v) => v.id === videoId)?.title ?? `${title} video`) : undefined;
+const H = `h${headingLevel}` as "h3" | "h4";
+const ext = (url: string) => (isExternal(url) ? { target: "_blank", rel: "noopener" } : {});
+---
+
+<article class:list={["fp", "card", { "fp--flip": flip, "fp--noart": !art && !videoId }]}>
+  {(art || videoId) && (<div class="fp-art">
+    {
+      videoId ? (
+        <a
+          class="fp-play"
+          href={`https://www.youtube.com/watch?v=${videoId}`}
+          data-video-id={videoId}
+          data-video-title={videoTitle}
+          target="_blank"
+          rel="noopener"
+        >
+          {art && (
+            <Image
+              src={art}
+              alt=""
+              widths={[480, 720, 960]}
+              sizes="(max-width: 860px) 100vw, 560px"
+              loading="lazy"
+              decoding="async"
+              class:list={["fp-img", { "fp-img--contain": contain }]}
+            />
+          )}
+          <span class="fp-play-btn" aria-hidden="true">
+            <Icon name="play" size={24} />
+          </span>
+          <span class="fp-play-label">
+            Watch the trailer<span class="visually-hidden">: {videoTitle}</span>
+          </span>
+        </a>
+      ) : art ? (
+        <Image
+          src={art}
+          alt=""
+          widths={[480, 720, 960]}
+          sizes="(max-width: 860px) 100vw, 560px"
+          loading="lazy"
+          decoding="async"
+          class:list={["fp-img", { "fp-img--contain": contain }]}
+        />
+      ) : null
+    }
+  </div>)}
+  <div class="fp-body">
+    {status && <p class="badge badge--gold fp-status">{status}</p>}
+    <H class="fp-title">{title}</H>
+    {credit && <p class="fp-credit">{credit}</p>}
+    {paragraphs.map((p) => <p class="fp-p" set:html={p} />)}
+    {
+      tech && (
+        <p class="fp-tech">
+          <span class="fp-tech-label">Technology</span> {tech}
+        </p>
+      )
+    }
+    {
+      awards.length > 0 && (
+        <div class="fp-awards">
+          {awards.map((a) => (
+            <AwardBadge award={a} size="sm" />
+          ))}
+        </div>
+      )
+    }
+    {
+      links.length > 0 && (
+        <div class="fp-links">
+          {links.map((l, i) => (
+            <a class:list={["btn", "btn--sm", l.primary ?? i === 0 ? "btn--primary" : "btn--secondary"]} href={l.url} {...ext(l.url)}>
+              {l.icon && <Icon name={l.icon} size={16} />}
+              <span>
+                {l.label}
+                {l.context && <span class="visually-hidden"> ({l.context})</span>}
+                {isExternal(l.url) && <span class="visually-hidden"> (opens in a new tab)</span>}
+              </span>
+              {isExternal(l.url) ? <Icon name="external" size={14} /> : <Icon name="arrowRight" size={16} />}
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .fp {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    overflow: hidden;
+  }
+  .fp--flip .fp-art {
+    order: 2;
+  }
+  /* No art: a text card with a moonlit edge. */
+  .fp--noart {
+    grid-template-columns: minmax(0, 1fr);
+    border-top: 2px solid var(--lw-accent-line);
+    background:
+      radial-gradient(80% 60% at 100% 0%, var(--lw-glow), transparent 70%),
+      var(--lw-surface);
+  }
+  .fp-art {
+    position: relative;
+    min-height: 300px;
+    background: var(--lw-media-bg);
+  }
+  .fp-play {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+  .fp-art > :global(img),
+  .fp-play :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .fp-img--contain {
+    object-fit: contain !important;
+  }
+  /* Bottom-right corner, like the shared VideoCard: never over the poster's own title. */
+  .fp-play-btn {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 1;
+    display: inline-grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    padding-left: 3px;
+    border-radius: 50%;
+    border: 1px solid rgba(238, 247, 247, 0.32);
+    background: rgba(4, 7, 10, 0.74);
+    color: #eef7f7;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s var(--lw-ease);
+  }
+  .fp-play-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Right padding keeps the label clear of the play button. */
+    padding: 2.5rem 5.75rem 1.35rem 1.1rem;
+    background: linear-gradient(to top, rgba(4, 7, 10, 0.85), transparent);
+    color: #eef7f7;
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .fp-play:hover .fp-play-btn,
+  .fp-play:focus-visible .fp-play-btn {
+    background: #81ebe1;
+    color: #04070a;
+    transform: scale(1.08);
+  }
+  .fp-play:focus-visible {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: -4px;
+  }
+  .fp-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: clamp(1.35rem, 3vw, 2.25rem);
+  }
+  .fp-title {
+    font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.75rem);
+  }
+  .fp-credit {
+    font-size: var(--lw-text-sm);
+    font-weight: 600;
+    color: var(--lw-accent);
+  }
+  .fp-p {
+    color: var(--lw-ink-muted);
+    line-height: 1.65;
+  }
+  .fp-tech {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+    line-height: 1.55;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--lw-border);
+    width: 100%;
+  }
+  .fp-tech-label {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .fp-awards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+  }
+  .fp-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    max-width: 100%;
+    margin-top: auto;
+    padding-top: 0.35rem;
+  }
+  /* A long label wraps inside its button instead of running out of the card. */
+  .fp-links .btn {
+    max-width: 100%;
+    white-space: normal;
+    text-align: left;
+    line-height: 1.25;
+  }
+  @media (max-width: 860px) {
+    .fp {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .fp--flip .fp-art {
+      order: 0;
+    }
+    .fp-art {
+      aspect-ratio: 16 / 9;
+      min-height: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fp-play-btn {
+      transition: none;
+    }
+  }
+</style>

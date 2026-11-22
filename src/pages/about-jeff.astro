@@ -1,0 +1,160 @@
+---
+/**
+ * /about-jeff/: Jeff's founder page. Bio: src/data/founders/jeff.ts. Portfolio: the six groups
+ * of FOUNDER_PORTFOLIO.jeff (src/data/team.ts), in the old page's order with its credit lines.
+ * Scriptable Sheets leads "Tutorials and assets" as a wide card with its Unity Awards badge.
+ * Jeff goes by first name only, everywhere.
+ */
+import FounderPage from "../components/about/FounderPage.astro";
+import BioSections from "../components/about/BioSections.astro";
+import PortfolioGrid from "../components/about/PortfolioGrid.astro";
+import FeatureProject from "../components/about/FeatureProject.astro";
+import Section from "../components/Section.astro";
+import VideoCard from "../components/VideoCard.astro";
+import AnatomyOfPlay from "../components/AnatomyOfPlay.astro";
+import { FOUNDER_PORTFOLIO } from "../data/team";
+import { JEFF_PAGE } from "../data/founders/jeff";
+import { AWARDS } from "../data/awards";
+import { ALL_VIDEOS } from "../data/videos";
+import { LINKS, withUtm } from "../data/links";
+import { markRepeats } from "../components/about/portfolio";
+
+const groups = markRepeats(FOUNDER_PORTFOLIO.jeff);
+const reel = ALL_VIDEOS.find((v) => v.id === JEFF_PAGE.reelId)!;
+const ssAward = AWARDS.filter((a) => a.subjectSlug === "scriptable-sheets");
+---
+
+<FounderPage
+  data={JEFF_PAGE}
+  photoAlt="Jeff, co-founder of Luna Wolf Studios, smiling and holding up a large white dog"
+  photoPosition={{ wide: "50% 50%", square: "82% 46%", zoom: 1.6 }}
+>
+  <BioSections id="about-jeff" title="About Jeff" sections={JEFF_PAGE.bio} />
+
+  <section class="section section--raised" aria-labelledby="portfolio-title">
+    <div class="wrap pf-intro">
+      <div class="pf-intro-text" data-reveal>
+        <p class="eyebrow">Portfolio</p>
+        <h2 id="portfolio-title">Games, apps, and tutorials</h2>
+        <p class="lead">
+          Health and fitness games, educational games, indie games, game jams, web apps, and Unity tutorials. Each card
+          names the company that owns the project.
+        </p>
+        <ul class="pf-jump" role="list" aria-label="Portfolio groups">
+          {
+            groups.map((g) => (
+              <li>
+                <a href={`#${g.id}`}>{g.heading}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="pf-reel" data-reveal>
+        <VideoCard video={reel} meta={reel.length} sizes="(max-width: 860px) 100vw, 520px" />
+      </div>
+    </div>
+  </section>
+
+  {
+    groups.map((g, i) => {
+      const lead = g.items.find((m) => m.item.slug === "scriptable-sheets");
+      const rest = g.items.filter((m) => m.item.slug !== "scriptable-sheets");
+      return (
+        <Section id={g.id} title={g.heading} tone={i % 2 === 1 ? "raised" : "default"}>
+          {lead && (
+            <div class="pf-lead" data-reveal>
+              <FeatureProject
+                slug="scriptable-sheets"
+                title={lead.item.label}
+                status="Unity Asset Store tool"
+                paragraphs={[
+                  "Our Unity Editor tool shows ScriptableObjects, Prefabs, Components, and other assets in a spreadsheet-like table, so you can sort, filter, edit, copy, and paste them in bulk. It imports and exports CSV, TSV, and JSON and pulls data from Google Sheets.",
+                ]}
+                awards={ssAward}
+                links={[
+                  { label: "Get it on the Unity Asset Store", url: withUtm(LINKS.scriptableSheets, "about"), icon: "unity" },
+                  { label: "About Scriptable Sheets", url: "/scriptable-sheets/" },
+                ]}
+              />
+            </div>
+          )}
+          <PortfolioGrid items={rest} />
+          {g.id === "health-and-fitness-games" && (
+            <div class="pf-aop">
+              <h3 class="pf-aop-title">Anatomy of Play: these games on a body map</h3>
+              <AnatomyOfPlay />
+            </div>
+          )}
+          {i === groups.length - 1 && (
+            <p class="pf-more">
+              {JEFF_PAGE.moreNote} <a href="/games/">See all games and projects</a>.
+            </p>
+          )}
+        </Section>
+      );
+    })
+  }
+
+</FounderPage>
+
+<style>
+  .pf-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 520px);
+    align-items: center;
+    gap: clamp(1.5rem, 5vw, 4rem);
+  }
+  .pf-intro-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+  .pf-intro-text h2 {
+    margin: 0;
+  }
+  .pf-jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.4rem 0 0;
+    padding: 0;
+  }
+  .pf-jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0.35em 0.95em;
+    border-radius: var(--lw-radius-pill);
+    border: 1px solid var(--lw-border-strong);
+    color: var(--lw-ink);
+    font-size: var(--lw-text-sm);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .pf-jump a:hover {
+    border-color: var(--lw-accent);
+    color: var(--lw-accent);
+  }
+  .pf-lead {
+    margin-bottom: clamp(1rem, 2vw, 1.4rem);
+  }
+  .pf-aop {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+  .pf-aop-title {
+    margin-bottom: 1.1rem;
+    font-size: var(--lw-h3);
+  }
+  .pf-more {
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+    color: var(--lw-ink-muted);
+    text-align: center;
+  }
+  @media (max-width: 860px) {
+    .pf-intro {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

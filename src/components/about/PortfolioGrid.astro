@@ -1,0 +1,128 @@
+---
+/**
+ * A portfolio group's cards: full cards in a grid whose last row is centered, then any
+ * repeats (projects already shown higher up the page) as compact rows.
+ *
+ *   <PortfolioGrid items={group.items} />
+ */
+import ProjectCard from "./ProjectCard.astro";
+import type { MarkedItem } from "./portfolio";
+import { columnsFor } from "./portfolio";
+import type { ExtraLink } from "./types";
+
+interface Props {
+  items: MarkedItem[];
+  headingLevel?: 3 | 4;
+  extraLinks?: Record<string, ExtraLink[]>;
+  label?: string;
+  /** Every item as a compact row (a lighter treatment for side credits). */
+  light?: boolean;
+  /** Card lines that replace a project's tagline on this page, keyed by slug. */
+  lines?: Record<string, string>;
+}
+
+const { items, headingLevel = 3, extraLinks = {}, label, light = false, lines = {} } = Astro.props;
+const full = light ? [] : items.filter((m) => !m.repeat);
+const repeats = light ? [] : items.filter((m) => m.repeat);
+// A lone text card (a line with no project record) spans the row instead of sitting centred
+// in a three-column grid.
+const single = full.length === 1 && !full[0].item.slug;
+const cols = single ? 1 : columnsFor(full.length);
+---
+
+{
+  full.length > 0 && (
+    <ul class:list={["pg", { "pg--single": single }]} role="list" style={`--cols:${cols}`} aria-label={label}>
+      {full.map(({ item }, i) => (
+        <li data-reveal style={`--reveal-delay:${Math.min(i, 6) * 40}ms`}>
+          <ProjectCard
+            item={item}
+            headingLevel={headingLevel}
+            extra={item.slug ? extraLinks[item.slug] : undefined}
+            line={item.slug ? lines[item.slug] : undefined}
+            row={single}
+          />
+        </li>
+      ))}
+    </ul>
+  )
+}
+{
+  light && (
+    <ul class="pg-compact" role="list" aria-label={label}>
+      {items.map(({ item }) => (
+        <li data-reveal>
+          <ProjectCard item={item} variant="compact" headingLevel={headingLevel} />
+        </li>
+      ))}
+    </ul>
+  )
+}
+{
+  repeats.length > 0 && (
+    <div class="pg-repeats">
+      <p class="pg-repeats-label">{full.length ? "Also in this group, shown above" : "Shown above"}</p>
+      <ul class="pg-compact" role="list">
+        {repeats.map(({ item }) => (
+          <li>
+            <ProjectCard item={item} variant="compact" headingLevel={headingLevel} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+<style>
+  .pg {
+    --gap: clamp(1rem, 2vw, 1.4rem);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--gap);
+    margin: 0;
+    padding: 0;
+  }
+  .pg > li {
+    flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+    min-width: 0;
+  }
+  @media (max-width: 1000px) {
+    .pg > li {
+      flex-basis: calc((100% - var(--gap)) / 2);
+    }
+  }
+  @media (max-width: 560px) {
+    .pg {
+      --gap: 0.75rem;
+    }
+    .pg > li {
+      flex-basis: 100%;
+    }
+  }
+  .pg--single > li {
+    flex-basis: 100% !important;
+  }
+  .pg-repeats {
+    margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+  .pg + .pg-repeats {
+    padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
+    border-top: 1px dashed var(--lw-border);
+  }
+  .pg-repeats-label {
+    margin-bottom: 0.75rem;
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .pg-compact {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+  }
+</style>

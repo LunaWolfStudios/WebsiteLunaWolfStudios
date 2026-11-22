@@ -1,0 +1,278 @@
+---
+/**
+ * The studio timeline (TIMELINE in src/data/timeline.ts) as a vertical rail grouped by year,
+ * with each event photo beside the entry it belongs to and its recorded caption. Entries about
+ * a project with a page on this site link to it.
+ *
+ *   <Timeline skipPhotos={["studio/ecrb-2015-game-jam-win-team.jpg"]} extraPhotos={{ "2016-11": [...] }} />
+ *
+ * Photos are never captioned with names beyond what the data records. An entry about a project
+ * with no event photo shows that project's own art as a small thumbnail, the first time the
+ * project comes up (Haberdashery alone has seven entries).
+ */
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Icon from "../Icon.astro";
+import { TIMELINE } from "../../data/timeline";
+import { work } from "../../data/games";
+import { image, maybeImage } from "../../lib/images";
+
+interface Photo {
+  photo: string;
+  caption: string;
+  alt?: string;
+}
+
+interface Props {
+  /** Photos already shown elsewhere on the page. */
+  skipPhotos?: string[];
+  /** More photos for an entry, keyed by its `date`. */
+  extraPhotos?: Record<string, Photo[]>;
+}
+
+const { skipPhotos = [], extraPhotos = {} } = Astro.props;
+
+const artShown = new Set<string>();
+const entries = TIMELINE.map((e) => {
+  const w = e.slug ? work(e.slug) : undefined;
+  const photos: Photo[] = [];
+  if (e.photo && e.caption && !skipPhotos.includes(e.photo)) photos.push({ photo: e.photo, caption: e.caption });
+  photos.push(...(extraPhotos[e.date] ?? []));
+  let art: { img: ImageMetadata; contain: boolean } | undefined;
+  if (!photos.length && w && !artShown.has(w.slug)) {
+    const img = maybeImage(w.wide ?? w.cover ?? w.icon, `games/${w.slug}`);
+    if (img) {
+      art = { img, contain: !w.wide && !(w.cover && w.coverShape === "landscape") };
+      artShown.add(w.slug);
+    }
+  }
+  return {
+    ...e,
+    year: e.date.slice(0, 4),
+    page: w?.page,
+    title: w?.title,
+    art,
+    photos: photos.map((p) => ({ ...p, img: image(p.photo) })),
+  };
+});
+
+const years = [...new Set(entries.map((e) => e.year))].map((year) => ({
+  year,
+  items: entries.filter((e) => e.year === year),
+}));
+---
+
+<ol class="tl" role="list">
+  {
+    years.map(({ year, items }) => (
+      <li class="tl-year">
+        <h3 class="tl-year-label">
+          <span>{year}</span>
+        </h3>
+        <ol class="tl-items" role="list">
+          {items.map((e) => (
+            <li class:list={["tl-item", { "tl-item--photo": e.photos.length > 0, "tl-item--art": Boolean(e.art) }]} data-reveal>
+              <div class="tl-text">
+                <p class="tl-when">{e.when}</p>
+                <p class="tl-body">{e.text}</p>
+                {e.page && (
+                  <a class="link-arrow tl-link" href={e.page}>
+                    {e.title}
+                    <span class="visually-hidden">, {e.when}</span> <Icon name="arrowRight" size={16} />
+                  </a>
+                )}
+              </div>
+              {e.art && (
+                <Image
+                  src={e.art.img}
+                  alt=""
+                  widths={[240, 480].filter((w) => w <= e.art!.img.width)}
+                  sizes="240px"
+                  loading="lazy"
+                  decoding="async"
+                  class:list={["tl-art", { "tl-art--contain": e.art.contain }]}
+                />
+              )}
+              {e.photos.length > 0 && (
+                <div class:list={["tl-photos", { "tl-photos--many": e.photos.length > 1 }]}>
+                  {e.photos.map((p, i) => (
+                    <figure class:list={["tl-fig", { "tl-fig--lead": i === 0 }]}>
+                      <Image
+                        src={p.img}
+                        alt={p.alt ?? p.caption}
+                        widths={[240, 360, 480, 640].filter((w) => w <= p.img.width)}
+                        sizes={i === 0 ? "(max-width: 760px) 100vw, 340px" : "(max-width: 760px) 50vw, 165px"}
+                        loading="lazy"
+                        decoding="async"
+                        class="tl-img"
+                      />
+                      <figcaption>{p.caption}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              )}
+            </li>
+          ))}
+        </ol>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .tl {
+    margin: 0;
+    padding: 0;
+  }
+  .tl-year {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: clamp(1rem, 3vw, 2.5rem);
+  }
+  .tl-year-label {
+    margin: 0;
+    padding-top: 1.1rem;
+  }
+  .tl-year-label span {
+    position: sticky;
+    top: calc(var(--lw-header-h, 64px) + 1rem);
+    display: block;
+    font-family: var(--lw-font-display);
+    font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.2rem);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    color: var(--lw-accent);
+  }
+  .tl-items {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0 0 clamp(1.5rem, 3vw, 2.25rem) 1.75rem;
+    border-left: 1px solid var(--lw-border);
+  }
+  .tl-year:first-child .tl-items {
+    border-image: linear-gradient(to bottom, var(--lw-accent-line), var(--lw-border) 30%) 1;
+  }
+  .tl-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem 1.75rem;
+    padding: 1rem 0;
+  }
+  .tl-item + .tl-item {
+    border-top: 1px dashed color-mix(in srgb, var(--lw-border) 70%, transparent);
+  }
+  /* The dot on the rail. */
+  .tl-item::before {
+    content: "";
+    position: absolute;
+    left: calc(-1.75rem - 5px);
+    top: 1.45rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--lw-bg);
+    border: 2px solid var(--lw-accent);
+    box-shadow: 0 0 0 4px var(--lw-bg);
+  }
+  :global(.section--raised) .tl-item::before {
+    background: var(--lw-bg-raised);
+    box-shadow: 0 0 0 4px var(--lw-bg-raised);
+  }
+  .tl-item--photo {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+    align-items: start;
+  }
+  .tl-item--art {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    align-items: start;
+  }
+  .tl-art {
+    width: 240px;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-border);
+    background: #070d12;
+  }
+  .tl-art--contain {
+    object-fit: contain;
+  }
+  .tl-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    max-width: 62ch;
+  }
+  .tl-when {
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .tl-body {
+    color: var(--lw-ink);
+    line-height: 1.6;
+  }
+  .tl-link {
+    font-size: var(--lw-text-sm);
+  }
+  .tl-photos {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .tl-photos--many {
+    grid-template-columns: 1fr 1fr;
+  }
+  .tl-photos--many .tl-fig--lead {
+    grid-column: 1 / -1;
+  }
+  .tl-fig {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .tl-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-border);
+    background: var(--lw-media-bg);
+  }
+  .tl-fig figcaption {
+    font-size: var(--lw-text-xs);
+    line-height: 1.45;
+    color: var(--lw-ink-subtle);
+  }
+  @media (max-width: 760px) {
+    .tl-year {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.25rem;
+    }
+    .tl-year-label {
+      padding-top: 0;
+    }
+    .tl-year-label span {
+      position: static;
+    }
+    .tl-items {
+      padding-left: 1.25rem;
+    }
+    .tl-item::before {
+      left: calc(-1.25rem - 5px);
+    }
+    .tl-item--photo,
+    .tl-item--art {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

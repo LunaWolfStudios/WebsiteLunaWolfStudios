@@ -1,0 +1,136 @@
+---
+/**
+ * The studio's animated logo as a click-to-play video with sound. Until someone presses play
+ * the page holds only the poster (an optimized still); the click swaps in a <video> with
+ * native controls, preload="none" until then, and nothing autoplays on load. Without
+ * JavaScript the poster is a plain link to the MP4.
+ *
+ *   <SplashPlayer />
+ */
+import { Image, getImage } from "astro:assets";
+import Icon from "../Icon.astro";
+import poster from "../../assets/hero/splash-poster.png";
+
+const posterLarge = await getImage({ src: poster, width: 1280, format: "jpg", quality: 80 });
+const WEBM = "/media/splash-long-night.webm";
+const MP4 = "/media/splash-long-night.mp4";
+---
+
+<div class="splash" data-splash data-webm={WEBM} data-mp4={MP4} data-poster={posterLarge.src}>
+  <a class="splash-btn" href={MP4}>
+    <Image
+      src={poster}
+      alt=""
+      widths={[480, 800, 1120, 1280]}
+      sizes="(max-width: 860px) 100vw, 720px"
+      loading="lazy"
+      decoding="async"
+      class="splash-img"
+    />
+    <span class="splash-play" aria-hidden="true"><Icon name="play" size={30} /></span>
+    <span class="splash-hint">Play with sound<span class="visually-hidden">: the Luna Wolf Studios animated logo</span></span>
+  </a>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-splash]").forEach((box) => {
+    const link = box.querySelector<HTMLAnchorElement>(".splash-btn");
+    if (!link) return;
+    link.addEventListener("click", (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      e.preventDefault();
+      const video = document.createElement("video");
+      video.controls = true;
+      video.playsInline = true;
+      video.preload = "auto";
+      video.poster = box.dataset.poster ?? "";
+      video.setAttribute("aria-label", "Luna Wolf Studios animated logo");
+      video.className = "splash-video";
+      for (const [src, type] of [
+        [box.dataset.webm, "video/webm"],
+        [box.dataset.mp4, "video/mp4"],
+      ]) {
+        if (!src) continue;
+        const s = document.createElement("source");
+        s.src = src;
+        s.type = type!;
+        video.appendChild(s);
+      }
+      link.replaceWith(video);
+      video.focus();
+      video.play().catch(() => {
+        /* The user can press play on the native controls. */
+      });
+    });
+  });
+</script>
+
+<style>
+  .splash {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--lw-radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--lw-accent-line);
+    background: #04070a;
+    box-shadow:
+      0 0 80px var(--lw-glow-strong),
+      var(--lw-shadow-lg);
+  }
+  .splash-btn {
+    position: absolute;
+    inset: 0;
+    display: block;
+    color: #eef7f7;
+  }
+  .splash-img,
+  .splash :global(.splash-video) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #04070a;
+  }
+  /* Bottom-right, like every video poster on the site: the logo in the middle stays clear. */
+  .splash-play {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    display: inline-grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    padding-left: 4px;
+    border-radius: 50%;
+    border: 1px solid rgba(238, 247, 247, 0.3);
+    background: rgba(4, 7, 10, 0.72);
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s var(--lw-ease);
+  }
+  .splash-hint {
+    position: absolute;
+    left: 1rem;
+    bottom: 2.05rem;
+    padding: 0.35em 0.9em;
+    border-radius: var(--lw-radius-pill);
+    background: rgba(4, 7, 10, 0.6);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .splash-btn:hover .splash-play,
+  .splash-btn:focus-visible .splash-play {
+    background: #81ebe1;
+    color: #04070a;
+    transform: scale(1.08);
+  }
+  .splash-btn:focus-visible {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: -4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .splash-play {
+      transition: none;
+    }
+  }
+</style>

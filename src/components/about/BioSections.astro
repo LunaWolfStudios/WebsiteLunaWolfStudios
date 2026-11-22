@@ -1,0 +1,123 @@
+---
+/**
+ * A founder's bio as titled blocks in a two-column flow: a sticky heading column on the left
+ * ("About Jeff") and the sections on the right, each with its own h3.
+ *
+ *   <BioSections id="bio" title="About Jeff" sections={JEFF_PAGE.bio} />
+ *
+ * Paragraph strings come from src/data/founders/*.ts and may hold inline <a> and <strong>
+ * written there (trusted, authored content).
+ */
+import type { BioSection } from "./types";
+
+interface Props {
+  id: string;
+  title: string;
+  sections: BioSection[];
+  /** Show the first section without its own h3 (when it is the intro under `title`). */
+  introFirst?: boolean;
+  tone?: "default" | "raised";
+  eyebrow?: string;
+}
+
+const { id, title, sections, introFirst = false, tone = "default", eyebrow } = Astro.props;
+---
+
+<section id={id} class:list={["section", "bio", { "section--raised": tone === "raised" }]} aria-labelledby={`${id}-title`}>
+  <div class="wrap bio-inner">
+    <header class="bio-head" data-reveal>
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h2 id={`${id}-title`} class="bio-title">{title}</h2>
+    </header>
+    <div class="bio-body">
+      {
+        sections.map((s, i) => (
+          <div class="bio-block" data-reveal>
+            {!(introFirst && i === 0) && <h3 class="bio-h">{s.title}</h3>}
+            {s.paragraphs.map((p) => (
+              <p set:html={p} />
+            ))}
+            {s.chips && (
+              <ul class="bio-chips" role="list">
+                {s.chips.map((c) => (
+                  <li>{c}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))
+      }
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .bio-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 2fr);
+    gap: clamp(1.5rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .bio-head {
+    position: sticky;
+    top: calc(var(--lw-header-h, 64px) + 1.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .bio-title {
+    margin: 0;
+  }
+  .bio-body {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.75rem, 3.5vw, 2.5rem);
+    max-width: 720px;
+  }
+  .bio-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .bio-block + .bio-block {
+    padding-top: clamp(1.75rem, 3.5vw, 2.5rem);
+    border-top: 1px solid var(--lw-border);
+  }
+  .bio-h {
+    font-size: clamp(1.2rem, 1.1rem + 0.4vw, 1.4rem);
+  }
+  .bio-block p {
+    color: var(--lw-ink-muted);
+    font-size: var(--lw-text-lg);
+    line-height: 1.7;
+  }
+  .bio-block p :global(strong) {
+    color: var(--lw-ink);
+    font-weight: 600;
+  }
+  .bio-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0.25rem 0 0;
+    padding: 0;
+  }
+  .bio-chips li {
+    padding: 0.35em 0.85em;
+    border-radius: var(--lw-radius-pill);
+    border: 1px solid var(--lw-accent-line);
+    background: var(--lw-accent-tint);
+    color: var(--lw-ink);
+    font-size: var(--lw-text-sm);
+    font-weight: 500;
+  }
+  @media (max-width: 860px) {
+    .bio-inner {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .bio-head {
+      position: static;
+    }
+  }
+</style>

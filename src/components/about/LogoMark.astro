@@ -1,0 +1,66 @@
+---
+/**
+ * A partner or school logo as a small tile, knocked out the same way PartnerCloud does it
+ * (the WordPress logos are greyscale JPGs on white): inverted and screen-blended in the dark
+ * theme, multiplied in the light theme. Without a logo it shows the initials.
+ *
+ *   <LogoMark logo="partners/wilmington-university.jpg" name="Wilmington University" />
+ */
+import { Image } from "astro:assets";
+import { maybeImage } from "../../lib/images";
+
+interface Props {
+  logo?: string;
+  name: string;
+  size?: number;
+}
+
+const { logo, name, size = 56 } = Astro.props;
+const img = maybeImage(logo);
+const initials = name
+  .replace(/\b(of|and|the)\b/gi, "")
+  .split(/\s+/)
+  .filter(Boolean)
+  .slice(0, 3)
+  .map((w) => w[0])
+  .join("")
+  .toUpperCase();
+---
+
+<span class="lm" style={`--lm:${size}px`} aria-hidden="true">
+  {
+    img ? (
+      <Image src={img} alt="" width={size} height={Math.round((img.height / img.width) * size)} densities={[1, 2]} loading="lazy" decoding="async" class="lm-img" />
+    ) : (
+      <span class="lm-initials">{initials}</span>
+    )
+  }
+</span>
+
+<style>
+  .lm {
+    flex-shrink: 0;
+    display: inline-grid;
+    place-items: center;
+    width: calc(var(--lm) + 16px);
+    aspect-ratio: 1;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-border);
+    background: var(--lw-surface);
+    isolation: isolate;
+  }
+  .lm-img {
+    width: var(--lm);
+    height: auto;
+    filter: var(--lw-logo-filter);
+    mix-blend-mode: var(--lw-logo-blend);
+    opacity: 0.85;
+  }
+  .lm-initials {
+    font-family: var(--lw-font-display);
+    font-weight: 650;
+    font-size: calc(var(--lm) * 0.34);
+    letter-spacing: 0.04em;
+    color: var(--lw-accent);
+  }
+</style>
