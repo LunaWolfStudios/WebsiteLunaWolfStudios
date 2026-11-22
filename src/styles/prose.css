@@ -1,0 +1,87 @@
+/* Long-form text (privacy policy, founder bios, press releases).
+ *
+ *   ---
+ *   import "../styles/prose.css";
+ *   ---
+ *   <article class="wrap prose"><h1>...</h1><p>...</p></article>
+ *
+ * Markdown output works unchanged inside `.prose`. The column stays under 68ch.
+ */
+.prose {
+  max-width: calc(var(--lw-maxw-text) + var(--lw-gutter) * 2);
+  padding-block: clamp(2rem, 5vw, 3.5rem) clamp(3rem, 7vw, 5rem);
+  color: var(--lw-ink-muted);
+  line-height: 1.75;
+}
+.prose > * + * {
+  margin-top: 1rem;
+}
+.prose h1 {
+  font-size: clamp(2rem, 1.5rem + 2vw, 2.9rem);
+  margin-bottom: 0.5rem;
+}
+.prose h2 {
+  font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.65rem);
+  margin-top: 2.6rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--lw-border);
+}
+.prose h3 {
+  font-size: 1.15rem;
+  margin-top: 1.9rem;
+}
+.prose h4 {
+  font-size: 1rem;
+  margin-top: 1.5rem;
+}
+.prose h2 + *,
+.prose h3 + *,
+.prose h4 + * {
+  margin-top: 0.6rem;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.3rem;
+}
+.prose li + li {
+  margin-top: 0.4rem;
+}
+.prose li::marker {
+  color: var(--lw-accent);
+}
+.prose strong {
+  color: var(--lw-ink);
+}
+.prose blockquote {
+  margin-inline: 0;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  border-left: 2px solid var(--lw-accent);
+  color: var(--lw-ink);
+  font-style: italic;
+}
+.prose img {
+  border-radius: var(--lw-radius);
+  border: 1px solid var(--lw-border);
+}
+.prose hr {
+  margin-block: 2.5rem;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--lw-border);
+}
+.prose th {
+  color: var(--lw-ink);
+  font-family: var(--lw-font-display);
+}
+.prose .meta {
+  font-size: var(--lw-text-sm);
+  color: var(--lw-ink-subtle);
+}
