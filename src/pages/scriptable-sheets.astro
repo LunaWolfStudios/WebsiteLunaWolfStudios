@@ -1,0 +1,336 @@
+---
+/**
+ * /scriptable-sheets/: the product page for Scriptable Sheets, the studio's Unity Editor tool
+ * on the Unity Asset Store. Its job is to send Unity developers to the listing ready to buy,
+ * and to show studios that Luna Wolf Studios builds professional Unity tooling.
+ *
+ * Price, version, rating, and review count come from src/data/store.json through
+ * src/lib/store.ts. The rating is shown as visible text only: no aggregateRating or review
+ * markup, since the ratings are gathered on another site (the Asset Store).
+ */
+import { getImage } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import Reviews from "../components/Reviews.astro";
+import AwardBadge from "../components/AwardBadge.astro";
+import FaqSection from "../components/FaqSection.astro";
+import Icon from "../components/Icon.astro";
+import SheetsHero from "../components/scriptable-sheets/SheetsHero.astro";
+import Benefits from "../components/scriptable-sheets/Benefits.astro";
+import FeatureGrid from "../components/scriptable-sheets/FeatureGrid.astro";
+import VideoList from "../components/scriptable-sheets/VideoList.astro";
+import FactSheet from "../components/scriptable-sheets/FactSheet.astro";
+import SheetsCta from "../components/scriptable-sheets/SheetsCta.astro";
+import { getAssetStoreRating, getOffer, offerLd } from "../lib/store";
+import { faqLd, softwareApplicationLd, videoObjectLd } from "../lib/seo";
+import { LINKS, withUtm } from "../data/links";
+import { AWARDS } from "../data/awards";
+import { SCRIPTABLE_SHEETS_REVIEWS } from "../data/reviews";
+import { SCRIPTABLE_SHEETS_INTRO } from "../data/videos";
+import { SCRIPTABLE_SHEETS } from "../data/games";
+import {
+  NEW_TAB,
+  SHEETS_BENEFITS,
+  SHEETS_FAQ,
+  SHEETS_FEATURE_GROUPS,
+  SHEETS_VIDEOS,
+  SHEETS_VIDEOS_SHOWN,
+} from "../data/scriptableSheets";
+import keyImageSocial from "../assets/scriptable-sheets/key-image-social.jpg";
+
+const url = "/scriptable-sheets/";
+// The title names the search term and is 58 characters on its own, so it goes out without
+// the " | Luna Wolf Studios" suffix (brandSuffix={false} below), which would take it past 60.
+const title = "Scriptable Sheets: edit ScriptableObjects in a spreadsheet";
+const description =
+  "Scriptable Sheets is a Unity editor tool that lists ScriptableObjects and other assets in a spreadsheet so you can sort, edit, copy, and paste them in bulk.";
+const h1 = "Scriptable Sheets: a spreadsheet editor for Unity ScriptableObjects";
+const lead =
+  "See your ScriptableObjects, Prefabs, and Components in one table inside the Unity Editor, one row per asset. Sort, filter, edit, copy, and paste them in bulk instead of one Inspector at a time.";
+
+const offer = getOffer("scriptable-sheets", "unity");
+const rating = getAssetStoreRating();
+// The listing reports its star rating rounded to a whole star (a 4.91 average reads as 5).
+// Printing that as "5 stars" or "5 out of 5" would overstate the average, so a whole number
+// is not printed at all: the line gives the review count, which is exact. If the store ever
+// reports a decimal, the average prints with it ("Rated 4.9 out of 5 from 34 reviews").
+const ratingText = Number.isInteger(rating.rating)
+  ? undefined
+  : `${new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 }).format(rating.rating)} out of 5`;
+const ratingChecked = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" }).format(
+  new Date(rating.checkedAt),
+);
+
+const toolAward = AWARDS.find((a) => a.subjectSlug === "scriptable-sheets" && a.body === "17th Unity Awards")!;
+const studioAward = AWARDS.find((a) => a.subjectSlug === "studio" && a.body === "17th Unity Awards")!;
+
+// The same 1200px JPEG BaseLayout renders for og:image, so the two URLs match.
+const ogImage = await getImage({ src: keyImageSocial, width: Math.min(1200, keyImageSocial.width), format: "jpg", quality: 82 });
+
+const intro = SCRIPTABLE_SHEETS_INTRO;
+const jsonLd = [
+  softwareApplicationLd({
+    name: SCRIPTABLE_SHEETS.title,
+    description,
+    url,
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Unity Editor",
+    image: ogImage.src,
+    softwareVersion: offer.version,
+    offers: [offerLd(offer)],
+    sameAs: [LINKS.scriptableSheets],
+    award: `${toolAward.title}, ${toolAward.body} (${toolAward.year})`,
+  }),
+  videoObjectLd({
+    id: intro.id,
+    name: intro.title,
+    description: `A ${intro.length} introduction to Scriptable Sheets, a spreadsheet editor for Unity assets.`,
+    uploadDate: intro.published,
+  }),
+  // The hidden "(opens in a new tab)" notes are for screen readers on the page, not answer text.
+  faqLd(SHEETS_FAQ.map(({ q, a }) => ({ q, a: a.replaceAll(NEW_TAB, "") }))),
+];
+const quotesShown = SCRIPTABLE_SHEETS_REVIEWS.length;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={keyImageSocial}
+  imageAlt="Scriptable Sheets, a spreadsheet editor for Unity assets"
+  breadcrumbs={[{ label: "Scriptable Sheets", href: url }]}
+  brandSuffix={false}
+  jsonLd={jsonLd}
+  footerNewsletter={false}
+>
+  <SheetsHero title={h1} lead={lead} offer={offer} intro={intro} award={toolAward} />
+
+  <Section
+    id="what-it-does"
+    eyebrow="What it does"
+    title="What Scriptable Sheets does"
+    lead="Your game's data in rows and columns, so you work on many assets at once instead of searching through folders."
+  >
+    <Benefits items={SHEETS_BENEFITS} />
+  </Section>
+
+  <Section
+    id="features"
+    tone="raised"
+    eyebrow="Full feature list"
+    title="Scriptable Sheets features"
+    lead="Everything on the Asset Store listing. No code: open Window > Scriptable Sheets and pick a type."
+  >
+    <FeatureGrid groups={SHEETS_FEATURE_GROUPS} />
+  </Section>
+
+  <Section
+    id="videos"
+    eyebrow="See it work"
+    title="Video tutorials"
+    lead="From first setup to the settings panels, plus two case studies. Each plays here."
+  >
+    <Fragment slot="actions">
+      <a class="link-arrow" href={LINKS.scriptableSheetsPlaylist} target="_blank" rel="noopener">
+        Playlist on YouTube<span class="visually-hidden"> (opens in a new tab)</span>
+        <Icon name="arrowUpRight" size={16} />
+      </a>
+    </Fragment>
+    <VideoList videos={SHEETS_VIDEOS} shown={SHEETS_VIDEOS_SHOWN} />
+  </Section>
+
+  <Section id="reviews" tone="raised" eyebrow="Reviews" title="What Unity developers say">
+    <Fragment slot="actions">
+      <a class="link-arrow" href={withUtm(LINKS.scriptableSheetsReviews, "product_page")} target="_blank" rel="noopener">
+        All reviews on the Asset Store<span class="visually-hidden"> (opens in a new tab)</span>
+        <Icon name="arrowUpRight" size={16} />
+      </a>
+    </Fragment>
+    <p class="ss-rating" data-reveal>
+      <Icon name="star" size={20} class="ss-rating-star" />
+      <span>
+        {ratingText ? <>Rated <strong>{ratingText}</strong> from </> : null}<strong>{rating.reviewCount} reviews</strong> on the Unity Asset
+        Store as of {ratingChecked}. Here are {quotesShown} of them.
+      </span>
+    </p>
+    <Reviews
+      reviews={SCRIPTABLE_SHEETS_REVIEWS}
+      showAbout={false}
+      label="Asset Store reviews of Scriptable Sheets"
+      class="ss-reviews"
+    />
+  </Section>
+
+  <Section
+    id="recognition"
+    tone="sky"
+    align="center"
+    eyebrow="Recognition"
+    title="Two nominations at the 17th Unity Awards"
+    lead="Scriptable Sheets was a nominee for Best Development Tool at the 17th Unity Awards in 2025, and Luna Wolf Studios was a nominee for Breakthrough Publisher."
+  >
+    <ul class="ss-awards" role="list">
+      <li class="ss-award">
+        <AwardBadge award={toolAward} />
+        <span class="ss-award-subject">{toolAward.subject}</span>
+      </li>
+      <li class="ss-award">
+        <AwardBadge award={studioAward} />
+        <span class="ss-award-subject">{studioAward.subject}</span>
+      </li>
+    </ul>
+    <p class="ss-awards-link">
+      <a class="link-arrow" href={LINKS.unityAwards2025Results} target="_blank" rel="noopener">
+        Unity's 2025 results post<span class="visually-hidden"> (opens in a new tab)</span>
+        <Icon name="arrowUpRight" size={16} />
+      </a>
+    </p>
+  </Section>
+
+  <Section id="details" eyebrow="Details" title="Compatibility and details">
+    <FactSheet offer={offer} />
+  </Section>
+
+  <FaqSection id="faq" tone="raised" eyebrow="FAQ" title="Questions about Scriptable Sheets" items={SHEETS_FAQ} />
+
+  <Section id="custom-tools" tight>
+    <div class="ss-tools" data-reveal>
+      <div class="ss-tools-text">
+        <p class="eyebrow">Unity editor tools</p>
+        <h2 class="ss-tools-title">Need a custom Unity tool?</h2>
+        <p class="ss-tools-lead">
+          The team behind Scriptable Sheets builds custom editor windows, inspectors, data editors, and pipeline tools.
+          Most of our work has been in Unity. Tell us what slows your team down.
+        </p>
+        <p class="ss-tools-more">
+          See our <a href="/services/unity-development/">Unity development services</a>, or meet <a href="/about-jeff/"
+            >Jeff</a
+          >, our co-founder who specializes in Unity.
+        </p>
+      </div>
+      <div class="ss-tools-actions">
+        <a class="btn btn--primary btn--lg" href="/contact/">Start a project <Icon name="arrowRight" size={18} /></a>
+        <a class="btn btn--secondary btn--lg" href="/services/unity-editor-tools/">Custom Unity editor tools</a>
+      </div>
+    </div>
+  </Section>
+
+  <SheetsCta offer={offer} />
+</BaseLayout>
+
+<style>
+  .ss-rating {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: -0.5rem 0 clamp(1.5rem, 3vw, 2.25rem);
+    font-size: var(--lw-text-lg);
+    color: var(--lw-ink-muted);
+  }
+  .ss-rating :global(.ss-rating-star) {
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    color: var(--lw-gold);
+  }
+
+  /* Twelve quotes of very different lengths: flow them into columns (masonry) rather than a
+     grid, where a one-line quote would sit in a card as tall as the longest in its row. */
+  :global(.reviews.reviews--grid.ss-reviews) {
+    display: block;
+    columns: 3 300px;
+    column-gap: clamp(1rem, 2.2vw, 1.5rem);
+  }
+  :global(.reviews.ss-reviews > li) {
+    break-inside: avoid;
+    margin-bottom: clamp(1rem, 2.2vw, 1.5rem);
+  }
+  /* Phones: one swipeable row with a peek of the next quote, as Reviews' row layout, instead
+     of twelve cards stacked four screens deep. Each card's source link stays reachable by Tab. */
+  @media (max-width: 640px) {
+    :global(.reviews.reviews--grid.ss-reviews) {
+      display: grid;
+      columns: auto;
+      grid-auto-flow: column;
+      grid-auto-columns: 84%;
+      align-items: start;
+      gap: 1rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      padding: 4px 2px 1rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--lw-border-strong) transparent;
+    }
+    :global(.reviews.ss-reviews > li) {
+      margin-bottom: 0;
+      scroll-snap-align: start;
+    }
+  }
+
+  .ss-awards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem clamp(2rem, 6vw, 4.5rem);
+    margin: 0;
+    padding: 0;
+  }
+  .ss-award {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .ss-award-subject {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  .ss-awards-link {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .ss-tools {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.5rem 3rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.5rem, 4vw, 2.75rem);
+    border-radius: var(--lw-radius-lg);
+    border: 1px solid var(--lw-border);
+    background: var(--lw-surface);
+  }
+  .ss-tools-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    max-width: 640px;
+  }
+  .ss-tools-title {
+    font-size: clamp(1.6rem, 1.25rem + 1.4vw, 2.2rem);
+  }
+  .ss-tools-lead {
+    color: var(--lw-ink-muted);
+    font-size: var(--lw-text-lg);
+  }
+  .ss-tools-more {
+    color: var(--lw-ink-muted);
+    font-size: var(--lw-text-sm);
+  }
+  .ss-tools-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  @media (max-width: 860px) {
+    .ss-tools {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .ss-tools-actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+</style>

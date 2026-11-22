@@ -1,0 +1,220 @@
+---
+/**
+ * The listing's full feature list as a scannable grid, one block per group, each with a
+ * listing screenshot. Items are list entries with a bold name and one line, not headings, so
+ * the page outline stays short.
+ *
+ * Each group is a <details>, open in the markup. On a phone the list would run three screens
+ * of one column, so the script below closes every group but the first at 640px and narrower;
+ * the reader opens the others by their heading. Wider than that, every group starts open and
+ * the grid reads as a grid; the chevron still says each heading folds its group. Without
+ * JavaScript every group is open at every width.
+ */
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import { image } from "../../lib/images";
+import type { SheetsFeatureGroup } from "../../data/scriptableSheets";
+
+interface Props {
+  groups: SheetsFeatureGroup[];
+}
+
+const { groups } = Astro.props;
+---
+
+<div class="fg" data-fg>
+  {
+    groups.map((group) => (
+      <details class="fg-group" open>
+        <summary class="fg-summary">
+          <h3 class="fg-heading">
+            {group.title}
+            <span class="fg-count">
+              <span class="visually-hidden">, </span>
+              {group.items.length}
+              <span class="visually-hidden"> features</span>
+            </span>
+          </h3>
+          <Icon name="chevronDown" size={20} class="fg-chevron" />
+        </summary>
+        <div class="fg-body">
+          <Image
+            src={image(group.image)}
+            alt={group.alt}
+            widths={[400, 680, 1040]}
+            sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1080px) 520px, 340px"
+            loading="lazy"
+            decoding="async"
+            class="fg-shot"
+          />
+          <ul class="fg-list" role="list">
+            {group.items.map((item) => (
+              <li class="fg-item">
+                <Icon name="check" size={18} class="fg-mark" />
+                <p class="fg-text">
+                  <strong class="fg-name">{item.title}</strong>
+                  {item.html ? <span set:html={item.html} /> : <span>{item.text}</span>}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </details>
+    ))
+  }
+</div>
+<script is:inline>
+  // Runs as soon as the list is parsed, before it is painted, so nothing jumps.
+  (() => {
+    const root = document.currentScript && document.currentScript.previousElementSibling;
+    if (!root || !root.matches("[data-fg]")) return;
+    const groups = [...root.querySelectorAll("details")];
+    const narrow = window.matchMedia("(max-width: 640px)");
+    const apply = () => groups.forEach((d, i) => (d.open = !narrow.matches || i === 0));
+    apply();
+    // Only on crossing the breakpoint, so a reader's own choice is kept while they read.
+    narrow.addEventListener("change", apply);
+  })();
+</script>
+
+<style>
+  .fg {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  /* The group heading on top; under it the screenshot on the left and the items in two
+     columns on the right. The body is its own grid because a <details> boxes everything
+     after its <summary> into one slot. */
+  .fg-group {
+    padding-top: clamp(1.5rem, 3vw, 2rem);
+    border-top: 1px solid var(--lw-border);
+  }
+  .fg-body {
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    align-items: start;
+    gap: 1.25rem clamp(1.5rem, 3.5vw, 3rem);
+    margin-top: 1.25rem;
+  }
+  .fg-shot {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-border);
+    box-shadow: var(--lw-shadow);
+  }
+  .fg-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: fit-content;
+    list-style: none;
+    cursor: pointer;
+    border-radius: var(--lw-radius-sm);
+  }
+  .fg-summary::-webkit-details-marker {
+    display: none;
+  }
+  .fg-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-size: var(--lw-h3);
+  }
+  .fg-count {
+    font-family: var(--lw-font-body);
+    font-size: var(--lw-text-sm);
+    font-weight: 500;
+    color: var(--lw-ink-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+  .fg-summary :global(.fg-chevron) {
+    flex-shrink: 0;
+    color: var(--lw-ink-subtle);
+    transition: transform 0.2s var(--lw-ease);
+  }
+  .fg-group[open] .fg-summary :global(.fg-chevron) {
+    transform: rotate(180deg);
+  }
+  .fg-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem 1.75rem;
+    margin: 0;
+    padding: 0;
+  }
+  .fg-item {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+  }
+  .fg-item :global(.fg-mark) {
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    color: var(--lw-accent);
+  }
+  .fg-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--lw-ink-muted);
+  }
+  .fg-name {
+    font-family: var(--lw-font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--lw-ink);
+  }
+  /* Stacked: heading, screenshot, items. */
+  @media (max-width: 1080px) {
+    .fg-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .fg-shot {
+      max-width: 520px;
+    }
+  }
+  /* Phones: each group heading is a full-width row to tap, and the open group's list sits
+     under it. */
+  @media (max-width: 640px) {
+    .fg {
+      gap: 0;
+    }
+    .fg-group {
+      padding-top: 0;
+    }
+    .fg-body {
+      gap: 1.25rem;
+      margin-top: 0.25rem;
+    }
+    .fg-group:last-child {
+      border-bottom: 1px solid var(--lw-border);
+    }
+    .fg-summary {
+      justify-content: space-between;
+      width: auto;
+      min-height: 56px;
+      padding-block: 0.75rem;
+    }
+    .fg-heading {
+      font-size: 1.2rem;
+    }
+    .fg-shot {
+      max-width: none;
+    }
+    .fg-list {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1rem;
+      padding-bottom: 1.5rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fg-summary :global(.fg-chevron) {
+      transition: none;
+    }
+  }
+</style>

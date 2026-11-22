@@ -1,0 +1,177 @@
+---
+/**
+ * The /scriptable-sheets/ hero: the product logo on its own night panel (the logo's sky blue
+ * needs a dark ground, so the panel stays dark in both themes), the page's one <h1>, the
+ * lead, the live price beside the store button, the introduction video, the Unity Awards
+ * badge, and a product screenshot.
+ *
+ * Built here rather than with PageHero because the logo has to sit above the <h1> and the
+ * price has to sit inside the action row. Spacing and the crumbs offset follow PageHero.
+ */
+import { Image } from "astro:assets";
+import StoreButton from "../StoreButton.astro";
+import Price from "../Price.astro";
+import AwardBadge from "../AwardBadge.astro";
+import Icon from "../Icon.astro";
+import { LINKS } from "../../data/links";
+import type { StoreOffer } from "../../lib/store";
+import type { Award, VideoItem } from "../../data/types";
+import logo from "../../assets/scriptable-sheets/logo.png";
+import shot from "../../assets/scriptable-sheets/screenshot-06.jpg";
+
+interface Props {
+  title: string;
+  lead: string;
+  offer: StoreOffer;
+  intro: VideoItem;
+  award: Award;
+}
+
+const { title, lead, offer, intro, award } = Astro.props;
+---
+
+<section class="ss-hero sky">
+  <div class="wrap ss-hero-inner">
+    <div class="ss-hero-text">
+      <div class="ss-top">
+        <div class="ss-logo">
+          <Image
+            src={logo}
+            alt="Scriptable Sheets logo"
+            widths={[200, 400]}
+            sizes="(max-width: 900px) 170px, 200px"
+            width={200}
+            loading="eager"
+            decoding="async"
+            class="ss-logo-img"
+          />
+        </div>
+        <AwardBadge award={award} size="sm" />
+      </div>
+      <h1 class="ss-title">{title}</h1>
+      <p class="lead ss-lead">{lead}</p>
+      <div class="ss-buy">
+        <StoreButton kind="unity" href={LINKS.scriptableSheets} variant="primary" placement="product_page" />
+        <Price offer={offer} size="lg" />
+      </div>
+      <a
+        class="btn btn--secondary ss-watch"
+        href={`https://www.youtube.com/watch?v=${intro.id}`}
+        data-video-id={intro.id}
+        data-video-title={intro.title}
+        target="_blank"
+        rel="noopener"
+      >
+        <Icon name="play" size={16} />
+        Watch the introduction
+        {intro.length && <span class="ss-len">{intro.length}</span>}
+      </a>
+    </div>
+    <div class="ss-hero-media">
+      <Image
+        src={shot}
+        alt="Scriptable Sheets in the Unity Editor: a table of RPG unit ScriptableObjects with name colors, portrait icons, weapons, materials, highlight gradients, and skill curves, one unit per row"
+        widths={[560, 840, 1120]}
+        sizes="(max-width: 900px) calc(100vw - 32px), 560px"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        class="ss-shot"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .ss-hero {
+    position: relative;
+    /* Room for the breadcrumb trail BaseLayout floats over the first section (as PageHero). */
+    padding-block: calc(var(--crumbs-h, 0px) + clamp(1.75rem, 4vw, 3.5rem)) clamp(3rem, 6vw, 5rem);
+    background:
+      radial-gradient(55% 75% at 82% 10%, var(--lw-glow), transparent 70%),
+      radial-gradient(40% 60% at 8% 0%, color-mix(in srgb, var(--lw-glow) 60%, transparent), transparent 70%),
+      var(--lw-bg);
+    border-bottom: 1px solid color-mix(in srgb, var(--lw-border) 60%, transparent);
+  }
+  .ss-hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+    align-items: center;
+    gap: clamp(2rem, 4.5vw, 4rem);
+  }
+  .ss-hero-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.15rem;
+    min-width: 0;
+  }
+
+  .ss-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+  }
+  /* The logo's own colours (sky blue and orange) on a fixed night panel, as on the Asset
+     Store key art, so it reads the same in both themes. */
+  .ss-logo {
+    padding: 0.9rem 1.2rem;
+    border-radius: var(--lw-radius);
+    background:
+      radial-gradient(120% 140% at 0% 0%, rgba(129, 235, 225, 0.12), transparent 60%),
+      linear-gradient(150deg, #0c2333, #071119);
+    border: 1px solid rgba(129, 235, 225, 0.18);
+    box-shadow: var(--lw-shadow);
+  }
+  .ss-logo-img {
+    display: block;
+    width: 200px;
+    height: auto;
+  }
+
+  .ss-title {
+    margin: 0;
+    font-size: clamp(2rem, 1.45rem + 2vw, 3.05rem);
+    line-height: 1.08;
+  }
+  .ss-lead {
+    font-size: var(--lw-text-lg);
+    max-width: 54ch;
+  }
+  .ss-buy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 0.35rem;
+  }
+  .ss-len {
+    font-family: var(--lw-font-body);
+    font-weight: 500;
+    font-size: 0.82rem;
+    color: var(--lw-ink-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ss-hero-media {
+    min-width: 0;
+  }
+  .ss-shot {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--lw-radius-lg);
+    border: 1px solid var(--lw-border);
+    box-shadow: var(--lw-shadow-lg);
+  }
+
+  @media (max-width: 900px) {
+    .ss-hero-inner {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .ss-logo-img {
+      width: 170px;
+    }
+  }
+</style>

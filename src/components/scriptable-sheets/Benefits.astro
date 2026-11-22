@@ -1,0 +1,98 @@
+---
+/**
+ * "What Scriptable Sheets does": four cards, each a listing screenshot and a short block of
+ * text. The listing images carry a caption band at the bottom that repeats the card heading,
+ * so the frame shows the top of each image (the tool itself) and leaves the band out.
+ */
+import { Image } from "astro:assets";
+import { image } from "../../lib/images";
+import type { SheetsBenefit } from "../../data/scriptableSheets";
+
+interface Props {
+  items: SheetsBenefit[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="bn" role="list">
+  {
+    items.map((item, i) => (
+      <li class="bn-card card" data-reveal style={`--reveal-delay:${(i % 2) * 80}ms`}>
+        <div class="bn-media">
+          <Image
+            src={image(item.image)}
+            alt={item.alt}
+            widths={[400, 600, 900, 1200]}
+            sizes="(max-width: 760px) calc(100vw - 32px), 570px"
+            loading="lazy"
+            decoding="async"
+            class="bn-img"
+          />
+        </div>
+        <div class="bn-text">
+          <span class="bn-num" aria-hidden="true">
+            {String(i + 1).padStart(2, "0")}
+          </span>
+          <h3 class="bn-title">{item.title}</h3>
+          <p class="bn-body">{item.text}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .bn {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+    margin: 0;
+    padding: 0;
+  }
+  .bn-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  /* 1200x800 listing art cut to its top 540px: the tool, without the caption band. */
+  .bn-media {
+    aspect-ratio: 20 / 9;
+    overflow: hidden;
+    background: var(--lw-media-bg);
+    border-bottom: 1px solid var(--lw-border);
+  }
+  .bn-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .bn-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+  .bn-num {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: var(--lw-text-sm);
+    letter-spacing: 0.08em;
+    color: var(--lw-accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .bn-title {
+    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.55rem);
+  }
+  .bn-body {
+    color: var(--lw-ink-muted);
+    line-height: 1.6;
+  }
+  @media (max-width: 760px) {
+    .bn {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

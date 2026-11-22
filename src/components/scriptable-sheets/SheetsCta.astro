@@ -1,0 +1,163 @@
+---
+/**
+ * Closing call to action for /scriptable-sheets/: the Asset Store key image beside the live
+ * price and the store button, the "Available on" Unity row, and under them a slim newsletter
+ * row for update news. Same card as the shared CtaBand, which takes only text links and so
+ * cannot hold a picture, a price, a store button, or a form.
+ */
+import { Image } from "astro:assets";
+import StoreButton from "../StoreButton.astro";
+import Price from "../Price.astro";
+import NewsletterForm from "../NewsletterForm.astro";
+import AvailableOnUnity from "./AvailableOnUnity.astro";
+import { LINKS } from "../../data/links";
+import type { StoreOffer } from "../../lib/store";
+import keyImage from "../../assets/scriptable-sheets/key-image.jpg";
+
+interface Props {
+  offer: StoreOffer;
+  id?: string;
+}
+
+const { offer, id = "get" } = Astro.props;
+---
+
+<section class="section ss-cta" id={id} aria-labelledby={`${id}-title`}>
+  <div class="wrap">
+    <div class="ss-cta-card sky" data-reveal>
+      <div class="ss-cta-moon" aria-hidden="true"></div>
+      <Image
+        src={keyImage}
+        alt="The Scriptable Sheets key art: the logo, the tool's six selling points, and a table of weapon ScriptableObjects filtered by damage"
+        widths={[480, 720, 1040]}
+        sizes="(max-width: 900px) calc(100vw - 64px), 520px"
+        loading="lazy"
+        decoding="async"
+        class="ss-cta-art"
+      />
+      <div class="ss-cta-buy">
+        <h2 id={`${id}-title`} class="ss-cta-title">Get Scriptable Sheets on the Unity Asset Store</h2>
+        <p class="ss-cta-lead">One package for the Unity Editor, with full source code, samples, and documentation.</p>
+        <div class="ss-cta-row">
+          <StoreButton kind="unity" href={LINKS.scriptableSheets} variant="primary" placement="product_page" />
+          <Price offer={offer} size="lg" />
+        </div>
+        <AvailableOnUnity class="ss-cta-avail" />
+      </div>
+      <div class="ss-cta-news">
+        <div class="ss-cta-news-text">
+          <h3 class="ss-cta-sub">Hear about new versions</h3>
+          <p class="ss-cta-text">
+            News on Scriptable Sheets updates and new releases from the studio. More on the <a href="/newsletter/"
+              >newsletter page</a
+            >.
+          </p>
+        </div>
+        <NewsletterForm id="sheets-newsletter" label="Email address" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Follows the custom-tool band on the same ground, which already supplies the space above. */
+  .ss-cta {
+    padding-top: 0;
+  }
+  .ss-cta-card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: 2rem clamp(2rem, 5vw, 4rem);
+    padding: clamp(1.75rem, 5vw, 3.5rem);
+    border-radius: calc(var(--lw-radius-lg) + 6px);
+    border: 1px solid var(--lw-accent-line);
+    background:
+      radial-gradient(70% 120% at 100% 0%, var(--lw-glow-strong), transparent 60%),
+      linear-gradient(160deg, var(--lw-surface), var(--lw-bg-raised));
+    box-shadow: var(--lw-shadow-lg);
+  }
+  /* The moon at the corner, as on the shared CtaBand. */
+  .ss-cta-moon {
+    position: absolute;
+    right: -120px;
+    top: -160px;
+    width: 420px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, #ade0e2 22%, transparent) 0,
+      color-mix(in srgb, #76a9b2 12%, transparent) 30%,
+      color-mix(in srgb, #44777e 6%, transparent) 50%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+  .ss-cta-art {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--lw-radius-lg);
+    border: 1px solid var(--lw-border);
+    box-shadow: var(--lw-shadow-lg);
+  }
+  .ss-cta-buy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .ss-cta-title {
+    font-size: clamp(1.7rem, 1.25rem + 1.8vw, 2.5rem);
+  }
+  .ss-cta-lead {
+    color: var(--lw-ink-muted);
+    font-size: var(--lw-text-lg);
+    max-width: 48ch;
+  }
+  .ss-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 0.4rem;
+  }
+  .ss-cta-buy :global(.ss-cta-avail) {
+    margin-top: 0.5rem;
+  }
+  /* The newsletter: one slim row across the card, under the picture and the buy block. */
+  .ss-cta-news {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: 1rem clamp(2rem, 5vw, 4rem);
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--lw-border);
+  }
+  .ss-cta-news-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .ss-cta-sub {
+    font-size: var(--lw-h4);
+  }
+  .ss-cta-text {
+    color: var(--lw-ink-muted);
+    font-size: var(--lw-text-sm);
+  }
+  @media (max-width: 900px) {
+    .ss-cta-card,
+    .ss-cta-news {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .ss-cta-art {
+      max-width: 560px;
+    }
+  }
+</style>
