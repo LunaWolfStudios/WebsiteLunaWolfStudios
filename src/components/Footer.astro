@@ -1,0 +1,264 @@
+---
+/**
+ * Site footer, rendered once by BaseLayout: newsletter signup, the logo and link columns
+ * (from src/data/nav.ts), the studio's social profiles (src/data/links.ts), the support
+ * email, and the legal line.
+ *
+ * - newsletter: false leaves the signup band out, for a page that ends in its own newsletter
+ *   form (BaseLayout's footerNewsletter prop).
+ */
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import NewsletterForm from "./NewsletterForm.astro";
+import { FOOTER_COLUMNS } from "../data/nav";
+import { LINKS, SOCIALS } from "../data/links";
+import { SITE } from "../data/site";
+
+interface Props {
+  newsletter?: boolean;
+}
+
+const { newsletter = true } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer sky">
+  <div class="wrap">
+    {
+      newsletter && (
+        <section class="f-news" aria-labelledby="f-news-title">
+          <div class="f-news-copy">
+            <h2 id="f-news-title" class="f-news-title">Follow the pack</h2>
+            <p class="f-news-lead">Game launches, new tools, and studio news, straight to your inbox.</p>
+          </div>
+          <NewsletterForm id="footer-newsletter" label="Email address" class="f-news-form" />
+        </section>
+      )
+    }
+
+    {/* #site-nav: where the header's no-JavaScript "Menu" link lands. */}
+    <div class="f-main" id="site-nav">
+      <div class="f-brand">
+        <Logo size={44} />
+        <p class="f-tagline">
+          Game and software development studio in {SITE.address.locality}, Delaware. Since 2015.
+        </p>
+        <p class="f-contact">
+          Questions? <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </p>
+      </div>
+
+      {
+        FOOTER_COLUMNS.map((col) => (
+          <nav class="f-col" aria-label={col.title}>
+            <h2 class="f-col-title">{col.title}</h2>
+            <ul role="list">
+              {col.links.map((l) => (
+                <li>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+
+    <ul class="f-socials" role="list" aria-label="Luna Wolf Studios on social platforms">
+      {
+        SOCIALS.map((s) => (
+          <li>
+            <a
+              href={LINKS[s.key]}
+              class={`f-social f-social--${s.key}`}
+              aria-label={`${s.label} (opens in a new tab)`}
+              title={s.label}
+              target="_blank"
+              rel="noopener me"
+            >
+              <Icon name={s.icon} size={18} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="f-legal">
+      <p>&copy; 2015&ndash;{year} {SITE.legalName}. All rights reserved.</p>
+      <p><a href="/privacy-policy/">Privacy policy</a></p>
+    </div>
+    {/* Trademark lines for the store marks the site shows (src/assets/brands/README.md). */}
+    <p class="f-tm">
+      &copy;{year} Valve Corporation. Steam and the Steam logo are trademarks and/or registered trademarks of Valve
+      Corporation in the U.S. and/or other countries. Nintendo Switch is a trademark of Nintendo. Luna Wolf Studios is
+      not sponsored by or affiliated with Unity Technologies or its affiliates. Unity and Unity Asset Store are
+      trademarks or registered trademarks of Unity Technologies or its affiliates in the U.S. and elsewhere. All other
+      trademarks are the property of their respective owners.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: auto;
+    padding-block: clamp(48px, 7vw, 80px) 2rem;
+    background:
+      radial-gradient(70% 60% at 85% 0%, var(--lw-glow), transparent 70%),
+      var(--lw-bg-raised);
+    border-top: 1px solid var(--lw-border);
+    color: var(--lw-ink-muted);
+  }
+
+  /* Newsletter ------------------------------------------------------------------------ */
+  .f-news {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: 1.25rem 2.5rem;
+    padding: clamp(1.4rem, 3vw, 2.2rem);
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+    background: var(--lw-surface);
+    border: 1px solid var(--lw-border);
+    border-radius: var(--lw-radius-lg);
+    box-shadow: var(--lw-shadow);
+  }
+  .f-news-title {
+    font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.7rem);
+  }
+  .f-news-lead {
+    margin-top: 0.35rem;
+    color: var(--lw-ink-muted);
+  }
+  .f-news :global(.f-news-form) {
+    justify-self: end;
+  }
+
+  /* Columns --------------------------------------------------------------------------- */
+  .f-main {
+    display: grid;
+    grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+  .f-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+  .f-tagline {
+    max-width: 34ch;
+    font-size: var(--lw-text-sm);
+  }
+  .f-contact {
+    font-size: var(--lw-text-sm);
+  }
+  .f-col-title {
+    margin-bottom: 0.8rem;
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lw-ink);
+  }
+  .f-col ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+  }
+  .f-col a {
+    color: var(--lw-ink-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .f-col a:hover {
+    color: var(--lw-accent);
+  }
+
+  /* Socials and legal ----------------------------------------------------------------- */
+  .f-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: clamp(2.25rem, 4vw, 3rem) 0 0;
+    padding: 1.5rem 0 0;
+    border-top: 1px solid var(--lw-border);
+  }
+  .f-social {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--lw-border);
+    background: var(--lw-surface);
+    /* Brand marks stay in the theme ink (white-ish on dark, near black on light), never tinted:
+       see archive/research/brand-assets.md. Hover changes the chip, not the mark. */
+    color: var(--lw-ink);
+    transition: background-color var(--lw-fast) ease, border-color var(--lw-fast) ease, transform var(--lw-fast) ease;
+  }
+  .f-social:hover {
+    color: var(--lw-ink);
+    border-color: var(--lw-accent-line);
+    background: var(--lw-accent-tint);
+    transform: translateY(-2px);
+  }
+  /* Facebook asks for its blue mark on light grounds. */
+  :global([data-theme="light"]) .f-social--facebook {
+    color: #0866ff;
+  }
+  .f-legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    margin-top: 1.5rem;
+    font-size: var(--lw-text-xs);
+    color: var(--lw-ink-subtle);
+  }
+  .f-tm {
+    margin-top: 1rem;
+    max-width: 110ch;
+    font-size: 0.72rem;
+    line-height: 1.55;
+    color: var(--lw-ink-subtle);
+  }
+  .f-legal a {
+    color: var(--lw-ink-muted);
+  }
+
+  @media (max-width: 960px) {
+    .f-news {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .f-news :global(.f-news-form) {
+      justify-self: stretch;
+      max-width: none;
+    }
+    .f-main {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .f-brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 600px) {
+    .f-main {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    /* Taller tap targets on phones: the padding does the spacing the gap did. */
+    .f-col ul {
+      gap: 0;
+    }
+    .f-col a {
+      display: inline-block;
+      padding-block: 0.45rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .f-social:hover {
+      transform: none;
+    }
+  }
+</style>

@@ -1,0 +1,26 @@
+Luna Wolf Studios website - Copyright notice
+============================================
+
+Copyright (c) 2015-2026 Luna Wolf Studios, LLC. All rights reserved.
+
+All content in this repository is the proprietary property of Luna Wolf Studios, LLC.
+This includes, without limitation:
+  - the website source code, configuration and build scripts;
+  - the Luna Wolf Studios name, wolf-and-moon emblem, wordmark, and all other logos,
+    icons and branding;
+  - all game artwork, screenshots, videos, posters and other images;
+  - the site text, the archived WordPress content in archive/, and the legal documents.
+
+This material may not be copied, modified, redistributed, or used to create derivative
+works without the prior written permission of Luna Wolf Studios, LLC.
+
+Third-party material
+--------------------
+Store and platform marks in src/assets/brands/ (Steam, Nintendo Switch, Unity, itch.io,
+Apple and others), partner and client logos, and third-party game art belong to their
+respective owners and are used under their brand guidelines or with permission. They are
+not licensed by this notice. The wordmark is set in Soup of Justice (c) 2011 Omen Type and
+ships only as outlined artwork; the font file is not part of this repository. Open-source
+dependencies (Astro, Fontsource fonts, simple-icons and others) keep their own licenses.
+
+Questions: support@lunawolfstudios.com

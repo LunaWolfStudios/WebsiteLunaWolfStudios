@@ -1,0 +1,488 @@
+---
+/**
+ * The template for /about-jeff/, /about-jeremy/ and /about-olivia/: the page shell, a hero
+ * with the headshot, name (h1), tagline, summary, contact links and the primary call to
+ * action, then a row of highlights, then the page's own sections (default slot), then the
+ * other two founders, links back to /about/ and the relevant services, and the closing CTA.
+ *
+ *   <FounderPage data={JEFF_PAGE} photoAlt="..." photoPosition={{ wide: "50% 50%", square: "50% 30%" }}>
+ *     <BioSections ... />
+ *     ...
+ *   </FounderPage>
+ *
+ * Headshots: one frame for all three (a 4:5 rounded portrait on wide screens, a square tile on
+ * phones), cropped with object-position so each face stays in frame; `photoPosition.zoom`
+ * scales the phone tile in on the face (transform only, so nothing reflows). The small photos
+ * of the other two founders use the shared FounderPhoto. JSON-LD: ProfilePage with the founder
+ * as a Person (`#person` id) who works for the studio.
+ */
+import { Image, getImage } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CtaBand from "../CtaBand.astro";
+import Icon from "../Icon.astro";
+import FounderPhoto from "../FounderPhoto.astro";
+import { FOUNDERS, founder as founderBySlug } from "../../data/team";
+import { image } from "../../lib/images";
+import { abs, personLd, type JsonLd } from "../../lib/seo";
+import type { FounderPageData } from "./types";
+
+interface Props {
+  data: FounderPageData;
+  photoAlt: string;
+  /** object-position for the 4:5 frame (wide) and the square tile (phones), and a zoom for the tile. */
+  photoPosition?: { wide?: string; square?: string; zoom?: number };
+  /** Extra Person fields (award, ...). */
+  person?: JsonLd;
+  /** Closing call to action; CtaBand's default lead when left out. */
+  ctaTitle?: string;
+  ctaLead?: string;
+}
+
+const { data, photoAlt, photoPosition = {}, person: personExtra = {}, ctaTitle, ctaLead } = Astro.props;
+const f = founderBySlug(data.slug);
+const firstName = f.name.split(" ")[0];
+// Addresses are shown in lower case wherever the site prints them.
+const email = f.email?.toLowerCase();
+const zoom = photoPosition.zoom ?? 1;
+const photo = image(f.photo);
+const photoWidths = [320, 480, 640, 800].filter((w) => w <= photo.width);
+if (!photoWidths.length || photoWidths[photoWidths.length - 1] < photo.width) photoWidths.push(Math.min(photo.width, 800));
+const others = FOUNDERS.filter((x) => x.slug !== data.slug);
+
+// Profile links for the hero and for Person.sameAs. The Drive folder is not a profile.
+const profileLinks = f.links.filter((l) => !l.url.includes("drive.google.com"));
+const sameAs = profileLinks.map((l) => l.url);
+
+const ldImage = await getImage({ src: photo, width: Math.min(640, photo.width), format: "jpg", quality: 82 });
+const person = {
+  ...personLd({
+    name: f.name,
+    url: f.page,
+    jobTitle: data.jobTitle,
+    description: data.summary,
+    image: ldImage.src,
+    sameAs,
+    knowsAbout: data.knowsAbout,
+  }),
+  ...personExtra,
+};
+const jsonLd: JsonLd[] = [
+  {
+    "@type": "ProfilePage",
+    "@id": `${abs(f.page)}#webpage`,
+    url: abs(f.page),
+    name: `${data.title} | Luna Wolf Studios`,
+    description: data.description,
+    inLanguage: "en-US",
+    isPartOf: { "@id": `${abs("/")}#website` },
+    mainEntity: { "@id": `${abs(f.page)}#person` },
+  },
+  person,
+];
+
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  breadcrumbs={[
+    { label: "About", href: "/about/" },
+    { label: f.name, href: f.page },
+  ]}
+  jsonLd={jsonLd}
+  image={photo}
+  imageAlt={photoAlt}
+  ogType="profile"
+>
+  <section class="fh page-hero sky" aria-labelledby="fh-title">
+    <div class="wrap fh-inner">
+      <div
+        class="fh-photo"
+        style={`--pos-wide:${photoPosition.wide ?? "50% 40%"};--pos-square:${photoPosition.square ?? "50% 30%"};--zoom-square:${zoom}`}
+      >
+        <span class="fh-frame">
+          <Image
+            src={photo}
+            alt={photoAlt}
+            widths={photoWidths}
+            sizes={`(max-width: 900px) ${Math.round(128 * zoom)}px, 360px`}
+            loading="eager"
+            fetchpriority="high"
+            class="fh-img"
+          />
+        </span>
+      </div>
+      <div class="fh-text">
+        <p class="eyebrow">Co-founder, Luna Wolf Studios</p>
+        <h1 id="fh-title" class="fh-title">{data.h1}</h1>
+        {data.tagline && <p class="fh-tagline">{data.tagline}</p>}
+        <p class="lead fh-lead">{data.summary}</p>
+        <div class="fh-actions">
+          <a class="btn btn--primary" href="/contact/">
+            Start a project <Icon name="arrowRight" size={18} />
+          </a>
+          {
+            email ? (
+              <a class="btn btn--secondary" href={`mailto:${email}`}>
+                <Icon name="mail" size={18} /> Email {firstName}
+              </a>
+            ) : (
+              <a class="btn btn--secondary" href="/about/">
+                Meet the studio
+              </a>
+            )
+          }
+        </div>
+        {
+          (email || profileLinks.length > 0) && (
+            <ul class="fh-links" role="list" aria-label={`${firstName}'s contact links`}>
+              {email && (
+                <li>
+                  <a href={`mailto:${email}`}>
+                    <Icon name="mail" size={16} />
+                    {email}
+                  </a>
+                </li>
+              )}
+              {profileLinks.map((l) => (
+                <li>
+                  <a href={l.url} target="_blank" rel="noopener">
+                    <Icon name={l.icon ?? "globe"} size={16} />
+                    {l.label}
+                    <span class="visually-hidden"> (opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="fh-highlights" aria-label={`${firstName} at a glance`}>
+    <div class="wrap">
+      <ul class="hl" role="list">
+        {
+          data.highlights.map((h) => (
+            <li class="hl-item">
+              <span class="hl-icon" aria-hidden="true">
+                <Icon name={h.icon} size={20} />
+              </span>
+              <span class="hl-text">
+                <strong class="hl-value">{h.value}</strong>
+                <span class="hl-label">{h.label}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <slot />
+
+  <section class="section fp-more" aria-labelledby="fp-more-title">
+    <div class="wrap fp-more-inner">
+      <div class="fp-more-text" data-reveal>
+        <h2 id="fp-more-title" class="fp-more-title">The rest of the pack</h2>
+        <p class="text-muted">
+          {firstName} is one of three co-founders.
+        </p>
+        <ul class="fp-more-links" role="list">
+          <li>
+            <a class="link-arrow" href="/about/">About Luna Wolf Studios <Icon name="arrowRight" size={16} /></a>
+          </li>
+          {
+            data.services.map((s) => (
+              <li>
+                <a class="link-arrow" href={s.href}>
+                  {s.label} <Icon name="arrowRight" size={16} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <ul class="fp-others" role="list">
+        {
+          others.map((o) => (
+            <li data-reveal>
+              <a class="fp-other card card--link" href={o.page}>
+                <FounderPhoto founder={o} size={64} alt="" />
+                <span class="fp-other-text">
+                  <span class="fp-other-name">{o.name}</span>
+                  <span class="fp-other-role">{o.role}</span>
+                </span>
+                <Icon name="arrowRight" size={18} class="fp-other-go" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand
+    title={ctaTitle ?? `Work with ${firstName} and the pack`}
+    lead={ctaLead}
+    primary={{ label: "Contact us", href: "/contact/" }}
+    secondary={data.services[0] ? { label: `${data.services[0].label} services`, href: data.services[0].href } : undefined}
+  />
+</BaseLayout>
+
+<style>
+  /* ── Hero ──────────────────────────────────────────────────────────────────────────── */
+  .fh {
+    position: relative;
+    padding-block: calc(var(--crumbs-h, 0px) + clamp(2rem, 4.5vw, 4rem)) clamp(2.5rem, 6vw, 5rem);
+    background:
+      radial-gradient(55% 75% at 82% 10%, var(--lw-glow), transparent 70%),
+      radial-gradient(40% 60% at 8% 0%, color-mix(in srgb, var(--lw-glow) 60%, transparent), transparent 70%),
+      var(--lw-bg);
+  }
+  .fh-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
+    grid-template-areas: "text photo";
+    align-items: center;
+    gap: clamp(2rem, 6vw, 5rem);
+  }
+  .fh-text {
+    grid-area: text;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    max-width: 680px;
+  }
+  .fh-title {
+    margin: 0;
+    font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.5rem);
+    text-wrap: balance;
+  }
+  .fh-tagline {
+    font-family: var(--lw-font-display);
+    font-weight: 500;
+    color: var(--lw-accent);
+    line-height: 1.5;
+  }
+  .fh-lead {
+    font-size: var(--lw-text-xl);
+  }
+  .fh-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.4rem;
+  }
+  .fh-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    margin: 0.25rem 0 0;
+    padding: 0;
+  }
+  .fh-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    min-height: 32px;
+    font-size: var(--lw-text-sm);
+    font-weight: 500;
+    color: var(--lw-ink-muted);
+    text-decoration: none;
+  }
+  .fh-links a:hover {
+    color: var(--lw-accent);
+  }
+  /* One frame for every founder: a 4:5 portrait with a moonlit ring. */
+  .fh-photo {
+    grid-area: photo;
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: calc(var(--lw-radius-lg) + 8px);
+    padding: 4px;
+    background: linear-gradient(160deg, var(--lw-accent), var(--lw-accent-deep) 55%, transparent);
+    box-shadow:
+      0 0 60px var(--lw-glow-strong),
+      var(--lw-shadow-lg);
+  }
+  .fh-frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: calc(var(--lw-radius-lg) + 4px);
+    background: var(--lw-media-bg);
+  }
+  .fh-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--pos-wide);
+  }
+  @media (max-width: 900px) {
+    .fh-inner {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "photo" "text";
+      gap: 1.25rem;
+    }
+    .fh-photo {
+      width: 128px;
+      aspect-ratio: 1;
+      border-radius: calc(var(--lw-radius) + 6px);
+      padding: 3px;
+    }
+    .fh-frame {
+      border-radius: calc(var(--lw-radius) + 3px);
+    }
+    .fh-img {
+      object-position: var(--pos-square);
+      transform: scale(var(--zoom-square));
+      transform-origin: var(--pos-square);
+    }
+  }
+
+  /* ── Highlights ────────────────────────────────────────────────────────────────────── */
+  .fh-highlights {
+    border-block: 1px solid color-mix(in srgb, var(--lw-border) 60%, transparent);
+    background: var(--lw-bg-raised);
+    padding-block: clamp(1.25rem, 3vw, 2rem);
+  }
+  .hl {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+  }
+  .hl-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    min-width: 0;
+  }
+  .hl-item + .hl-item {
+    padding-left: 1.25rem;
+    border-left: 1px solid var(--lw-border);
+  }
+  .hl-icon {
+    flex-shrink: 0;
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+    color: var(--lw-accent);
+  }
+  .hl-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+  .hl-value {
+    font-family: var(--lw-font-display);
+    font-weight: 650;
+    font-size: 1.08rem;
+    line-height: 1.25;
+    color: var(--lw-ink);
+  }
+  .hl-label {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+    line-height: 1.4;
+  }
+  @media (max-width: 1000px) {
+    .hl {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .hl > .hl-item:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+  @media (max-width: 480px) {
+    .hl {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.9rem;
+    }
+    .hl > .hl-item + .hl-item {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+
+  /* ── The rest of the pack ─────────────────────────────────────────────────────────── */
+  .fp-more {
+    border-top: 1px solid color-mix(in srgb, var(--lw-border) 60%, transparent);
+  }
+  .fp-more-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+  }
+  .fp-more-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .fp-more-title {
+    margin: 0;
+    font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.2rem);
+  }
+  .fp-more-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin: 0.25rem 0 0;
+    padding: 0;
+  }
+  .fp-others {
+    display: grid;
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0;
+  }
+  .fp-other {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.1rem 0.85rem 0.85rem;
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .fp-other-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+  .fp-other-name {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  .fp-other-role {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  .fp-other-go {
+    color: var(--lw-ink-subtle);
+  }
+  .fp-other:hover .fp-other-go,
+  .fp-other:hover .fp-other-name {
+    color: var(--lw-accent);
+  }
+  @media (max-width: 860px) {
+    .fp-more-inner {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

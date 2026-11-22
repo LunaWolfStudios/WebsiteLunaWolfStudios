@@ -1,0 +1,118 @@
+---
+/**
+ * How an engagement runs, from first email to support after launch: five numbered steps in
+ * one row on wide screens, joined by a rule. Used on the services hub and every service page,
+ * from ENGAGEMENT_STEPS in src/data/servicePages.ts.
+ *
+ *   <ProcessSteps />
+ *   <ProcessSteps steps={...} headingLevel={3} />
+ */
+import { ENGAGEMENT_STEPS, type Capability } from "../../data/servicePages";
+
+interface Props {
+  steps?: Capability[];
+  headingLevel?: 3 | 4;
+  class?: string;
+}
+
+const { steps = ENGAGEMENT_STEPS, headingLevel = 3, class: cls } = Astro.props;
+const H = `h${headingLevel}` as "h3" | "h4";
+---
+
+<ol class:list={["steps", cls]} role="list" style={`--steps:${steps.length}`}>
+  {
+    steps.map((step, i) => (
+      <li class="step" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+        <span class="step-num" aria-hidden="true">
+          {String(i + 1).padStart(2, "0")}
+        </span>
+        <H class="step-title">
+          <span class="visually-hidden">Step {i + 1}: </span>
+          {step.title}
+        </H>
+        <p class="step-text">{step.text}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(var(--steps), minmax(0, 1fr));
+    gap: 1.5rem clamp(1rem, 2vw, 1.75rem);
+    margin: 0;
+    padding: 0;
+    counter-reset: step;
+  }
+  .step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  /* The rule that joins one step to the next, behind the numbers. */
+  .step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 22px;
+    left: 56px;
+    right: calc(-1 * clamp(1rem, 2vw, 1.75rem) + 8px);
+    height: 1px;
+    background: linear-gradient(90deg, var(--lw-accent-line), var(--lw-border));
+  }
+  .step-num {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0.4rem;
+    border-radius: 50%;
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--lw-accent);
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+  }
+  .step-title {
+    font-size: 1.08rem;
+    line-height: 1.3;
+  }
+  .step-text {
+    color: var(--lw-ink-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  /* Narrower screens: a vertical timeline, number on the left, rule running down. */
+  @media (max-width: 1000px) {
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.4rem;
+      max-width: 640px;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      column-gap: 1rem;
+      row-gap: 0.25rem;
+    }
+    .step-num {
+      grid-row: span 2;
+      margin-bottom: 0;
+    }
+    .step-title {
+      padding-top: 0.6rem;
+    }
+    .step:not(:last-child)::after {
+      top: 52px;
+      bottom: -1.3rem;
+      left: 22px;
+      right: auto;
+      width: 1px;
+      height: auto;
+      background: linear-gradient(180deg, var(--lw-accent-line), var(--lw-border));
+    }
+  }
+</style>

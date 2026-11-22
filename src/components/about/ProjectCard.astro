@@ -1,0 +1,691 @@
+---
+/**
+ * One line of a founder's portfolio (FOUNDER_PORTFOLIO in src/data/team.ts) as a card: art,
+ * the credit line exactly as the old page printed it ("by Peloton"), title, one factual line,
+ * year and platform chips, and links.
+ *
+ *   <ProjectCard item={item} />                      full card
+ *   <ProjectCard item={item} variant="compact" />    one row, for a project already shown above
+ *
+ * - Art is the project's wide art, else its cover, else its square icon (the old site's icons and
+ *   600x900 covers, kept in games.ts). Square and portrait art is shown whole (contained) so
+ *   nothing is cropped away. A project with no art at all is a designed text card: no empty
+ *   media panel, no lone icon in a box.
+ * - A project with a YouTube video gets a poster that plays in the shared Theater (nothing
+ *   loads from YouTube before the click).
+ * - The title links to the project's page on this site when it has one, else to the link the
+ *   founder page used. Store and official links follow as small chips, so every link the old
+ *   page had is still on the card.
+ * - Client and employer work keeps its owner in the credit line; nothing here says the studio
+ *   owns it.
+ */
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import type { PortfolioItem } from "../../data/team";
+import type { Game, Project, StoreLink } from "../../data/types";
+import type { ExtraLink } from "./types";
+import { work } from "../../data/games";
+import { ALL_VIDEOS } from "../../data/videos";
+import { maybeImage } from "../../lib/images";
+import { isExternal, withUtm } from "../../data/links";
+
+interface Props {
+  item: PortfolioItem;
+  variant?: "full" | "compact";
+  headingLevel?: 3 | 4;
+  /** Links beyond the project's own (from the founder's data file). */
+  extra?: ExtraLink[];
+  /** Hide the credit line (when the surrounding block already says it). */
+  hideCredit?: boolean;
+  /** A line that replaces the tagline. */
+  line?: string;
+  /** A text card that is alone in its group: lay it out as one wide row. */
+  row?: boolean;
+}
+
+const { item, variant = "full", headingLevel = 3, extra = [], hideCredit = false, line, row = false } = Astro.props;
+const w: Game | Project | undefined = item.slug ? work(item.slug) : undefined;
+const title = item.label ?? w?.title ?? "";
+const H = `h${headingLevel}` as "h3" | "h4";
+
+// ── Art ────────────────────────────────────────────────────────────────────────────────
+const wideRef = w?.wide;
+const coverRef = w?.cover;
+const coverShape = w?.coverShape ?? "portrait";
+const artRef = wideRef ?? coverRef ?? w?.icon;
+const art = maybeImage(artRef, w ? `games/${w.slug}` : undefined);
+const fit = wideRef || (coverRef && coverShape === "landscape") ? "cover" : "contain";
+
+// ── Video ──────────────────────────────────────────────────────────────────────────────
+const ytFromLinks = w?.links.find((l) => l.kind === "youtube")?.url.match(/[?&]v=([\w-]{11})/)?.[1];
+const videoId = w?.videoId ?? ytFromLinks;
+const videoTitle = videoId ? (ALL_VIDEOS.find((v) => v.id === videoId)?.title ?? `${title} video`) : undefined;
+
+// ── Links ──────────────────────────────────────────────────────────────────────────────
+const STUDIO_STORES = new Set(["steam", "switch", "unity", "newgrounds"]);
+const tag = (l: { kind?: string; url: string }) =>
+  (l.kind && STUDIO_STORES.has(l.kind)) || (l.kind === "itch" && l.url.includes("lunawolfstudios.itch.io"))
+    ? withUtm(l.url, "about")
+    : l.url;
+
+const LABEL: Record<string, string> = {
+  steam: "Steam",
+  switch: "Nintendo Switch",
+  unity: "Unity Asset Store",
+  itch: "itch.io",
+  newgrounds: "Newgrounds",
+  apple: "App Store",
+  android: "Google Play",
+  meta: "Meta",
+  kickstarter: "Kickstarter",
+  youtube: "YouTube",
+};
+const ICON: Record<string, string> = {
+  steam: "steam",
+  switch: "switch",
+  unity: "unity",
+  itch: "itch",
+  newgrounds: "newgrounds",
+  apple: "appstore",
+  android: "googleplay",
+  meta: "meta",
+  kickstarter: "kickstarter",
+  youtube: "youtube",
+  web: "globe",
+};
+const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, "");
+const chip = (l: StoreLink) => ({
+  label: l.label ?? LABEL[l.kind] ?? hostOf(l.url),
+  url: tag(l),
+  icon: ICON[l.kind] ?? "external",
+});
+
+const links = w?.links ?? [];
+// The link the founder page used: its override, else the project's first link.
+const oldUrl = item.url ?? links[0]?.url;
+const titleHref = w?.page ?? (oldUrl ? tag({ kind: links.find((l) => l.url === oldUrl)?.kind, url: oldUrl }) : undefined);
+const titleExternal = titleHref ? isExternal(titleHref) : false;
+
+// Chips: for a project with its own page, the outside links (old page's first); otherwise the
+// links after the one the title uses. At most three, then any extras.
+let chipLinks: Array<{ label: string; url: string; icon: string }> = [];
+if (w?.page) {
+  const ordered = item.url ? [{ kind: "web" as const, url: item.url }, ...links.filter((l) => l.url !== item.url)] : links;
+  chipLinks = ordered.filter((l) => l.kind !== "youtube").slice(0, 3).map((l) => chip(l as StoreLink));
+} else {
+  chipLinks = links
+    .filter((l) => l.url !== oldUrl && l.kind !== "youtube")
+    .slice(0, 2)
+    .map(chip);
+}
+chipLinks.push(...extra.map((e) => ({ label: e.label, url: e.url, icon: e.icon ?? "globe" })));
+
+// ── Text ───────────────────────────────────────────────────────────────────────────────
+// Tutorials carry no credit on the old page: show the credit the tutorial itself gives.
+const tutorialCredit =
+  w?.category === "tutorial" ? (w.owner ? `${w.role ?? "Author"}, ${w.owner}` : w.developer ? `by ${w.developer}` : undefined) : undefined;
+const credit = hideCredit ? undefined : (item.credit ?? tutorialCredit);
+const tagline = line ?? w?.tagline;
+const facts = [w?.year ? String(w.year) : w?.releaseNote, ...(w?.platforms ?? [])].filter(
+  (x): x is string => Boolean(x),
+);
+const CATEGORY_ICON: Record<string, string> = {
+  tool: "wrench",
+  app: "monitor",
+  tutorial: "graduationCap",
+  tabletop: "cube",
+  screen: "play",
+  prototype: "code",
+  experience: "heartPulse",
+  client: "briefcase",
+};
+const panelIcon = w ? (CATEGORY_ICON[w.category] ?? "gamepad") : "gamepad";
+const NEW_TAB = " (opens in a new tab)";
+
+// 240 serves the 112 px phone tile at 2x; 400 to 800 the grid card.
+const imgWidths = variant === "compact" ? [160, 240] : [240, 400, 640, 800];
+const imgSizes =
+  variant === "compact" ? "120px" : "(max-width: 560px) 120px, (max-width: 1000px) 46vw, 380px";
+---
+
+{
+  !w ? (
+    <article class:list={["pct", { "card--link": Boolean(titleHref), "pct--row": row }]}>
+      <span class="pct-icon" aria-hidden="true">
+        <Icon name={titleHref?.includes("itch.io") ? "itch" : "briefcase"} size={22} />
+      </span>
+      <H class="pct-title">
+        {titleHref ? (
+          <a class="pc-link" href={titleHref} target={titleExternal ? "_blank" : undefined} rel={titleExternal ? "noopener" : undefined}>
+            {title}
+            {titleExternal && <span class="visually-hidden">{NEW_TAB}</span>}
+          </a>
+        ) : (
+          title
+        )}
+      </H>
+      {credit && <p class="pct-credit">{credit}</p>}
+      {titleHref && (
+        <span class="pct-go">
+          {titleExternal ? "Open on itch.io" : "Open"} <Icon name={titleExternal ? "external" : "arrowRight"} size={14} />
+        </span>
+      )}
+    </article>
+  ) : variant === "compact" ? (
+    <article class="pcc">
+      <div class:list={["pcc-thumb", { "pcc-thumb--none": !art }]} aria-hidden="true">
+        {art ? (
+          <Image src={art} alt="" widths={imgWidths} sizes={imgSizes} loading="lazy" decoding="async" class:list={["pc-img", `fit-${fit}`]} />
+        ) : (
+          <span class="pcc-chip">
+            <Icon name={panelIcon} size={18} />
+          </span>
+        )}
+      </div>
+      <div class="pcc-body">
+        <H class="pcc-title">
+          {titleHref ? (
+            <a class="pc-link" href={titleHref} target={titleExternal ? "_blank" : undefined} rel={titleExternal ? "noopener" : undefined}>
+              {title}
+              {titleExternal && <span class="visually-hidden">{NEW_TAB}</span>}
+            </a>
+          ) : (
+            title
+          )}
+        </H>
+        {credit && <p class="pcc-credit">{credit}</p>}
+      </div>
+      {titleHref && (
+        <span class="pcc-go" aria-hidden="true">
+          <Icon name={titleExternal ? "external" : "arrowRight"} size={16} />
+        </span>
+      )}
+    </article>
+  ) : (
+    <article class:list={["pc", "card", { "card--link": Boolean(titleHref), "pc--video": Boolean(videoId), "pc--text": !art && !videoId }]}>
+      {(art || videoId) && (
+        <div class="pc-art">
+          {videoId ? (
+            <a
+              class="pc-play"
+              href={`https://www.youtube.com/watch?v=${videoId}`}
+              data-video-id={videoId}
+              data-video-title={videoTitle}
+              target="_blank"
+              rel="noopener"
+            >
+              {art ? (
+                <Image src={art} alt="" widths={imgWidths} sizes={imgSizes} loading="lazy" decoding="async" class:list={["pc-img", `fit-${fit}`]} />
+              ) : (
+                <span class="pc-panel">
+                  <span class="pc-panel-title" aria-hidden="true">{title}</span>
+                </span>
+              )}
+              <span class="pc-play-btn" aria-hidden="true">
+                <Icon name="play" size={20} />
+              </span>
+              <span class="visually-hidden">Play video: {videoTitle}</span>
+            </a>
+          ) : (
+            <Image src={art!} alt="" widths={imgWidths} sizes={imgSizes} loading="lazy" decoding="async" class:list={["pc-img", `fit-${fit}`]} />
+          )}
+        </div>
+      )}
+      <div class="pc-body">
+        {!art && !videoId ? (
+          <p class="pc-credit pc-credit--chip">
+            <span class="pc-chip" aria-hidden="true">
+              <Icon name={panelIcon} size={18} />
+            </span>
+            {credit}
+          </p>
+        ) : (
+          credit && <p class="pc-credit">{credit}</p>
+        )}
+        <H class="pc-title">
+          {titleHref ? (
+            <a class="pc-link" href={titleHref} target={titleExternal ? "_blank" : undefined} rel={titleExternal ? "noopener" : undefined}>
+              {title}
+              {titleExternal && <span class="visually-hidden">{NEW_TAB}</span>}
+            </a>
+          ) : (
+            title
+          )}
+        </H>
+        {tagline && <p class="pc-line">{tagline}</p>}
+        {facts.length > 0 && (
+          <ul class="pc-facts" role="list" aria-label="Year and platforms">
+            {facts.map((f) => (
+              <li>{f}</li>
+            ))}
+          </ul>
+        )}
+        {chipLinks.length > 0 && (
+          <ul class="pc-links" role="list" aria-label={`More links for ${title}`}>
+            {chipLinks.map((l) => (
+              <li>
+                <a href={l.url} target="_blank" rel="noopener">
+                  <Icon name={l.icon} size={14} />
+                  {l.label}
+                  <span class="visually-hidden">{NEW_TAB}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </article>
+  )
+}
+
+<style>
+  /* ── Full card ─────────────────────────────────────────────────────────────────────── */
+  .pc {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .pc-art {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--lw-media-bg);
+    overflow: hidden;
+  }
+  .pc-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s var(--lw-ease);
+  }
+  .fit-cover {
+    object-fit: cover;
+  }
+  .fit-contain {
+    object-fit: contain;
+  }
+  .pc:hover .pc-img.fit-cover {
+    transform: scale(1.035);
+  }
+  /* A video with no poster art: a night-sky panel with the title, dark in both themes like
+     every media panel on the site. */
+  .pc-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 1rem 1.25rem;
+    background:
+      radial-gradient(60% 70% at 50% 35%, rgba(159, 230, 234, 0.2), transparent 70%),
+      #070d12;
+    text-align: center;
+  }
+  .pc-panel-title {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    line-height: 1.25;
+    color: #eef7f7;
+    text-wrap: balance;
+  }
+  /* No art at all: a text card with a moonlit top edge, the same treatment as the founder
+     pages' text-only feature cards. */
+  .pc--text {
+    border-top: 2px solid var(--lw-accent-line);
+    background:
+      radial-gradient(90% 60% at 100% 0%, var(--lw-glow), transparent 70%),
+      var(--lw-surface);
+  }
+  /* Beside art cards the text sits in the middle of the card, not stranded at the top. */
+  .pc--text .pc-body {
+    justify-content: center;
+    padding: 1.5rem 1.4rem;
+    gap: 0.55rem;
+  }
+  .pc--text .pc-facts {
+    margin-top: 0.35rem;
+  }
+  .pc--text .pc-title {
+    font-size: 1.25rem;
+  }
+  .pc-credit--chip {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 36px;
+  }
+  .pc-chip {
+    flex-shrink: 0;
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+    color: var(--lw-accent);
+  }
+  .pc-play {
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  /* Always on art, so light-on-dark in both themes. Bottom-right, like the shared VideoCard. */
+  .pc-play-btn {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding-left: 2px;
+    border-radius: 50%;
+    border: 1px solid rgba(238, 247, 247, 0.3);
+    background: rgba(4, 7, 10, 0.72);
+    color: #eef7f7;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s var(--lw-ease);
+  }
+  .pc-play:hover .pc-play-btn,
+  .pc-play:focus-visible .pc-play-btn {
+    background: #81ebe1;
+    color: #04070a;
+    transform: scale(1.08);
+  }
+  .pc-play:focus-visible {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: -4px;
+  }
+  .pc-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+    padding: 1rem 1.1rem 1.1rem;
+  }
+  .pc-credit {
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--lw-accent);
+  }
+  .pc-title {
+    font-size: 1.12rem;
+    line-height: 1.3;
+  }
+  .pc-link {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  /* The title link covers the card; the play poster and link chips sit above it. */
+  .pc-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+  }
+  .pc-link:focus-visible {
+    outline: none;
+  }
+  .pc:has(.pc-link:focus-visible) {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: 3px;
+  }
+  .pc:hover .pc-link {
+    color: var(--lw-accent);
+  }
+  .pc-line {
+    color: var(--lw-ink-muted);
+    font-size: 0.94rem;
+    line-height: 1.5;
+  }
+  .pc-facts,
+  .pc-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+  }
+  .pc-facts {
+    margin-top: auto;
+    padding-top: 0.35rem;
+  }
+  .pc-facts li {
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.2em 0.6em;
+    border-radius: var(--lw-radius-pill);
+    border: 1px solid var(--lw-border);
+    color: var(--lw-ink-muted);
+  }
+  .pc-links {
+    position: relative;
+    z-index: 2;
+    padding-top: 0.25rem;
+  }
+  .pc-facts + .pc-links {
+    padding-top: 0.15rem;
+  }
+  .pc-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    min-height: 30px;
+    padding: 0.25em 0.7em;
+    border-radius: var(--lw-radius-pill);
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+    color: var(--lw-ink);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color var(--lw-fast) ease, border-color var(--lw-fast) ease;
+  }
+  .pc-links a:hover {
+    border-color: var(--lw-accent);
+    color: var(--lw-accent);
+  }
+
+  /* Phones: the card becomes a row (thumbnail beside the text), so long lists stay short. */
+  @media (max-width: 560px) {
+    .pc {
+      display: grid;
+      grid-template-columns: 122px minmax(0, 1fr);
+      align-items: stretch;
+    }
+    .pc--text {
+      display: flex;
+    }
+    .pc-art {
+      align-self: start;
+      aspect-ratio: 1;
+      width: 112px;
+      margin: 0.6rem 0 0.6rem 0.6rem;
+      border-radius: var(--lw-radius);
+    }
+    .pc-art > :global(img),
+    .pc-play,
+    .pc-art > .pc-panel {
+      position: absolute;
+      inset: 0;
+    }
+    .pc-panel-title {
+      font-size: 0.85rem;
+    }
+    .pc-panel {
+      padding: 0.5rem;
+    }
+    .pc-play-btn {
+      right: 0.4rem;
+      bottom: 0.4rem;
+      width: 36px;
+      height: 36px;
+    }
+    .pc-play-btn :global(svg) {
+      width: 16px;
+      height: 16px;
+    }
+    .pc-body {
+      padding: 0.75rem 0.85rem 0.85rem;
+      gap: 0.3rem;
+    }
+    .pc-title {
+      font-size: 1rem;
+    }
+    .pc-line {
+      font-size: 0.86rem;
+    }
+  }
+
+  /* ── Text card (a line with no project record) ───────────────────────────────────── */
+  .pct {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.6rem;
+    height: 100%;
+    min-height: 180px;
+    padding: 1.4rem 1.25rem;
+    border-radius: var(--lw-radius-lg);
+    border: 1px solid var(--lw-border);
+    border-top: 2px solid var(--lw-accent-line);
+    background:
+      radial-gradient(90% 70% at 100% 0%, var(--lw-glow), transparent 70%),
+      var(--lw-surface);
+    transition: transform 0.2s var(--lw-ease), border-color 0.2s ease;
+  }
+  /* Alone in its group: one wide row, icon beside the text. */
+  .pct--row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    min-height: 0;
+    padding: 1.1rem 1.25rem;
+  }
+  .pct.card--link:hover {
+    transform: translateY(-3px);
+    border-color: var(--lw-accent);
+  }
+  .pct-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+    color: var(--lw-accent);
+  }
+  .pct-title {
+    font-size: 1.12rem;
+    line-height: 1.3;
+  }
+  .pct:not(.card--link) .pct-title {
+    font-family: var(--lw-font-body);
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--lw-ink-muted);
+  }
+  .pct-credit {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  .pct-go {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    margin-top: auto;
+    font-size: var(--lw-text-sm);
+    font-weight: 600;
+    color: var(--lw-accent);
+  }
+  .pct:hover .pc-link {
+    color: var(--lw-accent);
+  }
+  .pct:has(.pc-link:focus-visible) {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: 3px;
+  }
+
+  /* ── Compact row ───────────────────────────────────────────────────────────────────── */
+  .pcc {
+    position: relative;
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.85rem;
+    height: 100%;
+    padding: 0.55rem 0.9rem 0.55rem 0.55rem;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-border);
+    background: var(--lw-surface);
+    transition: border-color 0.2s ease, transform 0.2s var(--lw-ease);
+  }
+  .pcc:hover,
+  .pcc:focus-within {
+    border-color: var(--lw-accent-line);
+    transform: translateY(-2px);
+  }
+  .pcc-thumb {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--lw-radius-sm);
+    overflow: hidden;
+    background: var(--lw-media-bg);
+  }
+  /* No art: a small icon chip centred in the thumbnail column, so the rows stay aligned. */
+  .pcc-thumb--none {
+    display: grid;
+    place-items: center;
+    background: none;
+  }
+  .pcc-chip {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+    color: var(--lw-accent);
+  }
+  .pcc-title {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+  .pcc-credit {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  .pcc-go {
+    color: var(--lw-ink-subtle);
+  }
+  .pcc:hover .pcc-go,
+  .pcc:hover .pc-link {
+    color: var(--lw-accent);
+  }
+  .pcc:has(.pc-link:focus-visible) {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pc:hover .pc-img.fit-cover,
+    .pcc:hover,
+    .pcc:focus-within {
+      transform: none;
+    }
+    .pc-play-btn {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,743 @@
+---
+/**
+ * /about-jeremy/: Jeremy Bregermann's founder page, in the structure of his own page
+ * (archive/wordpress/pages/about-jeremy.md, rewritten by him on 21 November 2026): intro;
+ * engineering and AI; current projects and recent releases; professional experience;
+ * teaching; additional industry experience; awards; portfolio; contact.
+ *
+ * Text: src/data/founders/jeremy.ts. Lists: FOUNDER_PORTFOLIO.jeremy and FOUNDER_FACTS.jeremy
+ * (src/data/team.ts). Recognition is worded as src/data/awards.ts words it, except his personal
+ * University of Delaware award, which keeps his wording. His contract roles are his own work,
+ * never shown as studio clients.
+ */
+import FounderPage from "../components/about/FounderPage.astro";
+import BioSections from "../components/about/BioSections.astro";
+import PortfolioGrid from "../components/about/PortfolioGrid.astro";
+import FeatureProject from "../components/about/FeatureProject.astro";
+import LogoMark from "../components/about/LogoMark.astro";
+import Section from "../components/Section.astro";
+import VideoCard from "../components/VideoCard.astro";
+import AwardBadge from "../components/AwardBadge.astro";
+import Icon from "../components/Icon.astro";
+import { Image } from "astro:assets";
+import { FOUNDER_FACTS, FOUNDER_PORTFOLIO } from "../data/team";
+import { work } from "../data/games";
+import { AWARDS } from "../data/awards";
+import { ALL_VIDEOS } from "../data/videos";
+import { withUtm, isExternal } from "../data/links";
+import { maybeImage } from "../lib/images";
+import { markRepeats } from "../components/about/portfolio";
+import {
+  JEREMY_PAGE,
+  JEREMY_CURRENT,
+  JEREMY_EXPERIENCE,
+  JEREMY_EXPERIENCE_INTRO,
+  JEREMY_TEACHING,
+  JEREMY_TEACHING_INTRO,
+  JEREMY_PREVIOUS_TEACHING_LOGOS,
+  JEREMY_PREVIOUS_TEACHING_NOTE,
+  JEREMY_INDUSTRY_INTRO,
+  JEREMY_INDUSTRY_LOGOS,
+  JEREMY_INDUSTRY_NOTE,
+  JEREMY_PLAY_LINKS,
+  JEREMY_CONTACT,
+  JEREMY_CONTACT_INTRO,
+  JEREMY_EXTRA_LINKS,
+  JEREMY_CARD_LINES,
+} from "../data/founders/jeremy";
+
+const facts = FOUNDER_FACTS.jeremy;
+const [currentGroup, experienceGroup, ...portfolioGroups] = FOUNDER_PORTFOLIO.jeremy;
+
+// Projects shown in full above the portfolio come back there as compact rows.
+const seen = new Set<string>([
+  ...currentGroup.items.map((i) => i.slug!).filter(Boolean),
+  ...experienceGroup.items.map((i) => i.slug!).filter(Boolean),
+]);
+const groups = markRepeats(portfolioGroups, seen);
+
+const reel = ALL_VIDEOS.find((v) => v.id === JEREMY_PAGE.reelId)!;
+
+// Current projects: links in his order (his link first, then the project's page on this site).
+// Labels stay short ("View on Steam") because the card title names the game; screen readers
+// get the name after the label.
+const currentProjects = currentGroup.items.map((item) => {
+  const slug = item.slug!;
+  const w = work(slug);
+  const d = JEREMY_CURRENT[slug];
+  const ownLink = d.link ?? w.links[0]?.url;
+  const links: Array<{ label: string; url: string; icon?: string; context?: string }> = [];
+  if (ownLink && d.linkLabel) {
+    const kind = w.links.find((l) => ownLink.startsWith(l.url.replace(/\/$/, "")))?.kind ?? (ownLink.includes("steampowered") ? "steam" : "itch");
+    const tagged = kind === "steam" || ownLink.includes("lunawolfstudios.itch.io") ? withUtm(ownLink, "about") : ownLink;
+    links.push({ label: d.linkLabel, url: tagged, icon: kind === "steam" ? "steam" : "itch", context: w.title });
+  }
+  if (w.page) {
+    const short = w.title.length <= 16;
+    links.push(short ? { label: `About ${w.title}`, url: w.page } : { label: "About the game", url: w.page, context: w.title });
+  }
+  return { slug, d, links };
+});
+
+// Projects with art or a trailer get the wide card; the rest share a grid of text cards.
+const hasArt = (slug: string) => {
+  const w = work(slug);
+  return Boolean(w.wide || w.cover || w.videoId);
+};
+const withArt = currentProjects.filter((p) => hasArt(p.slug));
+const textOnly = currentProjects.filter((p) => !hasArt(p.slug));
+
+// Professional experience, newest first as on his page.
+const experience = experienceGroup.items.map((item) => {
+  const w = work(item.slug!);
+  const e = JEREMY_EXPERIENCE[item.slug!];
+  const art = maybeImage(w.wide ?? w.cover);
+  const link = w.links[0];
+  return { w, e, art, link };
+});
+
+// Recognition: his four items, in his order.
+const ud = AWARDS.find((a) => a.personal && a.subjectSlug === "jeremy")!;
+const ecrb = AWARDS.find((a) => a.subjectSlug === "fungeon-crawler" && a.year === 2015)!;
+const bfig = AWARDS.find((a) => a.subjectSlug === "haberdashery" && a.status === "Selected")!;
+const dia = AWARDS.find((a) => a.subjectSlug === "haberdashery" && a.status === "Nominee")!;
+const awards = [
+  { award: ud, subject: "Personal award" },
+  { award: ecrb, subject: ecrb.subject },
+  { award: bfig, subject: bfig.subject },
+  { award: dia, subject: dia.subject },
+];
+
+const person = {
+  award: [
+    `${ud.title}, ${ud.body} (${ud.year})`,
+    `${ecrb.title}, ${ecrb.body} (${ecrb.year})`,
+    `${bfig.title} (${bfig.year})`,
+    `${dia.title}, ${dia.body}`,
+  ],
+};
+const ext = (url: string) => (isExternal(url) ? { target: "_blank", rel: "noopener" } : {});
+---
+
+<FounderPage
+  data={JEREMY_PAGE}
+  photoAlt="Jeremy Bregermann, co-founder and lead game designer of Luna Wolf Studios"
+  photoPosition={{ wide: "50% 30%", square: "50% 45%" }}
+  person={person}
+>
+  <BioSections id="about-jeremy" title="About Jeremy" sections={[JEREMY_PAGE.bio[0]]} introFirst>
+    <div class="reel" data-reveal>
+      <VideoCard video={reel} meta={`Demo reel · ${reel.length}`} sizes="(max-width: 560px) calc(100vw - 32px), 440px" />
+    </div>
+  </BioSections>
+
+  <BioSections id="engineering" title="Game development, engineering, and AI" sections={JEREMY_PAGE.bio.slice(1)} tone="raised" />
+
+  <Section
+    id="current"
+    title="Current projects and recent releases"
+    lead="What I'm building and shipping now, from a published Steam game to engine tooling research."
+  >
+    <div class="stack-lg">
+      {
+        withArt.map(({ slug, d, links }, i) => (
+          <div data-reveal>
+            <FeatureProject slug={slug} status={d.status} paragraphs={d.paragraphs} tech={d.tech} links={links} flip={i % 2 === 1} />
+          </div>
+        ))
+      }
+    </div>
+    <ul class="textcards" role="list">
+      {
+        textOnly.map(({ slug, d, links }) => (
+          <li data-reveal>
+            <FeatureProject slug={slug} status={d.status} paragraphs={d.paragraphs} tech={d.tech} links={links} />
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section id="experience" title="Professional software development experience" lead={JEREMY_EXPERIENCE_INTRO} tone="raised">
+    <ol class="dated" role="list">
+      {
+        experience.map(({ w, e, art, link }) => (
+          <li class="dated-item" data-reveal>
+            <span class="dated-year">{e.year}</span>
+            <div class="dated-card card">
+              <div class="dated-main">
+                <h3 class="dated-title">
+                  {e.company}
+                  <span class="dated-role">{e.role}</span>
+                </h3>
+                <p class="dated-text">{e.text}</p>
+                {link && (
+                  <a class="link-arrow dated-link" href={link.url} {...ext(link.url)}>
+                    {w.title}: {link.label ?? "official site"}
+                    {isExternal(link.url) && <span class="visually-hidden"> (opens in a new tab)</span>}
+                    <Icon name="external" size={14} />
+                  </a>
+                )}
+              </div>
+              {art ? (
+                <Image src={art} alt="" widths={[160, 320]} sizes="160px" loading="lazy" decoding="async" class="dated-art" />
+              ) : (
+                <LogoMark logo={e.logo} name={e.company} size={48} />
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+
+  <Section id="teaching" title="University teaching and curriculum development" lead={JEREMY_TEACHING_INTRO}>
+    <ul class="teach" role="list">
+      {
+        facts.teaching.map((t) => {
+          const d = JEREMY_TEACHING[t.school];
+          return (
+            <li class="teach-card card card--pad" data-reveal>
+              <div class="teach-head">
+                <LogoMark logo={d?.logo} name={t.school} size={44} />
+                <div>
+                  <h3 class="teach-school">{t.school}</h3>
+                  <p class="teach-role">{t.role}</p>
+                  <p class="teach-years">{t.years}</p>
+                </div>
+              </div>
+              {d && <p class="teach-text">{d.text}</p>}
+            </li>
+          );
+        })
+      }
+    </ul>
+    <div class="prev" data-reveal>
+      <h3 class="prev-title">Previous academic appointments</h3>
+      <ul class="prev-list" role="list">
+        {
+          facts.previousTeaching.map((p) => (
+            <li>
+              <LogoMark logo={JEREMY_PREVIOUS_TEACHING_LOGOS[p.school]} name={p.school} size={36} />
+              <span>
+                <strong>{p.school}</strong>
+                <span class="prev-years">{p.years}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="text-muted prev-note">{JEREMY_PREVIOUS_TEACHING_NOTE}</p>
+    </div>
+  </Section>
+
+  <Section id="industry" title="Additional industry experience" lead={JEREMY_INDUSTRY_INTRO} tone="raised">
+    <ul class="industry" role="list">
+      {
+        facts.industry.map((r) => (
+          <li class="industry-item" data-reveal>
+            <LogoMark logo={JEREMY_INDUSTRY_LOGOS[r.company]} name={r.company} size={36} />
+            <div>
+              <h3 class="industry-company">{r.company}</h3>
+              <p class="industry-role">{r.role}</p>
+              <p class="industry-detail">{r.detail}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="text-muted industry-note">{JEREMY_INDUSTRY_NOTE}</p>
+  </Section>
+
+  <Section id="awards" title="Awards and recognition">
+    <ul class="awards" role="list">
+      {
+        awards.map(({ award, subject }) => (
+          <li class="award-card card" data-reveal>
+            <AwardBadge award={award} />
+            <p class="award-subject">{subject}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <section class="section section--raised" aria-labelledby="portfolio-title" id="portfolio">
+    <div class="wrap">
+      <header class="pf-head" data-reveal>
+        <h2 id="portfolio-title">Portfolio</h2>
+        <p class="lead">
+          Commercial releases, independent games, prototypes, game jam projects, educational software, interactive
+          simulations, tabletop games, and more.
+        </p>
+      </header>
+
+      <h3 class="pf-sub">Play my games and explore development builds</h3>
+      <ul class="play" role="list">
+        {
+          JEREMY_PLAY_LINKS.map((l) => (
+            <li data-reveal>
+              <a class="play-card card card--link" href={l.url} target="_blank" rel="noopener">
+                <span class="play-icon" aria-hidden="true">
+                  <Icon name={l.icon} size={22} />
+                </span>
+                <span class="play-label">
+                  {l.label}
+                  <span class="visually-hidden"> (opens in a new tab)</span>
+                  <Icon name="external" size={14} />
+                </span>
+                <span class="play-text">{l.text}</span>
+                {l.note && <span class="play-note">{l.note}</span>}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {
+    groups.map((g, i) => {
+      const light = g.heading === "Tabletop and live action games" || g.heading.startsWith("Acting");
+      return (
+        <section
+          id={g.id}
+          class:list={["section", "pf-group", { "section--raised": i % 2 === 1 }]}
+          aria-labelledby={`${g.id}-title`}
+        >
+          <div class="wrap">
+            <h3 id={`${g.id}-title`} class="pf-group-title" data-reveal>
+              {g.heading}
+            </h3>
+            {g.heading === "Additional studio games and prototypes" && (
+              <p class="text-muted pf-group-lead">
+                Available through the Luna Wolf Studios itch.io portfolio, including games made in the studio's internship
+                program.
+              </p>
+            )}
+            <PortfolioGrid items={g.items} headingLevel={4} extraLinks={JEREMY_EXTRA_LINKS} lines={JEREMY_CARD_LINES} light={light} />
+            {i === groups.length - 1 && <p class="pf-more">{JEREMY_PAGE.moreNote}</p>}
+          </div>
+        </section>
+      );
+    })
+  }
+
+  <Section id="contact" title="Contact" lead={JEREMY_CONTACT_INTRO} tone="glow">
+    <ul class="contact" role="list">
+      {
+        JEREMY_CONTACT.map((c) => (
+          <li data-reveal>
+            <a class="contact-item" href={c.href} {...ext(c.href)}>
+              <Icon name={c.icon} size={20} />
+              <span>
+                <span class="contact-label">{c.label}</span>
+                <span class="contact-text">{c.text}</span>
+                {isExternal(c.href) && <span class="visually-hidden"> (opens in a new tab)</span>}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+</FounderPage>
+
+<style>
+  /* The reel's own title card is a bright cyan slate: kept to a modest size so it does not
+     outshout the page. */
+  .reel {
+    max-width: 440px;
+  }
+  .textcards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.4rem);
+    margin: clamp(1.25rem, 2.5vw, 1.75rem) 0 0;
+    padding: 0;
+  }
+  .textcards > li > :global(.fp) {
+    height: 100%;
+  }
+  @media (max-width: 860px) {
+    .textcards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .stack-lg {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+
+  /* Dated list ------------------------------------------------------------------------- */
+  .dated {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+  .dated::before {
+    content: "";
+    position: absolute;
+    left: 2.6rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 1px;
+    background: linear-gradient(var(--lw-accent-line), var(--lw-border) 80%, transparent);
+  }
+  .dated-item {
+    display: grid;
+    grid-template-columns: 5.2rem minmax(0, 1fr);
+    align-items: start;
+    gap: 1rem;
+  }
+  .dated-year {
+    position: relative;
+    z-index: 1;
+    justify-self: center;
+    margin-top: 1.1rem;
+    padding: 0.25em 0.7em;
+    border-radius: var(--lw-radius-pill);
+    background: var(--lw-bg-raised);
+    border: 1px solid var(--lw-accent-line);
+    color: var(--lw-accent);
+    font-family: var(--lw-font-display);
+    font-weight: 650;
+    font-size: 0.9rem;
+  }
+  .dated-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.1rem 1.25rem;
+  }
+  .dated-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+    min-width: 0;
+  }
+  .dated-title {
+    font-size: 1.15rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.75rem;
+  }
+  .dated-role {
+    font-family: var(--lw-font-body);
+    font-size: var(--lw-text-sm);
+    font-weight: 600;
+    color: var(--lw-accent);
+  }
+  .dated-text {
+    color: var(--lw-ink-muted);
+    line-height: 1.6;
+  }
+  .dated-link {
+    font-size: var(--lw-text-sm);
+  }
+  .dated-art {
+    flex-shrink: 0;
+    width: 144px;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-border);
+  }
+
+  /* Teaching --------------------------------------------------------------------------- */
+  .teach {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.4rem);
+    margin: 0;
+    padding: 0;
+  }
+  .teach-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .teach-head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  .teach-school {
+    font-size: 1.1rem;
+    line-height: 1.25;
+  }
+  .teach-role {
+    margin-top: 0.2rem;
+    font-size: var(--lw-text-sm);
+    font-weight: 600;
+    color: var(--lw-accent);
+  }
+  .teach-years {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  .teach-text {
+    color: var(--lw-ink-muted);
+    line-height: 1.6;
+  }
+  .prev {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+  .prev-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .prev-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0;
+  }
+  .prev-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 0.9rem 0.7rem 0.7rem;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-border);
+    background: var(--lw-surface);
+  }
+  .prev-list strong {
+    display: block;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .prev-years {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  .prev-note {
+    margin-top: 1rem;
+    max-width: 75ch;
+  }
+
+  /* Industry --------------------------------------------------------------------------- */
+  .industry {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: 1rem 1.5rem;
+    margin: 0;
+    padding: 0;
+  }
+  .industry-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--lw-border);
+  }
+  .industry-company {
+    font-size: 1.05rem;
+  }
+  .industry-role {
+    margin-top: 0.1rem;
+    font-size: var(--lw-text-sm);
+    font-weight: 600;
+    color: var(--lw-accent);
+  }
+  .industry-detail {
+    margin-top: 0.35rem;
+    color: var(--lw-ink-muted);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  .industry-note {
+    margin-top: 1.25rem;
+  }
+
+  /* Awards ----------------------------------------------------------------------------- */
+  .awards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+  .award-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem 0.75rem 1rem;
+    text-align: center;
+  }
+  .award-subject {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+
+  /* Portfolio -------------------------------------------------------------------------- */
+  .pf-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+  }
+  .pf-head h2 {
+    margin: 0;
+  }
+  .pf-sub,
+  .pf-group-title {
+    font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.8rem);
+    margin-bottom: 1.25rem;
+  }
+  .pf-group-lead {
+    margin: -0.5rem 0 1.25rem;
+    max-width: 70ch;
+  }
+  .pf-group {
+    padding-block: clamp(40px, 6vw, 80px);
+  }
+  .pf-more {
+    margin-top: 1.75rem;
+    text-align: center;
+    color: var(--lw-ink-muted);
+  }
+  .play {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+  .play-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    height: 100%;
+    padding: 1.2rem;
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .play-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+    color: var(--lw-accent);
+  }
+  .play-label {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    line-height: 1.3;
+  }
+  .play-label :global(svg) {
+    display: inline-block;
+    margin-left: 0.25em;
+    vertical-align: -0.1em;
+  }
+  .play-card:hover .play-label {
+    color: var(--lw-accent);
+  }
+  .play-text {
+    color: var(--lw-ink-muted);
+    font-size: 0.93rem;
+    line-height: 1.5;
+  }
+  .play-note {
+    font-size: var(--lw-text-xs);
+    color: var(--lw-ink-subtle);
+    line-height: 1.5;
+  }
+
+  /* Contact ---------------------------------------------------------------------------- */
+  .contact {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr));
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+  }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    height: 100%;
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-border);
+    background: var(--lw-surface);
+    color: var(--lw-accent);
+    text-decoration: none;
+    transition: border-color var(--lw-fast) ease;
+  }
+  .contact-item:hover {
+    border-color: var(--lw-accent-line);
+  }
+  .contact-item > span {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .contact-label {
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .contact-text {
+    color: var(--lw-ink);
+    font-weight: 500;
+    overflow-wrap: break-word;
+  }
+
+  @media (max-width: 1000px) {
+    .teach,
+    .prev-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .awards,
+    .play {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 560px) {
+    .dated::before {
+      display: none;
+    }
+    .dated-item {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.5rem;
+    }
+    .dated-year {
+      justify-self: start;
+      margin-top: 0;
+    }
+    .dated-card {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+    }
+    .dated-art {
+      width: 100%;
+    }
+    .dated-card > :global(.lm) {
+      display: none;
+    }
+    .play {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 420px) {
+    .awards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

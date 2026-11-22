@@ -1,0 +1,104 @@
+---
+/**
+ * The tutorial playlist as VideoCards. The first `shown` cards are in view; the rest sit in a
+ * native <details>, so their posters are not requested until it is opened. Every poster opens
+ * the shared theater; nothing loads from YouTube until someone presses play.
+ */
+import VideoCard from "../VideoCard.astro";
+import Icon from "../Icon.astro";
+import type { VideoItem } from "../../data/types";
+
+interface Props {
+  videos: VideoItem[];
+  shown: number;
+}
+
+const { videos, shown } = Astro.props;
+const first = videos.slice(0, shown);
+const rest = videos.slice(shown);
+/** The product name is the page's subject: "Scriptable Sheets: Paste Pad" → "Paste Pad". */
+const short = (t: string) => t.replace(/^Scriptable Sheets:?\s*/, "");
+const sizes = "(max-width: 999px) calc(50vw - 24px), 280px";
+---
+
+<ul class="vl-grid" role="list">
+  {
+    first.map((v) => (
+      <li>
+        <VideoCard id={v.id} title={short(v.title)} poster={v.poster} meta={v.length} sizes={sizes} />
+      </li>
+    ))
+  }
+</ul>
+{
+  rest.length > 0 && (
+    <details class="vl-more">
+      <summary class="btn btn--secondary vl-toggle">
+        <span class="vl-open-label">Show {rest.length} more videos</span>
+        <span class="vl-close-label">Show fewer videos</span>
+        <Icon name="chevronDown" size={18} class="vl-chevron" />
+      </summary>
+      <ul class="vl-grid vl-grid--rest" role="list">
+        {rest.map((v) => (
+          <li>
+            <VideoCard id={v.id} title={short(v.title)} poster={v.poster} meta={v.length} sizes={sizes} />
+          </li>
+        ))}
+      </ul>
+    </details>
+  )
+}
+
+<style>
+  .vl-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+    margin: 0;
+    padding: 0;
+  }
+  .vl-grid--rest {
+    margin-top: clamp(0.75rem, 2vw, 1.25rem);
+  }
+  .vl-more {
+    margin-top: 1.5rem;
+  }
+  .vl-toggle {
+    list-style: none;
+    width: fit-content;
+  }
+  .vl-toggle::-webkit-details-marker {
+    display: none;
+  }
+  .vl-close-label,
+  .vl-more[open] .vl-open-label {
+    display: none;
+  }
+  .vl-more[open] .vl-close-label {
+    display: inline;
+  }
+  .vl-toggle :global(.vl-chevron) {
+    transition: transform 0.2s var(--lw-ease);
+  }
+  .vl-more[open] .vl-toggle :global(.vl-chevron) {
+    transform: rotate(180deg);
+  }
+  @media (max-width: 999px) {
+    .vl-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  /* Two-up on phones: the titles are short once the product name is dropped. */
+  @media (max-width: 560px) {
+    .vl-grid :global(.vc-text) {
+      padding: 0.6rem 0.7rem 0.75rem;
+    }
+    .vl-grid :global(.vc-title) {
+      font-size: 0.92rem;
+    }
+    .vl-grid :global(.vc-play) {
+      width: 46px;
+      height: 46px;
+    }
+  }
+</style>

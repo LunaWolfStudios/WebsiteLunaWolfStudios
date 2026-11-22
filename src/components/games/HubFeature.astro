@@ -1,0 +1,242 @@
+---
+/**
+ * A large card on the games hub for a game or product the studio makes or publishes: key art,
+ * a status badge, the title (linked to its page), one line, platforms, store buttons with live
+ * prices, and a trailer button that opens the shared theater.
+ *
+ *   <HubFeature game={game("sheep-tag-2")} variant="lead" stores={[...]} eager />
+ *   <HubFeature game={game("hypno-halo")} stores={[...]} />
+ *
+ * Not one big link (the store buttons are links of their own): the title and the "About the
+ * game" link go to the page. A game with no page here (Rowan of Bramblebrook) has no page
+ * links: its store button and trailer are the ways in.
+ */
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import StorePair from "./StorePair.astro";
+import type { Game, Project } from "../../data/types";
+import type { StoreEntry } from "../../data/gamePages";
+import { image } from "../../lib/images";
+
+interface Props {
+  game: Game | Project;
+  variant?: "lead" | "half";
+  /** Art path under src/assets/ (16:9 or wider). Defaults to the record's wide art. */
+  art?: string;
+  kicker: string;
+  badge?: { label: string; tone?: "gold" | "accent" };
+  /** A credit line, plain text ("Developed by Connor Butler"). */
+  credit?: string;
+  line?: string;
+  stores: StoreEntry[];
+  /** YouTube id for a "Watch the trailer" button. */
+  trailer?: string;
+  linkLabel?: string;
+  eager?: boolean;
+  headingLevel?: 2 | 3;
+}
+
+const {
+  game,
+  variant = "half",
+  art,
+  kicker,
+  badge,
+  credit,
+  line,
+  stores,
+  trailer,
+  linkLabel = "About the game",
+  eager = false,
+  headingLevel = 3,
+} = Astro.props;
+const src = image(art ?? game.wide ?? game.cover!);
+const H = `h${headingLevel}` as "h2" | "h3";
+// On phones and tablets the art fills the card, which sits inside the page gutters.
+const sizes = variant === "lead" ? "(max-width: 900px) calc(100vw - 34px), 700px" : "(max-width: 900px) calc(100vw - 34px), 590px";
+const widths = (variant === "lead" ? [640, 960, 1400] : [480, 720, 1180]).filter((w) => w <= src.width);
+// The art repeats the title's link for mouse users (hidden from the tab order and from
+// screen readers). A game with no page of its own gets a plain box: a link needs an address.
+const Art = game.page ? "a" : "div";
+const artAttrs = game.page ? { href: game.page, tabindex: "-1", "aria-hidden": "true" as const } : {};
+---
+
+<article class:list={["hub-feature", "card", `hub-feature--${variant}`]} data-reveal>
+  <Art class="hf-art" {...artAttrs}>
+    <Image
+      src={src}
+      alt=""
+      widths={widths.length ? widths : [src.width]}
+      sizes={sizes}
+      loading={eager ? "eager" : "lazy"}
+      fetchpriority={eager ? "high" : undefined}
+      decoding="async"
+      class="hf-img"
+    />
+    {badge && <span class:list={["badge", "hf-badge", badge.tone === "gold" ? "hf-badge--gold" : ""]}>{badge.label}</span>}
+  </Art>
+  <div class="hf-body">
+    <p class="hf-kicker">{kicker}</p>
+    <H class="hf-title">{game.page ? <a href={game.page}>{game.title}</a> : game.title}</H>
+    {credit && <p class="hf-credit">{credit}</p>}
+    <p class="hf-line">{line ?? game.tagline}</p>
+    {
+      game.platforms?.length ? (
+        <ul class="hf-platforms" role="list" aria-label="Platforms">
+          {game.platforms.map((p) => (
+            <li>{p}</li>
+          ))}
+        </ul>
+      ) : null
+    }
+    <slot />
+    <div class="hf-stores">
+      {stores.map((entry, i) => <StorePair entry={entry} primary={i === 0 && variant === "lead"} size="sm" placement="games" />)}
+    </div>
+    <p class="hf-links">
+      {game.page && <a class="link-arrow" href={game.page}>{linkLabel} <Icon name="arrowRight" size={16} /></a>}
+      {
+        trailer && (
+          <a class="link-arrow hf-watch" href={`https://www.youtube.com/watch?v=${trailer}`} data-video-id={trailer} data-video-title={`${game.title} trailer`} target="_blank" rel="noopener">
+            <Icon name="play" size={14} /> Watch the trailer<span class="visually-hidden">: {game.title}</span>
+          </a>
+        )
+      }
+    </p>
+  </div>
+</article>
+
+<style>
+  .hub-feature {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+  }
+  .hub-feature--lead {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  }
+  .hf-art {
+    position: relative;
+    display: block;
+    background: var(--lw-media-bg);
+    overflow: hidden;
+  }
+  .hf-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    transition: transform 0.5s var(--lw-ease);
+  }
+  .hub-feature:hover .hf-img {
+    transform: scale(1.025);
+  }
+  .hub-feature--lead .hf-img {
+    min-height: 100%;
+  }
+  .hf-badge {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    background: rgba(4, 7, 10, 0.75);
+    color: #81ebe1;
+    border-color: rgba(129, 235, 225, 0.35);
+  }
+  .hf-badge--gold {
+    color: #ffc96b;
+    border-color: rgba(255, 201, 107, 0.45);
+  }
+  .hf-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    flex: 1;
+    padding: clamp(1.25rem, 2.4vw, 1.75rem);
+  }
+  .hub-feature--lead .hf-body {
+    justify-content: center;
+    padding: clamp(1.5rem, 3.5vw, 2.75rem);
+  }
+  .hf-kicker {
+    font-size: var(--lw-text-xs);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .hf-title {
+    font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.85rem);
+  }
+  .hub-feature--lead .hf-title {
+    font-size: clamp(1.8rem, 1.4rem + 1.6vw, 2.6rem);
+  }
+  .hf-title a {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .hf-title a:hover {
+    color: var(--lw-accent);
+  }
+  .hf-credit {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    color: var(--lw-ink);
+  }
+  .hf-line {
+    color: var(--lw-ink-muted);
+  }
+  .hub-feature--lead .hf-line {
+    font-size: var(--lw-text-lg);
+  }
+  .hf-platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0.15rem 0 0;
+    padding: 0;
+  }
+  .hf-platforms li {
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.2em 0.6em;
+    border-radius: var(--lw-radius-pill);
+    border: 1px solid var(--lw-border);
+    color: var(--lw-ink-muted);
+  }
+  .hf-stores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    margin-top: auto;
+    padding-top: 0.85rem;
+  }
+  .hf-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    padding-top: 0.35rem;
+    font-size: 0.95rem;
+  }
+  .hf-watch {
+    color: var(--lw-ink-muted);
+  }
+  .hf-watch:hover {
+    color: var(--lw-accent);
+  }
+  @media (max-width: 900px) {
+    .hub-feature--lead {
+      display: flex;
+    }
+    .hub-feature--lead .hf-img {
+      min-height: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hub-feature:hover .hf-img {
+      transform: none;
+    }
+  }
+</style>

@@ -1,0 +1,159 @@
+{
+  "response": {
+    "store_items": [
+      {
+        "item_type": 0,
+        "id": 3847950,
+        "success": 1,
+        "visible": true,
+        "name": "Hypno Halo",
+        "store_url_path": "app/3847950/Hypno_Halo",
+        "store_url_slug": "Hypno_Halo",
+        "appid": 3847950,
+        "type": 0,
+        "reviews": {
+          "summary_filtered": {
+            "review_count": 10,
+            "percent_positive": 100,
+            "review_score": 7,
+            "review_score_label": "Positive"
+          }
+        },
+        "release": {
+          "steam_release_date": 1761065308
+        },
+        "best_purchase_option": {
+          "packageid": 1353052,
+          "purchase_option_name": "Hypno Halo",
+          "final_price_in_cents": "1999",
+          "formatted_final_price": "$19.99",
+          "user_can_purchase_as_gift": true,
+          "hide_discount_pct_for_compliance": false,
+          "included_game_count": 1,
+          "must_purchase_as_set": false,
+          "package_group": "default",
+          "price_cannot_be_displayed_as_discount": false
+        }
+      },
+      {
+        "item_type": 0,
+        "id": 1817070,
+        "success": 1,
+        "visible": true,
+        "name": "Marvel’s Spider-Man Remastered",
+        "store_url_path": "app/1817070/Marvels_SpiderMan_Remastered",
+        "store_url_slug": "Marvels_SpiderMan_Remastered",
+        "appid": 1817070,
+        "type": 0,
+        "reviews": {
+          "summary_filtered": {
+            "review_count": 104574,
+            "percent_positive": 96,
+            "review_score": 9,
+            "review_score_label": "Overwhelmingly Positive"
+          }
+        },
+        "release": {
+          "steam_release_date": 1660316340
+        },
+        "best_purchase_option": {
+          "packageid": 653391,
+          "purchase_option_name": "Marvel’s Spider-Man Remastered",
+          "final_price_in_cents": "2399",
+          "original_price_in_cents": "5999",
+          "formatted_final_price": "$23.99",
+          "formatted_original_price": "$59.99",
+          "discount_pct": 60,
+          "active_discounts": [
+            {
+              "discount_amount": "3600",
+              "discount_description": "#discount_desc_preset_weekend",
+              "discount_end_date": 1796148000
+            }
+          ],
+          "user_can_purchase_as_gift": true,
+          "hide_discount_pct_for_compliance": false,
+          "included_game_count": 1,
+          "must_purchase_as_set": false,
+          "package_group": "default",
+          "price_cannot_be_displayed_as_discount": false
+        }
+      },
+      {
+        "item_type": 0,
+        "id": 4029810,
+        "success": 1,
+        "visible": true,
+        "name": "Hypno Halo Demo",
+        "store_url_path": "app/4029810/Hypno_Halo_Demo",
+        "store_url_slug": "Hypno_Halo_Demo",
+        "appid": 4029810,
+        "type": 1,
+        "is_free": true,
+        "reviews": {
+          "summary_filtered": {
+            "review_count": 0,
+            "percent_positive": 0,
+            "review_score": 0,
+            "review_score_label": "No user reviews"
+          }
+        },
+        "release": {
+          "steam_release_date": 1759453151
+        }
+      },
+      {
+        "item_type": 0,
+        "id": 537680,
+        "success": 1,
+        "visible": true,
+        "name": "Sheep Tag 2",
+        "store_url_path": "app/537680/Sheep_Tag_2",
+        "store_url_slug": "Sheep_Tag_2",
+        "appid": 537680,
+        "type": 0,
+        "is_free": true,
+        "is_early_access": true,
+        "reviews": {
+          "summary_filtered": {
+            "review_count": 0,
+            "percent_positive": 0,
+            "review_score": 0,
+            "review_score_label": "No user reviews"
+          }
+        },
+        "release": {
+          "steam_release_date": 1830297600,
+          "is_coming_soon": true,
+          "coming_soon_display": "date_full",
+          "is_early_access": true
+        },
+        "is_coming_soon": true
+      },
+      {
+        "item_type": 0,
+        "id": 252950,
+        "success": 1,
+        "visible": true,
+        "name": "Rocket League®",
+        "store_url_path": "app/252950/Rocket_League",
+        "store_url_slug": "Rocket_League",
+        "appid": 252950,
+        "type": 0,
+        "reviews": {
+          "summary_filtered": {
+            "review_count": 431910,
+            "percent_positive": 88,
+            "review_score": 8,
+            "review_score_label": "Very Positive"
+          }
+        },
+        "release": {
+          "steam_release_date": 1436252340,
+          "original_release_date": 1436252400
+        },
+        "unlisted": true
+      }
+    ]
+  }
+}

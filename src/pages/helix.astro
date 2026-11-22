@@ -1,0 +1,651 @@
+---
+/**
+ * /helix/: the HELIX project page. Carries over archive/wordpress/pages/helix.md in full,
+ * restructured: the problem and the solution, the three components, the hearing tests with
+ * their two images, the web dashboard, the team, the milestones, and the recap. "Oculus Quest
+ * 2" is now Meta Quest 2; the Nemours credit comes from Jeremy's old page (about-jeremy.md).
+ * JSON-LD: an Article about HELIX as a CreativeWork (a SoftwareApplication with no rating
+ * can never qualify for Google's software result and is reported as invalid).
+ */
+import { Image, getImage } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import FeatureList from "../components/FeatureList.astro";
+import Gallery from "../components/Gallery.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import { game } from "../data/games";
+import { image } from "../lib/images";
+import { ORG_ID, abs } from "../lib/seo";
+
+const g = game("helix");
+const path = "/helix/";
+const title = "HELIX: a VR hearing assessment game | Luna Wolf Studios";
+const description =
+  "HELIX turns hearing tests into VR games on Meta Quest to help assess auditory processing disorder, with a web dashboard for providers. Built with Nemours.";
+const h1 = "HELIX: a VR hearing assessment for auditory processing disorder";
+
+const pureTone = image("games/helix/helix-pure-tone.jpg");
+// The hero and share image use the crop without the cut-off "Correct!" along the top edge.
+const pureToneCrop = image("games/helix/helix-pure-tone-crop.jpg");
+const digits = image("games/helix/helix-digits-in-noise.jpg");
+const og = await getImage({ src: pureToneCrop, width: 1200, format: "jpg", quality: 82 });
+
+// More of the VR app, from the media of our Anatomy of Play web app.
+const moreShots = [
+  {
+    src: "games/helix/helix-portal-temple.jpg",
+    alt: "A stone portal glowing red at the end of a ruined temple that floats in space, with a keypad of dials beside it.",
+    caption: "Digits-in-noise: a portal to unlock",
+  },
+  {
+    src: "games/helix/helix-portal-gate.jpg",
+    alt: "A wooden gate on a green platform in space, with a stone portal and its keypad behind it.",
+    caption: "Digits-in-noise: another world",
+  },
+  {
+    src: "games/helix/helix-pure-tone-perfect.jpg",
+    alt: "A jungle clearing at night: gorillas cheer, the word Perfect appears overhead, and R and L markers show the ear for each tone.",
+    caption: "Pure tone: a correct answer",
+  },
+  {
+    src: "games/helix/helix-drums.jpg",
+    alt: "Looking down at two drums, one edged in blue and one in red, with a bone drumstick in each hand.",
+    caption: "Pure tone: the drums",
+  },
+];
+
+const components = [
+  {
+    icon: "headset",
+    title: "HELIX Gaming App",
+    text: "Built in Unity for virtual reality on the Oculus Quest 2, now the Meta Quest 2.",
+  },
+  {
+    icon: "layers",
+    title: "HELIX DMS",
+    text: "A database management system on HIPAA-compliant AWS services (RDS, S3, and EC2) that stores sensitive personal information, hearing test results, and user data.",
+  },
+  {
+    icon: "monitor",
+    title: "HELIX Web Dashboard",
+    text: "A web app where organizations, providers, and users see real-time updates from the Gaming App.",
+  },
+];
+
+const appFeatures = [
+  "Calibrated audio files for accurate test results",
+  "Engaging 3D VR games that make testing more enjoyable for patients",
+  "Real-time feedback during testing, so patients understand their results and progress",
+  "Encrypts its data and uploads it in real time to the HELIX DMS",
+];
+
+const dashboard = [
+  { icon: "users", title: "Account creation", text: "Providers, patients, and organizations create accounts to see and track their own or their patients' test results." },
+  { icon: "layers", title: "Data collection", text: "One place for the data: providers track patient progress, and organizations gather data for research." },
+  { icon: "calendar", title: "Calendars", text: "Providers schedule appointments and keep track of patient schedules." },
+  { icon: "graduationCap", title: "Events", text: "Host webinars and workshops that teach providers and patients about hearing health." },
+  { icon: "monitor", title: "Data visualization", text: "Performance charts and graphs show test results and progress over time." },
+  { icon: "checkCircle", title: "Assignment", text: "Assign hearing tests for patients to complete." },
+];
+
+const milestones = [
+  {
+    when: "Funding",
+    html: `Acquired an initial round of funding through the <a href="https://research.udel.edu/dbi-cat-grant-program/" target="_blank" rel="noopener">DBI CAT grant program<span class="visually-hidden"> (opens in a new tab)</span></a> to begin development on HELIX.`,
+  },
+  { when: "Testing", html: "Successful youth group testing sessions that accurately assessed hearing." },
+  { when: "2023", html: "A successful pilot study with about 30 subjects." },
+];
+
+const recap = [
+  "HELIX includes a variety of games and challenges that test different aspects of auditory processing, such as digits in noise and pure tone. The tests are delivered through a VR headset, which places the user in a realistic and engaging setting.",
+  "HELIX is more efficient and accurate than traditional hearing tests, and more engaging and enjoyable for the user. That can make it easier to diagnose APD accurately and provide effective treatment.",
+  "The web platform gives organizations, researchers, providers, and patients a tailored way to assess and analyze the data from the VR hearing assessments.",
+];
+
+const services = [
+  { href: "/services/serious-games/", icon: "heartPulse", title: "Serious games", text: "Games for health, education, and training." },
+  { href: "/services/vr-ar-development/", icon: "headset", title: "VR and AR development", text: "Virtual and mixed reality built in Unity." },
+  { href: "/services/software-development/", icon: "code", title: "Software development", text: "Web apps, dashboards, and secure backends." },
+];
+
+const jsonLd = {
+  "@type": "Article",
+  "@id": `${abs(path)}#article`,
+  headline: h1,
+  description,
+  url: abs(path),
+  mainEntityOfPage: abs(path),
+  image: abs(og.src),
+  datePublished: "2023-09-01",
+  dateModified: new Date().toISOString().slice(0, 10),
+  inLanguage: "en-US",
+  author: { "@id": ORG_ID },
+  publisher: { "@id": ORG_ID },
+  about: {
+    "@type": "CreativeWork",
+    name: "HELIX (Hearing EvaLuation using Immersive eXtended reality)",
+    description: g.summary,
+    url: abs(path),
+  },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={pureToneCrop}
+  imageAlt="HELIX pure-tone test in VR: a forest scene with a left and right ear track."
+  breadcrumbs={[
+    { label: "Games", href: "/games/" },
+    { label: "HELIX", href: path },
+  ]}
+  jsonLd={jsonLd}
+  ogType="article"
+>
+  <PageHero
+    eyebrow="Health project · VR"
+    title={h1}
+    lead="HELIX (Hearing EvaLuation using Immersive eXtended reality) gamifies traditional hearing tests in virtual reality, making them more engaging and effective for assessing auditory processing disorder."
+  >
+    <ul class="hx-status" role="list" aria-label="Project facts">
+      <li>Meta Quest 2</li>
+      <li>Web dashboard</li>
+      <li>With Nemours Children's Hospital</li>
+      <li>Pilot study, 2023</li>
+    </ul>
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href="/contact/">Build a health app with us <Icon name="arrowRight" size={18} /></a>
+      <a class="btn btn--secondary" href="/services/serious-games/">Serious games services</a>
+    </Fragment>
+    <figure slot="media" class="hx-hero-media">
+      <Image
+        src={pureToneCrop}
+        alt="The pure-tone test in VR: cartoon gorillas cheer in a forest as a track marks which ear, left or right, heard each tone."
+        widths={[640, 720, 960, 1280]}
+        sizes="(max-width: 900px) calc(100vw - 32px), 600px"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </figure>
+  </PageHero>
+
+  <Section id="problem" title="The problem with traditional hearing tests">
+    <div class="ps">
+      <article class="card card--pad ps-card" data-reveal>
+        <p class="ps-label">Problem</p>
+        <p>
+          Auditory processing disorder (APD) is a common issue that can affect a person's ability to understand and interpret
+          sounds, even when their hearing is normal. Traditional hearing tests can be boring and repetitive, which can make it
+          hard to assess APD accurately.
+        </p>
+      </article>
+      <article class="card card--pad ps-card ps-card--solution" data-reveal style="--reveal-delay:80ms">
+        <p class="ps-label">Solution</p>
+        <p>
+          HELIX turns three of those tests into VR games on Meta Quest 2, with calibrated audio and real-time feedback, and sends
+          the results to a web dashboard for providers.
+        </p>
+      </article>
+    </div>
+  </Section>
+
+  <Section id="how" tone="raised" title="How HELIX works" lead="Three parts: a VR app the patient plays, a secure backend, and a dashboard for the people who care for them.">
+    <ol class="parts" role="list">
+      {
+        components.map((c, i) => (
+          <li class="card card--pad part" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+            <span class="part-icon" aria-hidden="true">
+              <Icon name={c.icon} size={24} />
+            </span>
+            <h3>{c.title}</h3>
+            <p>{c.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+
+  <Section id="tests" title="Hearing tests in VR: digits-in-noise, pure tone, and sound localization">
+    <ul class="checks" role="list" data-reveal>
+      {
+        appFeatures.map((f) => (
+          <li>
+            <Icon name="check" size={18} />
+            <span>{f}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="tests">
+      <article class="test" data-reveal>
+        <figure class="test-media">
+          <Image
+            src={digits}
+            alt="The digits-in-noise test in VR: a console with three dials set to 3, 8, and 6, and a green button to submit."
+            widths={[480, 800, 1280]}
+            sizes="(max-width: 900px) 100vw, 580px"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div class="test-text">
+          <h3>Digits-in-noise</h3>
+          <p class="test-what">Measures the ability to understand speech in noisy environments.</p>
+          <p>
+            A user is presented with a series of spoken digits (0 to 9) in a noisy environment (multitalker babble). The user's
+            task is to repeat the numbers back in the correct order.
+          </p>
+        </div>
+      </article>
+      <article class="test test--flip" data-reveal>
+        <figure class="test-media">
+          <Image
+            src={pureTone}
+            alt="The pure-tone test in VR: gorillas cheer a correct answer while a track shows L and R markers for each tone."
+            widths={[480, 800, 1280]}
+            sizes="(max-width: 900px) 100vw, 580px"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div class="test-text">
+          <h3>Pure tone</h3>
+          <p class="test-what">Assesses hearing sensitivity.</p>
+          <p>
+            A user is presented with a tone at varying frequencies. The tone is played in only one ear, left or right. The user's
+            task is to indicate which ear they heard the tone in.
+          </p>
+        </div>
+      </article>
+      <article class="card card--pad test-card" data-reveal>
+        <h3>Sound localization</h3>
+        <p>Tests the ability to determine the direction a sound comes from.</p>
+      </article>
+    </div>
+
+    <div class="more-shots">
+      <h3 class="more-shots-title">More from the headset</h3>
+      <Gallery images={moreShots} columns={4} label="HELIX screenshots" id="helix-shots" />
+      <p class="more-shots-press">
+        <a class="link-arrow" href="/presskit/helix/">
+          HELIX press kit: facts and screenshots to download
+          <Icon name="arrowRight" size={16} />
+        </a>
+      </p>
+    </div>
+  </Section>
+
+  <Section id="dashboard" tone="raised" title="A web dashboard for providers and patients">
+    <FeatureList items={dashboard} columns={3} />
+  </Section>
+
+  <Section id="team" title="Team, funding, and pilot study">
+    <div class="team">
+      <div class="team-text" data-reveal>
+        <h3>Our team</h3>
+        <p>Audiologists and VR developers built HELIX together to improve how APD is assessed and treated.</p>
+        <p>
+          HELIX was developed in collaboration with Nemours Children's Hospital. From the studio, co-founders <a
+            href="/about-jeremy/">Jeremy</a
+          > and <a href="/about-jeff/">Jeff</a> worked on it.
+        </p>
+      </div>
+      <div class="team-miles" data-reveal style="--reveal-delay:80ms">
+        <h3>Key milestones</h3>
+        <ol class="miles" role="list">
+          {
+            milestones.map((m) => (
+              <li>
+                <span class="mile-when">{m.when}</span>
+                <span class="mile-text" set:html={m.html} />
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </Section>
+
+  <Section id="recap" tone="raised" title="Why HELIX">
+    <ul class="recap" role="list">
+      {
+        recap.map((r, i) => (
+          <li class="card card--pad" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+            <p>{r}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section id="services" title="What we build for health and research teams">
+    <ul class="svc" role="list">
+      {
+        services.map((s, i) => (
+          <li class="card card--link svc-card" data-reveal style={`--reveal-delay:${i * 60}ms`}>
+            <span class="part-icon" aria-hidden="true">
+              <Icon name={s.icon} size={22} />
+            </span>
+            <h3>
+              <a class="svc-link" href={s.href}>
+                {s.title}
+              </a>
+            </h3>
+            <p>{s.text}</p>
+            <span class="svc-go" aria-hidden="true">
+              <Icon name="arrowRight" size={18} />
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <CtaBand
+    title="Build a health app with us"
+    lead="We build VR apps, games, and web software for health and research teams, like HELIX. Tell us what you need."
+    primary={{ label: "Start a project", href: "/contact/" }}
+    secondary={{ label: "See all our games and projects", href: "/games/" }}
+  />
+</BaseLayout>
+
+<style>
+  .more-shots {
+    margin-top: clamp(2.25rem, 4.5vw, 3.25rem);
+  }
+  .more-shots-title {
+    margin-bottom: 1.1rem;
+    font-size: var(--lw-h3);
+  }
+  .more-shots-press {
+    margin-top: 1.25rem;
+  }
+
+  .hx-status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0;
+  }
+  .hx-status li {
+    font-size: var(--lw-text-xs);
+    font-weight: 500;
+    padding: 0.3em 0.8em;
+    border-radius: var(--lw-radius-pill);
+    border: 1px solid var(--lw-border-strong);
+    color: var(--lw-ink-muted);
+  }
+  .hx-hero-media {
+    margin: 0;
+  }
+  .hx-hero-media :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--lw-radius-lg);
+    border: 1px solid var(--lw-border);
+    box-shadow: var(--lw-shadow-lg);
+  }
+
+  .ps {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+  }
+  .ps-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    font-size: var(--lw-text-lg);
+    color: var(--lw-ink-muted);
+  }
+  .ps-label {
+    font-family: var(--lw-font-display);
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lw-rose);
+  }
+  .ps-card--solution {
+    border-color: var(--lw-accent-line);
+  }
+  .ps-card--solution .ps-label {
+    color: var(--lw-accent);
+  }
+
+  .parts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+  }
+  .part {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .part h3 {
+    font-size: 1.2rem;
+  }
+  .part p,
+  .svc-card p {
+    color: var(--lw-ink-muted);
+  }
+  .part-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 0.35rem;
+    border-radius: 12px;
+    color: var(--lw-accent);
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+  }
+
+  .checks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 2rem;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+    padding: 0;
+  }
+  .checks li {
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+  }
+  .checks li :global(svg) {
+    flex-shrink: 0;
+    color: var(--lw-accent);
+    margin-top: 0.25rem;
+  }
+  .tests {
+    display: grid;
+    gap: clamp(2rem, 5vw, 3.5rem);
+  }
+  .test {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+  .test--flip .test-media {
+    order: 2;
+  }
+  .test-media {
+    margin: 0;
+  }
+  .test-media :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--lw-radius-lg);
+    border: 1px solid var(--lw-border);
+    box-shadow: var(--lw-shadow);
+  }
+  .test-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    color: var(--lw-ink-muted);
+    font-size: var(--lw-text-lg);
+  }
+  .test-text h3 {
+    font-size: var(--lw-h3);
+  }
+  .test-what {
+    color: var(--lw-accent);
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  .test-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.25rem;
+  }
+  .test-card p {
+    color: var(--lw-ink-muted);
+  }
+
+  .team {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .team-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--lw-ink-muted);
+    font-size: var(--lw-text-lg);
+  }
+  .team h3 {
+    color: var(--lw-ink);
+    font-size: var(--lw-h3);
+    margin-bottom: 0.25rem;
+  }
+  .miles {
+    margin: 1rem 0 0;
+    padding: 0;
+    border-left: 1px solid var(--lw-border-strong);
+  }
+  .miles li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0 0 1.4rem 1.5rem;
+  }
+  .miles li::before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 0.45rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--lw-accent);
+    box-shadow: 0 0 0 4px var(--lw-bg);
+  }
+  .mile-when {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    color: var(--lw-ink);
+  }
+  .mile-text {
+    color: var(--lw-ink-muted);
+  }
+
+  .recap {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+  }
+  .recap p {
+    color: var(--lw-ink-muted);
+  }
+
+  .svc {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+  }
+  .svc-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.4rem;
+    isolation: isolate;
+  }
+  .svc-card h3 {
+    font-size: 1.15rem;
+  }
+  .svc-link {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .svc-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .svc-link:focus-visible {
+    outline: none;
+  }
+  .svc-card:has(.svc-link:focus-visible) {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: 3px;
+  }
+  .svc-card:hover .svc-link {
+    color: var(--lw-accent);
+  }
+  .svc-go {
+    position: absolute;
+    top: 1.4rem;
+    right: 1.3rem;
+    color: var(--lw-ink-subtle);
+    transition: transform var(--lw-fast) ease, color var(--lw-fast) ease;
+  }
+  .svc-card:hover .svc-go {
+    color: var(--lw-accent);
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 1000px) {
+    .parts,
+    .recap,
+    .svc {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 900px) {
+    .test,
+    .team {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .test--flip .test-media {
+      order: 0;
+    }
+  }
+  @media (max-width: 640px) {
+    .ps,
+    .checks {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

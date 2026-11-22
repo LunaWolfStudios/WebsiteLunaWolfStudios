@@ -1,0 +1,113 @@
+---
+/**
+ * One quote: a press line, a player review, a client or judge comment, an intern testimonial.
+ * The quote is reproduced exactly (CLAUDE.md copy rules); the source links out when it has a
+ * URL. Usually rendered through Reviews, which lays several out.
+ *
+ *   <ReviewCard review={{ quote: "...", author: "Russ Play", source: "russplay.com", url: "...", about: "Hypno Halo", kind: "press" }} />
+ */
+import Icon from "./Icon.astro";
+import type { Review } from "../data/types";
+
+interface Props {
+  review: Review;
+  /** Show what the review is about ("on Hypno Halo"). Off when the page is already about it. */
+  showAbout?: boolean;
+  class?: string;
+}
+
+const { review, showAbout = true, class: cls } = Astro.props;
+const KIND: Record<Review["kind"], string> = {
+  press: "Press",
+  curator: "Steam curator",
+  store: "Store review",
+  player: "Player review",
+  client: "Client",
+  judge: "Judge",
+  intern: "Intern",
+};
+---
+
+<figure class:list={["review-card", "card", `review-card--${review.kind}`, cls]}>
+  <Icon name="quote" size={28} class="rc-mark" />
+  <blockquote class="rc-quote" cite={review.url}>
+    <p>{review.quote}</p>
+  </blockquote>
+  <figcaption class="rc-cite">
+    <span class="rc-author">{review.author}</span>
+    <span class="rc-source">
+      {
+        review.url ? (
+          <a href={review.url} target="_blank" rel="noopener">
+            {review.source}
+            <span class="visually-hidden"> (opens in a new tab)</span>
+          </a>
+        ) : (
+          review.source
+        )
+      }
+      {showAbout && review.about && <span class="rc-about"> · on {review.about}</span>}
+      {/* What a reader should know about the wording, for example "Translated from Russian". */}
+      {review.note && <span class="rc-note"> · {review.note}</span>}
+    </span>
+    <span class="badge badge--neutral rc-kind">{KIND[review.kind]}</span>
+  </figcaption>
+</figure>
+
+<style>
+  .review-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+    margin: 0;
+    padding: clamp(1.35rem, 2.4vw, 1.75rem);
+  }
+  .review-card :global(.rc-mark) {
+    color: var(--lw-accent);
+    opacity: 0.85;
+  }
+  .review-card--press :global(.rc-mark),
+  .review-card--curator :global(.rc-mark),
+  .review-card--judge :global(.rc-mark) {
+    color: var(--lw-gold);
+  }
+  .rc-quote {
+    margin: 0;
+    flex: 1;
+  }
+  .rc-quote p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--lw-ink);
+  }
+  .rc-cite {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "author kind" "source kind";
+    align-items: center;
+    column-gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--lw-border);
+  }
+  .rc-author {
+    grid-area: author;
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    color: var(--lw-ink);
+  }
+  .rc-source {
+    grid-area: source;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  .rc-source a {
+    color: var(--lw-ink-muted);
+  }
+  .rc-source a:hover {
+    color: var(--lw-accent);
+  }
+  .rc-kind {
+    grid-area: kind;
+  }
+</style>

@@ -1,0 +1,174 @@
+---
+/**
+ * /about-olivia/: Olivia's founder page. Bio and stack: src/data/founders/olivia.ts. Areas of
+ * work: FOUNDER_FACTS.olivia (src/data/team.ts). Her old page lists no projects and no
+ * personal contact links, so enquiries go to the studio. First name only, everywhere.
+ */
+import FounderPage from "../components/about/FounderPage.astro";
+import BioSections from "../components/about/BioSections.astro";
+import Section from "../components/Section.astro";
+import Icon from "../components/Icon.astro";
+import { FOUNDER_FACTS } from "../data/team";
+import { SITE } from "../data/site";
+import { OLIVIA_PAGE, OLIVIA_STACK, OLIVIA_AREA_ICONS } from "../data/founders/olivia";
+
+// Her page writes the area names in title case; headings here are sentence case.
+const sentence = (t: string) => t.charAt(0) + t.slice(1).toLowerCase();
+const areas = FOUNDER_FACTS.olivia.areasOfWork.map((a) => ({ ...a, title: sentence(a.title) }));
+---
+
+<FounderPage
+  data={OLIVIA_PAGE}
+  photoAlt="Olivia, co-founder of Luna Wolf Studios, smiling at the camera"
+  photoPosition={{ wide: "50% 30%", square: "50% 30%" }}
+  ctaTitle="Need a backend that holds up?"
+  ctaLead="Tell us about the system you are building or the platform you need to modernize."
+>
+  <BioSections id="about-olivia" title="About Olivia" sections={OLIVIA_PAGE.bio} />
+
+  <Section id="areas" title="Areas of work" tone="raised">
+    <ul class="areas" role="list">
+      {
+        areas.map((a, i) => (
+          <li class="area card card--pad" data-reveal style={`--reveal-delay:${i * 60}ms`}>
+            <span class="area-icon" aria-hidden="true">
+              <Icon name={OLIVIA_AREA_ICONS[i] ?? "code"} size={22} />
+            </span>
+            <h3 class="area-title">{a.title}</h3>
+            <p class="area-text">{a.detail}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section id="stack" title="Languages and platforms" lead="From her core backend stack to earlier native iOS work.">
+    <ul class="stack-chips" role="list" data-reveal>
+      {OLIVIA_STACK.map((s) => <li>{s}</li>)}
+    </ul>
+    <div class="svc card" data-reveal>
+      <div class="svc-text">
+        <h3 class="svc-title">Software development services</h3>
+        <p class="text-muted">
+          Backend systems, APIs, dashboards, and platform modernization, built by the studio Olivia co-founded.
+        </p>
+      </div>
+      <a class="btn btn--secondary" href="/services/software-development/">
+        Software development <Icon name="arrowRight" size={18} />
+      </a>
+    </div>
+  </Section>
+
+  <Section id="contact" title="Contact" tone="raised">
+    <div class="contact card card--pad" data-reveal>
+      <span class="contact-icon" aria-hidden="true"><Icon name="mail" size={22} /></span>
+      <div class="contact-text">
+        <p>To work with Olivia, contact the studio.</p>
+        <p class="contact-links">
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          <span aria-hidden="true">·</span>
+          <a href="/contact/">Contact form</a>
+        </p>
+      </div>
+    </div>
+  </Section>
+</FounderPage>
+
+<style>
+  .areas {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.4rem);
+    margin: 0;
+    padding: 0;
+  }
+  .area {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: 100%;
+  }
+  .area-icon,
+  .contact-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--lw-radius);
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+    color: var(--lw-accent);
+  }
+  .area-title {
+    font-size: 1.15rem;
+  }
+  .area-text {
+    color: var(--lw-ink-muted);
+    line-height: 1.6;
+  }
+  .stack-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+  }
+  .stack-chips li {
+    padding: 0.55em 1.1em;
+    border-radius: var(--lw-radius-pill);
+    border: 1px solid var(--lw-accent-line);
+    background: var(--lw-accent-tint);
+    color: var(--lw-ink);
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+  }
+  .svc {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+    padding: clamp(1.25rem, 2.4vw, 1.75rem);
+  }
+  .svc-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    max-width: 60ch;
+  }
+  .svc-title {
+    font-size: 1.2rem;
+  }
+  .contact {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    max-width: 720px;
+  }
+  .contact-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.6rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 1000px) {
+    .areas {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 560px) {
+    .areas {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .contact {
+      align-items: flex-start;
+    }
+  }
+</style>

@@ -1,0 +1,242 @@
+---
+/**
+ * "Compatibility, documentation, and support": a fact sheet (<dl>) beside the documentation
+ * and support links. Price and version come from live store data; nothing here is typed.
+ */
+import Price from "../Price.astro";
+import Icon from "../Icon.astro";
+import { PRICE_REGION_NOTE, type StoreOffer } from "../../lib/store";
+import { LINKS, withUtm } from "../../data/links";
+import { SHEETS_FACTS, SHEETS_SUPPORT_LINKS } from "../../data/scriptableSheets";
+
+interface Props {
+  offer: StoreOffer;
+}
+
+const { offer } = Astro.props;
+const f = SHEETS_FACTS;
+---
+
+<div class="fs">
+  <div class="fs-sheet card">
+    <dl class="fs-list">
+      <div class="fs-row fs-row--price">
+        <dt>Price</dt>
+        <dd>
+          <Price offer={offer} size="lg" />
+          <span class="fs-note">{PRICE_REGION_NOTE}</span>
+        </dd>
+      </div>
+      {
+        offer.version && (
+          <div class="fs-row">
+            <dt>Current version</dt>
+            <dd>
+              {offer.version}{" "}
+              <a href={LINKS.scriptableSheetsChangelog} target="_blank" rel="noopener">
+                Changelog<span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            </dd>
+          </div>
+        )
+      }
+      <div class="fs-row">
+        <dt>First published</dt>
+        <dd><time datetime={f.firstPublished.iso}>{f.firstPublished.label}</time></dd>
+      </div>
+      <div class="fs-row">
+        <dt>Unity versions</dt>
+        <dd>{f.unityVersions}</dd>
+      </div>
+      <div class="fs-row">
+        <dt>Runs in</dt>
+        <dd>{f.runsIn}</dd>
+      </div>
+      <div class="fs-row">
+        <dt>Requires</dt>
+        <dd>{f.requires}</dd>
+      </div>
+      <div class="fs-row">
+        <dt>Includes</dt>
+        <dd>{f.includes}</dd>
+      </div>
+      <div class="fs-row">
+        <dt>File size</dt>
+        <dd>{f.fileSize}</dd>
+      </div>
+      <div class="fs-row">
+        <dt>License</dt>
+        <dd>{f.license}</dd>
+      </div>
+      <div class="fs-row">
+        <dt>Publisher</dt>
+        <dd>
+          <a href={withUtm(LINKS.assetStorePublisher, "product_page")} target="_blank" rel="noopener"
+            >{f.publisher}<span class="visually-hidden"> (opens in a new tab)</span></a
+          >
+        </dd>
+      </div>
+      <div class="fs-row">
+        <dt>Press</dt>
+        <dd><a href="/presskit/scriptable-sheets/">Scriptable Sheets press kit</a></dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="fs-support">
+    <h3 class="fs-heading">Documentation and support</h3>
+    <ul class="fs-links" role="list">
+      {
+        SHEETS_SUPPORT_LINKS.map((l) => {
+          const ext = /^https?:/.test(l.href);
+          return (
+            <li>
+              <a class="fs-link card card--link" href={l.href} {...(ext ? { target: "_blank", rel: "noopener" } : {})}>
+                <span class="fs-link-icon" aria-hidden="true">
+                  <Icon name={l.icon} size={20} />
+                </span>
+                <span class="fs-link-text">
+                  <span class="fs-link-label">{l.label}</span>
+                  <span class="fs-link-note">{l.note}</span>
+                  {ext && <span class="visually-hidden"> (opens in a new tab)</span>}
+                </span>
+                <Icon name={ext ? "arrowUpRight" : "arrowRight"} size={18} class="fs-link-arrow" />
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</div>
+
+<style>
+  .fs {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 3.5vw, 3rem);
+    align-items: start;
+  }
+  .fs-sheet {
+    padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+  .fs-list {
+    margin: 0;
+  }
+  .fs-row {
+    display: grid;
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    gap: 0.35rem 1.25rem;
+    padding-block: 0.95rem;
+    border-bottom: 1px solid var(--lw-border);
+  }
+  .fs-row:last-child {
+    border-bottom: 0;
+  }
+  .fs-row dt {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+    padding-top: 0.1rem;
+  }
+  .fs-row dd {
+    margin: 0;
+    color: var(--lw-ink);
+    line-height: 1.55;
+  }
+  .fs-row--price dd {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+  .fs-row--price dt {
+    padding-top: 0.55rem;
+  }
+  .fs-note {
+    font-size: var(--lw-text-xs);
+    color: var(--lw-ink-subtle);
+  }
+
+  .fs-support {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .fs-heading {
+    font-size: var(--lw-h3);
+  }
+  .fs-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+  }
+  .fs-link {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.9rem 1.1rem;
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .fs-link:hover {
+    color: var(--lw-ink);
+  }
+  .fs-link-icon {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    color: var(--lw-accent);
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+  }
+  .fs-link-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+    flex: 1;
+  }
+  .fs-link-label {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .fs-link-note {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  .fs-link :global(.fs-link-arrow) {
+    flex-shrink: 0;
+    color: var(--lw-ink-subtle);
+    transition: transform var(--lw-fast) ease, color var(--lw-fast) ease;
+  }
+  .fs-link:hover :global(.fs-link-arrow) {
+    color: var(--lw-accent);
+    transform: translate(2px, -2px);
+  }
+  @media (max-width: 900px) {
+    .fs {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    .fs-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .fs-row--price dt {
+      padding-top: 0.1rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fs-link:hover :global(.fs-link-arrow) {
+      transform: none;
+    }
+  }
+</style>

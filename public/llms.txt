@@ -1,0 +1,42 @@
+# Luna Wolf Studios
+
+> Luna Wolf Studios, LLC is an independent game and software studio in Newark, Delaware, USA, founded in January 2015 by three Wilmington University students. It builds games, Unity software and editor tools, VR and AR apps, serious games for health and education, and custom software for clients, and works with clients remotely. It also makes and publishes its own games and tools, publishes games by independent developers, and runs a remote game development internship and bootcamp. The studio has worked on games and software with Peloton, Cartoon Network, Barron Associates, Legends of Learning, and Nemours Children's Health. It works in Unity, Unreal, Godot, and more.
+
+## Services
+
+- [All services](https://lunawolfstudios.com/services/): overview of what the studio builds for clients
+- [Game development](https://lunawolfstudios.com/services/game-development/): PC, Nintendo Switch, and online multiplayer games, from prototype to release
+- [Unity development](https://lunawolfstudios.com/services/unity-development/): Unity engineering for games and apps on desktop, mobile, VR, and the web
+- [Unity editor tools](https://lunawolfstudios.com/services/unity-editor-tools/): custom Unity editor tools, extensions, and pipeline tooling
+- [VR and AR development](https://lunawolfstudios.com/services/vr-ar-development/): VR and AR apps for health, training, and play
+- [Serious games](https://lunawolfstudios.com/services/serious-games/): games for therapy, assessment, training, and learning, and playable ads
+- [Software development](https://lunawolfstudios.com/services/software-development/): web apps, APIs, and cloud backends
+- [Publishing](https://lunawolfstudios.com/publishing/): publishing for independent developers on Steam and Nintendo Switch
+
+## Products and games
+
+- [Scriptable Sheets](https://lunawolfstudios.com/scriptable-sheets/): Unity Editor tool for viewing and editing ScriptableObjects and other assets in a spreadsheet-like table, sold on the Unity Asset Store; a nominee for Best Development Tool at the 17th Unity Awards
+- [Sheep Tag 2](https://lunawolfstudios.com/sheep-tag-2/): free-to-play Sheep vs. Wolves multiplayer strategy game in Unity for up to 32 players, Early Access on Steam in 2027 (official site: https://www.sheeptag2.com/)
+- [Hypno Halo](https://lunawolfstudios.com/hypno-halo/): minimalist score attack game in Unity, on Steam and Nintendo Switch
+- [ParaLily](https://lunawolfstudios.com/paralily/): precision and puzzle platformer in Unity by Team ParaLily, published by Luna Wolf Studios on Nintendo Switch and co-published on Steam
+- [The Brave Hearts II: False Skies](https://lunawolfstudios.com/the-brave-hearts-ii-false-skies/): voice-acted top-down shoot 'em up in Unity by Connor Butler, published by Luna Wolf Studios on Steam
+- [HELIX](https://lunawolfstudios.com/helix/): the studio's VR hearing assessment, developed with Nemours Children's Hospital
+- [Haberdashery](https://lunawolfstudios.com/haberdashery/): endless runner about a sheep collecting hats, on itch.io and Newgrounds
+- [Target Crack](https://lunawolfstudios.com/target-crack/): speed and precision arcade game for phones
+- [Anatomy of Play](https://tools.lunawolfstudios.com/anatomy-of-play/): the studio's web app that lays out health and fitness games it has worked on by the part of the body each one works with; also embedded on the home page and the serious games page
+- [All games and projects](https://lunawolfstudios.com/games/): the studio's own games, games it has worked on with other companies, game jam entries, and internship games
+
+## Studio
+
+- [About](https://lunawolfstudios.com/about/): the studio's history and founders
+- [Jeff](https://lunawolfstudios.com/about-jeff/), [Jeremy Bregermann](https://lunawolfstudios.com/about-jeremy/), [Olivia](https://lunawolfstudios.com/about-olivia/): the three co-founders
+- [Internships and bootcamp](https://lunawolfstudios.com/bootcamp/): remote internship in which student teams take a game from concept to demo release, and a 10-week online game development bootcamp for beginners
+- [Press kit](https://lunawolfstudios.com/presskit/): studio fact sheet, history, logos, photos, brand colors and font, animated logo, awards, and articles
+- Press kits with fact sheet, screenshots, logo, key art, and downloads: [Sheep Tag 2](https://lunawolfstudios.com/presskit/sheep-tag-2/), [Hypno Halo](https://lunawolfstudios.com/presskit/hypno-halo/), [ParaLily](https://lunawolfstudios.com/presskit/paralily/), [The Brave Hearts II: False Skies](https://lunawolfstudios.com/presskit/the-brave-hearts-ii-false-skies/), [Scriptable Sheets](https://lunawolfstudios.com/presskit/scriptable-sheets/), [HELIX](https://lunawolfstudios.com/presskit/helix/)
+- [Newsletter](https://lunawolfstudios.com/newsletter/): studio news by email
+- [Privacy policy](https://lunawolfstudios.com/privacy-policy/): what the website, newsletter, and games collect
+
+## Contact
+
+- Email: support@lunawolfstudios.com
+- [Contact page](https://lunawolfstudios.com/contact/): project inquiries, press, publishing, and internships

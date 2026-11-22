@@ -1,0 +1,149 @@
+---
+/**
+ * Partner and client logo wall ("Our Trusted Pack").
+ *
+ *   <PartnerCloud partners={PARTNERS} />
+ *   <PartnerCloud partners={PARTNERS.slice(0, 12)} size="sm" links={false} />
+ *
+ * The WordPress logos are 180px greyscale JPGs on white. Rather than show white squares on
+ * the night ground, each logo is knocked out with CSS: in the dark theme it is inverted and
+ * screen-blended (white mark, no box); in the light theme it is multiplied onto the tile (the
+ * white disappears). Both are filters on the same file, so nothing extra downloads.
+ *
+ * Every logo is shown in black and white, on purpose (the owner's rule): the filters always
+ * include grayscale, in both themes and on hover, and the source files in
+ * src/assets/partners/ are greyscale too. A new logo is added as a greyscale mark on white.
+ *
+ * A partner marked `wide` (a long wordmark, its file trimmed to the mark) gets a tile two
+ * columns wide, so the name is readable.
+ */
+import { Image } from "astro:assets";
+import type { Partner } from "../data/types";
+import { image } from "../lib/images";
+
+interface Props {
+  partners: Partner[];
+  size?: "sm" | "md";
+  /** Link each tile to the partner's site (default true). */
+  links?: boolean;
+  label?: string;
+  class?: string;
+}
+
+const { partners, size = "md", links = true, label = "Partners and clients", class: cls } = Astro.props;
+const px = size === "sm" ? 56 : 76;
+const widePx = size === "sm" ? 120 : 150;
+const items = partners.map((p) => ({ ...p, img: image(p.logo, "partners") }));
+---
+
+<ul class:list={["partners", `partners--${size}`, cls]} role="list" aria-label={label}>
+  {
+    items.map((p, i) => {
+      // Never wider than the file itself: these are small originals, and upscaling blurs them.
+      const w = p.wide ? Math.min(widePx, p.img.width) : px;
+      const logo = (
+        <Image
+          src={p.img}
+          alt={p.name}
+          width={w}
+          height={Math.round((p.img.height / p.img.width) * w)}
+          densities={[1, 2]}
+          loading="lazy"
+          decoding="async"
+          class:list={["pc-logo", { "pc-logo--wide": p.wide }]}
+        />
+      );
+      return (
+        <li class:list={[{ "pc-wide": p.wide }]} data-reveal="fade" style={`--reveal-delay:${Math.min(i, 12) * 30}ms`}>
+          {links && p.url ? (
+            <a class="pc-tile" href={p.url} target="_blank" rel="noopener" title={p.name}>
+              {logo}
+              <span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          ) : (
+            <span class="pc-tile" title={p.name}>
+              {logo}
+            </span>
+          )}
+        </li>
+      );
+    })
+  }
+</ul>
+
+<style>
+  /* Centred rows, so a short last row sits in the middle rather than trailing off. */
+  .partners {
+    /* Four across on a phone (20vw), up to 136px tiles on wide screens. */
+    --pc-tile: clamp(76px, 20vw, 136px);
+    --pc-gap: clamp(0.6rem, 1.5vw, 1rem);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--pc-gap);
+    margin: 0;
+    padding: 0;
+  }
+  /* Each tile fills its list item, and the items of a row stretch to one height. */
+  .partners > li {
+    display: flex;
+    width: var(--pc-tile);
+  }
+  /* A long wordmark takes two columns. */
+  .partners > li.pc-wide {
+    width: calc(var(--pc-tile) * 2 + var(--pc-gap));
+  }
+  .partners--sm {
+    --pc-tile: clamp(72px, 18vw, 108px);
+  }
+  .pc-tile {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    /* The height a 1 : 0.82 tile would have. A row that holds a tall wordmark grows, and
+       every tile in it grows with it, so rows never go ragged. */
+    min-height: calc(var(--pc-tile) * 0.82);
+    padding: 0.75rem;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-border);
+    background: var(--lw-surface);
+    isolation: isolate; /* the blend mode below mixes with this tile only */
+    transition: border-color 0.2s ease, transform 0.2s var(--lw-ease), background-color 0.2s ease;
+  }
+  a.pc-tile:hover {
+    border-color: var(--lw-accent-line);
+    transform: translateY(-2px);
+  }
+  .pc-logo {
+    width: var(--pc-size, 76px);
+    max-width: 100%;
+    height: auto;
+    filter: var(--lw-logo-filter);
+    mix-blend-mode: var(--lw-logo-blend);
+    opacity: 0.86; /* thin-line marks vanish below this */
+    transition: opacity 0.2s ease, filter 0.2s ease;
+  }
+  .partners--sm .pc-logo {
+    --pc-size: 56px;
+  }
+  .pc-logo--wide {
+    --pc-size: 150px;
+  }
+  .partners--sm .pc-logo--wide {
+    --pc-size: 120px;
+  }
+  @media (max-width: 560px) {
+    .pc-logo--wide {
+      --pc-size: 124px;
+    }
+  }
+  .pc-tile:hover .pc-logo {
+    opacity: 1;
+    filter: var(--lw-logo-filter-hover);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    a.pc-tile:hover {
+      transform: none;
+    }
+  }
+</style>

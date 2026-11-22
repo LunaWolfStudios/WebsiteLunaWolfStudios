@@ -1,0 +1,54 @@
+{
+  "537680": {
+    "success": true,
+    "data": {
+      "release_date": {
+        "coming_soon": true,
+        "date": "2027"
+      }
+    }
+  },
+  "1817070": {
+    "success": true,
+    "data": {
+      "price_overview": {
+        "currency": "USD",
+        "initial": 5999,
+        "final": 2399,
+        "discount_percent": 60,
+        "initial_formatted": "$59.99",
+        "final_formatted": "$23.99"
+      },
+      "release_date": {
+        "coming_soon": false,
+        "date": "Aug 12, 2022"
+      }
+    }
+  },
+  "3847950": {
+    "success": true,
+    "data": {
+      "price_overview": {
+        "currency": "USD",
+        "initial": 1999,
+        "final": 1999,
+        "discount_percent": 0,
+        "initial_formatted": "",
+        "final_formatted": "$19.99"
+      },
+      "release_date": {
+        "coming_soon": false,
+        "date": "Oct 21, 2025"
+      }
+    }
+  },
+  "4029810": {
+    "success": true,
+    "data": {
+      "release_date": {
+        "coming_soon": false,
+        "date": "Oct 2, 2025"
+      }
+    }
+  }
+}

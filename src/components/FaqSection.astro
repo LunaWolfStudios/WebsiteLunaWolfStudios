@@ -1,0 +1,88 @@
+---
+/**
+ * The site's one FAQ layout: the heading and a way to ask something else on the left (it
+ * stays in view while the reader works down the list), the questions on the right. On a
+ * phone the two stack. Every page with questions uses this, so FAQs look the same everywhere
+ * and each one leads to Contact.
+ *
+ *   <FaqSection title="Questions about hiring Unity developers" items={faq} />
+ *   <FaqSection title="Questions about Scriptable Sheets" items={SHEETS_FAQ} tone="raised" eyebrow="FAQ" />
+ *
+ * - items: `{ q, a }[]`; `a` may hold simple HTML. Pair with faqLd(items) in the page's jsonLd.
+ * - id: the section's anchor (default "faq"); the accordion is named `${id}-list`.
+ * - tone: the Section tone (default "default").
+ * - slot "more": replaces the default "Something else to ask?" line (keep it one sentence
+ *   that names how to get in touch).
+ */
+import Faq from "./Faq.astro";
+
+interface Props {
+  title: string;
+  items: Array<{ q: string; a: string }>;
+  id?: string;
+  eyebrow?: string;
+  tone?: "default" | "raised" | "glow" | "sky";
+  /** Open one answer on load (index). */
+  open?: number;
+  class?: string;
+}
+
+const { title, items, id = "faq", eyebrow, tone = "default", open, class: cls } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={[
+    "section",
+    { "section--raised": tone === "raised", "section--glow": tone === "glow" || tone === "sky", sky: tone === "sky" },
+    cls,
+  ]}
+  aria-labelledby={`${id}-title`}
+>
+  <div class="wrap faq-layout">
+    <div class="faq-head" data-reveal>
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h2 id={`${id}-title`} class="faq-title">{title}</h2>
+      <p class="faq-more">
+        <slot name="more">
+          Something else to ask? Email <a href="mailto:support@lunawolfstudios.com">support@lunawolfstudios.com</a> or use
+          the <a href="/contact/">contact form</a>.
+        </slot>
+      </p>
+    </div>
+    <Faq items={items} id={`${id}-list`} open={open} />
+  </div>
+</section>
+
+<style>
+  .faq-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.45fr);
+    gap: 1.75rem clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .faq-head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .faq-title {
+    font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.4rem);
+  }
+  .faq-more {
+    color: var(--lw-ink-muted);
+    line-height: 1.6;
+  }
+  @media (min-width: 901px) {
+    .faq-head {
+      position: sticky;
+      top: calc(var(--lw-header-h) + 2rem);
+    }
+  }
+  @media (max-width: 900px) {
+    .faq-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

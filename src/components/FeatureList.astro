@@ -1,0 +1,113 @@
+---
+/**
+ * Icon, title and text rows: game features, what a service includes, how a process works.
+ *
+ *   <FeatureList items={[
+ *     { icon: "gamepad", title: "300+ handcrafted levels", text: "Across 6 difficulties, plus 51 bonus challenges." },
+ *     { icon: "award", title: "50+ achievements", text: "And leaderboards." },
+ *   ]} />
+ *   <FeatureList items={...} columns={2} />       two columns on desktop
+ *   <FeatureList items={...} numbered />          1, 2, 3 instead of icons (process steps)
+ */
+import Icon from "./Icon.astro";
+
+interface Item {
+  icon?: string;
+  title: string;
+  /** Plain text. Use `html` for a sentence with a link. */
+  text?: string;
+  html?: string;
+}
+
+interface Props {
+  items: Item[];
+  columns?: 1 | 2 | 3;
+  numbered?: boolean;
+  headingLevel?: 3 | 4;
+  class?: string;
+}
+
+const { items, columns = 1, numbered = false, headingLevel = 3, class: cls } = Astro.props;
+const H = `h${headingLevel}` as "h3" | "h4";
+const Tag = numbered ? "ol" : "ul";
+---
+
+<Tag class:list={["features", `features--cols-${columns}`, { "features--numbered": numbered }, cls]} role="list">
+  {
+    items.map((item, i) => (
+      <li class="feature" data-reveal style={`--reveal-delay:${Math.min(i, 6) * 60}ms`}>
+        <span class="ft-mark" aria-hidden="true">
+          {numbered ? String(i + 1).padStart(2, "0") : <Icon name={item.icon ?? "check"} size={22} />}
+        </span>
+        <div class="ft-body">
+          <H class="ft-title">{item.title}</H>
+          {item.html ? <p class="ft-text" set:html={item.html} /> : item.text && <p class="ft-text">{item.text}</p>}
+        </div>
+      </li>
+    ))
+  }
+</Tag>
+
+<style>
+  .features {
+    display: grid;
+    gap: clamp(1.1rem, 2.5vw, 1.6rem) clamp(1.5rem, 4vw, 3rem);
+    margin: 0;
+    padding: 0;
+  }
+  .features--cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .features--cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .feature {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .ft-mark {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    color: var(--lw-accent);
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+  }
+  .features--numbered .ft-mark {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+    border-radius: 50%;
+  }
+  .ft-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+    padding-top: 0.45rem;
+  }
+  .ft-title {
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+  .ft-text {
+    color: var(--lw-ink-muted);
+    line-height: 1.6;
+  }
+  @media (max-width: 900px) {
+    .features--cols-3 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .features--cols-2,
+    .features--cols-3 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

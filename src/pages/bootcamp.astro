@@ -1,0 +1,579 @@
+---
+/**
+ * /bootcamp/ (WordPress URL kept; the old footer called it "Internships", and /internships/
+ * redirects here). The old page carries two programs and each has its own anchor: the remote
+ * internship (#internship) and the introductory bootcamp (#bootcamp). Everything the old page
+ * said is here: the overview, the internship's framing, credit, season, testimonials, past
+ * games and video, how to apply, and the bootcamp's audience, syllabus, format, community and
+ * deposit. No price and no dates beyond "summer bootcamp": the archive has none.
+ *
+ * Sources: archive/wordpress/pages/bootcamp.md, src/data/timeline.ts (INTERNSHIP),
+ * src/data/games.ts (internship games), src/data/videos.ts (INTERNSHIP_VIDEOS),
+ * src/data/reviews.ts (INTERN_TESTIMONIALS), src/data/team.ts (FOUNDER_FACTS),
+ * archive/research/seo-plan.md ("/bootcamp/").
+ */
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import FeatureList from "../components/FeatureList.astro";
+import VideoCard from "../components/VideoCard.astro";
+import Reviews from "../components/Reviews.astro";
+import FounderCard from "../components/FounderCard.astro";
+import FaqSection from "../components/FaqSection.astro";
+import InternGameCard from "../components/bootcamp/InternGameCard.astro";
+import { SITE } from "../data/site";
+import { LINKS } from "../data/links";
+import { game } from "../data/games";
+import { INTERNSHIP } from "../data/timeline";
+import { INTERN_TESTIMONIALS } from "../data/reviews";
+import { INTERNSHIP_VIDEOS } from "../data/videos";
+import { founder, FOUNDER_FACTS } from "../data/team";
+import { ORG_ID, abs, faqLd, videoObjectLd } from "../lib/seo";
+import bh2Art from "../assets/games/the-brave-hearts-ii-false-skies/capsule-616x353.jpg";
+
+const url = "/bootcamp/";
+const description =
+  "Join our remote game development internship to ship a game demo with a small team, or learn Unity and C# from scratch in our 10-week online bootcamp.";
+
+const mailto = (subject: string) => `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}`;
+const applyHref = mailto("Internship application");
+const reserveHref = mailto("Summer bootcamp");
+
+const showcase = INTERNSHIP_VIDEOS[0]; // On the Rocks, first in the playlist the old page embedded
+const cohorts = INTERNSHIP.cohorts.map((c) => ({ ...c, game: game(c.slug) }));
+const teamSizes = INTERNSHIP.cohorts.map((c) => parseInt(c.team, 10));
+const teamRange = `${Math.min(...teamSizes)} to ${Math.max(...teamSizes)} interns`;
+const schools = INTERNSHIP.schools;
+const schoolList = `${schools.slice(0, -1).join(", ")}, and ${schools[schools.length - 1]}`;
+const alumnus = INTERNSHIP.namedAlumnus;
+
+// Unattributed on the old page: shown as "Former intern" (brief). The quotes are untouched.
+const testimonials = INTERN_TESTIMONIALS.map((r) => ({ ...r, author: "Former intern", source: "Luna Wolf Studios internship" }));
+
+const internDoes = [
+  {
+    icon: "users",
+    title: "Build a game with a small team",
+    text: `Teams take a game from concept to demo release. Our cohorts so far had ${teamRange}.`,
+  },
+  {
+    icon: "wrench",
+    title: "Learn by doing",
+    text: "Under the guidance of our developers, using industry-standard tools, workflows, and best practices.",
+  },
+  {
+    icon: "calendar",
+    title: "Weekly team meetings",
+    text: "Plus day-to-day communication, so you see how a real studio operates.",
+  },
+  {
+    icon: "rocket",
+    title: "Release a demo",
+    text: "Every cohort so far has released its game on itch.io.",
+  },
+];
+
+const learn = [
+  "Game design fundamentals and theory",
+  "How to build and code games using Unity and C#",
+  "Visuals, audio, and narrative integration",
+  "Production planning and source control (Git)",
+  "Industry-standard best practices for game development",
+];
+
+const jeremyTeaching = FOUNDER_FACTS.jeremy.teaching.map((t) => t.school);
+const teachingList = `${jeremyTeaching.slice(0, -1).join(", ")}, and ${jeremyTeaching[jeremyTeaching.length - 1]}`;
+const mentors = [founder("jeff"), founder("jeremy")];
+
+const faqs = [
+  {
+    q: "Is the internship paid?",
+    a: "No. The remote internship program is unpaid.",
+  },
+  {
+    q: "Can I get college credit for the internship?",
+    a: "Possibly. You may be eligible for college course credit, depending on your school's policies.",
+  },
+  {
+    q: "When does the internship run?",
+    a: "Typically between late May and mid-August. Past cohorts have also run in spring: RAILBOUND was made in spring 2026.",
+  },
+  {
+    q: "Do I need experience to join?",
+    a: 'For the internship, yes: it is best for students who have already built their own games. The <a href="#bootcamp">bootcamp</a> is for beginners, career changers, and hobbyists.',
+  },
+  {
+    q: "What do I need for the bootcamp?",
+    a: "Your own laptop or computer that can run Unity. The bootcamp runs for 10 weeks, with a weekly class of hands-on instruction and assigned work through each week.",
+  },
+  {
+    q: "How much does the bootcamp cost?",
+    a: `Email <a href="${reserveHref}">${SITE.email}</a> for details. A minimum deposit holds your place.`,
+  },
+  {
+    q: "How do I apply for the internship?",
+    a: `Email <a href="${applyHref}">${SITE.email}</a> with your resume, your portfolio, and a short note on why you are seeking an internship with Luna Wolf Studios.`,
+  },
+];
+
+const jsonLd = [
+  {
+    "@type": "Course",
+    "@id": `${abs(url)}#bootcamp`,
+    name: "Remote introductory game dev bootcamp",
+    description:
+      "A 10-week remote bootcamp for beginners: game design fundamentals, building games in Unity and C#, visuals, audio and narrative, production planning and Git, and industry best practices.",
+    url: `${abs(url)}#bootcamp`,
+    provider: { "@id": ORG_ID },
+    inLanguage: "en-US",
+    educationalLevel: "Beginner",
+    teaches: learn,
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      courseMode: "online",
+      duration: "P10W",
+      courseSchedule: { "@type": "Schedule", repeatFrequency: "P1W" },
+    },
+  },
+  {
+    "@type": "EducationalOccupationalProgram",
+    "@id": `${abs(url)}#internship`,
+    name: "Remote game development internship program",
+    description:
+      "An unpaid remote internship in which small teams of students take a game from concept to demo release, guided by the studio's developers. It typically runs between late May and mid-August.",
+    url: `${abs(url)}#internship`,
+    provider: { "@id": ORG_ID },
+    programType: "Internship",
+    educationalProgramMode: "online",
+  },
+  videoObjectLd({
+    id: showcase.id,
+    name: showcase.title,
+    description: "Demo trailer for On the Rocks, a 3D cashier simulation made by six students in the Summer 2026 internship program.",
+    uploadDate: showcase.published,
+  }),
+  faqLd(faqs),
+];
+---
+
+<BaseLayout
+  title="Remote game dev internship and bootcamp"
+  description={description}
+  breadcrumbs={[{ label: "Internships and bootcamp", href: url }]}
+  jsonLd={jsonLd}
+>
+  <PageHero
+    eyebrow="Internships and bootcamp"
+    title="Remote game development internship and bootcamp"
+    lead="Just starting out, or ready for real studio experience? Run with the pack: ship a game demo with a small team in our remote internship, or learn to make games from scratch in our 10-week remote bootcamp."
+    class="bc-hero"
+  >
+    <Fragment slot="actions">
+      <a class="btn btn--primary btn--lg" href="#internship">Internship program <Icon name="chevronDown" size={18} /></a>
+      <a class="btn btn--secondary btn--lg" href="#bootcamp">Intro bootcamp <Icon name="chevronDown" size={18} /></a>
+    </Fragment>
+    <figure slot="media" class="bc-hero-media">
+      <VideoCard
+        video={showcase}
+        title="On the Rocks demo trailer"
+        variant="feature"
+        eager
+        sizes="(max-width: 900px) calc(100vw - 32px), 560px"
+      />
+      <figcaption>On the Rocks, made by six interns in Summer 2026.</figcaption>
+    </figure>
+  </PageHero>
+
+  {/* ─── Internship ─────────────────────────────────────────────────────────────── */}
+  <Section
+    id="internship"
+    eyebrow="For students who have built games"
+    title="Remote internship program (unpaid)"
+    lead="For aspiring developers ready to go hands-on in a real studio. Our project-based internship puts you in a small team that brings a game from concept to demo release."
+  >
+    <div class="bc-split">
+      <div class="bc-main">
+        <FeatureList items={internDoes} columns={2} />
+        <aside class="bc-callout" data-reveal>
+          <h3 class="bc-callout-title">You lead your own work</h3>
+          <p>
+            Interns drive their own work, so you get out of it what you put in. It suits students who have already built
+            their own games and want studio experience and mentorship.
+          </p>
+        </aside>
+      </div>
+
+      <aside class="card bc-facts" aria-labelledby="intern-facts-title" data-reveal>
+        <h3 id="intern-facts-title" class="bc-facts-title">At a glance</h3>
+        <dl>
+          <div><dt>Pay</dt><dd>Unpaid</dd></div>
+          <div><dt>Where</dt><dd>Remote</dd></div>
+          <div><dt>When</dt><dd>Typically late May to mid&#8209;August</dd></div>
+          <div><dt>Teams</dt><dd>{teamRange} per cohort so far</dd></div>
+          <div><dt>Credit</dt><dd>Interns may be eligible for college course credit, depending on their school's policies</dd></div>
+          <div><dt>Schools</dt><dd>Our interns have come from {schoolList}</dd></div>
+        </dl>
+        <a class="btn btn--primary btn--block" href="#apply">How to apply <Icon name="arrowRight" size={18} /></a>
+      </aside>
+    </div>
+  </Section>
+
+  <Section
+    id="intern-games"
+    tone="raised"
+    eyebrow="Past games"
+    title="Games our interns shipped"
+    lead="Each cohort takes one game from a design document to a released, playable demo."
+  >
+    <Fragment slot="actions">
+      <a class="link-arrow" href={LINKS.youtubeInternshipPlaylist} target="_blank" rel="noopener">
+        All three trailers on YouTube <Icon name="arrowUpRight" size={16} /><span class="visually-hidden">
+          (opens in a new tab)</span
+        >
+      </a>
+    </Fragment>
+    <ul class="grid grid--3 bc-games" role="list">
+      {
+        cohorts.map((c, i) => (
+          <li data-reveal style={`--reveal-delay:${i * 70}ms`}>
+            <InternGameCard game={c.game} term={c.term} team={c.game.team ?? c.team} />
+          </li>
+        ))
+      }
+    </ul>
+    <p class="bc-more" data-reveal>
+      See them with our other games on the <a href="/games/#internships">games page</a>, and{" "}
+      <a href="/newsletter/">get the newsletter</a> for studio news.
+    </p>
+
+    <article class="card bc-path" data-reveal>
+      <a class="bc-path-art" href={`/${alumnus.slug}/`} tabindex="-1" aria-hidden="true">
+        <Image src={bh2Art} alt="" widths={[320, 480, 640]} sizes="(max-width: 700px) calc(100vw - 32px), 320px" loading="lazy" decoding="async" />
+      </a>
+      <div class="bc-path-body">
+        <p class="bc-path-kicker">From intern to Steam release</p>
+        <h3 class="bc-path-title">The Brave Hearts II: False Skies</h3>
+        <p>
+          {alumnus.name} came through our internship program. In August 2026 we published his game, The Brave Hearts
+          II: False Skies, on Steam.
+        </p>
+        <div class="cluster bc-path-links">
+          <a class="link-arrow" href={`/${alumnus.slug}/`}>About the game <Icon name="arrowRight" size={16} /></a>
+          <a class="link-arrow" href="/publishing/">Publishing with us <Icon name="arrowRight" size={16} /></a>
+        </div>
+      </div>
+    </article>
+  </Section>
+
+  <Section id="testimonials" eyebrow="Testimonials" title="What interns say">
+    <div class="bc-quotes">
+      <Reviews reviews={testimonials} showAbout={false} label="Intern testimonials" />
+    </div>
+  </Section>
+
+  <Section id="apply" tone="glow" align="center" eyebrow="How to apply" title="Apply for the internship" width="narrow">
+    <div class="card bc-apply" data-reveal>
+      <p class="bc-apply-lead">
+        Send an email to <a href={applyHref}>{SITE.email}</a> and include:
+      </p>
+      <ul class="bc-checks" role="list">
+        <li><Icon name="check" size={18} /> Your resume</li>
+        <li><Icon name="check" size={18} /> Your portfolio</li>
+        <li><Icon name="check" size={18} /> A short note on why you're seeking an internship with Luna Wolf Studios</li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href={applyHref}><Icon name="mail" size={18} /> Email your application</a>
+      <p class="bc-apply-sign">Join the pack and let's create experiences that matter.</p>
+    </div>
+  </Section>
+
+  {/* ─── Bootcamp ───────────────────────────────────────────────────────────────── */}
+  <Section
+    id="bootcamp"
+    tone="raised"
+    eyebrow="For beginners"
+    title="Remote introductory game dev bootcamp"
+    lead="New to making games? Our 10-week remote bootcamp teaches beginners to design and build games in Unity and C#."
+  >
+    <div class="bc-split">
+      <div class="bc-main bc-prose">
+        <p>
+          Industry professionals teach it hands-on. You work through the whole process of making a game, from concept to
+          prototype, with the tools and techniques studios use.
+        </p>
+        <h3 class="bc-h3">What you'll learn</h3>
+        <ul class="bc-checks bc-checks--learn" role="list">
+          {learn.map((l) => <li><Icon name="check" size={18} /> {l}</li>)}
+        </ul>
+        <p>
+          You also join our developer community, the pack, to share ideas, get feedback, and meet people in the industry.
+          By the end, you will have the skills to design and build your own games from scratch.
+        </p>
+      </div>
+
+      <aside class="card bc-facts" aria-labelledby="bootcamp-facts-title" data-reveal>
+        <h3 id="bootcamp-facts-title" class="bc-facts-title">Format</h3>
+        <dl>
+          <div><dt>Length</dt><dd>10 weeks</dd></div>
+          <div><dt>Where</dt><dd>Remote</dd></div>
+          <div><dt>Each week</dt><dd>A class with hands-on instruction, plus assigned work through the week</dd></div>
+          <div><dt>You need</dt><dd>Your own laptop or computer that can run Unity</dd></div>
+          <div><dt>For</dt><dd>Beginners, career changers, and hobbyists</dd></div>
+        </dl>
+        <a class="btn btn--primary btn--block" href={reserveHref}><Icon name="mail" size={18} /> Reserve your spot</a>
+        <p class="bc-facts-note">
+          Email <a href={reserveHref}>{SITE.email}</a> to join our summer bootcamp. A minimum deposit holds your place.
+        </p>
+      </aside>
+    </div>
+  </Section>
+
+  <Section
+    id="mentors"
+    eyebrow="Mentors"
+    title="Mentored by our co-founders"
+    lead={`Jeff and Jeremy mentor our interns. Jeremy also teaches at the ${teachingList}.`}
+  >
+    <div class="grid grid--2">
+      {mentors.map((f) => <FounderCard founder={f} />)}
+    </div>
+  </Section>
+
+  <FaqSection title="Questions about the internship and bootcamp" items={faqs} tone="raised" eyebrow="FAQ" />
+
+  <CtaBand
+    title="Run with the pack"
+    lead="Take your first steps into game development with us. Email us to apply for the internship or to join the bootcamp."
+    primary={{ label: "Email us to apply", href: applyHref, icon: "mail" }}
+    secondary={{ label: "Contact us", href: "/contact/" }}
+  />
+</BaseLayout>
+
+<style>
+  /* The h1 is long (the search phrase); a notch smaller keeps it to three lines beside the video. */
+  :global(.bc-hero .ph-title) {
+    font-size: clamp(2.1rem, 1.5rem + 2.2vw, 3.2rem);
+  }
+  @media (min-width: 901px) {
+    :global(.page-hero.bc-hero.has-media .ph-inner) {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    }
+  }
+  .bc-hero-media {
+    margin: 0;
+  }
+  .bc-hero-media figcaption {
+    margin-top: 0.75rem;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+
+  /* Two programs share one layout: content on the left, a facts card on the right. */
+  .bc-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: clamp(1.75rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+  .bc-main {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.75rem, 3vw, 2.25rem);
+  }
+  .bc-callout {
+    padding: 1.25rem 1.4rem;
+    border-left: 3px solid var(--lw-gold);
+    border-radius: 0 var(--lw-radius) var(--lw-radius) 0;
+    background: var(--lw-gold-tint);
+  }
+  .bc-callout-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.35rem;
+  }
+  .bc-callout p {
+    color: var(--lw-ink-muted);
+    max-width: 62ch;
+  }
+
+  .bc-facts {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: clamp(1.35rem, 3vw, 1.85rem);
+  }
+  .bc-facts-title {
+    font-size: 1.2rem;
+  }
+  .bc-facts dl {
+    display: grid;
+    gap: 0.8rem;
+    margin: 0;
+  }
+  .bc-facts dl div {
+    display: grid;
+    grid-template-columns: 6.25rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--lw-border);
+  }
+  .bc-facts dt {
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+    padding-top: 0.25em;
+  }
+  .bc-facts dd {
+    margin: 0;
+    line-height: 1.5;
+  }
+  .bc-facts-note {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+
+  /* Past games */
+  .bc-games {
+    margin: 0;
+    padding: 0;
+  }
+  .bc-games > li {
+    min-width: 0;
+  }
+  .bc-more {
+    margin-top: 1.25rem;
+    color: var(--lw-ink-muted);
+  }
+  .bc-path {
+    display: grid;
+    grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+    align-items: center;
+    margin-top: clamp(1.5rem, 3vw, 2rem);
+    overflow: hidden;
+  }
+  .bc-path-art {
+    display: block;
+    height: 100%;
+    background: #000;
+  }
+  .bc-path-art :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .bc-path-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+  }
+  .bc-path-kicker {
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lw-gold);
+  }
+  .bc-path-title {
+    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  }
+  .bc-path-body p:not(.bc-path-kicker) {
+    color: var(--lw-ink-muted);
+    max-width: 60ch;
+  }
+  .bc-path-links {
+    --cluster-gap: 0.5rem 1.5rem;
+    margin-top: 0.25rem;
+  }
+
+  /* Four quotes read best two by two. */
+  .bc-quotes :global(.reviews--grid) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Apply */
+  .bc-apply {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    text-align: left;
+  }
+  .bc-apply-lead {
+    font-size: var(--lw-text-lg);
+    text-align: center;
+  }
+  .bc-apply-lead a {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .bc-checks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+  }
+  .bc-checks li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .bc-checks :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.2em;
+    color: var(--lw-accent);
+  }
+  .bc-apply-sign {
+    color: var(--lw-ink-muted);
+    text-align: center;
+  }
+
+  /* Bootcamp copy */
+  .bc-prose {
+    gap: 1.1rem;
+  }
+  .bc-prose > p {
+    color: var(--lw-ink-muted);
+    max-width: 64ch;
+  }
+  .bc-h3 {
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+  }
+  .bc-checks--learn li {
+    padding: 0.7rem 0.9rem;
+    border-radius: var(--lw-radius-sm);
+    border: 1px solid var(--lw-border);
+    background: var(--lw-surface);
+  }
+
+  @media (max-width: 900px) {
+    .bc-split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  /* Three game cards stay in one row on tablets rather than leave one orphaned. */
+  @media (max-width: 1000px) and (min-width: 761px) {
+    .bc-games {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 760px) {
+    .bc-games,
+    .bc-quotes :global(.reviews--grid) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .bc-path {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .bc-path-art {
+      aspect-ratio: 616 / 353;
+    }
+  }
+</style>

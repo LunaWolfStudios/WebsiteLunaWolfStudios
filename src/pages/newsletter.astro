@@ -1,0 +1,291 @@
+---
+/**
+ * /newsletter/ (new). A small, fast landing page for links from social posts and store pages:
+ * the h1, two sentences on what subscribers get, the shared NewsletterForm large and centred,
+ * then the studio's socials.
+ *
+ * Return visits (archive/research/platform-decisions.md, "Kit integration spec"):
+ * - ?subscribed=1: the no-JS redirect after signing up (Kit's after-submit page, or the relay's
+ *   `_next`). With Kit (FORMS.newsletter.provider "kit" and a form ID) the visitor still has
+ *   to confirm by email, so the page says "Check your inbox to confirm". With the relay there
+ *   is no confirmation email, so it says "You're on the list".
+ * - ?confirmed=1: Kit's after-confirm redirect. "You're in".
+ * A tiny inline script reads the flag before first paint, marks <html data-nl-state>, and
+ * tidies the URL; CSS swaps the form for the matching message. Without JavaScript the form
+ * shows as usual.
+ *
+ * The footer's own newsletter band is left out on this page (footerNewsletter): the page is
+ * that form.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Icon from "../components/Icon.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
+import SocialLinks from "../components/contact/SocialLinks.astro";
+import { FORMS } from "../data/site";
+import { ORG_ID, WEBSITE_ID, abs } from "../lib/seo";
+
+const url = "/newsletter/";
+const title = "Luna Wolf Studios newsletter";
+const description =
+  "Sign up for occasional email from Luna Wolf Studios: Sheep Tag 2 Early Access news, Scriptable Sheets updates, new game releases, and what the studio is making.";
+
+// Mirrors NewsletterForm: Kit only counts once a form ID is set; until then signups go
+// through the contact relay and no confirmation email is sent.
+const confirms = FORMS.newsletter.provider === "kit" && FORMS.newsletter.kitFormId !== "";
+
+const perks = [
+  { icon: "gamepad", title: "Sheep Tag 2 Early Access", text: "News on the road to Early Access in 2027.", href: "/sheep-tag-2/" },
+  { icon: "sheet", title: "Scriptable Sheets updates", text: "New features in our Unity editor tool.", href: "/scriptable-sheets/" },
+  { icon: "rocket", title: "New releases", text: "Our games and tools when they launch.", href: "/games/" },
+  { icon: "users", title: "Studio news", text: "What we are working on next.", href: "/about/" },
+];
+
+// Runs before first paint. Kept tiny and inline on purpose.
+const stateScript = `(function(){try{var p=new URLSearchParams(location.search),s=p.has("confirmed")?"confirmed":p.has("subscribed")?"subscribed":"";if(!s)return;document.documentElement.dataset.nlState=s;p.delete("confirmed");p.delete("subscribed");var q=p.toString();history.replaceState(null,"",location.pathname+(q?"?"+q:"")+location.hash)}catch(e){}})();`;
+
+const jsonLd = [
+  {
+    "@type": "WebPage",
+    "@id": `${abs(url)}#webpage`,
+    url: abs(url),
+    name: title,
+    description,
+    inLanguage: "en-US",
+    isPartOf: { "@id": WEBSITE_ID },
+    publisher: { "@id": ORG_ID },
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  breadcrumbs={[{ label: "Newsletter", href: url }]}
+  jsonLd={jsonLd}
+  footerNewsletter={false}
+>
+  <script is:inline set:html={stateScript} />
+
+  <PageHero
+    eyebrow="Follow the pack"
+    title="Get the Luna Wolf Studios newsletter"
+    lead="Studio news and new releases from Luna Wolf Studios, by email. Be first to hear about Sheep Tag 2 Early Access and new Scriptable Sheets features."
+    align="center"
+    class="nl-hero"
+  >
+    <div class="nl-box">
+      <div class="card nl-signup">
+        <NewsletterForm id="newsletter-page" label="Your email address" />
+        {confirms && <p class="nl-note">We send a confirmation email first: click its link to finish signing up.</p>}
+      </div>
+
+      <div class="card nl-done nl-done--subscribed">
+        <span class="nl-done-icon" aria-hidden="true"><Icon name={confirms ? "mail" : "checkCircle"} size={26} /></span>
+        {
+          confirms ? (
+            <>
+              <p class="nl-done-title">Check your inbox to confirm</p>
+              <p>
+                We sent a confirmation link to your email address. Click it to finish signing up. If you cannot find it,
+                look in your spam or promotions folder.
+              </p>
+            </>
+          ) : (
+            <>
+              <p class="nl-done-title">You're on the list</p>
+              <p>Thanks for signing up. The next newsletter will come to your inbox.</p>
+            </>
+          )
+        }
+      </div>
+
+      <div class="card nl-done nl-done--confirmed">
+        <span class="nl-done-icon" aria-hidden="true"><Icon name="checkCircle" size={26} /></span>
+        <p class="nl-done-title">You're in</p>
+        <p>Thanks for confirming. Studio news and new releases will come to your inbox.</p>
+        <div class="cluster nl-done-actions">
+          <a class="btn btn--primary btn--sm" href="/games/">See our games</a>
+          <a class="btn btn--secondary btn--sm" href="/scriptable-sheets/">Scriptable Sheets</a>
+        </div>
+      </div>
+    </div>
+  </PageHero>
+
+  <section class="section section--raised nl-more" aria-label="What you'll get and where else to follow us">
+    <div class="wrap nl-cols">
+      <div>
+        <h2 class="nl-h2">What you'll get</h2>
+        <ul class="nl-perks" role="list">
+          {
+            perks.map((p) => (
+              <li class="nl-perk">
+                <span class="nl-perk-icon" aria-hidden="true">
+                  <Icon name={p.icon} size={20} />
+                </span>
+                <div>
+                  <h3 class="nl-perk-title">
+                    <a href={p.href}>{p.title}</a>
+                  </h3>
+                  <p class="nl-perk-text">{p.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="nl-h2">Follow the pack elsewhere</h2>
+        <SocialLinks class="nl-socials" />
+        <p class="nl-contact">
+          Have a project in mind? <a href="/contact/">Contact us</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nl-box {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 0.75rem;
+  }
+  .nl-signup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: clamp(1.25rem, 3.5vw, 2rem);
+    text-align: left;
+  }
+  .nl-signup :global(.nl-form) {
+    max-width: none;
+  }
+  .nl-signup :global(.nl-input),
+  .nl-signup :global(.nl-form .btn) {
+    min-height: 56px;
+    font-size: 1.08rem;
+  }
+  .nl-signup :global(.nl-form .btn) {
+    padding-inline: 1.6em;
+  }
+  .nl-signup :global(.nl-consent) {
+    font-size: var(--lw-text-sm);
+  }
+  .nl-note {
+    align-self: stretch;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+
+  /* Return-visit messages, swapped in by the inline script's <html data-nl-state>. */
+  .nl-done {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    text-align: center;
+    border-color: var(--lw-accent-line);
+  }
+  :global(html[data-nl-state]) .nl-signup {
+    display: none;
+  }
+  :global(html[data-nl-state="subscribed"]) .nl-done--subscribed,
+  :global(html[data-nl-state="confirmed"]) .nl-done--confirmed {
+    display: flex;
+  }
+  .nl-done-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    color: var(--lw-success);
+    background: color-mix(in srgb, var(--lw-success) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--lw-success) 40%, transparent);
+  }
+  /* A paragraph, not a heading: these messages are in the HTML of every visit, so as h2s
+     they sat in the page outline ahead of the real sections. Styled like a heading. */
+  .nl-done .nl-done-title {
+    max-width: none;
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.018em;
+    color: var(--lw-ink);
+    font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.8rem);
+    text-wrap: balance;
+  }
+  .nl-done p {
+    max-width: 46ch;
+    color: var(--lw-ink-muted);
+  }
+  .nl-done-actions {
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  /* Below the form ------------------------------------------------------------------- */
+  .nl-cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 4.5rem);
+  }
+  .nl-h2 {
+    margin-bottom: 1.25rem;
+    font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.65rem);
+  }
+  .nl-perks {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin: 0;
+    padding: 0;
+  }
+  .nl-perk {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+  }
+  .nl-perk-icon {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    color: var(--lw-accent);
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+  }
+  .nl-perk-title {
+    font-size: 1.05rem;
+    line-height: 1.3;
+  }
+  .nl-perk-title a {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .nl-perk-title a:hover {
+    color: var(--lw-accent);
+    text-decoration: underline;
+  }
+  .nl-perk-text {
+    margin-top: 0.15rem;
+    color: var(--lw-ink-muted);
+  }
+
+  .nl-contact {
+    margin-top: 1.5rem;
+    color: var(--lw-ink-muted);
+  }
+
+  @media (max-width: 760px) {
+    .nl-cols {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

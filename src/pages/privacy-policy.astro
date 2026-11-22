@@ -1,0 +1,484 @@
+---
+/**
+ * /privacy-policy/: the studio's privacy policy. Games and store listings link to this URL
+ * (and older games to /privacy.html, which forwards here), so it covers the studio's games
+ * as well as this website.
+ *
+ * Every statement about the website was checked against the code: BaseLayout.astro (theme
+ * script, analytics loader), src/scripts/forms.ts, ContactForm.astro, NewsletterForm.astro,
+ * Theater.astro, ThemeToggle.astro, AnatomyOfPlay.astro, src/data/site.ts (ANALYTICS, FORMS)
+ * and links.ts (withUtm). The Anatomy of Play paragraph was checked against that app's source
+ * (no cookies, no storage, fonts from Google Fonts, one project with an embedded demo).
+ * Provider facts: archive/research/platform-decisions.md (checked 2026-11-21).
+ *
+ * The analytics and newsletter sections name both the current setup and the planned one, so
+ * they stay true when the owner switches a provider on. The two "status" sentences below are
+ * computed from src/data/site.ts with the same conditions the layout and the newsletter form
+ * use, so they change by themselves. When a provider is switched on, update LAST_UPDATED.
+ */
+import "../styles/prose.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import { SITE, ANALYTICS, FORMS } from "../data/site";
+import { abs, ORG_ID, WEBSITE_ID } from "../lib/seo";
+
+/** Month and year of the last substantive change to this policy. */
+const LAST_UPDATED = { iso: "2026-11", label: "November 2026" };
+
+const SHEEP_TAG_2_PRIVACY = "https://www.sheeptag2.com/privacy";
+
+// Same conditions as BaseLayout (analytics) and NewsletterForm (Kit needs a form ID).
+const analytics =
+  ANALYTICS.provider === "goatcounter" && ANALYTICS.goatcounterCode
+    ? "goatcounter"
+    : ANALYTICS.provider === "metricool" && ANALYTICS.metricoolHash
+      ? "metricool"
+      : "none";
+const kitOn = FORMS.newsletter.provider === "kit" && FORMS.newsletter.kitFormId !== "";
+const relayOn = FORMS.newsletter.provider === "relay" || (FORMS.newsletter.provider === "kit" && !kitOn);
+
+const analyticsStatus =
+  analytics === "goatcounter"
+    ? "This site uses GoatCounter. We see only totals, such as visits per page."
+    : analytics === "metricool"
+      ? "This site uses Metricool. We see only totals, such as visits per page."
+      : "Visit counting is off at the moment, so no analytics script loads. If we switch it on, we will use one of the two services below and see only totals, such as visits per page.";
+const newsletterStatus = kitOn
+  ? ""
+  : relayOn
+    ? "At the moment, signups are emailed to us through FormSubmit, the same relay the contact form uses."
+    : "Signups go to the newsletter provider named on the signup form.";
+
+/** What Kit does with a signup: as it is once switched on, or as it will be. */
+const KIT_DATA =
+  "your address, when you signed up and confirmed, your IP address and approximate location, and whether you open or click our emails";
+const kitSentence = kitOn
+  ? `Kit, our newsletter service, emails you a link to confirm before you are added (double opt-in). It stores ${KIT_DATA}.`
+  : `We are moving signups to Kit, a newsletter service. Once we do, Kit will email you a link to confirm before you are added (double opt-in), and will store ${KIT_DATA}.`;
+
+const mail = `mailto:${SITE.email}`;
+const ext = { target: "_blank", rel: "noopener" };
+
+const title = "Privacy policy";
+const description =
+  "How Luna Wolf Studios collects, uses, and protects personal data on this website, in our games, and in our newsletter, and how to contact us about it.";
+const pageUrl = abs("/privacy-policy/");
+const jsonLd = {
+  "@type": "WebPage",
+  "@id": `${pageUrl}#webpage`,
+  url: pageUrl,
+  name: `${title} | ${SITE.name}`,
+  description,
+  isPartOf: { "@id": WEBSITE_ID },
+  about: { "@id": ORG_ID },
+  publisher: { "@id": ORG_ID },
+  dateModified: LAST_UPDATED.iso,
+  inLanguage: "en-US",
+};
+---
+
+<BaseLayout title={title} description={description} breadcrumbs={[{ label: "Privacy policy", href: "/privacy-policy/" }]} jsonLd={jsonLd}>
+  <PageHero
+    size="compact"
+    eyebrow="Legal"
+    title="Privacy policy"
+    lead="How Luna Wolf Studios handles personal information on this website, in our newsletter, and in our games."
+  >
+    <p class="updated">Last updated <time datetime={LAST_UPDATED.iso}>{LAST_UPDATED.label}</time></p>
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href={mail}><Icon name="mail" size={18} /> Email us about your data</a>
+    </Fragment>
+  </PageHero>
+
+  <div class="wrap policy-layout">
+    <aside class="short card" aria-labelledby="short-title">
+      <h2 id="short-title">The short version</h2>
+      <ul>
+        <li>We never sell, rent, or trade your personal information.</li>
+        <li>We collect no personal information about you unless you write to us, subscribe to the newsletter, or give your email address in one of our games.</li>
+        <li>We set no cookies and show no ads. The only things we store in your browser are your light or dark theme choice and, if you pause the home page animation, that choice.</li>
+        <li>YouTube loads only when you press play on a video, and the Anatomy of Play body map only when you press its button.</li>
+        <li>Email <a href={mail}>{SITE.email}</a> to see, correct, or delete what we hold about you.</li>
+      </ul>
+    </aside>
+
+    <nav class="toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#website">What this website collects</a></li>
+        <li><a href="#games">Our games</a></li>
+        <li><a href="#providers">Service providers</a></li>
+        <li><a href="#cookies">Cookies and local storage</a></li>
+        <li><a href="#retention">How long we keep it</a></li>
+        <li><a href="#sharing">Sharing, selling, and security</a></li>
+        <li><a href="#rights">Your rights</a></li>
+        <li><a href="#children">Children</a></li>
+        <li><a href="#transfers">Where data is processed</a></li>
+        <li><a href="#changes">Changes to this policy</a></li>
+        <li><a href="#contact">Questions and complaints</a></li>
+      </ol>
+    </nav>
+
+    <article class="prose policy">
+    <p>
+      This policy covers the website at lunawolfstudios.com, our newsletter, and the games and tools made
+      or published by {SITE.legalName}, based in Newark, Delaware, USA ("we", "us"). Sheep Tag 2 has its own
+      policy, linked under <a href="#games">Our games</a>.
+    </p>
+
+    <h2 id="website">What this website collects</h2>
+
+    <h3>When you browse</h3>
+    <p>
+      You can read this whole site without giving us any personal information. Our fonts and images are served
+      from this site, not from Google Fonts or another third party.
+    </p>
+    <p>
+      The site is hosted on GitHub Pages. GitHub logs the IP address of every visitor for security purposes,
+      under <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" {...ext}>GitHub's privacy statement<span class="visually-hidden"> (opens in a new tab)</span></a>.
+    </p>
+
+    <h3>Visit counts</h3>
+    <p>{analyticsStatus}</p>
+    <p>
+      GoatCounter and Metricool show which pages are read and where visitors come from. Either one loads only
+      after the page has finished loading. Neither sets cookies, stores anything in your browser, or gives you a
+      visitor ID that follows you across sites.
+    </p>
+    <ul>
+      <li>
+        <strong>GoatCounter</strong> records the page address, the page that linked you here, the page title, and
+        your screen width, and works out your browser, operating system, and country from the request. It does not
+        store your IP address or the full browser identifier. Data is kept in Finland and Germany.
+      </li>
+      <li>
+        <strong>Metricool</strong> records the page address, the page that linked you here, and the size of your
+        browser window. It keeps your IP address in identifiable form for no more than 36 hours. Data is kept in
+        the EU.
+      </li>
+    </ul>
+
+    <h3>Contact form and email</h3>
+    <p>
+      The contact form sends your name, email address, company (if you give one), topic, and message to our
+      inbox. The site is static, so the form goes through FormSubmit, a relay service that emails it to us and
+      keeps a copy for 30 days. If you write to us directly, your email reaches our Google Workspace inbox.
+    </p>
+    <p>
+      We use what you send only to reply and to keep a record of the conversation. If you contact us for any
+      reason, we may keep a copy of that correspondence.
+    </p>
+
+    <h3>Newsletter</h3>
+    <p>
+      If you subscribe, we use your email address to send occasional news about our games, tools, and studio:
+      new releases, updates to existing products, and events. We never use it for anything else.
+    </p>
+    <p>
+      {newsletterStatus} {kitSentence}
+    </p>
+    <p>
+      You can unsubscribe at any time with the link at the bottom of every newsletter, or by emailing
+      {" "}<a href={mail}>{SITE.email}</a>.
+    </p>
+
+    <h3>Videos</h3>
+    <p>
+      Our trailers are shown as still images until you press play. Only then does the video load from YouTube's
+      privacy-enhanced mode (youtube-nocookie.com), and from that moment Google receives your IP address,
+      browser and device information, and what you watch, under
+      {" "}<a href="https://policies.google.com/privacy" {...ext}>Google's privacy policy<span class="visually-hidden"> (opens in a new tab)</span></a>. Google says views in
+      this mode are not used to personalize your YouTube browsing or ads outside our site. The studio splash on
+      our home page, About page, and press kit is a video file on this site and involves no third party.
+    </p>
+
+    <h3>Anatomy of Play</h3>
+    <p>
+      The Anatomy of Play body map shown on some pages is a picture until you press its button. Only then does
+      the app load in a frame from tools.lunawolfstudios.com, our own tools site, which is also hosted on GitHub
+      Pages. The app sets no cookies and stores nothing in your browser. It loads its fonts from Google Fonts,
+      so from that moment Google receives your IP address and browser information, under
+      {" "}<a href="https://policies.google.com/privacy" {...ext}>Google's privacy policy<span class="visually-hidden"> (opens in a new tab)</span></a>.
+      Some project pages inside the app embed a demo hosted on another company's site. A demo loads only if you
+      open it, and that site's own privacy policy then applies.
+    </p>
+
+    <h3>Links to stores and other sites</h3>
+    <p>
+      Links from this site to stores such as Steam, the Nintendo eShop, and the Unity Asset Store carry campaign
+      tags (for example <code>utm_source=lunawolfstudios.com</code>). They tell the store that a visit came from
+      our site and which part of the page the link was on. They do not identify you. Steam reports to us only
+      totals, such as how many visits from our site led to a wishlist or a purchase.
+    </p>
+    <p>
+      Once you follow a link, the other site's own privacy policy applies. We are not responsible for the
+      content or practices of sites we link to, and you visit them at your own risk.
+    </p>
+
+    <h3>Prices</h3>
+    <p>
+      Prices and sales on our product pages are fetched by our build, on our own schedule, from Steam, the
+      Nintendo eShop, and the Unity Asset Store. Your browser does not contact those stores when you view a page,
+      so they learn nothing from your visit.
+    </p>
+
+    <h2 id="games">Our games</h2>
+    <p>
+      Some of our games offer to collect your email address. They do so only if you choose to give it, and we use
+      it only to tell you about new Luna Wolf Studios products and changes to our existing ones.
+    </p>
+    <p>
+      Our games and tools are sold through stores and platforms such as Steam, the Nintendo eShop,
+      itch.io, Newgrounds, and the Unity Asset Store. Those companies handle purchases, payment details, and
+      platform accounts under their own policies, and we never receive your payment details.
+    </p>
+    <p>
+      <strong>Sheep Tag 2</strong> has player accounts, online multiplayer, and gameplay data, and its own
+      {" "}<a href={SHEEP_TAG_2_PRIVACY} {...ext}>Sheep Tag 2 privacy policy<span class="visually-hidden"> (opens in a new tab)</span></a> that covers them.
+    </p>
+
+    <h2 id="providers">Service providers</h2>
+    <p>These companies handle data for us, or receive it when you use a feature that relies on them:</p>
+    <ul>
+      <li>
+        <strong>GitHub</strong> (GitHub, Inc.) hosts this website.
+        {" "}<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" {...ext}>Privacy statement<span class="visually-hidden">: GitHub (opens in a new tab)</span></a>.
+      </li>
+      <li>
+        <strong>FormSubmit</strong> (Devro LABS) relays contact form messages{relayOn && ", and for now newsletter signups,"} to
+        our inbox. <a href="https://formsubmit.co/privacy.pdf" {...ext}>Privacy policy (PDF)<span class="visually-hidden">: FormSubmit (opens in a new tab)</span></a>.
+      </li>
+      <li>
+        <strong>Kit</strong> {kitOn ? "stores our subscribers and sends our newsletter." : "will store our subscribers and send our newsletter once signups move to it."}
+        {" "}<a href="https://kit.com/privacy" {...ext}>Privacy policy<span class="visually-hidden">: Kit (opens in a new tab)</span></a>.
+      </li>
+      <li>
+        {analytics === "goatcounter" && <><strong>GoatCounter</strong> counts visits. <a href="https://www.goatcounter.com/privacy" {...ext}>Privacy policy<span class="visually-hidden">: GoatCounter (opens in a new tab)</span></a>.</>}
+        {analytics === "metricool" && <><strong>Metricool</strong> (Metricool Software, S.L.) counts visits. <a href="https://metricool.com/privacy-policy/" {...ext}>Privacy policy<span class="visually-hidden">: Metricool (opens in a new tab)</span></a>.</>}
+        {
+          analytics === "none" && (
+            <>
+              <strong>GoatCounter</strong> or <strong>Metricool</strong> (Metricool Software, S.L.) would count visits
+              if we switch visit counting on. <a href="https://www.goatcounter.com/privacy" {...ext}>GoatCounter privacy policy<span class="visually-hidden"> (opens in a new tab)</span></a>,{" "}
+              <a href="https://metricool.com/privacy-policy/" {...ext}>Metricool privacy policy<span class="visually-hidden"> (opens in a new tab)</span></a>.
+            </>
+          )
+        }
+      </li>
+      <li>
+        <strong>Google</strong> (Google LLC) plays YouTube videos when you press play, serves fonts to the Anatomy
+        of Play app if you open it, and runs our email.
+        {" "}<a href="https://policies.google.com/privacy" {...ext}>Privacy policy<span class="visually-hidden">: Google (opens in a new tab)</span></a>.
+      </li>
+      <li>
+        <strong>Unity</strong> (Unity Technologies) makes the engine our Steam and Nintendo Switch games are built
+        with and runs the Unity Asset Store. <a href="https://unity.com/legal/privacy-policy" {...ext}>Privacy policy<span class="visually-hidden">: Unity (opens in a new tab)</span></a>.
+      </li>
+    </ul>
+
+    <h2 id="cookies">Cookies and local storage</h2>
+    <p>
+      This site sets no cookies. If you press the light or dark theme switch, your choice is saved in your
+      browser's local storage under the name <code>lw-theme</code>, so the next page opens in the same theme.
+      If you pause the moving background on the home page, that choice is saved under <code>lw-motion</code>,
+      so later visits open on a still picture. Neither ever leaves your device, and you can clear both in your
+      browser settings at any time.
+    </p>
+    <p>
+      A YouTube video you choose to play is run by Google and follows Google's own rules on cookies.
+    </p>
+
+    <h2 id="retention">How long we keep it</h2>
+    <ul>
+      <li><strong>Messages:</strong> FormSubmit deletes its copy after 30 days. We keep correspondence while it is useful for answering you and as a record, and delete it when you ask unless the law requires us to keep it.</li>
+      <li><strong>Newsletter and game signups:</strong> until you unsubscribe or ask us to delete your address.</li>
+      <li><strong>Visit counts:</strong> {analytics === "none" ? "none are collected at the moment. If we switch counting on, only totals are kept: " : "kept as totals. "}Metricool discards identifiable IP addresses within 36 hours; GoatCounter never stores them.</li>
+      <li><strong>Hosting logs:</strong> kept by GitHub under its own policy.</li>
+    </ul>
+
+    <h2 id="sharing">Sharing, selling, and security</h2>
+    <p>
+      We do not sell, trade, rent, or share your personal information for anyone else's marketing. We disclose it
+      only to the service providers above, so they can do their job for us, with your consent, or where the law
+      requires it.
+    </p>
+    <p>
+      We do not try to collect or record sensitive information, such as your racial or ethnic origin, political
+      opinions or membership in a political association, religious or philosophical beliefs, membership in a
+      professional body, criminal record, or health.
+    </p>
+    <p>
+      We take reasonable steps to protect the information we hold from misuse, loss, and unauthorized access or
+      change. No way of sending or storing data over the internet is completely secure.
+    </p>
+
+    <h2 id="rights">Your rights</h2>
+    <p>You can ask us at any time to:</p>
+    <ul>
+      <li>tell you what personal information we hold about you and send you a copy,</li>
+      <li>correct it,</li>
+      <li>delete it,</li>
+      <li>stop using it, including unsubscribing from the newsletter.</li>
+    </ul>
+    <p>
+      Email <a href={mail}>{SITE.email}</a>. We will ask you to confirm your identity before we share or change
+      anything, so no one else can see your information. We do not charge for these requests. Depending on where
+      you live, local law may give you further rights, and we will honor them.
+    </p>
+
+    <h2 id="children">Children</h2>
+    <p>
+      This website is not directed at children under 13, and we do not knowingly collect personal information
+      from them. If you are a parent or guardian and think your child has sent us personal information, email us
+      and we will delete it.
+    </p>
+
+    <h2 id="transfers">Where data is processed</h2>
+    <p>
+      We are based in the United States. GitHub, Kit, and Google process data in the United States, GoatCounter
+      and Metricool in the EU, and other providers wherever they operate. Data protection law there may differ
+      from the law where you live.
+    </p>
+
+    <h2 id="changes">Changes to this policy</h2>
+    <p>
+      We update this policy whenever what we collect changes, and change the date at the top. The current version
+      is always at <a href="/privacy-policy/">lunawolfstudios.com/privacy-policy/</a>.
+    </p>
+
+    <h2 id="contact">Questions and complaints</h2>
+    <p>
+      If you have a question about this policy, or think we have not followed it, email
+      {" "}<a href={mail}>{SITE.email}</a>. We will look into it and reply. You can also reach us through the
+      {" "}<a href="/contact/">contact page</a>.
+    </p>
+    <p class="meta">{SITE.legalName}, Newark, Delaware, USA</p>
+    </article>
+  </div>
+
+  <CtaBand
+    title="Questions about your data?"
+    lead="Write to us to see, correct, or delete what we hold, or to ask anything about this policy."
+    primary={{ label: "Email us", href: mail, icon: "mail" }}
+    secondary={{ label: "Get the newsletter", href: "/newsletter/" }}
+  />
+</BaseLayout>
+
+<style>
+  .updated {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+  .policy-layout {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    grid-template-areas:
+      "toc short"
+      "toc body";
+    column-gap: clamp(2rem, 5vw, 4.5rem);
+    row-gap: 1.75rem;
+    align-items: start;
+    padding-top: clamp(2rem, 4.5vw, 3rem);
+  }
+  .short {
+    grid-area: short;
+    max-width: var(--lw-maxw-text);
+  }
+  .toc {
+    grid-area: toc;
+  }
+  .policy {
+    grid-area: body;
+    padding-top: 0;
+    padding-bottom: 0;
+    max-width: var(--lw-maxw-text);
+  }
+  .policy :global(h2),
+  .policy :global(h3) {
+    scroll-margin-top: calc(var(--lw-header-h) + 16px);
+  }
+  .short {
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    border-color: var(--lw-accent-line);
+    background:
+      radial-gradient(80% 120% at 100% 0%, var(--lw-glow), transparent 60%),
+      var(--lw-surface);
+  }
+  .short h2 {
+    margin: 0 0 0.75rem;
+    padding: 0;
+    border: 0;
+    font-size: 1.25rem;
+  }
+  .short ul {
+    display: grid;
+    gap: 0.45rem;
+    padding-left: 1.3rem;
+    line-height: 1.6;
+  }
+  .short li::marker {
+    color: var(--lw-accent);
+  }
+  .short li {
+    color: var(--lw-ink);
+  }
+  .toc {
+    position: sticky;
+    top: calc(var(--lw-header-h) + 1.25rem);
+    padding: 1rem 1.15rem 1.1rem;
+    border: 1px solid var(--lw-border);
+    border-radius: var(--lw-radius);
+    background: var(--lw-bg-raised);
+  }
+  .toc-title {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: var(--lw-text-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .toc ol {
+    margin-top: 0.6rem;
+    padding-left: 1.3rem;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: var(--lw-ink-subtle);
+  }
+  .toc li + li {
+    margin-top: 0.4rem;
+  }
+  .toc a {
+    color: var(--lw-ink-muted);
+    text-decoration: none;
+  }
+  .toc a:hover {
+    color: var(--lw-accent);
+  }
+  @media (max-width: 900px) {
+    .policy-layout {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "short"
+        "toc"
+        "body";
+    }
+    .toc {
+      position: static;
+    }
+    .toc ol {
+      columns: 2;
+      column-gap: 2rem;
+    }
+    .toc li {
+      break-inside: avoid;
+    }
+  }
+  @media (max-width: 560px) {
+    .toc ol {
+      columns: 1;
+    }
+  }
+</style>

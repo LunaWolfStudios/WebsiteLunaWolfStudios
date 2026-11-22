@@ -1,0 +1,128 @@
+---
+/**
+ * A page section with the standard rhythm, an optional heading block, and a content slot.
+ *
+ *   <Section eyebrow="Services" title="What we build" lead="One line." tone="raised">
+ *     <div class="grid">...</div>
+ *   </Section>
+ *
+ * - tone: "default" (page ground), "raised" (alternate band), "glow" (moon glow behind the
+ *   heading; use once or twice per page), "sky" (glow plus a faint starfield, dark only).
+ *   Alternate default and raised down a page.
+ * - align: "start" (default) or "center" for the heading block.
+ * - level: heading level for `title` (default 2).
+ * - id: anchor id; the heading gets `${id}-title` and labels the section.
+ * - width: "default" | "narrow" (820px column for text-heavy sections).
+ * - slot "actions": buttons or a link shown beside (start) or under (center) the heading.
+ * - The heading block reveals on scroll; add data-reveal to your own content as needed.
+ */
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  lead?: string;
+  id?: string;
+  tone?: "default" | "raised" | "glow" | "sky";
+  align?: "start" | "center";
+  level?: 2 | 3;
+  width?: "default" | "narrow";
+  tight?: boolean;
+  class?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  lead,
+  id,
+  tone = "default",
+  align = "start",
+  level = 2,
+  width = "default",
+  tight = false,
+  class: cls,
+} = Astro.props;
+
+const H = `h${level}` as "h2" | "h3";
+const titleId = id ? `${id}-title` : undefined;
+const hasHead = Boolean(eyebrow || title || lead);
+const hasActions = Astro.slots.has("actions");
+---
+
+<section
+  id={id}
+  class:list={[
+    "section",
+    {
+      "section--raised": tone === "raised",
+      "section--glow": tone === "glow" || tone === "sky",
+      sky: tone === "sky",
+      "section--tight": tight,
+    },
+    cls,
+  ]}
+  aria-labelledby={title ? titleId : undefined}
+>
+  <div class:list={["wrap", { "wrap--narrow": width === "narrow" }]}>
+    {
+      hasHead && (
+        <header class:list={["sec-head", `sec-head--${align}`, { "has-actions": hasActions }]} data-reveal>
+          <div class="sec-head-text">
+            {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+            {title && (
+              <H id={titleId} class="sec-title">
+                {title}
+              </H>
+            )}
+            {lead && <p class="lead sec-lead">{lead}</p>}
+          </div>
+          {hasActions && (
+            <div class="sec-actions">
+              <slot name="actions" />
+            </div>
+          )}
+        </header>
+      )
+    }
+    <slot />
+  </div>
+</section>
+
+<style>
+  .sec-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+  }
+  .sec-head-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    max-width: 760px;
+  }
+  .sec-head--center {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .sec-head--center .sec-head-text {
+    align-items: center;
+    margin-inline: auto;
+  }
+  .sec-head--center .sec-lead {
+    margin-inline: auto;
+  }
+  .sec-title {
+    margin: 0;
+  }
+  h3.sec-title {
+    font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.8rem);
+  }
+  .sec-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

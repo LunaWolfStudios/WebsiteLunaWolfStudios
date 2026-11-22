@@ -1,0 +1,130 @@
+---
+/**
+ * One internship project for /bootcamp/: the itch.io cover, the cohort's term, title, one
+ * line, team size, and two actions ("Play on itch.io" and "Watch trailer", which opens the
+ * shared theater). GameCard is one big link, so it cannot hold two actions; this card can.
+ * Interns are not named (src/data/games.ts).
+ */
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import StoreButton from "../StoreButton.astro";
+import type { Game } from "../../data/types";
+import { image } from "../../lib/images";
+import { trailerFor } from "../../data/videos";
+
+interface Props {
+  game: Game;
+  term: string;
+  team: string;
+}
+
+const { game, term, team } = Astro.props;
+const art = game.cover ? image(game.cover, `games/${game.slug}`) : undefined;
+// Never ask for a width larger than the source (Coppervalle Rush's cover is 375px wide).
+const widths = art ? [360, 540, 720].filter((w) => w <= art.width).concat(art.width < 720 ? [art.width] : []) : [];
+const itch = game.links.find((l) => l.kind === "itch");
+const trailer = trailerFor(game.slug);
+---
+
+<article class="card ig-card">
+  <div class="ig-art">
+    {
+      art && (
+        <Image
+          src={art}
+          alt={`${game.title} cover art`}
+          widths={[...new Set(widths)]}
+          sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1000px) 50vw, 380px"
+          loading="lazy"
+          decoding="async"
+          class="ig-img"
+        />
+      )
+    }
+    <span class="badge ig-term">{term}</span>
+  </div>
+  <div class="ig-body">
+    <h3 class="ig-title">{game.title}</h3>
+    <p class="ig-tagline">{game.tagline}</p>
+    <p class="ig-team"><Icon name="users" size={16} /> Made by {team}</p>
+    <div class="ig-actions">
+      {itch && <StoreButton kind="itch" href={itch.url} verb="Play on" size="sm" placement="bootcamp" />}
+      {
+        trailer && (
+          <a
+            class="btn btn--ghost btn--sm"
+            href={`https://www.youtube.com/watch?v=${trailer.id}`}
+            data-video-id={trailer.id}
+            data-video-title={trailer.title}
+            target="_blank"
+            rel="noopener"
+          >
+            <Icon name="play" size={16} /> Watch trailer
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>
+
+<style>
+  .ig-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+  .ig-art {
+    position: relative;
+    aspect-ratio: 630 / 500;
+    background: var(--lw-media-bg);
+  }
+  .ig-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* On art, so the dark palette in both themes. */
+  .ig-term {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: rgba(4, 7, 10, 0.78);
+    color: #81ebe1;
+    border-color: rgba(129, 235, 225, 0.35);
+  }
+  .ig-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    flex: 1;
+    padding: 1.1rem 1.2rem 1.25rem;
+  }
+  .ig-title {
+    font-size: 1.25rem;
+  }
+  .ig-tagline {
+    color: var(--lw-ink-muted);
+    line-height: 1.5;
+  }
+  .ig-team {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+  .ig-team :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.2em;
+  }
+  .ig-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+  }
+</style>

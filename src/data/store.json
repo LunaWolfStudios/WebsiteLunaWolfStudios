@@ -1,0 +1,134 @@
+{
+  "fetchedAt": "2026-11-22T02:32:29.341Z",
+  "products": {
+    "sheep-tag-2": {
+      "steam": {
+        "url": "https://store.steampowered.com/app/537680/Sheep_Tag_2",
+        "currency": "USD",
+        "regularCents": 0,
+        "finalCents": 0,
+        "discountPercent": 0,
+        "saleEndsAt": null,
+        "isFree": true,
+        "isReleased": false,
+        "checkedAt": "2026-11-22T02:32:29.341Z"
+      }
+    },
+    "sheep-tag-2-soundtrack": {
+      "steam": {
+        "url": "https://store.steampowered.com/app/2151350/Sheep_Tag_2_Original_Soundtrack/",
+        "currency": "USD",
+        "regularCents": 499,
+        "finalCents": 499,
+        "discountPercent": 0,
+        "saleEndsAt": null,
+        "isFree": false,
+        "isReleased": true,
+        "checkedAt": "2026-11-22T02:32:29.341Z"
+      }
+    },
+    "sheep-tag-2-supporter-pack": {
+      "steam": {
+        "url": "https://store.steampowered.com/app/5538360/Sheep_Tag_2_Supporter_Pack/",
+        "currency": "USD",
+        "regularCents": 3999,
+        "finalCents": 3999,
+        "discountPercent": 0,
+        "saleEndsAt": null,
+        "isFree": false,
+        "isReleased": true,
+        "checkedAt": "2026-11-22T02:32:29.341Z"
+      }
+    },
+    "hypno-halo": {
+      "steam": {
+        "url": "https://store.steampowered.com/app/3847950/Hypno_Halo/",
+        "currency": "USD",
+        "regularCents": 1999,
+        "finalCents": 1999,
+        "discountPercent": 0,
+        "saleEndsAt": null,
+        "isFree": false,
+        "isReleased": true,
+        "checkedAt": "2026-11-22T02:32:29.341Z"
+      },
+      "switch": {
+        "url": "https://www.nintendo.com/us/store/products/hypno-halo-switch/",
+        "currency": "USD",
+        "regularCents": 1999,
+        "finalCents": 1999,
+        "discountPercent": 0,
+        "saleEndsAt": null,
+        "isFree": false,
+        "isReleased": true,
+        "checkedAt": "2026-11-22T02:32:29.341Z"
+      }
+    },
+    "hypno-halo-demo": {
+      "steam": {
+        "url": "https://store.steampowered.com/app/4029810/Hypno_Halo_Demo/",
+        "currency": "USD",
+        "regularCents": 0,
+        "finalCents": 0,
+        "discountPercent": 0,
+        "saleEndsAt": null,
+        "isFree": true,
+        "isReleased": true,
+        "checkedAt": "2026-11-22T02:32:29.341Z"
+      }
+    },
+    "paralily": {
+      "steam": {
+        "url": "https://store.steampowered.com/app/1156760/ParaLily/",
+        "currency": "USD",
+        "regularCents": 399,
+        "finalCents": 399,
+        "discountPercent": 0,
+        "saleEndsAt": null,
+        "isFree": false,
+        "isReleased": true,
+        "checkedAt": "2026-11-22T02:32:29.341Z"
+      },
+      "switch": {
+        "url": "https://www.nintendo.com/us/store/products/paralily-switch/",
+        "currency": "USD",
+        "regularCents": 499,
+        "finalCents": 499,
+        "discountPercent": 0,
+        "saleEndsAt": null,
+        "isFree": false,
+        "isReleased": true,
+        "checkedAt": "2026-11-22T02:32:29.341Z"
+      }
+    },
+    "the-brave-hearts-ii-false-skies": {
+      "steam": {
+        "url": "https://store.steampowered.com/app/4918650/The_Brave_Hearts_II_False_Skies/",
+        "currency": "USD",
+        "regularCents": 999,
+        "finalCents": 999,
+        "discountPercent": 0,
+        "saleEndsAt": null,
+        "isFree": false,
+        "isReleased": true,
+        "checkedAt": "2026-11-22T02:32:29.341Z"
+      }
+    },
+    "scriptable-sheets": {
+      "unity": {
+        "url": "https://assetstore.unity.com/packages/tools/utilities/scriptable-sheets-284559",
+        "currency": "USD",
+        "regularCents": 4999,
+        "finalCents": 2499,
+        "discountPercent": 50,
+        "saleEndsAt": null,
+        "isFree": false,
+        "isReleased": true,
+        "rating": 5,
+        "reviewCount": 34,
+        "version": "1.11.0",
+        "checkedAt": "2026-11-22T02:32:29.341Z"
+      }
+    }
+  }
+}

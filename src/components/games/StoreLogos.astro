@@ -1,0 +1,115 @@
+---
+/**
+ * "Available on" row of official store logos, each one a link to the game's store page.
+ * The shared AvailableOn shows the Steam and Nintendo Switch logos as plain images; game pages
+ * need them as links, and the itch.io pages need the itch.io badge, so this is the game pages'
+ * own version (src/assets/brands/README.md has the rules).
+ *
+ *   <StoreLogos game="Hypno Halo" items={[{ platform: "steam", href }, { platform: "switch", href }]} />
+ *
+ * - Steam: white logo in the dark theme, black in the light theme, at Valve's 50px minimum,
+ *   standing alone (never inside a button) with clear space around it.
+ * - Nintendo Switch: the red vignette logo, which works on both grounds.
+ * - itch.io: the official "available on itch.io" badge (#222), used as supplied.
+ */
+import { Image } from "astro:assets";
+import steamBlack from "../../assets/brands/steam/steam-logo-black.svg";
+import steamWhite from "../../assets/brands/steam/steam-logo-white.svg";
+import switchRed from "../../assets/brands/nintendo-switch/nintendo-switch-logo-red.svg";
+import itchBadge from "../../assets/brands/itch/itch-badge-dark.svg";
+import { withUtm, type LinkPlacement } from "../../data/links";
+import type { LogoPlatform } from "../../data/gamePages";
+
+interface Props {
+  /** The game's name, for the links' accessible names. */
+  game: string;
+  items: Array<{ platform: LogoPlatform; href: string }>;
+  label?: string;
+  placement?: LinkPlacement;
+  class?: string;
+}
+
+const { game, items, label = "Available on", placement = "game_page", class: cls } = Astro.props;
+const w = (img: { width: number; height: number }, h: number) => Math.round((img.width / img.height) * h);
+const NAMES: Record<LogoPlatform, string> = { steam: "Steam", switch: "the Nintendo eShop", itch: "itch.io" };
+// The itch badge already reads "available on itch.io", so a row of only that badge needs no label.
+const showLabel = items.some((i) => i.platform !== "itch");
+---
+
+<div class:list={["store-logos", cls]}>
+  {showLabel && <p class="sl-label">{label}</p>}
+  <ul class="sl-list" role="list">
+    {
+      items.map(({ platform, href }) => (
+        <li class={`sl-${platform}`}>
+          <a href={withUtm(href, placement)} target="_blank" rel="noopener" aria-label={`${game} on ${NAMES[platform]} (opens in a new tab)`}>
+            {platform === "steam" && (
+              <>
+                <Image src={steamWhite} alt="" height={50} width={w(steamWhite, 50)} class="sl-logo on-dark" loading="lazy" />
+                <Image src={steamBlack} alt="" height={50} width={w(steamBlack, 50)} class="sl-logo on-light" loading="lazy" />
+              </>
+            )}
+            {platform === "switch" && (
+              <Image src={switchRed} alt="" height={64} width={w(switchRed, 64)} class="sl-logo sl-logo--switch" loading="lazy" />
+            )}
+            {platform === "itch" && (
+              <Image src={itchBadge} alt="" height={50} width={w(itchBadge, 50)} class="sl-logo sl-logo--itch" loading="lazy" />
+            )}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .store-logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+  }
+  .sl-label {
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .sl-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    /* Clear space around each mark: Valve asks for the crank's diameter, about half the height. */
+    gap: 1.25rem 2.25rem;
+    margin: 0;
+    padding: 0;
+  }
+  .sl-list a {
+    display: block;
+    padding: 0.35rem;
+    margin: -0.35rem;
+    border-radius: 8px;
+    transition: opacity var(--lw-fast) ease;
+  }
+  .sl-list a:hover {
+    opacity: 0.85;
+  }
+  .sl-logo {
+    display: block;
+    width: auto;
+    height: 50px;
+  }
+  .sl-logo--switch {
+    height: 64px;
+  }
+  .sl-steam .on-light {
+    display: none;
+  }
+  :global([data-theme="light"]) .sl-steam .on-light {
+    display: block;
+  }
+  :global([data-theme="light"]) .sl-steam .on-dark {
+    display: none;
+  }
+</style>

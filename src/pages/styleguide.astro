@@ -1,0 +1,714 @@
+---
+/**
+ * /styleguide/ — every shared component and helper with realistic content (copy taken from
+ * archive/wordpress/pages/). noindex and left out of the sitemap. Open it with ?theme=light
+ * or ?theme=dark to check both themes.
+ *
+ * QA hooks (this page only): ?open=video plays the first video in the theater, ?open=lightbox
+ * opens the gallery viewer, ?open=menu opens the mobile menu, ?open=services focuses the
+ * Services dropdown, ?formtest=ok|fail submits the contact and newsletter forms against a
+ * stubbed fetch (nothing leaves the browser).
+ *
+ * ─── How to build a page ─────────────────────────────────────────────────────────────────
+ *
+ *   ---
+ *   import BaseLayout from "../../layouts/BaseLayout.astro";
+ *   import PageHero from "../../components/PageHero.astro";
+ *   import Section from "../../components/Section.astro";
+ *   import ServiceCard from "../../components/ServiceCard.astro";
+ *   import GameCard from "../../components/GameCard.astro";
+ *   import Faq from "../../components/Faq.astro";
+ *   import CtaBand from "../../components/CtaBand.astro";
+ *   import { serviceLd, faqLd } from "../../lib/seo";
+ *   import { GAMES } from "../../data/games";
+ *
+ *   const title = "Unity development";                       // " | Luna Wolf Studios" is added
+ *   const description = "140 to 160 characters that say what the page offers, in search words.";
+ *   const faqs = [{ q: "...", a: "..." }];
+ *   ---
+ *   <BaseLayout
+ *     title={title}
+ *     description={description}
+ *     breadcrumbs={[{ label: "Services", href: "/services/" }, { label: title, href: "/services/unity-development/" }]}
+ *     jsonLd={[serviceLd({ name: title, description, url: "/services/unity-development/" }), faqLd(faqs)]}
+ *   >
+ *     <PageHero eyebrow="Services" title="Unity development studio" lead="One or two sentences.">
+ *       <Fragment slot="actions">
+ *         <a class="btn btn--primary" href="/contact/">Start a project</a>
+ *         <a class="btn btn--secondary" href="/games/">See our work</a>
+ *       </Fragment>
+ *     </PageHero>
+ *     <Section eyebrow="What we do" title="..." lead="...">          (tone alternates: default, raised)
+ *       <div class="grid grid--3">...</div>
+ *     </Section>
+ *     <Section tone="raised" title="Projects that prove it">
+ *       <div class="grid grid--4">{GAMES.filter(...).map((g) => <GameCard game={g} />)}</div>
+ *     </Section>
+ *     <Section title="Questions" width="narrow"><Faq items={faqs} /></Section>
+ *     <CtaBand />
+ *   </BaseLayout>
+ *
+ * Rules: one <h1> per page (PageHero renders it). Internal links end in "/". External URLs
+ * come from src/data/links.ts. Images go through astro:assets with real alt text.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import GameCard from "../components/GameCard.astro";
+import Reviews from "../components/Reviews.astro";
+import PartnerCloud from "../components/PartnerCloud.astro";
+import AwardBadge from "../components/AwardBadge.astro";
+import Stat from "../components/Stat.astro";
+import FounderCard from "../components/FounderCard.astro";
+import FeatureList from "../components/FeatureList.astro";
+import Faq from "../components/Faq.astro";
+import StoreButton from "../components/StoreButton.astro";
+import Price from "../components/Price.astro";
+import { PRICE_REGION_NOTE } from "../lib/store";
+import AvailableOn from "../components/AvailableOn.astro";
+import VideoCard from "../components/VideoCard.astro";
+import Gallery from "../components/Gallery.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
+import ContactForm from "../components/ContactForm.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Logo from "../components/Logo.astro";
+import { ICONS } from "../lib/icons";
+import { LINKS } from "../data/links";
+import type { Game, Partner, Review, Founder } from "../data/types";
+import "../styles/prose.css";
+
+import shotEasy from "../assets/styleguide/shots/hypno-halo-easy.jpg";
+import shotMedium from "../assets/styleguide/shots/hypno-halo-medium.jpg";
+import shotHard from "../assets/styleguide/shots/hypno-halo-hard.jpg";
+import hypnoPoster from "../assets/styleguide/shots/hypno-halo-poster.jpg";
+
+const services = [
+  {
+    title: "Game development",
+    icon: "gamepad",
+    href: "/services/game-development/",
+    summary: "Original games and games for clients, from first concept through release and post-release support.",
+    items: ["Gameplay systems and AI behaviors", "Networking and multiplayer", "Publishing on Steam and Nintendo Switch"],
+  },
+  {
+    title: "VR and AR development",
+    icon: "headset",
+    href: "/services/vr-ar-development/",
+    summary: "Virtual reality built in Unity, like HELIX, a gamified hearing assessment for the Oculus Quest 2.",
+    items: ["Built in Unity", "Calibrated audio", "Web dashboard for providers"],
+  },
+  {
+    title: "Serious games",
+    icon: "heartPulse",
+    href: "/services/serious-games/",
+    summary: "Games that teach, train and treat: rehabilitation, education and hearing assessment.",
+    items: ["Health and rehabilitation", "Education", "Training"],
+  },
+];
+
+const games: Array<{ game: Game; img: string }> = [
+  {
+    img: "styleguide/covers/sheep-tag-2_600x900.jpg",
+    game: {
+      slug: "sheep-tag-2",
+      title: "Sheep Tag 2",
+      category: "studio",
+      status: "upcoming",
+      tagline: "The classic cat-and-mouse game. Sheep vs. Wolves.",
+      summary: "",
+      page: "/sheep-tag-2/",
+      platforms: ["PC"],
+      links: [{ kind: "steam", url: LINKS.sheepTag2Steam }],
+    },
+  },
+  {
+    img: "styleguide/covers/hypno-halo_600x900.jpg",
+    game: {
+      slug: "hypno-halo",
+      title: "Hypno Halo",
+      category: "published",
+      status: "released",
+      year: 2025,
+      tagline: "A minimalist score attack game.",
+      summary: "",
+      page: "/hypno-halo/",
+      platforms: ["Steam", "Nintendo Switch"],
+      links: [{ kind: "steam", url: LINKS.hypnoHaloSteam }],
+    },
+  },
+  {
+    img: "styleguide/covers/paralily_600x900.jpg",
+    game: {
+      slug: "paralily",
+      title: "ParaLily",
+      category: "studio",
+      tagline: "Sample tagline for a card.",
+      summary: "",
+      page: "/paralily/",
+      links: [{ kind: "web", url: LINKS.paralily }],
+    },
+  },
+  {
+    img: "styleguide/covers/lanebreak_600x900.jpg",
+    game: {
+      slug: "lanebreak",
+      title: "Lanebreak",
+      category: "client",
+      owner: "Peloton",
+      tagline: "A card that links out to a client's page.",
+      summary: "",
+      links: [{ kind: "web", url: "https://www.onepeloton.com/en-AU/blog/lanebreak" }],
+    },
+  },
+];
+
+const noArtGame: Game = {
+  slug: "plan-c",
+  title: "Plan C",
+  category: "jam",
+  status: "archived",
+  year: 2016,
+  tagline: "A swarm defense game. Card without art.",
+  summary: "",
+  role: "Game jam entry",
+  links: [{ kind: "newgrounds", url: "https://www.newgrounds.com/portal/view/684730" }],
+};
+
+const reviews: Review[] = [
+  {
+    quote: "My experience at Luna Wolf taught me a ton about using Unity, as well as working in a professional team setting.",
+    author: "Bootcamp intern",
+    source: "Internship testimonial",
+    about: "Internships",
+    kind: "intern",
+  },
+  {
+    quote:
+      "This internship goes all in with showing the intern(s) the entire game development process. From a GDD to a finalized, released demo. I appreciate the skills learned / taught, and the constant feedback every week / day.",
+    author: "Bootcamp intern",
+    source: "Internship testimonial",
+    about: "Internships",
+    kind: "intern",
+  },
+  {
+    quote: "Let the colors take control in Hypno Halo",
+    author: "Everything Action",
+    source: "everythingaction.com",
+    url: "https://everythingaction.com/2025/10/07/let-the-colors-take-control-in-hypno-halo/",
+    about: "Hypno Halo",
+    kind: "press",
+  },
+  {
+    quote: "Top Steam Games to Look Out for in October 2025",
+    author: "Games Ardor",
+    source: "gamesardor.net",
+    url: "https://gamesardor.net/top-steam-games-to-look-out-for-in-october-2025/#hypno-halo",
+    about: "Hypno Halo",
+    kind: "press",
+  },
+];
+
+const partners: Partner[] = [
+  ["Unity", "https://unity.com/", "unity.jpg"],
+  ["Peloton", "https://www.onepeloton.com/", "peloton.jpg"],
+  ["Remote Control Media", "https://www.rc.enterprises/", "remote-control-media.jpg"],
+  ["Cartoon Network", "https://www.cartoonnetwork.co.uk/", "cartoon-network.jpg"],
+  ["Gumbo NYC", "https://gumbonyc.org/", "gumbo-nyc.jpg"],
+  ["Computer Lunch", "https://games.computerlunch.com/", "computer-lunch.jpg"],
+  ["Mega Cat Studios", "https://megacatstudios.com/", "mega-cat-studios.jpg"],
+  ["Looney Labs", "https://store.looneylabs.com/", "looney-labs.jpg"],
+  ["IGDA", "https://igda.org/", "igda.jpg"],
+  ["Kodeco", "https://www.kodeco.com/", "Kodeco.jpg"],
+  ["Nemours Children's Health", "https://www.nemours.org/", "nemours-childrens-health.jpg"],
+  ["The Franklin Institute", "https://fi.edu/en", "the-franklin-institute.jpg"],
+].map(([name, url, logo]) => ({ name, url, logo: `styleguide/partners/${logo}` }));
+
+const founders: Founder[] = [
+  {
+    slug: "jeff",
+    name: "Jeff",
+    role: "Co-founder",
+    page: "/about-jeff/",
+    photo: "styleguide/people/jeff_headshot.png",
+    blurb: "Specializing in Unity and XR technologies, Jeff has led teams building multiplayer strategy games, educational experiences and medical simulations.",
+    links: [{ label: "LinkedIn", url: LINKS.linkedin, icon: "linkedin" }],
+  },
+  {
+    slug: "jeremy",
+    name: "Jeremy Bregermann",
+    role: "Co-founder and lead game designer",
+    page: "/about-jeremy/",
+    photo: "styleguide/people/jeremy_headshot_512x512.jpg",
+    blurb: "Game designer, software developer and educator with over 11 years of professional game development experience.",
+    links: [],
+  },
+  {
+    slug: "olivia",
+    name: "Olivia",
+    role: "Co-founder",
+    page: "/about-olivia/",
+    photo: "",
+    blurb: "Close to a decade building enterprise backend systems in Node.js, TypeScript and NestJS. Card without a photo.",
+    links: [],
+  },
+];
+
+const features = [
+  { icon: "layers", title: "300+ handcrafted levels", text: "And 51 bonus challenges across 6 difficulties." },
+  { icon: "monitor", title: "90+ minutes of music", text: "Electronic and techno." },
+  { icon: "award", title: "50+ achievements", text: "Climb the leaderboards." },
+  { icon: "gamepad", title: "Controller and touch", text: "Full controller and touch screen support. Steam Deck compatible." },
+];
+
+const steps = [
+  { title: "Submit your project", text: "A demo, early build, or finished release." },
+  { title: "We review it", text: "We look at the game and talk with you about where it fits." },
+  { title: "Release together", text: "We work with you to bring the game to platforms like Steam and Nintendo Switch." },
+];
+
+const faqs = [
+  {
+    q: "Which platforms do you publish on?",
+    a: "We work with developers to bring games to platforms like Steam and Nintendo Switch.",
+  },
+  {
+    q: "Does my game have to be finished?",
+    a: "No. Whether it is a demo, early build, or finished release, send it with the <a href=\"https://forms.gle/mieW4gE5hbsmbwPM8\">submission form</a>.",
+  },
+  {
+    q: "How do I ask a question first?",
+    a: "Email <a href=\"mailto:support@lunawolfstudios.com\">support@lunawolfstudios.com</a>.",
+  },
+];
+
+const shots = [
+  { src: shotEasy, alt: "Hypno Halo, an easy level: coloured shapes orbit the halo", caption: "Easy" },
+  { src: shotMedium, alt: "Hypno Halo, a medium level with denser patterns", caption: "Medium" },
+  { src: shotHard, alt: "Hypno Halo, a hard level", caption: "Hard" },
+];
+
+const swatches = [
+  ["--lw-bg", "Ground"],
+  ["--lw-bg-raised", "Raised band"],
+  ["--lw-surface", "Surface"],
+  ["--lw-surface-hover", "Surface hover"],
+  ["--lw-border", "Border"],
+  ["--lw-ink", "Ink"],
+  ["--lw-ink-muted", "Muted"],
+  ["--lw-ink-subtle", "Subtle"],
+  ["--lw-accent", "Accent / links"],
+  ["--lw-accent-deep", "Accent deep"],
+  ["--lw-btn-bg", "Primary button"],
+  ["--lw-gold", "Gold"],
+  ["--lw-rose", "Rose"],
+];
+---
+
+<BaseLayout
+  title="Styleguide"
+  description="Internal reference for the Luna Wolf Studios website: design tokens, type, buttons, cards and every shared component in both themes."
+  noindex
+  breadcrumbs={[{ label: "Styleguide", href: "/styleguide/" }]}
+>
+  <PageHero
+    eyebrow="Design system"
+    title="Styleguide"
+    lead="Every shared component and helper, with real copy from the old site. Toggle the theme in the header to check both."
+  >
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href="#components">Components <Icon name="arrowRight" size={18} /></a>
+      <a class="btn btn--secondary" href="?theme=light">Light theme</a>
+      <a class="btn btn--ghost" href="?theme=dark">Dark theme</a>
+    </Fragment>
+    <div slot="media" class="sg-hero-media">
+      <VideoCard id="GiCsebs_FK4" title="Hypno Halo trailer" poster={hypnoPoster} variant="feature" eager />
+    </div>
+  </PageHero>
+
+  <Section id="tokens" eyebrow="Foundations" title="Colour" lead="Tokens from src/styles/tokens.css, as the current theme resolves them.">
+    <ul class="swatches" role="list">
+      {
+        swatches.map(([v, name]) => (
+          <li class="swatch">
+            <span class="swatch-chip" style={`background: var(${v})`} />
+            <span class="swatch-name">{name}</span>
+            <code class="swatch-var">{v}</code>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section id="type" tone="raised" eyebrow="Foundations" title="Type">
+    <div class="type-demo stack" style="--stack-gap: 1.25rem">
+      <p class="eyebrow">Eyebrow · Outfit 600, tracked</p>
+      <p class="sg-display">Display: create experiences that matter</p>
+      <p class="sg-h1">Heading 1: Game development studio</p>
+      <h2>Heading 2: Our trusted pack</h2>
+      <h3>Heading 3: Remote internship program</h3>
+      <h4>Heading 4: HELIX components</h4>
+      <p class="lead">
+        Lead: We are an independent video game development studio with a dedicated pack focused on creating
+        experiences that matter.
+      </p>
+      <p class="measure">
+        Body, Inter: Founded by three Wilmington University students in January of 2015, Luna Wolf Studios is an
+        independent video game development studio that was born in Newark, Delaware. <a href="/about/">Inline link</a>,{" "}
+        <strong>strong text</strong>, <code>inline code</code>.
+      </p>
+      <p class="text-muted">Muted: secondary information and captions.</p>
+      <p class="text-subtle">Subtle: metadata, timestamps, fine print.</p>
+    </div>
+  </Section>
+
+  <Section id="components" eyebrow="Actions" title="Buttons, badges and links">
+    <div class="stack" style="--stack-gap: 1.5rem">
+      <div class="cluster">
+        <a class="btn btn--primary" href="/contact/">Contact us</a>
+        <a class="btn btn--secondary" href="/games/">See our games</a>
+        <a class="btn btn--ghost" href="/about/">About the studio</a>
+        <button class="btn btn--primary" disabled>Disabled</button>
+      </div>
+      <div class="cluster">
+        <a class="btn btn--primary btn--lg" href="/contact/">Start a project <Icon name="arrowRight" size={18} /></a>
+        <a class="btn btn--secondary btn--lg" href="#videos"><Icon name="play" size={18} /> Watch the trailer</a>
+        <a class="btn btn--primary btn--sm" href="/contact/">Small</a>
+        <a class="btn btn--secondary btn--sm" href="/presskit/"><Icon name="download" size={16} /> Press kit</a>
+      </div>
+      <div class="cluster">
+        <span class="badge">Unity</span>
+        <span class="badge badge--gold"><Icon name="star" size={12} /> Award winner</span>
+        <span class="badge badge--rose">New</span>
+        <span class="badge badge--neutral">Archived</span>
+        <span class="badge badge--solid">Out now</span>
+      </div>
+      <div class="cluster">
+        <a class="link-arrow" href="/services/">All services <Icon name="arrowRight" size={16} /></a>
+        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Services", href: "/services/" }, { label: "Unity development", href: "/services/unity-development/" }]} />
+      </div>
+      <div class="cluster sg-logos">
+        <Logo size={56} />
+        <Logo size={40} wordmark={false} />
+      </div>
+    </div>
+  </Section>
+
+  <Section id="icons" tone="raised" eyebrow="Foundations" title="Icons" lead="src/lib/icons.ts, rendered with <Icon name=… />. Brand marks are for profile links only.">
+    <ul class="icons" role="list">
+      {
+        Object.keys(ICONS).map((name) => (
+          <li>
+            <Icon name={name} size={22} />
+            <code>{name}</code>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section id="tones" tone="glow" align="center" eyebrow="Section tone: glow" title="The moon rises behind the heading" lead="Use tone='glow' once or twice per page, usually for the section that matters most.">
+    <div class="sg-center cluster">
+      <a class="btn btn--primary" href="/contact/">Contact us</a>
+    </div>
+  </Section>
+
+  <Section id="services" tone="raised" eyebrow="ServiceCard" title="What we build" lead="Service cards link to their service page; the whole card is the target.">
+    <Fragment slot="actions"><a class="link-arrow" href="/services/">All services <Icon name="arrowRight" size={16} /></a></Fragment>
+    <div class="grid grid--3">
+      {services.map((s) => <ServiceCard {...s} />)}
+    </div>
+  </Section>
+
+  <Section id="games" eyebrow="GameCard" title="Games" lead="Cover variant (2:3). Status and category come from the Game record.">
+    <div class="grid grid--4">
+      {games.map(({ game, img }) => <GameCard game={{ ...game, cover: img }} />)}
+    </div>
+    <h3 class="sg-sub">Wide variant and missing art</h3>
+    <div class="grid grid--2">
+      <GameCard game={{ ...games[1].game, wide: "styleguide/shots/hypno-halo-poster.jpg" }} variant="wide" />
+      <GameCard game={noArtGame} variant="wide" />
+    </div>
+  </Section>
+
+  <Section id="stores" tone="raised" eyebrow="StoreButton and AvailableOn" title="Store links" lead="Each store button carries its platform's mark. The full official logos sit beside them in an AvailableOn row.">
+    <div class="stack" style="--stack-gap: 1.75rem">
+      <div class="cluster">
+        <StoreButton kind="steam" href={LINKS.sheepTag2Steam} verb="Wishlist on" variant="primary" placement="styleguide" />
+        <StoreButton kind="switch" href={LINKS.hypnoHaloSwitch} placement="styleguide" />
+        <StoreButton kind="unity" href={LINKS.scriptableSheets} placement="styleguide" />
+        <StoreButton kind="web" href={LINKS.paralily} />
+        <StoreButton kind="newgrounds" href={LINKS.newgrounds} size="sm" />
+        <StoreButton kind="itch" href={LINKS.itch} />
+      </div>
+      <AvailableOn platforms={["steam", "switch"]} />
+
+      {/* Prices come from src/data/store.json through src/lib/store.ts. Never type one. */}
+      <h3 class="sg-sub">Price: live store data beside the button</h3>
+      <div class="cluster" style="align-items: center">
+        <StoreButton kind="unity" href={LINKS.scriptableSheets} variant="primary" placement="styleguide" />
+        <Price slug="scriptable-sheets" store="unity" size="lg" />
+      </div>
+      <div class="cluster" style="align-items: center">
+        <StoreButton kind="steam" href={LINKS.hypnoHaloSteam} verb="Buy on" placement="styleguide" />
+        <Price slug="hypno-halo" store="steam" />
+        <StoreButton kind="switch" href={LINKS.hypnoHaloSwitch} placement="styleguide" />
+        <Price slug="hypno-halo" store="switch" />
+      </div>
+      <div class="cluster" style="align-items: center">
+        <StoreButton kind="steam" href={LINKS.sheepTag2Steam} verb="Wishlist on" placement="styleguide" />
+        <Price slug="sheep-tag-2" store="steam" unreleasedLabel="Early Access 2027" />
+      </div>
+      <p class="measure" style="color: var(--lw-ink-subtle); font-size: var(--lw-text-xs)">{PRICE_REGION_NOTE}</p>
+    </div>
+  </Section>
+
+  <Section id="videos" eyebrow="VideoCard and Theater" title="Videos" lead="Posters are ours; YouTube loads only when someone presses play.">
+    <div class="grid grid--3">
+      <VideoCard id="GiCsebs_FK4" title="Hypno Halo trailer" poster={hypnoPoster} meta="Hypno Halo" />
+      <VideoCard id="r_FJBZjHUpA" title="Scriptable Sheets overview" poster={shotMedium} meta="Unity Asset Store tool" />
+      <VideoCard id="r_FJBZjHUpA" title="A card without a poster" />
+    </div>
+  </Section>
+
+  <Section id="gallery" tone="raised" eyebrow="Gallery" title="Screenshots" lead="Click a shot: arrows, keyboard, swipe, Esc.">
+    <Gallery images={shots} label="Hypno Halo screenshots" />
+  </Section>
+
+  <Section id="reviews" eyebrow="Reviews and ReviewCard" title="Our howling reviews" lead="Quotes are reproduced exactly, with their source.">
+    <Reviews reviews={reviews} />
+    <h3 class="sg-sub">Row layout (scroll-snap)</h3>
+    <Reviews reviews={[...reviews, ...reviews]} layout="row" label="Reviews, scrolling row" />
+  </Section>
+
+  <Section id="partners" tone="raised" align="center" eyebrow="PartnerCloud" title="Our trusted pack" lead="Greyscale JPGs on white, knocked out per theme with CSS.">
+    <PartnerCloud partners={partners} />
+  </Section>
+
+  <Section id="awards" tone="sky" align="center" eyebrow="AwardBadge and Stat" title="Recognition">
+    <div class="awards">
+      <AwardBadge label="East Coast Reboot game jam" title="1st place" year={2015} />
+      <AwardBadge label="Boston Festival of Indie Games" title="Nominee, Haberdashery" year={2015} />
+      <AwardBadge label="Delaware Innovation Awards" title="Indie Video Game of the Year nominee" year={2016} tone="accent" />
+      <AwardBadge label="University of Delaware" title="Neurodiversity Employment Inclusion Excellence Award" year={2025} size="sm" />
+    </div>
+    <div class="stat-row sg-stats">
+      <Stat value="300+" label="Handcrafted levels" note="Hypno Halo" />
+      <Stat value="51" label="Bonus challenges" />
+      <Stat value="50+" label="Achievements" tone="gold" />
+      <Stat value="2015" label="Founded in Newark, Delaware" tone="ink" />
+    </div>
+  </Section>
+
+  <Section id="founders" eyebrow="FounderCard" title="Our founders">
+    <div class="grid grid--3">
+      {founders.map((f) => <FounderCard founder={f} />)}
+    </div>
+    <h3 class="sg-sub">Row layout</h3>
+    <FounderCard founder={founders[1]} layout="row" />
+  </Section>
+
+  <Section id="features" tone="raised" eyebrow="FeatureList" title="Features">
+    <FeatureList items={features} columns={2} />
+    <h3 class="sg-sub">Numbered (process steps)</h3>
+    <FeatureList items={steps} numbered columns={3} />
+  </Section>
+
+  <Section id="faq" eyebrow="Faq" title="Publishing questions" width="narrow">
+    <Faq items={faqs} open={0} />
+  </Section>
+
+  <Section id="forms" tone="raised" eyebrow="ContactForm and NewsletterForm" title="Forms">
+    <div class="sg-forms">
+      <div class="card card--pad">
+        <ContactForm id="sg-contact" />
+      </div>
+      <div class="card card--pad stack">
+        <h3>Newsletter (stacked)</h3>
+        <NewsletterForm id="sg-newsletter" layout="stacked" label="Email address" />
+      </div>
+    </div>
+  </Section>
+
+  <Section id="prose" eyebrow="prose.css" title="Long-form text" width="narrow">
+    <div class="prose sg-prose">
+      <h2>Information we collect</h2>
+      <p>
+        Long-form pages such as the <a href="/privacy-policy/">privacy policy</a> use <code>.prose</code>. Lists, quotes and
+        subheadings are styled without extra classes.
+      </p>
+      <ul>
+        <li>Digits-in-noise (measures ability to understand speech in noisy environments)</li>
+        <li>Pure tone (assesses hearing sensitivity)</li>
+        <li>Sound localization (tests ability to determine the direction of a sound)</li>
+      </ul>
+      <blockquote>Our virtual reality hearing assessment gamifies traditional hearing tests.</blockquote>
+    </div>
+  </Section>
+
+  <CtaBand secondary={{ label: "See our games", href: "/games/" }} />
+</BaseLayout>
+
+<style>
+  .sg-hero-media {
+    width: 100%;
+  }
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .swatch-chip {
+    height: 64px;
+    border-radius: var(--lw-radius-sm);
+    border: 1px solid var(--lw-border-strong);
+  }
+  .swatch-name {
+    font-weight: 600;
+    font-size: var(--lw-text-sm);
+  }
+  .swatch-var {
+    font-size: 0.72rem;
+    color: var(--lw-ink-subtle);
+    background: none;
+    border: 0;
+    padding: 0;
+  }
+  .sg-display {
+    font-family: var(--lw-font-display);
+    font-size: var(--lw-display);
+    font-weight: 650;
+    line-height: 1;
+    letter-spacing: -0.025em;
+  }
+  .sg-h1 {
+    font-family: var(--lw-font-display);
+    font-size: var(--lw-h1);
+    font-weight: 650;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .icons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+  }
+  .icons li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.9rem 0.4rem;
+    border-radius: var(--lw-radius-sm);
+    border: 1px solid var(--lw-border);
+    background: var(--lw-surface);
+  }
+  .icons code {
+    font-size: 0.7rem;
+    background: none;
+    border: 0;
+    color: var(--lw-ink-muted);
+  }
+  .sg-center {
+    justify-content: center;
+  }
+  .sg-sub {
+    margin: 2.5rem 0 1.1rem;
+    font-size: 1.1rem;
+    color: var(--lw-ink-muted);
+  }
+  .sg-logos {
+    gap: 2rem;
+  }
+  .awards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem 2.5rem;
+  }
+  .sg-stats {
+    margin-top: 3rem;
+    text-align: left;
+  }
+  .sg-forms {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .sg-prose {
+    padding: 0;
+    max-width: none;
+  }
+  @media (max-width: 900px) {
+    .sg-forms {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
+
+<script>
+  // QA hooks for screenshots and manual testing. This page only.
+  const params = new URLSearchParams(location.search);
+  const formtest = params.get("formtest");
+  if (formtest) {
+    const real = window.fetch.bind(window);
+    window.fetch = async (input, init) => {
+      const url = String(input instanceof Request ? input.url : input);
+      if (/formsubmit\.co/.test(url)) {
+        await new Promise((r) => setTimeout(r, 300));
+        return new Response(JSON.stringify(formtest === "ok" ? { success: "true" } : { success: "false" }), {
+          status: formtest === "ok" ? 200 : 500,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      return real(input, init);
+    };
+    addEventListener("load", () => {
+      const c = document.getElementById("sg-contact") as HTMLFormElement | null;
+      if (c) {
+        (c.elements.namedItem("name") as HTMLInputElement).value = "Test Person";
+        (c.elements.namedItem("email") as HTMLInputElement).value = "test@example.com";
+        (c.elements.namedItem("topic") as HTMLSelectElement).value = "Unity tools";
+        (c.elements.namedItem("message") as HTMLTextAreaElement).value = "Stubbed submission.";
+        c.requestSubmit();
+      }
+      const n = document.getElementById("sg-newsletter") as HTMLFormElement | null;
+      if (n) {
+        (n.querySelector('input[type="email"]') as HTMLInputElement).value = "test@example.com";
+        n.requestSubmit();
+      }
+    });
+  }
+  const open = params.get("open");
+  addEventListener("load", () => {
+    if (open === "video") document.querySelector<HTMLElement>("#videos a[data-video-id]")?.click();
+    if (open === "lightbox") document.querySelector<HTMLElement>(".gal-thumb")?.click();
+    if (open === "menu") document.getElementById("nav-toggle")?.click();
+    if (open === "services") document.querySelector<HTMLElement>(".nav-desktop .nav-link")?.focus();
+    // ?qa=overflow lists elements that stick out past the viewport (horizontal scroll bugs).
+    if (params.get("qa") === "overflow") {
+      const vw = document.documentElement.clientWidth;
+      const bad = [...document.querySelectorAll<HTMLElement>("body *")]
+        .filter((el) => {
+          const r = el.getBoundingClientRect();
+          return r.width > 0 && (r.right > vw + 1 || r.left < -1) && !el.closest("dialog, .reviews--row, .visually-hidden, .hp");
+        })
+        .map((el) => `${el.tagName.toLowerCase()}.${[...el.classList].join(".")} right=${Math.round(el.getBoundingClientRect().right)}`);
+      const report = `vw=${vw} scrollW=${document.documentElement.scrollWidth} :: ${bad.slice(0, 20).join(" | ") || "none"}`;
+      document.body.dataset.overflow = report;
+      if (parent !== window) parent.postMessage({ overflow: report }, "*");
+    }
+  });
+</script>

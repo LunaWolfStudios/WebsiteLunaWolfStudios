@@ -1,0 +1,380 @@
+---
+/**
+ * The body of a press kit page (the studio kit and every project sheet): the section menu in
+ * a left column, the sections in the main column. The page passes the menu entries, which
+ * must match the ids of the <section> elements it puts in the default slot.
+ *
+ *   <PressKitLayout nav={[{ id: "factsheet", label: "Fact sheet" }, ...]}>
+ *     <Fragment slot="nav"><a class="btn btn--primary btn--sm" href="...">Download</a></Fragment>
+ *     <section id="factsheet" aria-labelledby="factsheet-title">...</section>
+ *   </PressKitLayout>
+ *
+ * Every section after the first skips layout until it is near the screen
+ * (`.pk-main > section ~ section` in global.css). The styles below are the shared pieces of a
+ * press section: headings, fact sheets, timelines, download rows, link lists, awards,
+ * coverage, contact, and the footnote. They are global under `.pk-main` so both pages use
+ * the same markup.
+ */
+import SectionNav from "./SectionNav.astro";
+
+interface Props {
+  nav: Array<{ id: string; label: string }>;
+}
+
+const { nav } = Astro.props;
+---
+
+<div class="wrap pk">
+  <SectionNav items={nav}>
+    <slot name="nav" />
+  </SectionNav>
+  <div class="pk-main">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .pk {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+    padding-block: clamp(2.5rem, 5vw, 4rem) clamp(3.5rem, 7vw, 6rem);
+  }
+  @media (max-width: 900px) {
+    .pk {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.75rem;
+      padding-top: 0;
+    }
+  }
+
+  .pk-main {
+    min-width: 0;
+  }
+
+  /* Sections */
+  .pk-main > :global(section + section) {
+    margin-top: clamp(2.75rem, 5vw, 3.75rem);
+    padding-top: clamp(2.25rem, 4vw, 3rem);
+    border-top: 1px solid var(--lw-border);
+  }
+  /* Set by the section menu before a jump, so every section has its real height. */
+  .pk-main.pk-main--all > :global(section) {
+    content-visibility: visible;
+  }
+  /* On phones the chip bar sticks under the header: land below both. */
+  @media (max-width: 900px) {
+    .pk-main > :global(section) {
+      scroll-margin-top: 4rem;
+    }
+  }
+  .pk-main :global(h2) {
+    font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2rem);
+    margin-bottom: 1rem;
+  }
+  .pk-main :global(.pk-sub) {
+    margin: 2.1rem 0 0.9rem;
+    font-size: 1.2rem;
+  }
+  /* Low specificity on purpose: a component's own paragraph styles (quotes, cards) win. */
+  :global(:where(.pk-main) > section p) {
+    color: var(--lw-ink-muted);
+    max-width: 72ch;
+  }
+  :global(:where(.pk-main) > section p + p) {
+    margin-top: 0.85rem;
+  }
+  .pk-main :global(.pk-pitch) {
+    font-family: var(--lw-font-display);
+    font-weight: 500;
+    font-size: var(--lw-text-lg);
+    line-height: 1.5;
+    color: var(--lw-ink);
+  }
+  .pk-main :global(.pk-head) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .pk-main :global(.pk-head h2) {
+    margin-bottom: 0;
+  }
+  .pk-main :global(p + .gallery) {
+    margin-top: 1.15rem;
+  }
+  .pk-main :global(.pk-more) {
+    margin-top: 1.2rem;
+  }
+  .pk-main :global(.pk-small) {
+    margin-top: 0.9rem;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+
+  /* Fact sheet: one row per fact, the label beside the value (above it on phones). */
+  .pk-main :global(.pk-facts) {
+    display: grid;
+    margin: 0;
+    padding: 0 1.4rem;
+    border: 1px solid var(--lw-border);
+    border-radius: var(--lw-radius-lg);
+    background: var(--lw-surface);
+  }
+  .pk-main :global(.pk-fact) {
+    display: grid;
+    grid-template-columns: 11.5rem minmax(0, 1fr);
+    gap: 0.25rem 1.5rem;
+    align-items: baseline;
+    padding: 0.8rem 0;
+  }
+  .pk-main :global(.pk-fact + .pk-fact) {
+    border-top: 1px solid var(--lw-border);
+  }
+  .pk-main :global(.pk-fact dt) {
+    font-family: var(--lw-font-display);
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .pk-main :global(.pk-fact dd) {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--lw-ink);
+  }
+  .pk-main :global(.pk-inline-list) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.9rem;
+    margin: 0;
+    padding: 0;
+  }
+  .pk-main :global(.pk-releases) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.3rem 1.5rem;
+    margin: 0.15rem 0 0;
+    padding: 0;
+  }
+  .pk-main :global(.pk-releases li) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0 0.75rem;
+  }
+  .pk-main :global(.pk-note) {
+    color: var(--lw-ink-subtle);
+    font-size: 0.85rem;
+  }
+  @media (max-width: 640px) {
+    .pk-main :global(.pk-facts) {
+      padding-inline: 1.1rem;
+    }
+    .pk-main :global(.pk-fact) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .pk-main :global(.pk-releases) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Timeline */
+  .pk-main :global(.pk-timeline) {
+    display: grid;
+    gap: 0.65rem;
+    margin: 1.3rem 0 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid var(--lw-accent-line);
+  }
+  .pk-main :global(.pk-timeline li) {
+    position: relative;
+    display: grid;
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    gap: 0.9rem;
+    padding-left: 1.1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .pk-main :global(.pk-timeline li::before) {
+    content: "";
+    position: absolute;
+    left: -4px;
+    top: 0.5em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--lw-accent);
+  }
+  .pk-main :global(.pk-when) {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    color: var(--lw-ink);
+  }
+  .pk-main :global(.pk-what) {
+    color: var(--lw-ink-muted);
+  }
+  @media (max-width: 640px) {
+    .pk-main :global(.pk-timeline li) {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.1rem;
+    }
+  }
+
+  /* Feature list */
+  .pk-main :global(.pk-features) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem 2rem;
+    margin: 0;
+    padding: 0;
+  }
+  .pk-main :global(.pk-features li) {
+    display: grid;
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    color: var(--lw-ink-muted);
+    line-height: 1.55;
+  }
+  .pk-main :global(.pk-features .pk-check) {
+    margin-top: 0.2em;
+    color: var(--lw-accent);
+  }
+  @media (max-width: 640px) {
+    .pk-main :global(.pk-features) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* A row of download buttons, with the file type and size in each label. */
+  .pk-main :global(.pk-dl-row) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0 0 1.25rem;
+  }
+  .pk-main :global(.pk-grid-2) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+  .pk-main :global(.pk-grid-3) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+  @media (max-width: 1100px) {
+    .pk-main :global(.pk-grid-3) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .pk-main :global(.pk-grid-2),
+    .pk-main :global(.pk-grid-3) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Additional links: a label that links, and a short note under it. */
+  .pk-main :global(.pk-links) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem 2rem;
+    margin: 0;
+    padding: 0;
+  }
+  .pk-main :global(.pk-links li) {
+    display: grid;
+    gap: 0.1rem;
+  }
+  .pk-main :global(.pk-links a) {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+  }
+  .pk-main :global(.pk-links span) {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+  @media (max-width: 640px) {
+    .pk-main :global(.pk-links) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Awards and coverage */
+  .pk-main :global(.pk-awards),
+  .pk-main :global(.pk-coverage) {
+    display: grid;
+    gap: 0.8rem;
+    margin: 0;
+    padding: 0;
+  }
+  .pk-main :global(.pk-award) {
+    display: grid;
+    grid-template-columns: 3.6rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.8rem;
+  }
+  .pk-main :global(.pk-award .badge) {
+    justify-content: center;
+  }
+  .pk-main :global(.pk-award-text) {
+    color: var(--lw-ink-muted);
+  }
+  .pk-main :global(.pk-award-text strong) {
+    color: var(--lw-ink);
+  }
+  .pk-main :global(.pk-meta) {
+    display: block;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+  .pk-main :global(.pk-coverage li) {
+    color: var(--lw-ink-muted);
+  }
+  .pk-main :global(.pk-coverage strong) {
+    color: var(--lw-ink);
+  }
+
+  /* Contact */
+  .pk-main :global(.pk-contact) {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.55rem 1.5rem;
+    margin: 0;
+  }
+  .pk-main :global(.pk-contact dt) {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    color: var(--lw-ink);
+  }
+  .pk-main :global(.pk-contact dd) {
+    margin: 0;
+    color: var(--lw-ink-muted);
+  }
+  @media (max-width: 640px) {
+    .pk-main :global(.pk-contact) {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.1rem;
+    }
+    .pk-main :global(.pk-contact dd) {
+      margin-bottom: 0.7rem;
+    }
+  }
+
+  .pk-main :global(.pk-footnote) {
+    margin-top: 3rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--lw-border);
+    font-size: 0.84rem;
+    line-height: 1.6;
+    color: var(--lw-ink-subtle);
+  }
+</style>

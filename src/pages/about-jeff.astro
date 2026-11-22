@@ -1,0 +1,285 @@
+---
+/**
+ * /about-jeff/: Jeff's founder page. Bio: src/data/founders/jeff.ts. Portfolio:
+ * FOUNDER_PORTFOLIO.jeff (src/data/team.ts), in the owner's order (November 2026): the latest
+ * work first as four wide cards (Sheep Tag 2, Scriptable Sheets, Hypno Halo, ParaLily), then
+ * the health, fitness, and education games with the Anatomy of Play body map, then awards,
+ * then everything else newest first, game jams and the 2014 to 2016 reel last.
+ *
+ * Awards: the ten Jeff listed, in his order, worded as src/data/awards.ts words them. Two
+ * belong to other companies' products (Lanebreak, NeuroSPARKS) and one is held back from the
+ * studio's lists (ParaLily at MIVS): they come from ALL_AWARDS and show on this page only.
+ *
+ * Jeff goes by first name only, everywhere.
+ */
+import FounderPage from "../components/about/FounderPage.astro";
+import BioSections from "../components/about/BioSections.astro";
+import PortfolioGrid from "../components/about/PortfolioGrid.astro";
+import FeatureProject from "../components/about/FeatureProject.astro";
+import Section from "../components/Section.astro";
+import VideoCard from "../components/VideoCard.astro";
+import AwardBadge from "../components/AwardBadge.astro";
+import AnatomyOfPlay from "../components/AnatomyOfPlay.astro";
+import { FOUNDER_PORTFOLIO } from "../data/team";
+import { JEFF_PAGE, JEFF_LATEST } from "../data/founders/jeff";
+import { work } from "../data/games";
+import { ALL_AWARDS, AWARDS } from "../data/awards";
+import type { Award } from "../data/types";
+import { ALL_VIDEOS } from "../data/videos";
+import { LINKS, withUtm } from "../data/links";
+import { markRepeats } from "../components/about/portfolio";
+
+const [latestGroup, healthGroup, moreHealthGroup, ...restGroups] = FOUNDER_PORTFOLIO.jeff;
+const [health, moreHealth, ...rest] = markRepeats(
+  [healthGroup, moreHealthGroup, ...restGroups],
+  new Set(latestGroup.items.map((i) => i.slug!)),
+);
+const reel = ALL_VIDEOS.find((v) => v.id === JEFF_PAGE.reelId)!;
+
+// ── Latest work: four wide cards, store link first, then the project's page here ────────────
+type Link = { label: string; url: string; icon?: string; context?: string };
+const STORE: Record<string, Link[]> = {
+  "sheep-tag-2": [{ label: "Wishlist on Steam", url: withUtm(LINKS.sheepTag2Steam, "about"), icon: "steam" }],
+  "scriptable-sheets": [
+    { label: "Get it on the Unity Asset Store", url: withUtm(LINKS.scriptableSheets, "about"), icon: "unity" },
+  ],
+  "hypno-halo": [
+    { label: "View on Steam", url: withUtm(LINKS.hypnoHaloSteam, "about"), icon: "steam" },
+    { label: "Buy on Nintendo eShop", url: withUtm(LINKS.hypnoHaloSwitch, "about"), icon: "switch" },
+  ],
+  paralily: [
+    { label: "View on Steam", url: withUtm(LINKS.paralilySteam, "about"), icon: "steam" },
+    { label: "Buy on Nintendo eShop", url: withUtm(LINKS.paralilySwitch, "about"), icon: "switch" },
+  ],
+};
+const latest = latestGroup.items.map((item, i) => {
+  const w = work(item.slug!);
+  const title = item.label ?? w.title;
+  const links: Link[] = [
+    ...(STORE[w.slug] ?? []).map((l) => ({ ...l, context: w.title })),
+    ...(w.page ? [{ label: `About ${w.title}`, url: w.page }] : []),
+  ];
+  const awards = w.slug === "scriptable-sheets" ? AWARDS.filter((a) => a.subjectSlug === "scriptable-sheets") : [];
+  return { slug: w.slug, title, credit: item.credit, ...JEFF_LATEST[w.slug], links, awards, flip: i % 2 === 1 };
+});
+
+// ── Awards: Jeff's ten, in his order ────────────────────────────────────────────────────────
+const pick = (test: (a: Award) => boolean) => {
+  const a = ALL_AWARDS.find(test);
+  if (!a) throw new Error("about-jeff: an award in Jeff's list is missing from awards.ts");
+  return a;
+};
+const awards = [
+  pick((a) => a.subjectSlug === "scriptable-sheets" && a.body === "17th Unity Awards"),
+  pick((a) => a.subjectSlug === "studio" && a.body === "17th Unity Awards"),
+  pick((a) => a.subjectSlug === "lanebreak" && a.body === "16th Unity Awards"),
+  pick((a) => a.subjectSlug === "neurosparks"),
+  pick((a) => a.subjectSlug === "paralily" && a.status === "Official selection"),
+  pick((a) => a.subjectSlug === "paralily" && a.status === "Best in Show"),
+  pick((a) => a.subjectSlug === "plan-c"),
+  pick((a) => a.subjectSlug === "fungeon-crawler"),
+  pick((a) => a.subjectSlug === "haberdashery" && a.status === "Selected"),
+  pick((a) => a.subjectSlug === "haberdashery" && a.status === "Nominee"),
+].map((award) => ({
+  award,
+  year: award.yearLabel ?? award.year,
+  subject: award.owner ? `${award.subject}, by ${award.owner}` : award.subject,
+}));
+
+const person = {
+  award: awards.map(({ award, year, subject }) => `${award.title}, ${award.body} (${year}): ${subject}`),
+};
+
+// Jump links: the groups below the latest work, with awards in its place.
+const jump = [
+  { id: health.id, label: health.heading },
+  { id: "awards", label: "Awards and recognition" },
+  ...rest.map((g) => ({ id: g.id, label: g.heading })),
+];
+---
+
+<FounderPage
+  data={JEFF_PAGE}
+  photoAlt="Jeff, co-founder of Luna Wolf Studios, smiling and holding up a large white dog"
+  photoPosition={{ wide: "50% 50%", square: "82% 46%", zoom: 1.6 }}
+  person={person}
+>
+  <BioSections id="about-jeff" title="About Jeff" sections={JEFF_PAGE.bio} />
+
+  <section class="section section--raised" aria-labelledby="portfolio-title" id="portfolio">
+    <div class="wrap">
+      <header class="pf-intro" data-reveal>
+        <p class="eyebrow">Portfolio</p>
+        <h2 id="portfolio-title">Games, apps, and tutorials</h2>
+        <p class="lead">Our latest games and tools first, then health games and earlier work.</p>
+        <ul class="pf-jump" role="list" aria-label="Portfolio groups">
+          {
+            jump.map((j) => (
+              <li>
+                <a href={`#${j.id}`}>{j.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </header>
+
+      <ul class="pf-latest" role="list" aria-label={latestGroup.heading}>
+        {
+          latest.map((p) => (
+            <li data-reveal>
+              <FeatureProject
+                slug={p.slug}
+                title={p.title}
+                status={p.status}
+                credit={p.credit}
+                paragraphs={p.paragraphs}
+                awards={p.awards}
+                links={p.links}
+                flip={p.flip}
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Section id={health.id} title={health.heading}>
+    <PortfolioGrid items={health.items} />
+    <div class="pf-aop">
+      <h3 class="pf-sub">Anatomy of Play: these games on a body map</h3>
+      <AnatomyOfPlay />
+    </div>
+    <div class="pf-more-health">
+      <h3 id={moreHealth.id} class="pf-sub">{moreHealth.heading}</h3>
+      <PortfolioGrid items={moreHealth.items} headingLevel={4} />
+    </div>
+  </Section>
+
+  <Section id="awards" title="Awards and recognition" tone="raised">
+    <ul class="awards" role="list">
+      {
+        awards.map(({ award, year, subject }) => (
+          <li class="award-card card" data-reveal>
+            <AwardBadge award={award} year={year} />
+            <p class="award-subject">{subject}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  {
+    rest.map((g, i) => (
+      <Section id={g.id} title={g.heading} tone={i % 2 === 1 ? "raised" : "default"}>
+        <PortfolioGrid items={g.items} />
+        {i === rest.length - 1 && (
+          <>
+            <div class="pf-reel">
+              <h3 class="pf-sub">Earlier Unity projects, 2014 to 2016</h3>
+              <div class="pf-reel-card" data-reveal>
+                <VideoCard video={reel} meta={reel.length} sizes="(max-width: 560px) calc(100vw - 32px), 380px" />
+              </div>
+            </div>
+            <p class="pf-more">
+              <a href="/games/">See all games and projects</a>.
+            </p>
+          </>
+        )}
+      </Section>
+    ))
+  }
+</FounderPage>
+
+<style>
+  .pf-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+    margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+  }
+  .pf-intro h2 {
+    margin: 0;
+  }
+  .pf-jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.4rem 0 0;
+    padding: 0;
+  }
+  .pf-jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0.35em 0.95em;
+    border-radius: var(--lw-radius-pill);
+    border: 1px solid var(--lw-border-strong);
+    color: var(--lw-ink);
+    font-size: var(--lw-text-sm);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .pf-jump a:hover {
+    border-color: var(--lw-accent);
+    color: var(--lw-accent);
+  }
+  .pf-latest {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
+    margin: 0;
+    padding: 0;
+  }
+  .pf-sub {
+    margin-bottom: 1.1rem;
+    font-size: var(--lw-h3);
+  }
+  .pf-aop,
+  .pf-more-health,
+  .pf-reel {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+  .pf-reel-card {
+    max-width: 380px;
+  }
+  .pf-more {
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+    color: var(--lw-ink-muted);
+    text-align: center;
+  }
+
+  /* Awards: ten badges, five across on wide screens and two across below, so no row is left
+     with a single badge. */
+  .awards {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+  .award-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem 0.5rem 1rem;
+    text-align: center;
+  }
+  .award-subject {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  @media (max-width: 1180px) {
+    .awards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 420px) {
+    .awards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

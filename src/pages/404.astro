@@ -1,0 +1,178 @@
+---
+/**
+ * Custom 404. Astro emits dist/404.html, which GitHub Pages serves for any unknown path.
+ *
+ * Before anything paints, a head script retries a mixed-case address in lower case, then
+ * checks the missed path against the WordPress patterns in src/data/legacy.ts
+ * (DEAD_PATTERNS: /category/, /tag/, /author/, /feed/, paged archives, attachment pages
+ * nested under a page, /wp-content/uploads/) and forwards those visitors somewhere useful.
+ * Everyone else gets this page, which shows the address that missed and the main routes.
+ */
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import emblem from "../assets/logo/lws-emblem-512.png";
+import { deadPathRedirectScript } from "../data/legacy";
+
+const routes = [
+  { href: "/", label: "Home", icon: "home", blurb: "Start from the top." },
+  { href: "/services/", label: "Services", icon: "briefcase", blurb: "Games, Unity, VR and AR, software." },
+  { href: "/games/", label: "Games", icon: "gamepad", blurb: "Our games and the ones we publish." },
+  { href: "/contact/", label: "Contact", icon: "mail", blurb: "Ask us directly." },
+];
+
+// GitHub Pages is case-sensitive and WordPress was not: /Presskit/ tries /presskit/ once
+// (a lower-case address that also misses lands here again, already lower-case, and stays).
+// The script is built in src/data/legacy.ts, which also makes it work in a github.io preview.
+const forward = deadPathRedirectScript();
+---
+
+<BaseLayout
+  title="Page not found"
+  description="The page you were looking for is not on the Luna Wolf Studios website. Find our game development services, our games, or get in touch."
+  noindex
+>
+  <script is:inline slot="head" set:html={forward} />
+
+  <section class="lost sky">
+    <div class="wrap lost-inner">
+      <div class="lost-moon" aria-hidden="true">
+        <Image src={emblem} alt="" width={200} height={200} densities={[1, 2]} loading="eager" class="lost-emblem" />
+      </div>
+      <p class="eyebrow eyebrow--plain">Error 404</p>
+      <h1 class="lost-title">This page wandered off into the night</h1>
+      <p class="lead lost-lead">
+        There is nothing at <code class="lost-path" id="lost-path">this address</code>. The link may point to our old
+        site. These pages will get you back on the trail.
+      </p>
+
+      <ul class="lost-routes" role="list">
+        {
+          routes.map((r) => (
+            <li>
+              <a href={r.href} class="lost-route card card--link">
+                <span class="lost-ico">
+                  <Icon name={r.icon} size={20} />
+                </span>
+                <span class="lost-body">
+                  <span class="lost-name">{r.label}</span>
+                  <span class="lost-blurb">{r.blurb}</span>
+                </span>
+                <Icon name="arrowRight" size={18} class="lost-go" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lost {
+    padding-block: clamp(3rem, 8vw, 6rem);
+    background:
+      radial-gradient(45% 55% at 50% 18%, var(--lw-glow-strong), transparent 70%),
+      var(--lw-bg);
+  }
+  .lost-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+  .lost-moon {
+    margin-bottom: 0.5rem;
+    border-radius: 50%;
+    box-shadow: 0 0 80px 10px color-mix(in srgb, #81ebe1 18%, transparent);
+  }
+  .lost-emblem {
+    width: clamp(120px, 22vw, 200px);
+    height: auto;
+    border-radius: 50%;
+  }
+  .lost-title {
+    max-width: 18ch;
+  }
+  .lost-lead {
+    max-width: 58ch;
+    margin-inline: auto;
+  }
+  /* A block of its own, so a long address wraps as one piece instead of splitting the sentence. */
+  .lost-path {
+    display: inline-block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    vertical-align: bottom;
+    color: var(--lw-ink);
+  }
+  .lost-routes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+    width: 100%;
+    max-width: 760px;
+    margin: 2rem 0 0;
+    padding: 0;
+  }
+  .lost-route {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    height: 100%;
+    padding: 1rem 1.1rem;
+    text-align: left;
+    text-decoration: none;
+    color: var(--lw-ink);
+  }
+  .lost-route:hover {
+    color: var(--lw-ink);
+  }
+  .lost-ico {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    color: var(--lw-accent);
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+  }
+  .lost-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .lost-name {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+  }
+  .lost-blurb {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+    line-height: 1.4;
+  }
+  .lost-route :global(.lost-go) {
+    margin-left: auto;
+    flex-shrink: 0;
+    color: var(--lw-ink-subtle);
+    transition: transform var(--lw-fast) ease, color var(--lw-fast) ease;
+  }
+  .lost-route:hover :global(.lost-go) {
+    color: var(--lw-accent);
+    transform: translateX(3px);
+  }
+  @media (max-width: 600px) {
+    .lost-routes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
+
+<script>
+  // Show the address that missed. Written from JS: one static 404.html serves every bad path.
+  const el = document.getElementById("lost-path");
+  if (el) el.textContent = location.pathname + location.search;
+</script>

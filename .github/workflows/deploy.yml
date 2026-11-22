@@ -1,0 +1,88 @@
+# Deploys the Astro site to GitHub Pages.
+# One-time setup: repo Settings > Pages > Build and deployment > Source: "GitHub Actions", and
+# the custom domain in the same panel. For a workflow deploy GitHub takes the domain from that
+# setting, not from public/CNAME (the file is kept for the record). See README, "Deployment".
+#
+# Preview or production is decided here, with no switch to flip. actions/configure-pages reads
+# the address GitHub Pages serves this repository at. With no custom domain that is
+# https://lunawolfstudios.github.io/WebsiteLunaWolfStudios/, a sub-path, and the build becomes a
+# preview build for it (Astro `base`, then scripts/rebase-dist.mjs; every page noindex). Once
+# the custom domain is set in Settings > Pages, the base path is empty and the next run of
+# this workflow is the normal production build for https://lunawolfstudios.com/.
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call: # called by store-data.yml when a store price changes
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      # Astro keeps every image it has already resized here, so a deploy only encodes the
+      # images that changed (a cold build encodes about 1,100). After npm ci, which empties
+      # node_modules.
+      - name: Restore the image cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: astro-images-${{ hashFiles('src/assets/**', 'package-lock.json') }}
+          restore-keys: astro-images-
+      # Where GitHub Pages serves the site. Outputs: base_path ("/WebsiteLunaWolfStudios" before
+      # the custom domain is attached, "" after), origin, and base_url (the two together).
+      # Fails if Pages is not switched on for the repository yet (Source: GitHub Actions).
+      - name: Read the GitHub Pages address
+        id: pages
+        uses: actions/configure-pages@v5
+      - name: Build
+        # prebuild copies the legacy WordPress uploads into public/ and refreshes store prices.
+        # If a store cannot be read, its prices stay as the live site shows them now (on the
+        # first deploy that file does not exist yet, and the committed snapshot is used).
+        # SITE_BASE empty: production build. SITE_BASE set: preview build for that address.
+        env:
+          SITE_BASE: ${{ steps.pages.outputs.base_path }}
+          SITE_ORIGIN: ${{ steps.pages.outputs.origin }}
+          STORE_BASELINE_URL: ${{ steps.pages.outputs.base_url }}/store-data.json
+        run: npm run build
+      - name: Check links
+        # Same variables, so a preview build is checked as a preview (every link under the base).
+        env:
+          SITE_BASE: ${{ steps.pages.outputs.base_path }}
+          SITE_ORIGIN: ${{ steps.pages.outputs.origin }}
+        run: npm run lint:links
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,72 @@
+---
+/**
+ * "Available on" row with the official Unity logo, linked to the Asset Store listing.
+ *
+ * The shared AvailableOn component covers Steam and Nintendo Switch only and does not link,
+ * so this page carries its own. The files are used as supplied (src/assets/brands/unity/):
+ * the white logo on the dark theme, the black one on the light theme. Both are in the HTML
+ * and CSS shows one. The Unity notice is in the site footer.
+ */
+import { Image } from "astro:assets";
+import unityWhite from "../../assets/brands/unity/unity-logo-white.svg";
+import unityBlack from "../../assets/brands/unity/unity-logo-black.svg";
+import { LINKS, withUtm } from "../../data/links";
+
+interface Props {
+  class?: string;
+}
+
+const { class: cls } = Astro.props;
+const H = 34;
+const w = (img: { width: number; height: number }) => Math.round((img.width / img.height) * H);
+const href = withUtm(LINKS.scriptableSheets, "product_page");
+const alt = "Scriptable Sheets on the Unity Asset Store (opens in a new tab)";
+---
+
+<div class:list={["ss-avail", cls]}>
+  <p class="ss-avail-label">Available on</p>
+  <a class="ss-avail-link" href={href} target="_blank" rel="noopener">
+    <Image src={unityWhite} alt={alt} height={H} width={w(unityWhite)} class="ss-avail-logo on-dark" style={`height:${H}px`} loading="lazy" />
+    <Image src={unityBlack} alt={alt} height={H} width={w(unityBlack)} class="ss-avail-logo on-light" style={`height:${H}px`} loading="lazy" />
+  </a>
+</div>
+
+<style>
+  .ss-avail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1.25rem;
+  }
+  .ss-avail-label {
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  /* Clear space around the mark: the padding keeps other elements away from it. */
+  .ss-avail-link {
+    display: inline-block;
+    padding: 8px 10px;
+    border-radius: var(--lw-radius-sm);
+    line-height: 0;
+    transition: opacity var(--lw-fast) ease;
+  }
+  .ss-avail-link:hover {
+    opacity: 0.8;
+  }
+  .ss-avail-logo {
+    display: block;
+    width: auto;
+  }
+  .on-light {
+    display: none;
+  }
+  :global([data-theme="light"]) .ss-avail .on-light {
+    display: block;
+  }
+  :global([data-theme="light"]) .ss-avail .on-dark {
+    display: none;
+  }
+</style>

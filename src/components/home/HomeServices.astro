@@ -1,0 +1,147 @@
+---
+/**
+ * Client services: the owner's line ("nothing is out of reach for us to build", used here and
+ * once on /services/ only), the six service cards with their one-line `short` text (the hub
+ * and the service pages carry the full summaries), then a quieter row for the two adjacent
+ * offers, publishing and the internship program.
+ */
+import Section from "../Section.astro";
+import ServiceCard from "../ServiceCard.astro";
+import Icon from "../Icon.astro";
+import { SERVICES, ADJACENT_OFFERS } from "../../data/services";
+---
+
+<Section
+  id="services"
+  tone="raised"
+  eyebrow="Services"
+  title="What we build for clients"
+  lead="Games, Unity tools, VR and AR apps, health software, web platforms: nothing is out of reach for us to build. We work in Unity, Unreal, Godot, and more."
+>
+  <Fragment slot="actions">
+    <a class="btn btn--primary" href="/contact/">Tell us what you're building <Icon name="arrowRight" size={18} /></a>
+  </Fragment>
+
+  <ul class="svc-grid" role="list">
+    {
+      SERVICES.map((s, i) => (
+        <li data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
+          <ServiceCard service={s} summary={s.short} bullets={false} cta="See the service" />
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="svc-more">
+    <ul class="svc-adjacent" role="list" aria-label="Also from the studio">
+      {
+        ADJACENT_OFFERS.map((o) => (
+          <li>
+            <a class="adj" href={o.page}>
+              <span class="adj-icon" aria-hidden="true">
+                <Icon name={o.icon} size={20} />
+              </span>
+              <span class="adj-text">
+                <span class="adj-title">{o.title}</span>
+                <span class="adj-short">{o.short}</span>
+              </span>
+              <Icon name="arrowRight" size={18} class="adj-go" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a class="link-arrow svc-all" href="/services/">All services <Icon name="arrowRight" size={16} /></a>
+  </div>
+</Section>
+
+<style>
+  .svc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+  }
+  .svc-grid > li {
+    min-width: 0;
+  }
+  .svc-more {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .svc-adjacent {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+  }
+  .adj {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 1.1rem 0.7rem 0.8rem;
+    border: 1px solid var(--lw-border);
+    border-radius: var(--lw-radius);
+    color: var(--lw-ink);
+    text-decoration: none;
+    transition: border-color var(--lw-fast) ease, background-color var(--lw-fast) ease;
+  }
+  .adj:hover {
+    color: var(--lw-ink);
+    border-color: var(--lw-accent-line);
+    background: var(--lw-accent-tint);
+  }
+  .adj-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 11px;
+    color: var(--lw-accent);
+    background: var(--lw-accent-tint);
+  }
+  .adj-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+  }
+  .adj-title {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+  }
+  .adj-short {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  .adj :global(.adj-go) {
+    margin-left: 0.4rem;
+    color: var(--lw-ink-subtle);
+    transition: transform var(--lw-fast) ease, color var(--lw-fast) ease;
+  }
+  .adj:hover :global(.adj-go) {
+    color: var(--lw-accent);
+    transform: translateX(3px);
+  }
+  @media (max-width: 1000px) {
+    .svc-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .svc-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .svc-adjacent,
+    .svc-adjacent > li,
+    .adj {
+      width: 100%;
+    }
+  }
+</style>

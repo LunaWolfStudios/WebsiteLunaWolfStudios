@@ -1,0 +1,233 @@
+---
+/**
+ * The press kit's section menu, like the left column of a presskit() page: a journalist jumps
+ * straight to the fact sheet, the images, or the logos.
+ *
+ *   <SectionNav items={[{ id: "factsheet", label: "Fact sheet" }, ...]} />
+ *
+ * Wide screens: a sticky list in the left column, the current section marked. Phones and
+ * tablets (900px and down): a bar of chips that sticks under the site header and scrolls
+ * sideways inside itself, never the page. The links are plain anchors and work without
+ * JavaScript; a few lines of script mark the section in view with aria-current and keep its
+ * chip visible in the phone bar. Slot: extra content under the list on wide screens (the main
+ * download button).
+ */
+interface Props {
+  items: Array<{ id: string; label: string }>;
+  label?: string;
+}
+
+const { items, label = "Press kit sections" } = Astro.props;
+---
+
+<nav class="pk-nav" aria-label={label} data-pk-nav>
+  <p class="pk-nav-title" aria-hidden="true">On this page</p>
+  <ul class="pk-nav-list" role="list">
+    {
+      items.map((item) => (
+        <li>
+          <a href={`#${item.id}`} class="pk-nav-link" data-target={item.id}>
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  {
+    Astro.slots.has("default") && (
+      <div class="pk-nav-extra">
+        <slot />
+      </div>
+    )
+  }
+</nav>
+
+<style>
+  .pk-nav {
+    position: sticky;
+    top: calc(var(--lw-header-h) + 1.25rem);
+    max-height: calc(100dvh - var(--lw-header-h) - 2.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    padding-bottom: 0.5rem;
+  }
+  .pk-nav-title {
+    margin: 0 0 0.7rem;
+    font-family: var(--lw-font-display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .pk-nav-list {
+    display: grid;
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid var(--lw-border);
+  }
+  .pk-nav-link {
+    position: relative;
+    display: block;
+    padding: 0.42rem 0.5rem 0.42rem 1rem;
+    border-radius: 0 var(--lw-radius-sm) var(--lw-radius-sm) 0;
+    font-size: 0.93rem;
+    line-height: 1.35;
+    color: var(--lw-ink-muted);
+    text-decoration: none;
+    transition: color var(--lw-fast) ease, background-color var(--lw-fast) ease;
+  }
+  .pk-nav-link::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: 0.3rem;
+    bottom: 0.3rem;
+    width: 2px;
+    border-radius: 2px;
+    background: transparent;
+    transition: background-color var(--lw-fast) ease;
+  }
+  .pk-nav-link:hover {
+    color: var(--lw-ink);
+    background: var(--lw-accent-tint);
+  }
+  .pk-nav-link[aria-current="true"] {
+    color: var(--lw-accent);
+    font-weight: 600;
+  }
+  .pk-nav-link[aria-current="true"]::before {
+    background: var(--lw-accent);
+  }
+  .pk-nav-extra {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.4rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--lw-border);
+  }
+
+  /* Phones and tablets: one row of chips that sticks under the header. The bar runs edge to
+     edge (out into the page gutters) and scrolls sideways inside itself. */
+  @media (max-width: 900px) {
+    .pk-nav {
+      top: var(--lw-header-h);
+      z-index: 20;
+      max-height: none;
+      overflow: visible;
+      margin-inline: calc(-1 * var(--lw-gutter));
+      padding: 0;
+      background: var(--lw-bg);
+      border-block: 1px solid var(--lw-border);
+    }
+    .pk-nav-title,
+    .pk-nav-extra {
+      display: none;
+    }
+    .pk-nav-list {
+      display: flex;
+      gap: 0.4rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      padding: 0.55rem var(--lw-gutter);
+      border-left: 0;
+      scroll-padding-inline: var(--lw-gutter);
+    }
+    .pk-nav-list::-webkit-scrollbar {
+      display: none;
+    }
+    .pk-nav-list li {
+      flex: none;
+    }
+    .pk-nav-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 0.3rem 0.85rem;
+      border: 1px solid var(--lw-border);
+      border-radius: var(--lw-radius-pill);
+      font-size: 0.88rem;
+      white-space: nowrap;
+      background: var(--lw-surface);
+    }
+    .pk-nav-link::before {
+      display: none;
+    }
+    .pk-nav-link[aria-current="true"] {
+      border-color: var(--lw-accent-line);
+      background: var(--lw-accent-tint);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pk-nav-link,
+    .pk-nav-link::before {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Mark the section in view: the first one, in page order, inside a band from just under the
+  // header to a third of the way down the window. A click marks its target straight away.
+  document.querySelectorAll<HTMLElement>("[data-pk-nav]").forEach((nav) => {
+    const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>("a[data-target]"));
+    const list = nav.querySelector<HTMLElement>(".pk-nav-list");
+    const sections = links
+      .map((a) => document.getElementById(a.dataset.target!))
+      .filter((s): s is HTMLElement => Boolean(s));
+    if (!sections.length || !("IntersectionObserver" in window)) return;
+
+    let current: string | null = null;
+    const mark = (id: string) => {
+      if (id === current) return;
+      current = id;
+      for (const a of links) {
+        if (a.dataset.target === id) a.setAttribute("aria-current", "true");
+        else a.removeAttribute("aria-current");
+      }
+      // Keep the current chip in view in the phone bar, without moving the page.
+      const active = links.find((a) => a.dataset.target === id);
+      if (list && active && list.scrollWidth > list.clientWidth) {
+        const li = active.parentElement!;
+        const left = li.offsetLeft - list.clientWidth / 2 + li.offsetWidth / 2;
+        list.scrollTo({ left, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      }
+    };
+
+    // The sections below the first screen skip layout until they come near (content-visibility
+    // in global.css), so their heights are estimates and a jump would land in the wrong place.
+    // Before the first jump, lay them all out once; then the browser scrolls to the real spot.
+    const main = sections[0].parentElement;
+    const renderAll = () => main?.classList.add("pk-main--all");
+    for (const a of links) {
+      a.addEventListener("click", () => {
+        renderAll();
+        mark(a.dataset.target!);
+      });
+    }
+    // Arriving with a section in the address (a link to /presskit/<game>/#logo): the same.
+    const fromHash = location.hash && sections.find((s) => `#${s.id}` === location.hash);
+    if (fromHash) {
+      renderAll();
+      requestAnimationFrame(() => fromHash.scrollIntoView());
+    }
+
+    const visible = new Set<string>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) visible.add(e.target.id);
+          else visible.delete(e.target.id);
+        }
+        // The first section (in page order) that crosses the line.
+        const hit = sections.find((s) => visible.has(s.id));
+        if (hit) mark(hit.id);
+      },
+      { rootMargin: "-80px 0px -65% 0px" },
+    );
+    sections.forEach((s) => io.observe(s));
+  });
+</script>

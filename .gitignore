@@ -20,3 +20,6 @@ dist-*/
 # os / editor cruft
 .DS_Store
 Thumbs.db
+
+# local review tools: photos waiting for a keep or remove decision (never committed)
+.review/

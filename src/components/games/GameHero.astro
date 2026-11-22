@@ -1,0 +1,447 @@
+---
+/**
+ * The key-art hero of a studio game page (/sheep-tag-2/, /hypno-halo/, /paralily/,
+ * /the-brave-hearts-ii-false-skies/), after sheeptag2.com's game hero: the art fills the
+ * first screen, a scrim keeps the text readable, and the hero stays dark in both themes
+ * (data-theme="dark", like the home hero). The page passes headerOverlay and
+ * hideBreadcrumbs to BaseLayout: the transparent header and the trail sit on the art here.
+ *
+ *   <GameHero art={...} layout="bleed" position="62% 40%" logo={...} title="..." crumbs={[...]}>
+ *     ...credit and status...
+ *     <Fragment slot="actions">store buttons, trailer button</Fragment>
+ *   </GameHero>
+ *
+ * Layouts on wide screens (over 900px):
+ * - "bleed": the art covers the hero; a scrim darkens the left side, where the text is.
+ * - "right": the art starts a third of the way in and its left edge fades into the night
+ *   colour, so a logo painted into the middle of the art stays clear of the text.
+ * - "inset": the art keeps its own shape on the right, feathered into `backdrop` (a
+ *   full-bleed image of the art's own background); for art too small to fill the screen.
+ * On phones the art is a band in its own shape under the header, and the text follows on
+ * the night colour, so nothing is cropped and no text sits on the art.
+ *
+ * Performance: the art is the page's one high-priority image (AVIF then WebP, eager), in a
+ * box sized by CSS, so nothing shifts when it arrives. The backdrop is wide-screen only:
+ * on phones its <picture> resolves to an inline 1x1 image and nothing is downloaded.
+ */
+import type { ImageMetadata } from "astro";
+import { Picture, getImage } from "astro:assets";
+import Breadcrumbs from "../Breadcrumbs.astro";
+
+interface Props {
+  art: ImageMetadata;
+  layout: "bleed" | "right" | "inset";
+  position?: string;
+  backdrop?: ImageMetadata;
+  logo?: ImageMetadata;
+  /** The game's name: with a logo, it is the h1's first part as hidden text (the logo draws it). */
+  name: string;
+  eyebrow?: string;
+  /** The h1. With a logo, a leading "<name>: " is drawn by the logo and the rest follows. */
+  title: string;
+  lead?: string;
+  crumbs: Array<{ label: string; href: string }>;
+}
+
+const { art, layout, position = "50% 50%", backdrop, logo, name, eyebrow, title, lead, crumbs } = Astro.props;
+
+const WIDE = "(min-width: 901px)";
+const artWidths = [640, 960, 1280, 1600, 1920].filter((w) => w <= art.width);
+if (art.width < 1920 && !artWidths.includes(art.width)) artWidths.push(art.width);
+// The art box: 100vw on phones (a band) and on wide screens for "bleed"; narrower otherwise.
+// Phones crop the band to 4:3, so the art is drawn about a third wider than the screen.
+const PHONE = "(max-width: 640px) 134vw";
+// On wide screens a 16:9 art covering a box about 86vh tall is drawn up to ~153vh wide.
+const COVER = "min(153vh, 1530px)";
+const artSizes =
+  layout === "bleed"
+    ? `${PHONE}, max(100vw, ${COVER})`
+    : layout === "right"
+      ? `${WIDE} max(62vw, ${COVER}), ${PHONE}, 100vw`
+      : `${WIDE} min(54vw, 860px), ${PHONE}, 100vw`;
+
+const backdropSources = backdrop
+  ? await Promise.all(
+      (["avif", "webp"] as const).map(async (format) => {
+        const widths = [1280, 1920].filter((w) => w <= backdrop.width);
+        const files = await Promise.all(widths.map((width) => getImage({ src: backdrop, width, format, quality: format === "avif" ? 45 : 60 })));
+        return { type: `image/${format}`, srcset: files.map((f, i) => `${f.src} ${widths[i]}w`).join(", ") };
+      }),
+    )
+  : [];
+const backdropFallback = backdrop ? await getImage({ src: backdrop, width: Math.min(1920, backdrop.width), format: "webp", quality: 60 }) : undefined;
+const BLANK = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+
+const prefix = `${name}: `;
+const sub = logo ? (title.startsWith(prefix) ? title.slice(prefix.length) : title === name ? "" : title) : undefined;
+---
+
+<section
+  class:list={["gh", `gh--${layout}`, "bleed-under-header"]}
+  data-theme="dark"
+  aria-labelledby="gh-title"
+  style={`--gh-pos:${position};--gh-ratio:${art.width} / ${art.height}`}
+>
+  {
+    backdrop && (
+      <picture class="gh-backdrop" aria-hidden="true">
+        <source media="(max-width: 900px)" srcset={BLANK} />
+        {backdropSources.map((s) => (
+          <source media={WIDE} type={s.type} srcset={s.srcset} sizes="100vw" />
+        ))}
+        <img src={backdropFallback!.src} alt="" width={backdrop.width} height={backdrop.height} loading="eager" decoding="async" />
+      </picture>
+    )
+  }
+  <div class="gh-art">
+    <Picture
+      src={art}
+      formats={["avif", "webp"]}
+      widths={artWidths}
+      sizes={artSizes}
+      quality={60}
+      alt=""
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      class="gh-img"
+    />
+  </div>
+
+  <div class="wrap gh-inner">
+    <Breadcrumbs items={[{ label: "Home", href: "/" }, ...crumbs]} class="gh-crumbs" />
+    <div class="gh-copy">
+      {eyebrow && <p class="eyebrow gh-eyebrow">{eyebrow}</p>}
+      {
+        logo ? (
+          <h1 id="gh-title" class="gh-title gh-title--logo">
+            {/* The name is real text for search and screen readers; the logo draws it. */}
+            <span class="visually-hidden">{sub ? `${name}: ` : name}</span>
+            <Picture
+              src={logo}
+              formats={["avif", "webp"]}
+              widths={[320, 480, 640, 960].filter((w) => w <= logo.width)}
+              sizes="(max-width: 640px) 70vw, 400px"
+              alt=""
+              loading="eager"
+              decoding="async"
+              class="gh-logo"
+            />
+            {sub && <span class="gh-title-sub">{sub}</span>}
+          </h1>
+        ) : (
+          <h1 id="gh-title" class="gh-title">
+            {title}
+          </h1>
+        )
+      }
+      {lead && <p class="gh-lead">{lead}</p>}
+      <slot />
+      <div class="gh-actions">
+        <slot name="actions" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gh {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    /* Tall enough to feel like a masthead, short enough that the next section peeks in. */
+    min-height: clamp(600px, 86svh, 860px);
+    overflow: hidden;
+    background: #04070a;
+    color: var(--lw-ink);
+  }
+
+  /* ─── Art ─── */
+  .gh-art,
+  .gh-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+  .gh-art :global(picture),
+  .gh-backdrop {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .gh-art :global(img),
+  .gh-backdrop img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--gh-pos);
+  }
+  .gh-backdrop {
+    z-index: -3;
+  }
+
+  /* "bleed": the header lies over the top of the art, so that strip is shaded. The menu
+     labels and the theme button must measure 4.5:1 over any picture, bright sky included. */
+  .gh--bleed .gh-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(4, 7, 10, 0.8),
+      rgba(4, 7, 10, 0.72) var(--lw-header-h),
+      rgba(4, 7, 10, 0) calc(var(--lw-header-h) + 4.5rem)
+    );
+  }
+
+  /* "right": the art box starts a third of the way in; its left edge melts into the night. */
+  /* Below the header, so a logo painted at the top of the art is never under the bar. */
+  .gh--right .gh-art {
+    top: var(--lw-header-h);
+    left: max(38%, calc((100% - var(--lw-maxw)) / 2 + 31rem));
+  }
+  .gh--right .gh-lead {
+    max-width: 31rem;
+  }
+  .gh--right .gh-art::after,
+  .gh--inset .gh-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .gh--right .gh-art::after {
+    background:
+      linear-gradient(to right, #04070a, rgba(4, 7, 10, 0.6) 14%, rgba(4, 7, 10, 0) 32%),
+      linear-gradient(to bottom, #04070a, rgba(4, 7, 10, 0) 7%);
+  }
+
+  /* "inset": the art in its own shape, right of the text, feathered on every side. */
+  .gh--inset .gh-art {
+    inset: var(--lw-header-h) max(var(--lw-gutter), calc((100% - var(--lw-maxw)) / 2)) 0 auto;
+    width: min(54%, 860px);
+    display: flex;
+    align-items: center;
+  }
+  .gh--inset .gh-art :global(picture) {
+    width: 100%;
+    height: auto;
+  }
+  .gh--inset .gh-art :global(img) {
+    height: auto;
+    aspect-ratio: var(--gh-ratio);
+    -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent);
+    mask-image: radial-gradient(closest-side, #000 72%, transparent);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+  }
+  .gh--inset .gh-art::after {
+    display: none;
+  }
+
+  /* Scrims. The text column must measure 4.5:1 or better over any part of the art. */
+  .gh::before,
+  .gh::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  /* Stops are measured from the text column's left edge, not the window, so the scrim sits
+     under the text on every width (at 1920 the column starts 360px in). */
+  .gh {
+    --gh-edge: max(var(--lw-gutter), calc((100% - var(--lw-maxw)) / 2));
+  }
+  .gh::before {
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(4, 7, 10, 0.92),
+      rgba(4, 7, 10, 0.86) calc(var(--gh-edge) + 24rem),
+      rgba(4, 7, 10, 0.66) calc(var(--gh-edge) + 37rem),
+      rgba(4, 7, 10, 0.16) calc(var(--gh-edge) + 50rem),
+      rgba(4, 7, 10, 0) calc(var(--gh-edge) + 60rem)
+    );
+  }
+  .gh--right::before,
+  .gh--inset::before {
+    background: linear-gradient(to right, #04070a 30%, rgba(4, 7, 10, 0) 40%);
+  }
+  .gh--inset::before {
+    background: linear-gradient(to right, rgba(4, 7, 10, 0.7), rgba(4, 7, 10, 0.35) 45%, rgba(4, 7, 10, 0) 70%);
+  }
+  /* The last stretch fades into the night colour, so the hero never ends on a hard edge. */
+  .gh::after {
+    bottom: 0;
+    height: 140px;
+    background: linear-gradient(to bottom, rgba(4, 7, 10, 0), #04070a);
+  }
+
+  /* ─── Text ─── */
+  .gh-inner {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-block: 1.1rem clamp(2.75rem, 7vh, 5rem);
+  }
+  .gh-crumbs {
+    margin-bottom: auto;
+  }
+  .gh-crumbs :global(a) {
+    color: var(--lw-ink-muted);
+  }
+  .gh-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    max-width: 36rem;
+    margin-block: auto;
+    padding-block: clamp(1.5rem, 4vh, 2.5rem) 0.5rem;
+  }
+  .gh-title {
+    margin: 0;
+    font-size: clamp(2.4rem, 1.6rem + 2.6vw, 3.6rem);
+    text-wrap: balance;
+  }
+  .gh-title--logo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.85rem);
+    line-height: 1.2;
+  }
+  .gh-title--logo :global(picture) {
+    display: block;
+  }
+  .gh-title--logo :global(img) {
+    display: block;
+    width: clamp(240px, 30vw, 400px);
+    height: auto;
+    filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.45));
+  }
+  .gh-lead {
+    font-size: var(--lw-text-xl);
+    color: var(--lw-ink);
+    max-width: 34rem;
+  }
+  .gh-copy :global(.gh-credit) {
+    font-family: var(--lw-font-display);
+    font-size: var(--lw-text-lg);
+    color: var(--lw-ink-muted);
+  }
+  .gh-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.85rem 1.25rem;
+    margin-top: 0.35rem;
+  }
+
+  /* A short laptop window (1280x720, 1366x768): keep the first store button on screen. */
+  @media (min-width: 901px) and (max-height: 820px) {
+    .gh {
+      min-height: 100svh;
+    }
+    .gh-copy {
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .gh-title {
+      font-size: clamp(2.1rem, 1.4rem + 2.2vw, 3rem);
+    }
+    .gh-title--logo {
+      font-size: clamp(1.25rem, 1rem + 0.8vw, 1.6rem);
+    }
+    .gh-title--logo :global(img) {
+      width: clamp(200px, 22vw, 300px);
+    }
+    .gh-lead {
+      font-size: var(--lw-text-lg);
+    }
+  }
+
+  /* ─── Phones and tablets: a band of art, then the text on the night colour ─── */
+  @media (max-width: 900px) {
+    .gh {
+      min-height: 0;
+    }
+    .gh::before,
+    .gh::after,
+    .gh-backdrop {
+      display: none;
+    }
+    .gh-art,
+    .gh--right .gh-art,
+    .gh--inset .gh-art {
+      position: relative;
+      inset: auto;
+      z-index: auto;
+      width: 100%;
+      display: block;
+      aspect-ratio: var(--gh-ratio);
+    }
+    .gh-art :global(img),
+    .gh--inset .gh-art :global(img) {
+      height: 100%;
+      object-position: 50% 50%;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .gh-art::after,
+    .gh--right .gh-art::after,
+    .gh--inset .gh-art::after {
+      display: block;
+      content: "";
+      position: absolute;
+      inset: 0;
+      /* Shaded under the header (which lies over the band on every layout here), and
+         faded into the night colour at the foot. */
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(4, 7, 10, 0.8),
+          rgba(4, 7, 10, 0.72) var(--lw-header-h),
+          rgba(4, 7, 10, 0) calc(var(--lw-header-h) + 4.5rem)
+        ),
+        linear-gradient(to bottom, rgba(4, 7, 10, 0) 62%, #04070a);
+    }
+    .gh-inner {
+      padding-block: 0.25rem 2.75rem;
+    }
+    .gh-crumbs {
+      margin-bottom: 0;
+    }
+    .gh-copy {
+      margin-block: 1.25rem 0;
+    }
+    .gh-title--logo :global(img) {
+      width: min(68vw, 340px);
+    }
+  }
+  /* Phones: a taller band (4:3) so the art has presence; the crop keeps each logo whole. */
+  @media (max-width: 640px) {
+    .gh-art,
+    .gh--right .gh-art,
+    .gh--inset .gh-art {
+      aspect-ratio: 4 / 3;
+    }
+    .gh-art :global(img),
+    .gh--inset .gh-art :global(img) {
+      height: 100%;
+      aspect-ratio: auto;
+      object-fit: cover;
+      object-position: var(--gh-pos);
+    }
+    .gh--inset .gh-art :global(picture) {
+      height: 100%;
+    }
+  }
+</style>

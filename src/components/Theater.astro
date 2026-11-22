@@ -1,0 +1,166 @@
+---
+/**
+ * The one shared video player. BaseLayout mounts it once per page; nothing else renders it.
+ *
+ * Any link with a `data-video-id` plays in it: VideoCard posters, a "Watch trailer" button,
+ * anything. The link's href is the YouTube watch URL, so without JavaScript (or without
+ * <dialog>) it still works as a plain link. Nothing is requested from YouTube until someone
+ * presses play: the iframe is created on click, from youtube-nocookie.com, and removed again
+ * when the dialog closes, which stops playback.
+ *
+ *   <a href="https://www.youtube.com/watch?v=GiCsebs_FK4" data-video-id="GiCsebs_FK4"
+ *      data-video-title="Hypno Halo trailer">Watch the trailer</a>
+ *
+ * `data-video-next` names a second video that plays when the first ends (Sheep Tag 2 pattern).
+ */
+import Icon from "./Icon.astro";
+---
+
+<dialog id="lw-theater" class="theater" aria-label="Video player" aria-describedby="lw-theater-hint">
+  <div class="theater-inner">
+    <button type="button" class="theater-close" data-theater-close aria-label="Close video">
+      <Icon name="close" size={24} />
+    </button>
+    <div class="theater-frame" id="lw-theater-frame"></div>
+    {/* Keys pressed inside the player never reach this page, so Escape cannot close the
+        dialog from there. Tab out of the player lands on this second close button. */}
+    <p id="lw-theater-hint" class="visually-hidden">To close from inside the player, press Tab, then Enter.</p>
+    <button type="button" class="theater-done" data-theater-close>Close video</button>
+  </div>
+</dialog>
+
+<style>
+  .theater {
+    /* Never taller than the window: 68px is kept clear above for the close button and below
+       for "Close video", on short laptop windows and landscape phones too. */
+    width: min(1120px, 92vw, calc((100dvh - 136px) * 16 / 9));
+    max-width: 92vw;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #eef7f7;
+    overflow: visible;
+  }
+  .theater::backdrop {
+    background: rgba(2, 4, 6, 0.88);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  .theater-inner {
+    position: relative;
+  }
+  .theater-frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    background: #000;
+    border-radius: var(--lw-radius);
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(129, 235, 225, 0.12);
+  }
+  .theater-frame :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .theater-close {
+    position: absolute;
+    top: -52px;
+    right: 0;
+    display: inline-grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    transition: background-color var(--lw-fast) ease, transform 0.2s ease;
+  }
+  .theater-close:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: rotate(90deg);
+  }
+  .theater-done {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%);
+    min-height: 36px;
+    padding: 0.4rem 1.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--lw-radius-pill);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-family: var(--lw-font-display);
+    font-size: var(--lw-text-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color var(--lw-fast) ease;
+  }
+  .theater-done:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .theater-close:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  const dialog = document.getElementById("lw-theater") as HTMLDialogElement | null;
+  const frame = document.getElementById("lw-theater-frame");
+
+  if (dialog && frame && typeof dialog.showModal === "function") {
+    let opener: HTMLElement | null = null;
+    // Unmount the iframe to stop playback, in every close path rather than relying on the
+    // dialog's "close" event alone (not dispatched everywhere).
+    const clear = () => frame.replaceChildren();
+    const close = () => {
+      clear();
+      if (dialog.open) dialog.close();
+    };
+
+    const open = (link: HTMLAnchorElement) => {
+      const { videoId = "", videoNext, videoTitle } = link.dataset;
+      // The playlist has to name this video too: given only the next one, the player drops
+      // the video in the URL and plays the playlist alone.
+      const query = new URLSearchParams({ autoplay: "1", rel: "0", modestbranding: "1" });
+      if (videoNext) query.set("playlist", `${videoId},${videoNext}`);
+      const player = document.createElement("iframe");
+      player.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?${query}`;
+      player.title = videoTitle || link.getAttribute("aria-label") || "Video";
+      player.allow = "autoplay; encrypted-media; fullscreen; picture-in-picture";
+      player.allowFullscreen = true;
+      player.referrerPolicy = "strict-origin-when-cross-origin";
+      frame.replaceChildren(player);
+      dialog.setAttribute("aria-label", player.title);
+      opener = link;
+      dialog.showModal();
+    };
+
+    // Delegated, so links added later (or rendered by any component) just work.
+    document.addEventListener("click", (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const link = (e.target as Element | null)?.closest?.<HTMLAnchorElement>("a[data-video-id]");
+      if (!link) return;
+      e.preventDefault();
+      open(link);
+    });
+
+    dialog.querySelectorAll("[data-theater-close]").forEach((b) => b.addEventListener("click", close));
+    // A click on the backdrop lands on the dialog element itself.
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) close();
+    });
+    dialog.addEventListener("cancel", clear); // Esc
+    dialog.addEventListener("close", () => {
+      if (!dialog.open) clear();
+      opener?.focus({ preventScroll: true });
+      opener = null;
+    });
+  }
+</script>

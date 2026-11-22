@@ -1,0 +1,76 @@
+---
+/**
+ * "Our Howling Reviews" (the old home page's heading). A curated, verified set leads: reviews
+ * of the studio's own products, the client review, then press about games the team worked
+ * on, each attributed to what it is about. Every other quote the old home page carried sits
+ * behind "More reviews", so none is lost. Quotes are exactly as src/data/reviews.ts records
+ * them.
+ */
+import Section from "../Section.astro";
+import Reviews from "../Reviews.astro";
+import Icon from "../Icon.astro";
+import { REVIEWS, HOME_REVIEWS } from "../../data/reviews";
+
+const LEAD_IDS = ["home-03", "home-04", "home-02", "home-17", "home-07", "home-12"];
+const byId = (id: string) => REVIEWS.find((r) => r.id === id)!;
+const lead = LEAD_IDS.map(byId).filter((r) => r.verified);
+const leadIds = new Set(lead.map((r) => r.id));
+const more = HOME_REVIEWS.filter((r) => !leadIds.has(r.id));
+---
+
+<Section
+  id="reviews"
+  tone="raised"
+  eyebrow="What clients, players, and press say"
+  title="Our Howling Reviews"
+>
+  <Reviews reviews={lead} label="Selected reviews" />
+  {
+    more.length > 0 && (
+      <details class="more">
+        <summary class="btn btn--secondary more-toggle">
+          <span class="more-open">More reviews ({more.length})</span>
+          <span class="more-close">Fewer reviews</span>
+          <Icon name="chevronDown" size={18} class="more-chev" />
+        </summary>
+        <Reviews reviews={more} label="More reviews" class="more-list" />
+      </details>
+    )
+  }
+</Section>
+
+<style>
+  .more {
+    margin-top: clamp(1.25rem, 2.6vw, 1.75rem);
+  }
+  .more-toggle {
+    display: flex;
+    list-style: none;
+    margin-inline: auto;
+    width: fit-content;
+  }
+  .more-toggle::-webkit-details-marker {
+    display: none;
+  }
+  .more-close,
+  .more[open] .more-open {
+    display: none;
+  }
+  .more[open] .more-close {
+    display: inline;
+  }
+  .more :global(.more-chev) {
+    transition: rotate 0.2s ease;
+  }
+  .more[open] :global(.more-chev) {
+    rotate: 180deg;
+  }
+  .more :global(.more-list) {
+    margin-top: clamp(1.25rem, 2.6vw, 1.75rem);
+  }
+  /* The reveal observer only sees blocks present at load; inside a closed <details> they
+     are skipped, so show them outright. */
+  .more :global([data-reveal]) {
+    opacity: 1;
+  }
+</style>

@@ -1,0 +1,137 @@
+---
+/**
+ * Closing call to action, the last section on most pages: every page leads to Contact.
+ *
+ *   <CtaBand />
+ *   <CtaBand title="Have a game to publish?" lead="..." primary={{ label: "Submit your game", href: LINKS.publishingForm }}
+ *            secondary={{ label: "How publishing works", href: "/publishing/" }} />
+ *
+ * Defaults: "Let's create experiences that matter", Contact us → /contact/.
+ */
+import Icon from "./Icon.astro";
+import { isExternal } from "../data/links";
+
+interface Action {
+  label: string;
+  href: string;
+  icon?: string;
+}
+
+interface Props {
+  title?: string;
+  lead?: string;
+  primary?: Action;
+  secondary?: Action;
+  eyebrow?: string;
+  id?: string;
+}
+
+const {
+  title = "Let's create experiences that matter",
+  lead = "Tell us what you are building: a game, a Unity tool, a training app, or something new.",
+  primary = { label: "Contact us", href: "/contact/" },
+  secondary,
+  eyebrow,
+  id = "cta",
+} = Astro.props;
+
+const ext = (href: string) => (isExternal(href) ? { target: "_blank", rel: "noopener" } : {});
+---
+
+<section class="section cta-band" aria-labelledby={`${id}-title`}>
+  <div class="wrap">
+    <div class="cta-card sky" data-reveal>
+      <div class="cta-moon" aria-hidden="true"></div>
+      <div class="cta-text">
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        <h2 id={`${id}-title`} class="cta-title">{title}</h2>
+        {lead && <p class="cta-lead">{lead}</p>}
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn--primary btn--lg" href={primary.href} {...ext(primary.href)}>
+          {primary.icon && <Icon name={primary.icon} size={18} />}
+          {primary.label}
+          {isExternal(primary.href) && <span class="visually-hidden"> (opens in a new tab)</span>}
+          {!primary.icon && <Icon name="arrowRight" size={18} />}
+        </a>
+        {
+          secondary && (
+            <a class="btn btn--secondary btn--lg" href={secondary.href} {...ext(secondary.href)}>
+              {secondary.icon && <Icon name={secondary.icon} size={18} />}
+              {secondary.label}
+              {isExternal(secondary.href) && <span class="visually-hidden"> (opens in a new tab)</span>}
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.5rem 3rem;
+    padding: clamp(2rem, 5vw, 3.75rem);
+    border-radius: calc(var(--lw-radius-lg) + 6px);
+    border: 1px solid var(--lw-accent-line);
+    background:
+      radial-gradient(70% 120% at 100% 0%, var(--lw-glow-strong), transparent 60%),
+      linear-gradient(160deg, var(--lw-surface), var(--lw-bg-raised));
+    box-shadow: var(--lw-shadow-lg);
+  }
+  /* A moon rising at the corner: soft disc and halo, pure CSS. */
+  .cta-moon {
+    position: absolute;
+    right: -120px;
+    top: -160px;
+    width: 420px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, #ade0e2 22%, transparent) 0,
+      color-mix(in srgb, #76a9b2 12%, transparent) 30%,
+      color-mix(in srgb, #44777e 6%, transparent) 50%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+  .cta-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 640px;
+  }
+  .cta-title {
+    font-size: clamp(1.8rem, 1.3rem + 2vw, 2.8rem);
+  }
+  .cta-lead {
+    color: var(--lw-ink-muted);
+    font-size: var(--lw-text-lg);
+  }
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  @media (max-width: 860px) {
+    .cta-card {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  /* The narrowest phones: less padding, and each button takes the full row. */
+  @media (max-width: 420px) {
+    .cta-card {
+      padding: 1.75rem 1.25rem;
+    }
+    .cta-actions .btn {
+      flex: 1 1 100%;
+    }
+  }
+</style>

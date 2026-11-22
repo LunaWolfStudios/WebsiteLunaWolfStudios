@@ -1,0 +1,504 @@
+---
+/**
+ * Site header: logo, primary navigation with dropdown menus, theme toggle and the Contact
+ * button. Rendered once by BaseLayout; pages never use it directly. Navigation data lives in
+ * src/data/nav.ts.
+ *
+ * Desktop menus open on hover and on keyboard focus, and Escape closes them (the Sheep Tag 2
+ * pattern). Below 1080px a menu button opens the full tree, and the page behind stops
+ * scrolling while it is open.
+ *
+ * `overlay` (BaseLayout's `headerOverlay`) is for pages whose first section is a dark
+ * full-bleed hero, like the home page. At the top of the page the bar is transparent with
+ * light ink in both themes, because the header pins itself to the dark palette with
+ * data-theme="dark". Once the page scrolls it drops the pin and becomes the normal
+ * translucent bar in the page theme.
+ */
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import { NAV, CONTACT_HREF, isDivider, isCurrent, type NavLink } from "../data/nav";
+import { sitePath } from "../lib/base";
+
+interface Props {
+  overlay?: boolean;
+}
+const { overlay = false } = Astro.props;
+
+// Without the base, so a preview build under /WebsiteLunaWolfStudios/ matches the hrefs too.
+const path = sitePath(Astro.url.pathname);
+const links = (item: (typeof NAV)[number]) =>
+  (item.children ?? []).filter((c): c is NavLink => !isDivider(c));
+const itemActive = (item: (typeof NAV)[number]) =>
+  isCurrent(path, item.href) || links(item).some((c) => isCurrent(path, c.href));
+---
+
+<header
+  class:list={["site-header", { "is-overlay": overlay }]}
+  data-theme={overlay ? "dark" : undefined}
+  data-overlay={overlay ? "" : undefined}
+>
+  <div class="wrap header-inner">
+    <Logo define eager class="header-brand" />
+
+    <nav class="nav-desktop" aria-label="Primary">
+      <ul class="nav-list" role="list">
+        {
+          NAV.map((item) => (
+            <li class:list={["nav-item", { "has-menu": item.children }]}>
+              <a
+                href={item.href}
+                class:list={["nav-link", { "is-active": itemActive(item) }]}
+                aria-current={path === item.href ? "page" : itemActive(item) ? "true" : undefined}
+              >
+                {item.label}
+                {item.children && <Icon name="chevronDown" size={14} class="nav-chev" />}
+              </a>
+              {item.children && (
+                <div class="menu">
+                  <ul class="menu-panel" role="list" aria-label={`${item.label} pages`}>
+                    {item.children.map((child) =>
+                      isDivider(child) ? (
+                        <li class="menu-divider" role="separator" />
+                      ) : (
+                        <li>
+                          <a
+                            href={child.href}
+                            class="menu-link"
+                            aria-current={path === child.href ? "page" : undefined}
+                          >
+                            <span class="menu-label">{child.label}</span>
+                            {child.hint && <span class="menu-hint">{child.hint}</span>}
+                          </a>
+                        </li>
+                      ),
+                    )}
+                  </ul>
+                </div>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <ThemeToggle />
+      <a href={CONTACT_HREF} class="btn btn--primary btn--sm header-cta">Contact us</a>
+      {/* The name stays "Menu"; aria-expanded says whether it is open. */}
+      <button type="button" class="menu-toggle" id="nav-toggle" aria-label="Menu" aria-controls="mobile-nav" aria-expanded="false">
+        <Icon name="menu" size={24} class="mt-open" />
+        <Icon name="close" size={24} class="mt-close" />
+      </button>
+      {/* Without JavaScript the button cannot open anything: link to the footer's navigation. */}
+      <noscript><a class="btn btn--secondary btn--sm menu-fallback" href="#site-nav">Menu</a></noscript>
+    </div>
+  </div>
+
+  <nav class="nav-mobile" id="mobile-nav" aria-label="Primary" hidden>
+    <div class="wrap nav-mobile-inner">
+      {
+        NAV.map((item) => (
+          <div class="m-group">
+            <a href={item.href} class="m-link" aria-current={path === item.href ? "page" : undefined}>
+              {item.label}
+              <Icon name="arrowRight" size={18} />
+            </a>
+            {item.children && (
+              <ul class="m-sub" role="list">
+                {links(item)
+                  .filter((c) => c.href !== item.href)
+                  .map((c) => (
+                    <li>
+                      <a href={c.href} class="m-sublink" aria-current={path === c.href ? "page" : undefined}>
+                        {c.label}
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            )}
+          </div>
+        ))
+      }
+      {/* Pinned to the bottom of the open menu, so Contact is in reach without scrolling
+          past every link. On a phone the header itself has no room for the button. */}
+      <div class="m-cta-bar">
+        <a href={CONTACT_HREF} class="btn btn--primary btn--lg m-cta">
+          Contact us <Icon name="arrowRight" size={18} />
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--lw-header-bg);
+    -webkit-backdrop-filter: blur(14px) saturate(1.3);
+    backdrop-filter: blur(14px) saturate(1.3);
+    border-bottom: 1px solid color-mix(in srgb, var(--lw-border) 75%, transparent);
+    color: var(--lw-ink);
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+  }
+  /* Overlay: see-through at the top of the page, over the hero. A soft gradient keeps the
+     links legible on bright art. Only with JS, which is what brings the solid bar back. */
+  :global(.js) .site-header.is-overlay:not(.is-scrolled):not(.is-open) {
+    /* no-repeat: a gradient is sized to the padding box and would tile into the 1px border
+       row below it, where its first and darkest line shows as a black rule across the hero. */
+    background: linear-gradient(to bottom, rgba(4, 7, 10, 0.55), rgba(4, 7, 10, 0)) no-repeat;
+    border-bottom-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: calc(var(--lw-header-h) - 1px); /* + the 1px border = --lw-header-h exactly */
+    /* One px on top balances the border below, and leaves an even height to centre in: the
+       logo and the buttons then sit on whole pixels instead of half a pixel off. */
+    padding-top: 1px;
+  }
+
+  /* Desktop nav ---------------------------------------------------------------------- */
+  .nav-desktop {
+    margin-left: auto;
+  }
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.25rem, 1.2vw, 0.9rem);
+    margin: 0;
+    padding: 0;
+  }
+  .nav-item {
+    position: relative;
+  }
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    padding: 0.55rem 0.6rem;
+    border-radius: var(--lw-radius-pill);
+    font-family: var(--lw-font-display);
+    font-weight: 500;
+    font-size: 0.98rem;
+    color: var(--lw-ink);
+    text-decoration: none;
+    transition: color var(--lw-fast) ease, background-color var(--lw-fast) ease;
+  }
+  .nav-link:hover {
+    color: var(--lw-accent);
+  }
+  .nav-link.is-active {
+    color: var(--lw-accent);
+  }
+  .nav-link.is-active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 2px;
+    width: 4px;
+    height: 4px;
+    translate: -50% 0;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 8px currentColor;
+  }
+  .nav-chev {
+    opacity: 0.6;
+    transition: rotate 0.2s ease;
+  }
+
+  .menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    translate: -50% 4px;
+    padding-top: 0.6rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.16s ease, translate 0.2s var(--lw-ease), visibility 0s linear 0.16s;
+  }
+  .menu-panel {
+    min-width: 248px;
+    margin: 0;
+    padding: 0.45rem;
+    background: var(--lw-surface);
+    border: 1px solid var(--lw-border);
+    border-radius: var(--lw-radius);
+    box-shadow: var(--lw-shadow-lg);
+  }
+  .menu-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--lw-radius-sm);
+    color: var(--lw-ink);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--lw-fast) ease, color var(--lw-fast) ease;
+  }
+  .menu-label {
+    font-family: var(--lw-font-display);
+    font-weight: 500;
+    font-size: 0.96rem;
+  }
+  .menu-hint {
+    font-size: 0.8rem;
+    color: var(--lw-ink-subtle);
+  }
+  .menu-link:hover,
+  .menu-link:focus-visible {
+    background: var(--lw-surface-hover);
+    color: var(--lw-accent);
+  }
+  .menu-link[aria-current="page"] {
+    color: var(--lw-accent);
+  }
+  .menu-divider {
+    height: 1px;
+    margin: 0.35rem 0.6rem;
+    background: var(--lw-border);
+  }
+  /* Pointer or keyboard: the panel opens either way, and Escape closes it (script). */
+  @media (hover: hover) {
+    .nav-item.has-menu:hover .menu {
+      opacity: 1;
+      visibility: visible;
+      translate: -50% 0;
+      transition-delay: 0s;
+    }
+    .nav-item.has-menu:hover .nav-chev {
+      rotate: 180deg;
+    }
+  }
+  .nav-item.has-menu:focus-within .menu {
+    opacity: 1;
+    visibility: visible;
+    translate: -50% 0;
+    transition-delay: 0s;
+  }
+  .nav-item.has-menu.closed .menu {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* Actions --------------------------------------------------------------------------- */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-left: clamp(0.5rem, 1.5vw, 1.25rem);
+  }
+  .menu-toggle {
+    display: none;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--lw-border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--lw-ink);
+  }
+  .menu-toggle :global(svg) {
+    grid-area: 1 / 1;
+  }
+  /* The button needs the script; without it the <noscript> link beside it takes its place. */
+  :global(:root:not(.js)) .menu-toggle {
+    display: none !important;
+  }
+  .menu-fallback {
+    display: none;
+  }
+  @media (max-width: 1079px) {
+    .menu-fallback {
+      display: inline-flex;
+    }
+  }
+  .menu-toggle :global(.mt-close),
+  .menu-toggle[aria-expanded="true"] :global(.mt-open) {
+    display: none;
+  }
+  .menu-toggle[aria-expanded="true"] :global(.mt-close) {
+    display: block;
+  }
+
+  /* Mobile nav ------------------------------------------------------------------------ */
+  .nav-mobile {
+    border-top: 1px solid var(--lw-border);
+    background: var(--lw-bg-raised);
+    max-height: calc(100dvh - var(--lw-header-h));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .nav-mobile-inner {
+    display: flex;
+    flex-direction: column;
+    padding-block: 0.75rem 0;
+  }
+  .m-group {
+    padding-block: 0.4rem 0.6rem;
+    border-bottom: 1px solid var(--lw-border);
+  }
+  .m-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 0.1rem;
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .m-link :global(svg) {
+    color: var(--lw-ink-subtle);
+  }
+  .m-sub {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 0 1rem;
+    margin: 0 0 0.25rem;
+    padding: 0;
+  }
+  .m-sublink {
+    display: block;
+    padding: 0.5rem 0.1rem;
+    color: var(--lw-ink-muted);
+    text-decoration: none;
+    font-size: 1rem;
+  }
+  .m-link:hover,
+  .m-sublink:hover,
+  .m-link[aria-current="page"],
+  .m-sublink[aria-current="page"] {
+    color: var(--lw-accent);
+  }
+  .m-cta-bar {
+    position: sticky;
+    bottom: 0;
+    margin-inline: calc(-1 * var(--lw-gutter));
+    padding: 0.9rem var(--lw-gutter) max(0.9rem, env(safe-area-inset-bottom));
+    background: var(--lw-bg-raised);
+    border-top: 1px solid var(--lw-border);
+  }
+  .m-cta {
+    display: flex;
+    width: 100%;
+  }
+
+  @media (max-width: 1079px) {
+    .nav-desktop {
+      display: none;
+    }
+    .menu-toggle {
+      display: inline-grid;
+    }
+    .header-actions {
+      margin-left: auto;
+    }
+  }
+  @media (max-width: 560px) {
+    .header-cta {
+      display: none;
+    }
+  }
+  /* Phones: a smaller wordmark, and on the narrowest screens only the emblem. */
+  @media (max-width: 560px) {
+    .site-header :global(.brand-word) {
+      width: 200px;
+    }
+  }
+  @media (max-width: 440px) {
+    .site-header :global(.brand-word) {
+      width: 148px;
+    }
+  }
+  @media (max-width: 345px) {
+    .site-header :global(.brand-word) {
+      display: none;
+    }
+  }
+  @media (min-width: 1080px) {
+    .nav-mobile {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>(".site-header");
+  const toggle = document.getElementById("nav-toggle");
+  const menu = document.getElementById("mobile-nav");
+
+  // Overlay mode: pinned to the dark palette and transparent until the page scrolls.
+  if (header?.hasAttribute("data-overlay")) {
+    let scrolled: boolean | null = null;
+    const update = () => {
+      const now = window.scrollY > 8 || header.classList.contains("is-open");
+      if (now === scrolled) return;
+      scrolled = now;
+      header.classList.toggle("is-scrolled", now);
+      if (now) header.removeAttribute("data-theme");
+      else header.setAttribute("data-theme", "dark");
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    header.addEventListener("lw:menu", update);
+  }
+
+  if (header && toggle && menu) {
+    const setOpen = (open: boolean) => {
+      menu.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      header.classList.toggle("is-open", open);
+      document.body.style.overflow = open ? "hidden" : "";
+      // The page behind the open menu is out of reach: Tab stays in the header and the menu,
+      // and a screen reader does not wander into what the menu covers.
+      for (const el of document.body.children) {
+        if (el !== header && !(el instanceof HTMLScriptElement)) (el as HTMLElement).inert = open;
+      }
+      header.dispatchEvent(new Event("lw:menu"));
+    };
+    toggle.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"));
+    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    // Growing past the breakpoint with the menu open would leave the page scroll-locked.
+    matchMedia("(min-width: 1080px)").addEventListener("change", (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+
+  // Desktop menus open on hover and focus from CSS. Escape forces them shut; the class drops
+  // again as soon as the pointer or focus leaves, so the next visit opens normally.
+  const items = document.querySelectorAll<HTMLElement>(".nav-item.has-menu");
+  items.forEach((item) => {
+    const reopen = () => item.classList.remove("closed");
+    item.addEventListener("mouseleave", reopen);
+    item.addEventListener("focusout", (e) => {
+      if (!item.contains(e.relatedTarget as Node | null)) reopen();
+    });
+  });
+  if (items.length) {
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      const open = [...items].find((i) => i.matches(":hover, :focus-within"));
+      if (!open) return;
+      open.classList.add("closed");
+      // Keep focus on the top-level link so keyboard users stay where they were.
+      const active = document.activeElement as HTMLElement | null;
+      if (active && open.contains(active)) open.querySelector<HTMLElement>(".nav-link")?.focus();
+    });
+  }
+</script>

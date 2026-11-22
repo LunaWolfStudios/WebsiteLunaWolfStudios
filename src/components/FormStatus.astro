@@ -1,0 +1,26 @@
+---
+/**
+ * The result line under a form: an aria-live region that src/scripts/forms.ts fills with the
+ * success or error message. On error it also shows the email fallback. Used by ContactForm
+ * and NewsletterForm; styles live in global.css (.form-status).
+ */
+import Icon from "./Icon.astro";
+import { SITE } from "../data/site";
+
+interface Props {
+  class?: string;
+}
+const { class: cls } = Astro.props;
+---
+
+{/* tabindex -1: forms.ts moves focus here after a successful send. */}
+<div class:list={["form-status", cls]} data-form-status data-kind="idle" role="status" aria-live="polite" tabindex="-1">
+  <Icon name="checkCircle" size={20} class="fs-icon fs-icon--success" />
+  <Icon name="alert" size={20} class="fs-icon fs-icon--error" />
+  <div class="fs-body">
+    <span data-status-text></span>
+    <span class="fs-fallback">
+      You can also email us at <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+    </span>
+  </div>
+</div>

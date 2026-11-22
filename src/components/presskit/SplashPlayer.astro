@@ -1,0 +1,144 @@
+---
+/**
+ * The studio splash (wolf, moon, howl) as a click-to-play video with sound, for /presskit/.
+ *
+ * Nothing is downloaded until the section is near the screen, and the video itself only on
+ * play: the poster is a lazy, responsive <Image> behind a <video preload="none"> that has no
+ * `poster` attribute (a poster attribute is never lazy and has no srcset). The video paints
+ * nothing until it has a frame, so the still shows through it. With JavaScript, a large play
+ * button sits over the still and starts playback with sound, and the still is hidden once the
+ * video plays; without it, the browser's own controls do the same. Files:
+ * public/media/splash-long-night.{webm,mp4} (archive/research/hero-media.md).
+ *
+ * The frame is night-coloured in both themes, but only the play button pins the dark palette:
+ * the frame's shadow follows the page theme, so in the light theme it stays light and the
+ * caption under it keeps its contrast.
+ */
+import { Image } from "astro:assets";
+import poster from "../../assets/hero/splash-poster.png";
+import Icon from "../Icon.astro";
+---
+
+<figure class="splash">
+  <div class="splash-frame">
+    <Image
+      src={poster}
+      alt=""
+      widths={[480, 880, 1280]}
+      sizes="(max-width: 900px) calc(100vw - 2.5rem), 860px"
+      loading="lazy"
+      decoding="async"
+      class="splash-still"
+      data-splash-still
+    />
+    <video
+      class="splash-video"
+      controls
+      preload="none"
+      playsinline
+      width="1920"
+      height="1080"
+      aria-label="Luna Wolf Studios splash: the wolf and moon emblem with a howl"
+      data-splash
+    >
+      <source src="/media/splash-long-night.webm" type="video/webm" />
+      <source src="/media/splash-long-night.mp4" type="video/mp4" />
+    </video>
+    <button type="button" class="splash-play" data-theme="dark" data-splash-play hidden aria-label="Play the studio splash with sound">
+      <Icon name="play" size={30} />
+    </button>
+  </div>
+  <figcaption>The studio splash, 3.6 seconds, with sound.</figcaption>
+</figure>
+
+<style>
+  .splash {
+    margin: 0;
+  }
+  .splash-frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--lw-radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--lw-border);
+    /* Night, the splash's own first frame, in both themes. */
+    background: #04070a;
+    box-shadow: var(--lw-shadow-lg);
+  }
+  .splash-still,
+  .splash-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .splash-still[hidden] {
+    display: none;
+  }
+  /* Pinned to the night palette (data-theme="dark"), since it always sits on the dark still. */
+  .splash-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: inline-grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    padding-left: 4px;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--lw-ink) 28%, transparent);
+    background: color-mix(in srgb, var(--lw-bg) 60%, transparent);
+    color: var(--lw-ink);
+    transform: translate(-50%, -50%);
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s var(--lw-ease), box-shadow 0.3s ease;
+  }
+  .splash-play:hover,
+  .splash-play:focus-visible {
+    background: var(--lw-accent);
+    color: var(--lw-on-accent);
+    transform: translate(-50%, -50%) scale(1.06);
+    box-shadow: 0 0 0 10px var(--lw-accent-tint);
+  }
+  .splash-play:focus-visible {
+    border-radius: 50%;
+  }
+  .splash-play[hidden] {
+    display: none;
+  }
+  /* Muted, not subtle: the frame's soft shadow falls behind this line in the light theme. */
+  figcaption {
+    margin-top: 0.7rem;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .splash-play {
+      transition: none;
+    }
+    .splash-play:hover,
+    .splash-play:focus-visible {
+      transform: translate(-50%, -50%);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLVideoElement>("video[data-splash]").forEach((video) => {
+    const frame = video.parentElement;
+    const button = frame?.querySelector<HTMLButtonElement>("[data-splash-play]");
+    const still = frame?.querySelector<HTMLElement>("[data-splash-still]");
+    // Once the video has a frame to show, the still behind it is no longer needed.
+    video.addEventListener("playing", () => still?.setAttribute("hidden", ""), { once: true });
+    if (!button) return;
+    // With script: a clean still and one big button. The native controls come back on play.
+    video.controls = false;
+    button.hidden = false;
+    button.addEventListener("click", () => {
+      button.hidden = true;
+      video.controls = true;
+      video.play().catch(() => {});
+      video.focus({ preventScroll: true });
+    });
+  });
+</script>

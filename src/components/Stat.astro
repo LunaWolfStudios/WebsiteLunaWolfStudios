@@ -1,0 +1,73 @@
+---
+/**
+ * A headline number with a label: "300+ handcrafted levels", "2015 founded". Only use numbers
+ * that are sourced (archive/ or src/data/).
+ *
+ *   <div class="stats">
+ *     <Stat value="300+" label="Handcrafted levels" />
+ *     <Stat value="2015" label="Founded in Newark, Delaware" />
+ *   </div>
+ *
+ * Wrap a row of them in any grid; `.stat-row` is provided (auto-fit columns with dividers).
+ */
+interface Props {
+  value: string | number;
+  label: string;
+  /** Small line under the label (source, timeframe). */
+  note?: string;
+  tone?: "accent" | "gold" | "ink";
+  class?: string;
+}
+const { value, label, note, tone = "accent", class: cls } = Astro.props;
+---
+
+<div class:list={["stat", `stat--${tone}`, cls]}>
+  <span class="stat-value">{value}</span>
+  <span class="stat-label">{label}</span>
+  {note && <span class="stat-note">{note}</span>}
+</div>
+
+<style>
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+  }
+  .stat-value {
+    font-family: var(--lw-font-display);
+    font-weight: 650;
+    font-size: clamp(2.2rem, 1.6rem + 2.2vw, 3.2rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--lw-accent);
+  }
+  .stat--gold .stat-value {
+    color: var(--lw-gold);
+  }
+  .stat--ink .stat-value {
+    color: var(--lw-ink);
+  }
+  .stat-label {
+    font-weight: 500;
+    color: var(--lw-ink);
+    line-height: 1.35;
+  }
+  .stat-note {
+    font-size: var(--lw-text-xs);
+    color: var(--lw-ink-subtle);
+  }
+  /* Row helper: equal columns, hairline dividers between them. */
+  :global(.stat-row) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+    gap: 1.5rem;
+  }
+  @media (min-width: 720px) {
+    :global(.stat-row) > :global(.stat + .stat) {
+      padding-left: 1.5rem;
+      border-left: 1px solid var(--lw-border);
+    }
+  }
+</style>

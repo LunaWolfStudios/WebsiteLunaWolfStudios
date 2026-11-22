@@ -1,0 +1,51 @@
+---
+/**
+ * A store button with its live price beside it (src/data/store.json through the shared Price).
+ *
+ *   <StorePair entry={{ kind: "steam", href, verb: "Buy on", price: { slug: "hypno-halo", store: "steam" } }} />
+ */
+import StoreButton from "../StoreButton.astro";
+import Price from "../Price.astro";
+import type { LinkPlacement } from "../../data/links";
+import type { StoreEntry } from "../../data/gamePages";
+
+interface Props {
+  entry: StoreEntry;
+  primary?: boolean;
+  size?: "sm" | "md";
+  placement?: LinkPlacement;
+}
+
+const { entry, primary = false, size = "md", placement = "game_page" } = Astro.props;
+---
+
+<div class="store-pair">
+  <StoreButton
+    kind={entry.kind}
+    href={entry.href}
+    verb={entry.verb}
+    label={entry.label}
+    variant={primary ? "primary" : "secondary"}
+    size={size}
+    placement={placement}
+  />
+  {
+    entry.price && (
+      <Price
+        slug={entry.price.slug}
+        store={entry.price.store}
+        unreleasedLabel={entry.price.unreleasedLabel}
+        freeLabel={entry.price.freeLabel}
+      />
+    )
+  }
+</div>
+
+<style>
+  .store-pair {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.85rem;
+  }
+</style>

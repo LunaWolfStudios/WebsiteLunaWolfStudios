@@ -1,0 +1,138 @@
+---
+/**
+ * Compact links to sibling service pages (and Publishing, Scriptable Sheets or the hub), for
+ * the foot of a service page. Six tiles keep the grid even at three and two columns.
+ *
+ *   <RelatedServices items={["unity-development", "publishing", "hub"]} />
+ *
+ * Accepted keys: a service slug from services.ts, "publishing", "internships-and-bootcamp",
+ * "scriptable-sheets", or "hub".
+ */
+import Icon from "../Icon.astro";
+import { service } from "../../data/services";
+
+interface Props {
+  items: string[];
+  class?: string;
+}
+
+const EXTRA: Record<string, { title: string; short: string; icon: string; page: string }> = {
+  "scriptable-sheets": {
+    title: "Scriptable Sheets",
+    short: "Our spreadsheet editor for Unity assets",
+    icon: "sheet",
+    page: "/scriptable-sheets/",
+  },
+  hub: { title: "All services", short: "Every service we offer, on one page", icon: "layers", page: "/services/" },
+};
+
+const { items, class: cls } = Astro.props;
+const tiles = items.map((key) => {
+  if (EXTRA[key]) return EXTRA[key];
+  const s = service(key);
+  return { title: s.title, short: s.short, icon: s.icon, page: s.page };
+});
+---
+
+<ul class:list={["related", cls]} role="list">
+  {
+    tiles.map((t, i) => (
+      <li data-reveal="fade" style={`--reveal-delay:${i * 40}ms`}>
+        <a class="rel-tile" href={t.page}>
+          <span class="rel-icon" aria-hidden="true">
+            <Icon name={t.icon} size={20} />
+          </span>
+          <span class="rel-text">
+            <span class="rel-title">{t.title}</span>
+            <span class="rel-short">{t.short}</span>
+          </span>
+          <Icon name="arrowRight" size={16} class="rel-arrow" />
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .related {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+    margin: 0;
+    padding: 0;
+  }
+  .rel-tile {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    height: 100%;
+    padding: 0.95rem 1.1rem;
+    border-radius: var(--lw-radius);
+    border: 1px solid var(--lw-border);
+    background: var(--lw-surface);
+    color: var(--lw-ink);
+    text-decoration: none;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s var(--lw-ease),
+      background-color 0.2s ease;
+  }
+  .rel-tile:hover {
+    color: var(--lw-ink);
+    border-color: var(--lw-accent-line);
+    background: var(--lw-surface-hover);
+    transform: translateY(-2px);
+  }
+  .rel-icon {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    color: var(--lw-accent);
+    background: var(--lw-accent-tint);
+    border: 1px solid var(--lw-accent-line);
+  }
+  .rel-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+    flex: 1;
+  }
+  .rel-title {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .rel-short {
+    font-size: var(--lw-text-sm);
+    line-height: 1.4;
+    color: var(--lw-ink-muted);
+  }
+  .rel-tile :global(.rel-arrow) {
+    flex-shrink: 0;
+    color: var(--lw-ink-subtle);
+    transition: transform var(--lw-fast) ease, color var(--lw-fast) ease;
+  }
+  .rel-tile:hover :global(.rel-arrow) {
+    color: var(--lw-accent);
+    transform: translateX(3px);
+  }
+  @media (max-width: 1000px) {
+    .related {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 600px) {
+    .related {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rel-tile:hover {
+      transform: none;
+    }
+  }
+</style>

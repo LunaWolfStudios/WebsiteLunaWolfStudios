@@ -1,0 +1,33 @@
+# Home page hero, mobile (9:16), derived from Long Night (Final).
+# Run against a copy of long-night-final.sk:
+#   splashkit derive long-night-final.sk --id hero-mobile --name "Hero (mobile)" --out hero-mobile.sk
+#   splashkit run hero-mobile.recipe --in hero-mobile.sk
+
+# portrait canvas, same design-unit scale as the desktop one; 13.5 s like desktop
+doc resize 810x1440
+doc set --duration 13.5 --background '#04070a'
+
+# no wordmark (the site header carries it) and no sound (the hero video is muted)
+layer rm wordmark
+audio rm builtin:night_falls_howl
+
+# frame 0 is the settled sky: fog and snow are already there, nothing fades in
+block rm bg 0
+block rm snow 0
+layer set snow opacity=0.27
+
+# snow field re-spread over the portrait canvas (same density: same area, same count)
+layer set snow spec.spreadX=933.1 spec.spreadY=1800
+
+# emblem centred at x = 50 %, y = 30 %; moon disc (453 du at scale 1) = 62 % of 810 du
+layer transform badge --x 0 --y -288 --scale 1.1086
+
+# falling star: a flatter path so it stays in the top third instead of crossing the text area
+layer set sky params.p1=-0.3
+
+# breathing: exactly two cycles per 9 s idle segment, so the glow is periodic across the seam
+layer set moon-glow pulseHz=0.2222222
+
+# idle blinks every 4.5 s, clear of the crossfade windows (3.5..4.5 s and 12.5..13.5 s)
+block add wolf blink --at 6.25
+block add wolf blink --at 10.75

@@ -1,0 +1,808 @@
+---
+/**
+ * /presskit/<slug>/: one press sheet per product, in the presskit() project format (as on
+ * presskit.megacatstudios.com/sheet.php): fact sheet, description, history, features, videos,
+ * images with a zip, logo and art with a zip, awards, selected quotes and articles,
+ * additional links, about the studio, credits, and contact, with the same section menu as the
+ * studio kit.
+ *
+ * Content: src/data/presskit.ts (PRESS_SHEETS) for the sheet's own copy and file lists;
+ * src/data/games.ts for the title, page, and credits; reviews.ts, awards.ts, and videos.ts by
+ * id. Prices come only from live store data (Price). The files under /press/<slug>/ are
+ * written by the "press" step in scripts/build.mts; sizes are read from disk at build time.
+ *
+ * JSON-LD: a WebPage about the product's own node on its page (VideoGame `#game`, the
+ * SoftwareApplication `#software`, or for HELIX, which has no such node, a CreativeWork).
+ */
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import Icon from "../../components/Icon.astro";
+import VideoCard from "../../components/VideoCard.astro";
+import Gallery from "../../components/Gallery.astro";
+import AwardBadge from "../../components/AwardBadge.astro";
+import ReviewCard from "../../components/ReviewCard.astro";
+import Price from "../../components/Price.astro";
+import StoreButton from "../../components/StoreButton.astro";
+import PressKitLayout from "../../components/presskit/PressKitLayout.astro";
+import ArtCard from "../../components/presskit/ArtCard.astro";
+import { fileSize, fileType, typeAndSize } from "../../components/presskit/files";
+import { SITE } from "../../data/site";
+import { withUtm, isExternal } from "../../data/links";
+import { work } from "../../data/games";
+import { AWARDS } from "../../data/awards";
+import { PRESS, REVIEWS } from "../../data/reviews";
+import { ALL_VIDEOS } from "../../data/videos";
+import { BOILERPLATE, PRESS_EMAIL, PRESS_SHEETS, pressPaths, pressSheet, pressSource } from "../../data/presskit";
+import { image } from "../../lib/images";
+import { getOffer, PRICE_REGION_NOTE } from "../../lib/store";
+import { abs, ORG_ID, WEBSITE_ID } from "../../lib/seo";
+
+export function getStaticPaths() {
+  return PRESS_SHEETS.map((s) => ({ params: { slug: s.slug } }));
+}
+
+const s = pressSheet(Astro.params.slug!);
+const g = work(s.slug);
+const { dir, kitZip, shotsZip } = pressPaths(s);
+const kitMeta = typeAndSize(`public${dir}${kitZip}`);
+const shotsMeta = typeAndSize(`public${dir}${shotsZip}`);
+const NEW_TAB = " (opens in a new tab)";
+
+// ─── Content lookups ──────────────────────────────────────────────────────────────────────
+const heroImg = image(s.hero.image);
+const videos = (s.videos ?? []).map((id) => {
+  const v = ALL_VIDEOS.find((x) => x.id === id);
+  if (!v) throw new Error(`[presskit] Unknown video id "${id}".`);
+  return v;
+});
+const shots = s.screenshots.map((p) => ({
+  ...p,
+  href: `${dir}${p.out}`,
+  meta: `${fileType(p.out)}, ${fileSize(pressSource(p))}`,
+}));
+const art = s.art.map((p) => {
+  const img = image(p.image);
+  const size = fileSize(pressSource(p));
+  return {
+    ...p,
+    img,
+    href: `${dir}${p.out}`,
+    meta: [fileType(p.out), `${img.width}×${img.height}`, size].filter(Boolean).join(" · "),
+  };
+});
+// Large enough to read before opening: three across only when the rows come out even.
+const shotColumns = shots.length % 3 === 0 ? 3 : 2;
+// Thumbnails take the first screenshot's shape (Scriptable Sheets' listing shots are 3:2).
+const first = image(shots[0].image);
+const shotAspect = `${first.width} / ${first.height}`;
+const awards = AWARDS.filter((a) => a.subjectSlug === s.slug && !a.personal);
+const quotes = (s.quotes ?? []).map((id) => {
+  const r = REVIEWS.find((x) => x.id === id);
+  if (!r) throw new Error(`[presskit] Unknown review id "${id}".`);
+  return r;
+});
+const articles = PRESS.filter((p) => (s.pressAbout ?? []).includes(p.about)).sort((a, b) =>
+  (b.date ?? "0").localeCompare(a.date ?? "0"),
+);
+const credits = g.credits ?? [];
+const pageLabel = s.slug === "helix" ? "Project page" : s.slug === "scriptable-sheets" ? "Product page" : "Game page";
+
+const monthYear = (iso?: string) =>
+  iso ? new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" }) : "";
+const LANG_CODES: Record<string, string> = { Belarusian: "be" };
+const STORE_HOSTS = /store\.steampowered\.com|assetstore\.unity\.com|nintendo\.com/;
+const outbound = (href: string) => (STORE_HOSTS.test(href) ? withUtm(href, "presskit") : href);
+const creditHref = (c: { name: string; url?: string }) => (c.name === "Jeff" ? "/about-jeff/" : c.url);
+
+// ─── Section menu: only the sections this sheet has ───────────────────────────────────────
+const nav = [
+  { id: "factsheet", label: "Fact sheet" },
+  { id: "description", label: "Description" },
+  ...(s.history ? [{ id: "history", label: "History" }] : []),
+  ...(s.features?.length ? [{ id: "features", label: "Features" }] : []),
+  ...(videos.length || s.steamTrailer ? [{ id: "videos", label: "Videos" }] : []),
+  { id: "images", label: "Images" },
+  ...(art.length ? [{ id: "logo", label: "Logo and art" }] : []),
+  ...(awards.length ? [{ id: "awards", label: "Awards" }] : []),
+  ...(quotes.length || articles.length ? [{ id: "articles", label: quotes.length ? "Quotes" : "Articles" }] : []),
+  ...(s.monetization ? [{ id: "monetization", label: "Videos and streams" }] : []),
+  { id: "links", label: "Additional links" },
+  { id: "about", label: "About the studio" },
+  ...(credits.length ? [{ id: "credits", label: "Credits" }] : []),
+  { id: "contact", label: "Contact" },
+];
+
+// ─── JSON-LD ──────────────────────────────────────────────────────────────────────────────
+const url = abs(`/presskit/${s.slug}/`);
+const subject =
+  s.slug === "sheep-tag-2"
+    ? { "@id": "https://www.sheeptag2.com/#game" }
+    : s.slug === "scriptable-sheets"
+      ? { "@id": `${abs("/scriptable-sheets/")}#software` }
+      : s.slug === "helix"
+        ? { "@type": "CreativeWork", name: "HELIX (Hearing EvaLuation using Immersive eXtended reality)", url: abs("/helix/") }
+        : { "@id": `${abs(g.page!)}#game` };
+const leadImage = s.art[0] ?? s.screenshots[0];
+const leadMeta = image(leadImage.image);
+const jsonLd = {
+  "@type": "WebPage",
+  "@id": `${url}#webpage`,
+  url,
+  name: `${s.seo.title} | ${SITE.name}`,
+  description: s.seo.description,
+  isPartOf: { "@id": WEBSITE_ID },
+  about: subject,
+  publisher: { "@id": ORG_ID },
+  inLanguage: "en-US",
+  primaryImageOfPage: {
+    "@type": "ImageObject",
+    contentUrl: abs(`${dir}${leadImage.out}`),
+    width: leadMeta.width,
+    height: leadMeta.height,
+    caption: leadImage.alt,
+  },
+  significantLink: [abs(`${dir}${kitZip}`), ...(g.page ? [abs(g.page)] : [])],
+};
+---
+
+<BaseLayout
+  title={s.seo.title}
+  description={s.seo.description}
+  image={heroImg}
+  imageAlt={s.hero.alt}
+  breadcrumbs={[
+    { label: "Press kit", href: "/presskit/" },
+    { label: g.title, href: `/presskit/${s.slug}/` },
+  ]}
+  jsonLd={jsonLd}
+>
+  <PageHero eyebrow="Press kit" title={s.h1} lead={s.lead}>
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href={`${dir}${kitZip}`} download={kitZip}>
+        <Icon name="download" size={18} /> Download press kit ({kitMeta})
+      </a>
+      {
+        s.fullKit ? (
+          <a class="btn btn--secondary" href={s.fullKit.href} target="_blank" rel="noopener">
+            {s.fullKit.label} <Icon name="arrowUpRight" size={18} />
+            <span class="visually-hidden">{NEW_TAB}</span>
+          </a>
+        ) : (
+          g.page && (
+            <a class="btn btn--secondary" href={g.page}>
+              {pageLabel}<span class="visually-hidden">: {g.title}</span> <Icon name="arrowRight" size={18} />
+            </a>
+          )
+        )
+      }
+    </Fragment>
+    <p class="hero-links">
+      {s.fullKit && g.page && <a href={g.page}>{g.title} on our site</a>}
+      <a href="/presskit/">Studio press kit</a>
+    </p>
+    <Image
+      slot="media"
+      src={heroImg}
+      alt={s.hero.alt}
+      widths={[480, 720, 960, 1120].filter((w) => w < heroImg.width).concat(Math.min(heroImg.width, 1280))}
+      sizes="(max-width: 900px) calc(100vw - 2rem), 560px"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </PageHero>
+
+  <PressKitLayout nav={nav}>
+    <Fragment slot="nav">
+      <a class="btn btn--primary btn--sm" href={`${dir}${kitZip}`} download={kitZip}>
+        <Icon name="download" size={16} /> Press kit <span class="nav-meta">{kitMeta}</span>
+      </a>
+      {
+        g.page && (
+          <a class="btn btn--secondary btn--sm" href={g.page}>
+            {pageLabel}<span class="visually-hidden">: {g.title}</span>
+          </a>
+        )
+      }
+    </Fragment>
+
+    <section id="factsheet" aria-labelledby="factsheet-title">
+      <h2 id="factsheet-title">Fact sheet</h2>
+      <dl class="pk-facts">
+        {
+          s.facts.map((f) => (
+            <div class="pk-fact">
+              <dt>{f.label}</dt>
+              <dd>
+                {f.href ? (
+                  isExternal(f.href) ? (
+                    <a href={outbound(f.href)} target="_blank" rel="noopener">{f.value}<span class="visually-hidden">{NEW_TAB}</span></a>
+                  ) : (
+                    <a href={f.href}>{f.value}</a>
+                  )
+                ) : (
+                  f.value
+                )}
+              </dd>
+            </div>
+          ))
+        }
+        {
+          s.prices && (
+            <div class="pk-fact">
+              <dt>Price</dt>
+              <dd>
+                <ul class="prices" role="list">
+                  {s.prices.map((p) => (
+                    <li>
+                      {s.prices!.length > 1 && <span class="price-store">{p.name}</span>}
+                      <Price offer={getOffer(s.slug, p.store)} unreleasedLabel={p.unreleasedLabel} freeLabel={p.freeLabel} />
+                    </li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          )
+        }
+        {
+          g.page && (
+            <div class="pk-fact">
+              <dt>On this site</dt>
+              <dd><a href={g.page}>{pageLabel}: {g.title}</a></dd>
+            </div>
+          )
+        }
+        <div class="pk-fact">
+          <dt>Press contact</dt>
+          <dd><a href={`mailto:${PRESS_EMAIL}`}>{PRESS_EMAIL}</a></dd>
+        </div>
+        {
+          s.fullKit && (
+            <div class="pk-fact">
+              <dt>Full press kit</dt>
+              <dd>
+                <a href={s.fullKit.href} target="_blank" rel="noopener">{new URL(s.fullKit.href).host.replace(/^www\./, "")}{new URL(s.fullKit.href).pathname.replace(/\/$/, "")}<span class="visually-hidden">{NEW_TAB}</span></a>
+              </dd>
+            </div>
+          )
+        }
+      </dl>
+      {
+        s.stores && (
+          <div class="stores">
+            {s.stores.map((st, i) => (
+              <StoreButton kind={st.kind} href={st.href} verb={st.verb} placement="presskit" size="sm" variant={i === 0 ? "primary" : "secondary"} />
+            ))}
+          </div>
+        )
+      }
+      {s.prices && s.prices.some((p) => getOffer(s.slug, p.store).isReleased && !getOffer(s.slug, p.store).isFree) && <p class="pk-small">{PRICE_REGION_NOTE}</p>}
+    </section>
+
+    <section id="description" aria-labelledby="description-title">
+      <h2 id="description-title">Description</h2>
+      {s.description.map((p) => <p>{p}</p>)}
+      {
+        s.note && (
+          <aside class="warn" aria-label={s.note.title}>
+            <Icon name="alert" size={20} />
+            <p><strong>{s.note.title}.</strong> {s.note.text}</p>
+          </aside>
+        )
+      }
+    </section>
+
+    {
+      s.history && (
+        <section id="history" aria-labelledby="history-title">
+          <h2 id="history-title">History</h2>
+          {s.history.paragraphs?.map((p) => <p>{p}</p>)}
+          {s.history.items && (
+            <ol class="pk-timeline" aria-label={`${g.title} timeline`}>
+              {s.history.items.map((t) => (
+                <li>
+                  <span class="pk-when">{t.when}</span>
+                  <span class="pk-what">{t.text}</span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </section>
+      )
+    }
+
+    {
+      s.features && s.features.length > 0 && (
+        <section id="features" aria-labelledby="features-title">
+          <h2 id="features-title">Features</h2>
+          <ul class="pk-features" role="list">
+            {s.features.map((f) => (
+              <li>
+                <Icon name="check" size={18} class="pk-check" />
+                <span>
+                  {f.url ? (
+                    <a href={outbound(f.url)} target="_blank" rel="noopener">{f.text}<span class="visually-hidden">{NEW_TAB}</span></a>
+                  ) : (
+                    f.text
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      (videos.length > 0 || s.steamTrailer) && (
+        <section id="videos" aria-labelledby="videos-title">
+          <h2 id="videos-title">Videos</h2>
+          <div class="pk-grid-2">
+            {videos.map((v) => (
+              <VideoCard video={v} next={v.next} meta={v.length} sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 900px) 46vw, 440px" />
+            ))}
+            {s.steamTrailer && (
+              <a class="steam-trailer card" href={outbound(s.steamTrailer.href)} target="_blank" rel="noopener">
+                <span class="st-poster">
+                  <Image
+                    src={image(s.steamTrailer.image)}
+                    alt={s.steamTrailer.alt}
+                    widths={[400, 600]}
+                    sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 900px) 46vw, 440px"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="st-play" aria-hidden="true"><Icon name="steam" size={22} /></span>
+                </span>
+                <span class="st-text">
+                  <span class="st-title">{s.steamTrailer.title}</span>
+                  <span class="st-meta">Plays on the Steam store page<span class="visually-hidden">{NEW_TAB}</span></span>
+                </span>
+              </a>
+            )}
+          </div>
+        </section>
+      )
+    }
+
+    <section id="images" aria-labelledby="images-title">
+      <div class="pk-head">
+        <h2 id="images-title">Images</h2>
+        <a class="btn btn--primary btn--sm" href={`${dir}${shotsZip}`} download={shotsZip}>
+          <Icon name="download" size={16} /> Download all screenshots ({shotsMeta})
+        </a>
+      </div>
+      <Gallery
+        id="screenshots"
+        images={shots.map((p) => ({ src: p.image, alt: p.alt, caption: p.caption }))}
+        columns={shotColumns}
+        aspect={shotAspect}
+        label={`${g.title} screenshots`}
+        sizes={shotColumns === 2
+          ? "(max-width: 640px) calc(100vw - 2rem), (max-width: 900px) 46vw, 470px"
+          : "(max-width: 640px) calc(100vw - 2rem), (max-width: 1000px) 46vw, 310px"}
+      />
+      <details class="singles">
+        <summary>Download one screenshot at a time</summary>
+        <ol class="single-list" role="list">
+          {
+            shots.map((p, i) => (
+              <li>
+                <a href={p.href} download={p.out}>
+                  <Icon name="download" size={14} /> Screenshot {i + 1}
+                  <span class="visually-hidden">: {p.alt}</span>
+                </a>
+                <span class="pk-note">{p.meta}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </details>
+    </section>
+
+    {
+      art.length > 0 && (
+        <section id="logo" aria-labelledby="logo-title">
+          <div class="pk-head">
+            <h2 id="logo-title">Logo and art</h2>
+            <a class="btn btn--primary btn--sm" href={`${dir}${kitZip}`} download={kitZip}>
+              <Icon name="download" size={16} /> Everything on this page ({kitMeta})
+            </a>
+          </div>
+          <div class={art.length % 3 === 0 ? "pk-grid-3" : "pk-grid-2"}>
+            {art.map((a) => (
+              <ArtCard img={a.img} label={a.label ?? a.alt} alt={a.alt} href={a.href} file={a.out} meta={a.meta} transparent={a.transparent} />
+            ))}
+          </div>
+          <p class="pk-small">Please do not alter the logo.</p>
+        </section>
+      )
+    }
+
+    {
+      awards.length > 0 && (
+        <section id="awards" aria-labelledby="awards-title">
+          <h2 id="awards-title">Awards and recognition</h2>
+          <ul class="award-grid" role="list">
+            {awards.map((a) => (
+              <li class="award-card card">
+                <AwardBadge award={a} size="sm" />
+                {a.note && <span class="award-note">{a.note}</span>}
+              </li>
+            ))}
+            {s.awardImage && (
+              <li class="award-art card">
+                <Image src={image(s.awardImage.image)} alt={s.awardImage.alt} widths={[240, 480]} sizes="240px" loading="lazy" decoding="async" />
+              </li>
+            )}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      (quotes.length > 0 || articles.length > 0) && (
+        <section id="articles" aria-labelledby="articles-title">
+          <h2 id="articles-title">{quotes.length ? "Selected quotes and articles" : "Selected articles"}</h2>
+          {quotes.length > 0 && (
+            <ul class="quotes" role="list">
+              {quotes.map((r) => (
+                <li>
+                  <ReviewCard review={r} showAbout={false} />
+                </li>
+              ))}
+            </ul>
+          )}
+          {articles.length > 0 && (
+            <>
+              {quotes.length > 0 && <h3 class="pk-sub">Articles</h3>}
+              <ul class="pk-coverage" role="list">
+                {articles.map((c) => (
+                  <li>
+                    <strong>{c.outlet}</strong>: <a href={c.url} target="_blank" rel="noopener"><span lang={c.language ? LANG_CODES[c.language] : undefined}>{c.title}</span><span class="visually-hidden">{NEW_TAB}</span></a>
+                    <span class="pk-meta">
+                      {[c.kind[0].toUpperCase() + c.kind.slice(1), monthYear(c.date), c.language && `in ${c.language}`].filter(Boolean).join(" · ")}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </section>
+      )
+    }
+
+    {
+      s.monetization && (
+        <section id="monetization" aria-labelledby="monetization-title">
+          <h2 id="monetization-title">Videos and streams</h2>
+          <p>{s.monetization}</p>
+        </section>
+      )
+    }
+
+    <section id="links" aria-labelledby="links-title">
+      <h2 id="links-title">Additional links</h2>
+      <ul class="pk-links" role="list">
+        {
+          g.page && (
+            <li>
+              <a href={g.page}>{g.title} on lunawolfstudios.com</a>
+              <span>The {pageLabel.toLowerCase()} on our site</span>
+            </li>
+          )
+        }
+        {
+          s.links.map((l) => (
+            <li>
+              {isExternal(l.href) ? (
+                <a href={outbound(l.href)} target="_blank" rel="noopener">{l.label}<span class="visually-hidden">{NEW_TAB}</span></a>
+              ) : (
+                <a href={l.href}>{l.label}</a>
+              )}
+              {l.note && <span>{l.note}</span>}
+            </li>
+          ))
+        }
+        <li>
+          <a href="/presskit/">Luna Wolf Studios press kit</a>
+          <span>Studio logos, photos, and facts</span>
+        </li>
+      </ul>
+    </section>
+
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About Luna Wolf Studios</h2>
+      {BOILERPLATE.map((p) => <p>{p}</p>)}
+      <p class="pk-more">
+        <a class="link-arrow" href="/presskit/">Studio press kit: logos, photos, and facts <Icon name="arrowRight" size={16} /></a>
+      </p>
+    </section>
+
+    {
+      credits.length > 0 && (
+        <section id="credits" aria-labelledby="credits-title">
+          <h2 id="credits-title">{g.title} credits</h2>
+          <ul class="credits" role="list">
+            {credits.map((c) => {
+              const href = creditHref(c);
+              return (
+                <li>
+                  <span class="cr-name">
+                    {href ? (
+                      isExternal(href) ? (
+                        <a href={href} target="_blank" rel="noopener">{c.name}<span class="visually-hidden">{NEW_TAB}</span></a>
+                      ) : (
+                        <a href={href}>{c.name}</a>
+                      )
+                    ) : (
+                      c.name
+                    )}
+                  </span>
+                  <span class="cr-role">{c.role}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )
+    }
+
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <dl class="pk-contact">
+        <dt>Press and business</dt>
+        <dd><a href={`mailto:${PRESS_EMAIL}`}>{PRESS_EMAIL}</a></dd>
+        {
+          s.fullKit && (
+            <>
+              <dt>Full press kit</dt>
+              <dd><a href={s.fullKit.href} target="_blank" rel="noopener">{s.fullKit.label}<span class="visually-hidden">{NEW_TAB}</span></a></dd>
+            </>
+          )
+        }
+        <dt>Studio press kit</dt>
+        <dd><a href="/presskit/">Logos, photos, and studio facts</a></dd>
+        <dt>Projects and services</dt>
+        <dd><a href="/contact/">Contact form</a></dd>
+      </dl>
+      <p class="pk-footnote">
+        These files are provided for coverage of {g.title}. Please credit {g.developer && g.developer !== "Luna Wolf Studios" ? `${g.developer} and Luna Wolf Studios` : "Luna Wolf Studios"}.
+      </p>
+    </section>
+  </PressKitLayout>
+
+  <CtaBand
+    title={`Writing about ${g.title}?`}
+    lead="Email us with anything this press kit does not answer."
+    primary={{ label: "Email us", href: `mailto:${PRESS_EMAIL}`, icon: "mail" }}
+    secondary={g.page ? { label: pageLabel, href: g.page } : { label: "Studio press kit", href: "/presskit/" }}
+  />
+</BaseLayout>
+
+<style>
+  .hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    margin: 0;
+    font-size: var(--lw-text-sm);
+    order: 10;
+  }
+  .nav-meta {
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
+  /* Fact sheet extras */
+  .prices {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0.15rem 0 0;
+    padding: 0;
+  }
+  .prices li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.75rem;
+  }
+  .price-store {
+    min-width: 8.5rem;
+    color: var(--lw-ink-muted);
+  }
+  .stores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.1rem;
+  }
+
+  /* Photosensitivity warning */
+  .warn {
+    display: grid;
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: start;
+    max-width: 72ch;
+    margin-top: 1.2rem;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid color-mix(in srgb, var(--lw-gold) 40%, transparent);
+    border-radius: var(--lw-radius);
+    background: var(--lw-gold-tint);
+    color: var(--lw-gold);
+  }
+  .warn p {
+    margin: 0;
+    color: var(--lw-ink);
+  }
+
+  /* Videos. Card shadows reach past the column, and the off-screen skipping in global.css
+     (content-visibility: auto) would cut them off: this section renders normally. */
+  #videos {
+    content-visibility: visible;
+  }
+  .steam-trailer {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    color: var(--lw-ink);
+    text-decoration: none;
+    transition: transform 0.2s var(--lw-ease), border-color 0.2s ease;
+  }
+  .steam-trailer:hover,
+  .steam-trailer:focus-visible {
+    color: var(--lw-ink);
+    transform: translateY(-3px);
+    border-color: var(--lw-accent-line);
+  }
+  .st-poster {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    background: #070d12;
+  }
+  .st-poster :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* Always on a dark poster: fixed light-on-dark colours, like VideoCard's play button. */
+  .st-play {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(238, 247, 247, 0.32);
+    background: rgba(4, 7, 10, 0.74);
+    color: #eef7f7;
+  }
+  .st-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.85rem 1rem 1rem;
+  }
+  .st-title {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+  }
+  .st-meta {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+
+  /* Single screenshot downloads */
+  .singles {
+    margin-top: 1.1rem;
+  }
+  .singles summary {
+    cursor: pointer;
+    width: fit-content;
+    color: var(--lw-accent);
+    font-weight: 600;
+    font-size: var(--lw-text-sm);
+  }
+  .single-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+    gap: 0.4rem 1.5rem;
+    margin: 0.9rem 0 0;
+    padding: 0;
+  }
+  .single-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--lw-border);
+    font-size: 0.92rem;
+  }
+  .single-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* Awards */
+  .award-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0;
+  }
+  .award-card,
+  .award-art {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.1rem 0.75rem 1rem;
+    text-align: center;
+  }
+  .award-note {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  .award-art :global(img) {
+    width: 100%;
+    max-width: 160px;
+    height: auto;
+    border-radius: var(--lw-radius-sm);
+  }
+
+  /* Quotes */
+  /* Two columns that pack like a wall of cards, so quotes of different lengths leave no holes. */
+  .quotes {
+    columns: 2 18rem;
+    column-gap: 0.9rem;
+    margin: 0;
+    padding: 0;
+  }
+  .quotes li {
+    break-inside: avoid;
+    margin-bottom: 0.9rem;
+  }
+
+  /* Credits */
+  .credits {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+    gap: 0.9rem 1.5rem;
+    margin: 0;
+    padding: 0;
+  }
+  .credits li {
+    display: grid;
+    align-content: start;
+    gap: 0.1rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--lw-border);
+    border-radius: var(--lw-radius);
+    background: var(--lw-surface);
+  }
+  .cr-name {
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    color: var(--lw-ink);
+  }
+  .cr-role {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-muted);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .steam-trailer:hover,
+    .steam-trailer:focus-visible {
+      transform: none;
+    }
+  }
+</style>

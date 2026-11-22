@@ -1,0 +1,4 @@
+{
+  "desktop": { "width": 1920, "height": 1080, "duration": 13.5, "loopStart": 4.5, "fps": 30 },
+  "mobile": { "width": 720, "height": 1280, "duration": 13.5, "loopStart": 4.5, "fps": 30 }
+}

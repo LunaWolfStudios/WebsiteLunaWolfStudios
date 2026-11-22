@@ -1,0 +1,214 @@
+---
+/**
+ * One of the two featured product panels on the home page (Scriptable Sheets, Sheep Tag 2).
+ *
+ * The masthead is pinned to the night palette in both themes, because both logos are drawn
+ * for a dark ground. Sheep Tag 2 puts its key art behind it; Scriptable Sheets gets the moon
+ * glow. Below: the pitch, the video poster (opens the shared theater; the shared VideoCard puts
+ * its play button in the corner), three facts, the store
+ * button with the live price, and text links. Panels in a row keep equal heights: the buy row
+ * sits at the bottom.
+ *
+ * Slots: "badge" (top right of the masthead), "buy" (store button and price), "links".
+ */
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Icon from "../Icon.astro";
+import VideoCard from "../VideoCard.astro";
+import type { VideoItem } from "../../data/types";
+
+interface Props {
+  id: string;
+  name: string;
+  kicker: string;
+  logo: ImageMetadata;
+  /** Rendered logo height in CSS pixels (the width follows the file's ratio). */
+  logoHeight: number;
+  backdrop?: ImageMetadata;
+  pitch: string;
+  /** A second, quieter sentence under the pitch. */
+  detail?: string;
+  video: VideoItem;
+  /** A poster in place of the video's own (one without the title art the masthead repeats). */
+  poster?: ImageMetadata;
+  /** Line under the video title; defaults to its length. */
+  videoMeta?: string;
+  facts: string[];
+}
+
+const { id, name, kicker, logo, logoHeight, backdrop, pitch, detail, video, poster, videoMeta, facts } = Astro.props;
+const logoWidth = Math.round((logo.width / logo.height) * logoHeight);
+---
+
+<article class="panel card" aria-labelledby={`${id}-name`}>
+  <header class="panel-head" data-theme="dark">
+    {
+      backdrop && (
+        <Image
+          src={backdrop}
+          alt=""
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 900px) 100vw, 600px"
+          loading="lazy"
+          decoding="async"
+          class="panel-backdrop"
+        />
+      )
+    }
+    <h3 id={`${id}-name`} class="panel-logo">
+      <Image
+        src={logo}
+        alt={name}
+        width={logoWidth}
+        height={logoHeight}
+        densities={[1, 2]}
+        loading="lazy"
+        decoding="async"
+      />
+    </h3>
+    <div class="panel-badge"><slot name="badge" /></div>
+  </header>
+
+  <div class="panel-body">
+    <p class="panel-kicker">{kicker}</p>
+    <p class="panel-pitch">{pitch}</p>
+    {detail && <p class="panel-detail">{detail}</p>}
+    <VideoCard
+      video={video}
+      poster={poster}
+      meta={videoMeta ?? video.length}
+      sizes="(max-width: 900px) calc(100vw - 4rem), 540px"
+      class="panel-video"
+    />
+    <ul class="panel-facts" role="list">
+      {
+        facts.map((f) => (
+          <li>
+            <Icon name="check" size={16} class="panel-check" />
+            <span>{f}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="panel-buy"><slot name="buy" /></div>
+    <div class="panel-links"><slot name="links" /></div>
+  </div>
+</article>
+
+<style>
+  .panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+  .panel-head {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.5rem;
+    min-height: 168px;
+    padding: 1.5rem clamp(1.25rem, 2.6vw, 2rem);
+    background:
+      radial-gradient(60% 120% at 85% 0%, rgba(129, 235, 225, 0.16), transparent 70%),
+      linear-gradient(160deg, #0b141a, #04070a);
+    border-bottom: 1px solid var(--lw-border);
+  }
+  .panel-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+  }
+  /* Dims the key art enough for the logo and badge, keeping its colour. */
+  .panel-backdrop + .panel-logo::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(100deg, rgba(4, 7, 10, 0.72), rgba(4, 7, 10, 0.35) 60%, rgba(4, 7, 10, 0.55));
+  }
+  .panel-logo {
+    margin: 0;
+    line-height: 0;
+  }
+  .panel-logo :global(img) {
+    max-width: min(100%, 62vw);
+    height: auto;
+    filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
+  }
+  .panel-badge:empty {
+    display: none;
+  }
+  .panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    flex: 1;
+    padding: clamp(1.25rem, 2.6vw, 2rem);
+  }
+  .panel-kicker {
+    font-family: var(--lw-font-display);
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lw-accent);
+  }
+  .panel-pitch {
+    margin-top: -0.6rem;
+    font-size: var(--lw-text-lg);
+    line-height: 1.55;
+    color: var(--lw-ink);
+  }
+  .panel-detail {
+    margin-top: -0.5rem;
+    color: var(--lw-ink-muted);
+  }
+  .panel-body :global(.panel-video) {
+    height: auto;
+    box-shadow: none;
+  }
+  .panel-facts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    color: var(--lw-ink-muted);
+  }
+  .panel-facts li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+  .panel-facts :global(.panel-check) {
+    flex-shrink: 0;
+    margin-top: 0.3rem;
+    color: var(--lw-accent);
+  }
+  .panel-buy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+  .panel-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--lw-border);
+  }
+  .panel-links:empty {
+    display: none;
+  }
+</style>

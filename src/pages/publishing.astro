@@ -1,0 +1,397 @@
+---
+/**
+ * /publishing/ (WordPress URL kept). The old page, "Publish with the Pack", in full: the
+ * offer (Steam and Nintendo Switch, from a demo to a finished release), the submission form,
+ * the questions email, and the owner's own Nintendo sentence. Built out only with what the
+ * archive supports: the release work Jeremy Bregermann's page lists for The Brave Hearts II
+ * (archive/wordpress/pages/about-jeremy.md), and the studio's own Steam and Switch releases.
+ * No terms, revenue splits, timelines, or acceptance criteria: the archive has none.
+ *
+ * Sources: archive/wordpress/pages/publishing.md, archive/research/games-steam.md (section 4),
+ * archive/research/seo-plan.md ("/publishing/").
+ */
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import FeatureList from "../components/FeatureList.astro";
+import GameCard from "../components/GameCard.astro";
+import StoreButton from "../components/StoreButton.astro";
+import AvailableOn from "../components/AvailableOn.astro";
+import FaqSection from "../components/FaqSection.astro";
+import Gallery from "../components/Gallery.astro";
+import { LINKS } from "../data/links";
+import { SITE } from "../data/site";
+import { game } from "../data/games";
+import { GAME_PAGES } from "../data/gamePages";
+import { faqLd, serviceLd } from "../lib/seo";
+import heroArt from "../assets/games/the-brave-hearts-ii-false-skies/capsule-616x353.jpg";
+import bh2Capsule from "../assets/games/the-brave-hearts-ii-false-skies/capsule-600x900.jpg";
+
+const url = "/publishing/";
+const description =
+  "Building a game? Pitch it to us. We help indie developers bring games to Steam and Nintendo Switch, from demo to release. We published The Brave Hearts II.";
+
+const bh2 = game("the-brave-hearts-ii-false-skies");
+const ownReleases = [game("hypno-halo"), game("paralily")];
+const form = LINKS.publishingForm;
+const mail = `mailto:${SITE.email}?subject=${encodeURIComponent("Publishing question")}`;
+const newTab = `<span class="visually-hidden"> (opens in a new tab)</span>`;
+const formLink = `<a href="${form}" target="_blank" rel="noopener">submission form${newTab}</a>`;
+
+// Four action shots from the game's own page (its alt text is the single source).
+const bh2Shots = GAME_PAGES["the-brave-hearts-ii-false-skies"].screenshots.items;
+const pick = ["01", "03", "05", "07"];
+const bh2Gallery = (() => {
+  const chosen = bh2Shots.filter((s) => pick.some((n) => s.src.endsWith(`screenshot-${n}.jpg`)));
+  return chosen.length >= 4 ? chosen : bh2Shots.slice(0, 4);
+})();
+
+// Jeremy Bregermann's page, word for word as a list: "Steam publishing and platform
+// integration, Windows build verification, Steam achievements, Steam Cloud configuration,
+// controller usability, and release quality assurance."
+const help = [
+  { icon: "rocket", title: "Steam publishing and platform integration", text: "Your game released on Steam, with the Steamworks integration the build needs." },
+  { icon: "monitor", title: "Windows build verification", text: "We check the Windows build before it goes out to players." },
+  { icon: "award", title: "Steam achievements", text: "Achievements set up in Steamworks and unlocking in the game." },
+  { icon: "layers", title: "Steam Cloud configuration", text: "Saves that follow players from one computer to the next." },
+  { icon: "gamepad", title: "Controller usability", text: "Menus and play that work well with a controller in hand." },
+  { icon: "checkCircle", title: "Release quality assurance", text: "Testing of the release build before launch day." },
+];
+
+const steps = [
+  { title: "Submit your game", html: `Fill in the ${formLink}. A demo, an early build, or a finished release all work.` },
+  { title: "We review the build", text: "We play what you send and look at where the game is headed." },
+  { title: "We talk", text: "About the game, your plans, and the help you need from us." },
+  { title: "We plan the release", text: "Together we plan the release on Steam or Nintendo Switch, and agree on terms for your project." },
+];
+
+const faqs = [
+  {
+    q: "Do I need a publisher to release my game on Steam?",
+    a: "No. Developers can publish on Steam themselves through Steamworks. A publisher adds hands and experience: for The Brave Hearts II: False Skies we handled Steam publishing and platform integration, Windows build verification, Steam achievements, Steam Cloud configuration, controller usability, and release quality assurance.",
+  },
+  {
+    q: "What does an indie game publisher do?",
+    a: "It depends on the publisher. Our work is hands-on release work: the Steam integration, build checks, achievements, Steam Cloud, controller usability, and release testing listed on this page. We have also released our own games on Steam and Nintendo Switch.",
+  },
+  {
+    q: "Can you help me release my game on Nintendo Switch?",
+    a: 'We have released our own games on Nintendo Switch: <a href="/hypno-halo/">Hypno Halo</a> and <a href="/paralily/">ParaLily</a>. Tell us in your submission that you are aiming for Switch, and we will talk through what it needs.',
+  },
+  {
+    q: "Does my game have to be finished before I pitch it?",
+    a: "No. Send us a demo, an early build, or a finished release.",
+  },
+  {
+    q: "What should I include in my pitch?",
+    a: `Use the ${formLink}. Give us a way to see the game: a link to a build, a demo, or a trailer.`,
+  },
+  {
+    q: "What share of revenue do you take?",
+    a: `We discuss terms with each developer, project by project. If you want to ask before you submit, email <a href="${mail}">${SITE.email}</a>.`,
+  },
+  {
+    q: "Do you only publish games made by your interns?",
+    a: 'No. The submission form is open to any indie developer. Connor Butler, who developed The Brave Hearts II: False Skies, came through our <a href="/bootcamp/">internship program</a>.',
+  },
+];
+
+const jsonLd = [
+  serviceLd({
+    name: "Indie game publishing",
+    serviceType: "Video game publishing",
+    description,
+    url,
+    offers: help.map((h) => h.title),
+  }),
+  faqLd(faqs),
+];
+---
+
+<BaseLayout
+  title="Indie game publisher open to pitches"
+  description={description}
+  breadcrumbs={[{ label: "Publishing", href: url }]}
+  jsonLd={jsonLd}
+  image={heroArt}
+  imageAlt="The Brave Hearts II: False Skies, published by Luna Wolf Studios"
+>
+  <PageHero
+    eyebrow="Publish with the pack"
+    title="Indie game publishing: pitch us your game"
+    lead="We work with indie developers to bring their games to Steam and Nintendo Switch, and we guide you through publishing. Send us a demo, an early build, or a finished release."
+  >
+    <div class="ph-actions pb-actions">
+      <a class="btn btn--primary btn--lg" href={form} target="_blank" rel="noopener">
+        Submit your game <Icon name="arrowUpRight" size={18} /><span class="visually-hidden"> (opens in a new tab)</span>
+      </a>
+      <a class="btn btn--secondary btn--lg" href={mail}><Icon name="mail" size={18} /> Questions? Email us</a>
+    </div>
+    <AvailableOn platforms={["steam", "switch"]} label="Bring your game to" class="pb-avail" />
+    <figure slot="media" class="pb-hero-media">
+      <Image
+        src={heroArt}
+        alt="The Brave Hearts II: False Skies title art: a fighter jet in front of a steel heart"
+        widths={[560, 840, 1120]}
+        sizes="(max-width: 900px) calc(100vw - 32px), 560px"
+        loading="eager"
+        fetchpriority="high"
+        class="pb-hero-img"
+      />
+      <figcaption>
+        <a href={bh2.page}>The Brave Hearts II: False Skies</a>, published by us on Steam in 2026.
+      </figcaption>
+    </figure>
+  </PageHero>
+
+  <Section
+    id="what-we-do"
+    eyebrow="What we help with"
+    title="What we do as a publisher"
+    lead="The release work we did for The Brave Hearts II: False Skies, and what we offer the next developer."
+  >
+    <FeatureList items={help} columns={3} />
+    <p class="pb-note" data-reveal>
+      Need help building the game itself? See our <a href="/services/game-development/">game development services</a>.
+    </p>
+  </Section>
+
+  <Section id="published" tone="raised" eyebrow="Published so far" title="Games we've published">
+    <article class="card pb-feature" data-reveal>
+      <div class="pb-feature-art">
+        <Image
+          src={bh2Capsule}
+          alt="The Brave Hearts II: False Skies cover art"
+          widths={[300, 450, 600]}
+          sizes="(max-width: 700px) 220px, 300px"
+          loading="lazy"
+          decoding="async"
+          class="pb-feature-img"
+        />
+      </div>
+      <div class="pb-feature-body">
+        <p class="pb-kicker">Published by Luna Wolf Studios</p>
+        <h3 class="pb-feature-title"><a href={bh2.page}>{bh2.title}</a></h3>
+        <p class="pb-feature-text">{bh2.tagline}</p>
+        <dl class="pb-facts">
+          <div><dt>Developer</dt><dd>Connor Butler</dd></div>
+          <div><dt>Publisher</dt><dd>Luna Wolf Studios</dd></div>
+          <div><dt>Released</dt><dd>August 27, 2026, on Steam for Windows</dd></div>
+        </dl>
+        <p class="pb-path">
+          <Icon name="graduationCap" size={18} />
+          <span>
+            From intern to published developer: Connor came through our <a href="/bootcamp/">internship program</a>.
+          </span>
+        </p>
+        <div class="cluster pb-feature-actions">
+          <StoreButton kind="steam" href={LINKS.braveHearts2Steam} verb="Buy on" placement="publishing" />
+          <a class="link-arrow" href={bh2.page}>About the game <Icon name="arrowRight" size={16} /></a>
+        </div>
+      </div>
+    </article>
+
+    <Gallery
+      images={bh2Gallery}
+      columns={4}
+      label="The Brave Hearts II: False Skies screenshots"
+      id="bh2-shots"
+      class="pb-shots"
+      sizes="(max-width: 1000px) calc(50vw - 28px), 290px"
+    />
+
+    <div class="pb-own">
+      <h3 class="pb-own-title" data-reveal>Our own games on Steam and Nintendo Switch</h3>
+      <div class="grid grid--2">
+        {ownReleases.map((g) => <GameCard game={g} variant="wide" placement="publishing" />)}
+      </div>
+      <p class="pb-tm">Nintendo Switch is a trademark of Nintendo. We are not affiliated with or endorsed by Nintendo.</p>
+    </div>
+  </Section>
+
+  <Section id="how-it-works" eyebrow="How it works" title="From pitch to release">
+    <FeatureList items={steps} numbered columns={2} />
+  </Section>
+
+  <FaqSection title="Questions about publishing" items={faqs} tone="raised" eyebrow="FAQ">
+    <Fragment slot="more">
+      Something else to ask before you pitch? Email <a href={mail}>{SITE.email}</a>.
+    </Fragment>
+  </FaqSection>
+
+  <CtaBand
+    eyebrow="Publish with the pack"
+    title="Got a game you've been building?"
+    lead="We want to see it."
+    primary={{ label: "Submit your game", href: form, icon: "arrowUpRight" }}
+    secondary={{ label: "Questions? Email us", href: mail, icon: "mail" }}
+  />
+</BaseLayout>
+
+<style>
+  .pb-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .page-hero :global(.pb-avail) {
+    margin-top: 1.25rem;
+  }
+  .pb-hero-media {
+    margin: 0;
+  }
+  .pb-hero-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--lw-radius-lg);
+    border: 1px solid var(--lw-border);
+    box-shadow: var(--lw-shadow-lg);
+  }
+  .pb-hero-media figcaption {
+    margin-top: 0.75rem;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+  .pb-hero-media figcaption a {
+    color: var(--lw-ink-muted);
+  }
+
+  .pb-note {
+    margin-top: clamp(1.75rem, 3vw, 2.5rem);
+    max-width: var(--lw-maxw-text);
+    color: var(--lw-ink-muted);
+  }
+
+  /* Feature card ---------------------------------------------------------------------- */
+  .pb-feature {
+    display: grid;
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+    overflow: hidden;
+  }
+  .pb-feature-art {
+    background: var(--lw-media-bg);
+  }
+  .pb-feature-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .pb-feature-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: clamp(1.4rem, 3.5vw, 2.5rem);
+  }
+  .pb-kicker {
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lw-gold);
+  }
+  .pb-feature-title {
+    font-size: clamp(1.45rem, 1.2rem + 1vw, 2rem);
+  }
+  .pb-feature-title a {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .pb-feature-title a:hover {
+    color: var(--lw-accent);
+  }
+  .pb-feature-text {
+    color: var(--lw-ink-muted);
+    max-width: 60ch;
+  }
+  .pb-facts {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 1rem 0;
+    border-block: 1px solid var(--lw-border);
+  }
+  .pb-facts div {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+  .pb-facts dt {
+    font-size: var(--lw-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+    padding-top: 0.2em;
+  }
+  .pb-facts dd {
+    margin: 0;
+  }
+  .pb-path {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    color: var(--lw-ink-muted);
+  }
+  .pb-path :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.2em;
+    color: var(--lw-accent);
+  }
+  .pb-feature-actions {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    --cluster-gap: 0.75rem 1.5rem;
+  }
+
+  :global(.pb-shots) {
+    margin-top: clamp(1rem, 2vw, 1.5rem);
+  }
+  /* Two screenshots across on phones too: four stacked full-width shots would run three
+     screens. */
+  @media (max-width: 640px) {
+    :global(.pb-shots .gal-grid) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem;
+    }
+  }
+
+  .pb-own {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .pb-own-title {
+    margin-bottom: 1.5rem;
+    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  }
+
+  .pb-tm {
+    margin-top: 1.25rem;
+    font-size: var(--lw-text-xs);
+    color: var(--lw-ink-subtle);
+  }
+
+  /* On phones the 2:3 cover is shown whole (its "FALSE SKIES" title sits at the bottom), at
+     a modest size on a dark band, rather than cropped to a wide strip. */
+  @media (max-width: 700px) {
+    .pb-feature {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .pb-feature-art {
+      display: flex;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      background: #04070a;
+    }
+    .pb-feature-img {
+      width: min(220px, 62%);
+      height: auto;
+      border-radius: var(--lw-radius-sm);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+    }
+  }
+</style>

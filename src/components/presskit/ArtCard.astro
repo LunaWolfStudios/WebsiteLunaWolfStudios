@@ -1,0 +1,109 @@
+---
+/**
+ * One downloadable piece of a product's art on a project sheet (logo, key art, cover, icon):
+ * a preview, what it is, its file type, pixel size, and file size, and a download link to the
+ * original file in /press/<slug>/. Transparent logos and icons sit on a night tile, which
+ * suits every mark the sheets carry; everything else fills its frame.
+ *
+ *   <ArtCard img={metadata} label="Key art, no logo" alt="..." href="/press/x/x-key-art.jpg"
+ *            file="x-key-art.jpg" meta="JPG · 2560×1440 · 675 KB" />
+ */
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Icon from "../Icon.astro";
+
+interface Props {
+  img: ImageMetadata;
+  label: string;
+  alt: string;
+  href: string;
+  /** Published file name, for the download attribute. */
+  file: string;
+  meta: string;
+  transparent?: boolean;
+  /** Small square art (an icon) is drawn at its own size, never stretched. */
+  sizes?: string;
+}
+
+const { img, label, alt, href, file, meta, transparent = false, sizes } = Astro.props;
+// The whole file is always shown (a logo is never cropped). Art that has the frame's own
+// shape fills it; anything else sits on the night ground, with breathing room around
+// transparent and small files.
+const ratio = img.width / img.height;
+const fills = Math.abs(ratio / (16 / 9) - 1) < 0.03 && !transparent;
+const padded = transparent || img.width <= 400;
+const widths = [320, 480, 720, 960].filter((w) => w < img.width);
+---
+
+<article class="art-card card">
+  <a class:list={["ac-media", { "ac-media--fill": fills, "ac-media--padded": padded }]} href={href} download={file} tabindex="-1" aria-hidden="true">
+    <Image
+      src={img}
+      alt={alt}
+      widths={[...widths, Math.min(img.width, 1200)]}
+      sizes={sizes ?? "(max-width: 640px) calc(100vw - 2.5rem), (max-width: 1100px) 40vw, 330px"}
+      loading="lazy"
+      decoding="async"
+      class="ac-img"
+    />
+  </a>
+  <div class="ac-info">
+    <div>
+      <h3 class="ac-title">{label}</h3>
+      <span class="ac-meta">{meta}</span>
+    </div>
+    <a class="btn btn--secondary btn--sm" href={href} download={file}>
+      <Icon name="download" size={16} /> Download<span class="visually-hidden"> {label} ({meta})</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .art-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .ac-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    background: #04070a;
+    border-bottom: 1px solid var(--lw-border);
+    overflow: hidden;
+  }
+  /* A fixed night ground whatever the page theme: every logo and icon here is drawn for it. */
+  .ac-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .ac-media--fill .ac-img {
+    object-fit: cover;
+  }
+  .ac-media--padded .ac-img {
+    inset: 0.9rem;
+    width: calc(100% - 1.8rem);
+    height: calc(100% - 1.8rem);
+  }
+  .ac-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.7rem 1rem;
+    padding: 0.9rem 1.05rem 1rem;
+    margin-top: auto;
+  }
+  .ac-title {
+    font-size: 1.02rem;
+  }
+  .ac-meta {
+    display: block;
+    margin: 0.15rem 0 0;
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+</style>
