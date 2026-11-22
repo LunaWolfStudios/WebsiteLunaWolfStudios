@@ -1,0 +1,311 @@
+---
+/**
+ * A card for a game or project we worked on that belongs to another company (it names the
+ * company), or that has no page of its own: art when there is any, the owner, the title,
+ * one line, the role where the data records one, and an outbound link. The whole card is one
+ * link when there is somewhere to go; a project with no working page is a plain card.
+ *
+ * size="wide" spans two grid columns and lays the title over the art, so the card is as
+ * tall as its row and never stretches the cards beside it. A card with no art is a compact
+ * text card with an accent rule, not an empty picture frame.
+ *
+ *   <CreditCard game={game("lanebreak")} />
+ *   <CreditCard game={game("asurion-vr-soft-skills-training")} art={false} />
+ */
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import type { Game } from "../../data/types";
+import { image } from "../../lib/images";
+import { withUtm } from "../../data/links";
+
+interface Props {
+  game: Game;
+  /** Art path override; false for a text card. Defaults to wide art, then the cover. */
+  art?: string | false;
+  /** "wide" spans two columns in the hub grid, title over the art. */
+  size?: "default" | "wide";
+  /** "banner" shows ~3:1 banner art whole (the old Games page's experience banners). */
+  shape?: "default" | "banner";
+  /** Kicker text; defaults to the owner. */
+  kicker?: string;
+  headingLevel?: 3 | 4;
+}
+
+const { game, art, size = "default", shape = "default", kicker, headingLevel = 3 } = Astro.props;
+const artRef = art === false ? undefined : (art ?? game.wide ?? game.cover);
+const src = artRef ? image(artRef) : undefined;
+// Square art (Lab Rat) sits whole on a dark panel instead of being cropped to 16:9.
+const contain = Boolean(src && src.width / src.height < 1.2);
+const href = game.page ?? (game.links[0] ? withUtm(game.links[0].url, "games") : undefined);
+const external = !game.page && Boolean(href);
+const KIND_LABEL: Record<string, string> = {
+  steam: "Steam",
+  switch: "Nintendo eShop",
+  itch: "itch.io",
+  newgrounds: "Newgrounds",
+  apple: "App Store",
+  android: "Google Play",
+  kickstarter: "Kickstarter",
+  youtube: "Watch the video",
+  web: "Visit",
+};
+const first = game.links[0];
+const linkLabel = game.page ? "Read more" : first ? (first.label ?? KIND_LABEL[first.kind] ?? "Visit") : undefined;
+// A YouTube link plays in the shared theater instead of leaving the page.
+const videoId = first?.kind === "youtube" ? (game.videoId ?? new URL(first.url).searchParams.get("v") ?? undefined) : undefined;
+const meta = [game.year, game.role].filter(Boolean).join(" · ");
+const H = `h${headingLevel}` as "h3" | "h4";
+const widths = (size === "wide" ? [600, 900, 1200] : [400, 600, 800]).filter((w) => !src || w <= src.width);
+---
+
+<article class:list={["credit-card", "card", { "card--link": href, "credit-card--wide": size === "wide", "credit-card--text": !src }]}>
+  {
+    src && (
+      <div class:list={["cc-art", { "cc-art--contain": contain, "cc-art--banner": shape === "banner" }]}>
+        <Image
+          src={src}
+          alt=""
+          widths={widths.length ? widths : [src.width]}
+          sizes={
+            size === "wide"
+              ? "(max-width: 640px) calc(100vw - 32px), (max-width: 1000px) 66vw, 590px"
+              : shape === "banner"
+                ? "(max-width: 760px) calc(100vw - 32px), 390px"
+                : "(max-width: 640px) calc(50vw - 24px), (max-width: 1000px) 33vw, 290px"
+          }
+          loading="lazy"
+          decoding="async"
+          class="cc-img"
+        />
+      </div>
+    )
+  }
+  <div class="cc-body">
+    <p class="cc-kicker">{kicker ?? game.owner ?? game.developer ?? game.platforms?.[0]}</p>
+    <H class="cc-title">
+      {
+        href ? (
+          <a
+            href={videoId ? first!.url : href}
+            class="cc-link"
+            target={external ? "_blank" : undefined}
+            rel={external ? "noopener" : undefined}
+            data-video-id={videoId}
+            data-video-title={videoId ? `${game.title}: ${first!.label ?? "video"}` : undefined}
+          >
+            {game.title}
+            {videoId && <span class="visually-hidden">, play video</span>}
+            {external && !videoId && <span class="visually-hidden"> (opens in a new tab)</span>}
+          </a>
+        ) : (
+          game.title
+        )
+      }
+    </H>
+    <p class="cc-line">{game.tagline}</p>
+    {meta && <p class="cc-meta">{meta}</p>}
+    {
+      href && (
+        <span class="cc-go" aria-hidden="true">
+          {linkLabel}
+          <Icon name={videoId ? "play" : external ? "arrowUpRight" : "arrowRight"} size={15} />
+        </span>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .credit-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .credit-card--wide {
+    grid-column: span 2;
+  }
+  .cc-art {
+    aspect-ratio: 16 / 9;
+    background: var(--lw-media-bg);
+    overflow: hidden;
+  }
+  .cc-art--banner {
+    aspect-ratio: 2.96 / 1;
+  }
+  /* Square or portrait art is shown whole on a dark panel. It is positioned in the panel,
+     not sized by a percentage height in a grid, which a tall picture would overflow. */
+  .cc-art--contain {
+    position: relative;
+    background: #070d12;
+  }
+  .cc-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--lw-ease);
+  }
+  .cc-art--contain .cc-img {
+    position: absolute;
+    inset: 7% 0;
+    width: 100%;
+    height: 86%;
+    object-fit: contain;
+  }
+  .credit-card.card--link:hover .cc-img {
+    transform: scale(1.035);
+  }
+  .cc-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    flex: 1;
+    padding: 0.95rem 1.05rem 1.05rem;
+  }
+  .credit-card--text .cc-body {
+    padding: 1.2rem 1.25rem 1.2rem;
+  }
+  .cc-kicker {
+    font-size: var(--lw-text-xs);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .cc-title {
+    font-size: 1.1rem;
+    overflow-wrap: anywhere;
+  }
+  .credit-card--wide .cc-title {
+    font-size: 1.35rem;
+  }
+  .cc-link {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .cc-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .cc-link:focus-visible {
+    outline: none;
+  }
+  .credit-card:has(.cc-link:focus-visible) {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: 3px;
+  }
+  .credit-card:hover .cc-link {
+    color: var(--lw-accent);
+  }
+  .cc-line {
+    color: var(--lw-ink-muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .cc-meta {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+  /* Inline, so on a narrow card the arrow follows the last word instead of the far edge. */
+  .cc-go {
+    align-self: flex-start;
+    display: block;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    font-family: var(--lw-font-display);
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--lw-accent);
+  }
+  @media (max-width: 640px) {
+    .credit-card--wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* Wide: the art fills the card and the text sits on a scrim at its foot. Fixed light ink,
+     because the scrim is dark in both themes. */
+  .credit-card--wide {
+    position: relative;
+    min-height: 300px;
+    background: #070d12;
+  }
+  .credit-card--wide .cc-art {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+  .credit-card--wide .cc-body {
+    position: relative;
+    justify-content: flex-end;
+    padding: 4rem 1.4rem 1.3rem;
+    background: linear-gradient(to top, rgba(4, 7, 10, 0.94) 0%, rgba(4, 7, 10, 0.86) 42%, rgba(4, 7, 10, 0) 100%);
+  }
+  .credit-card--wide .cc-kicker {
+    color: #b9cdd0;
+  }
+  .credit-card--wide .cc-link,
+  .credit-card--wide .cc-title {
+    color: #eef7f7;
+  }
+  .credit-card--wide:hover .cc-link {
+    color: #81ebe1;
+  }
+  .credit-card--wide .cc-line,
+  .credit-card--wide .cc-meta {
+    color: #c9d9db;
+    max-width: 34rem;
+  }
+  .credit-card--wide .cc-go {
+    margin-top: 0.25rem;
+    color: #81ebe1;
+  }
+  @media (max-width: 640px) {
+    .credit-card--wide {
+      min-height: 0;
+    }
+    .credit-card--wide .cc-art {
+      position: relative;
+      aspect-ratio: 16 / 9;
+    }
+    .credit-card--wide .cc-body {
+      margin-top: -3.5rem;
+      padding-top: 3rem;
+    }
+  }
+
+  .cc-go :global(svg) {
+    display: inline-block;
+    vertical-align: -2px;
+    margin-left: 0.3rem;
+  }
+
+  /* Phones: one card per row, the art as a square-ish thumbnail beside the text, so a card
+     is a readable line of text instead of a 125 px column. */
+  @media (max-width: 520px) {
+    .credit-card:not(.credit-card--wide):not(.credit-card--text) {
+      flex-direction: row;
+    }
+    .credit-card:not(.credit-card--wide) .cc-art:not(.cc-art--banner) {
+      flex: 0 0 38%;
+      aspect-ratio: auto;
+      min-height: 120px;
+    }
+    .credit-card:has(.cc-art--banner) {
+      flex-direction: column;
+    }
+  }
+
+  /* No art: a compact text card. The accent rule says "designed", not "image missing". */
+  .credit-card--text {
+    border-top: 3px solid var(--lw-accent-line);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .credit-card.card--link:hover .cc-img {
+      transform: none;
+    }
+  }
+</style>

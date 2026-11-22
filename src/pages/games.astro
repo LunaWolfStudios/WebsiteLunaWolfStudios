@@ -1,0 +1,702 @@
+---
+/**
+ * /games/: the games hub. Carries every game and project the old Games page linked
+ * (archive/wordpress/pages/games.md: Featured, Immersive Experiences, Game Jam Graveyard, the
+ * itch.io and Newgrounds buttons) and adds what the owner asked for: the major releases, the
+ * game jam and small games, and the student internship projects. Each card says whose game it
+ * is: ours, published by us, or the company that owns a game we worked on. The owner's
+ * direction: "We make games, here's what we've worked on. More images over text the better."
+ * Every project with art shows it; the few with none are compact text cards.
+ *
+ * Data: src/data/games.ts (GAMES by category), src/data/videos.ts (the 2017 hype trailer),
+ * src/data/awards.ts. Prices come from src/data/store.json through the shared Price.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import CtaBand from "../components/CtaBand.astro";
+import StoreButton from "../components/StoreButton.astro";
+import AwardBadge from "../components/AwardBadge.astro";
+import Icon from "../components/Icon.astro";
+import { Image } from "astro:assets";
+import HubFeature from "../components/games/HubFeature.astro";
+import CreditCard from "../components/games/CreditCard.astro";
+import JamTile from "../components/games/JamTile.astro";
+import { GAME_CATEGORIES, SCRIPTABLE_SHEETS, game, gamesIn } from "../data/games";
+import VideoCard from "../components/VideoCard.astro";
+import { AWARDS } from "../data/awards";
+import { JAM_REEL } from "../data/videos";
+import { LINKS, withUtm } from "../data/links";
+import type { StoreEntry } from "../data/gamePages";
+import { image } from "../lib/images";
+import { ORG_ID, WEBSITE_ID, abs } from "../lib/seo";
+import { PRICE_REGION_NOTE } from "../lib/store";
+
+const title = "Luna Wolf Studios games and projects";
+const description =
+  "Games from Luna Wolf Studios: Sheep Tag 2, Hypno Halo, ParaLily, and The Brave Hearts II, plus projects with Peloton, Barron Associates, and Nemours.";
+
+const steam = (href: string, slug: string, verb = "Buy on"): StoreEntry => ({ kind: "steam", href, verb, price: { slug, store: "steam" } });
+const eshop = (href: string, slug: string): StoreEntry => ({ kind: "switch", href, verb: "Buy on", price: { slug, store: "switch" } });
+
+const st2 = game("sheep-tag-2");
+const hh = game("hypno-halo");
+const pl = game("paralily");
+const bh = game("the-brave-hearts-ii-false-skies");
+const helix = game("helix");
+
+// Games we've worked on: Lanebreak leads at double width so the grid fills evenly (12 slots).
+const clients = gamesIn("client");
+const clientsHeading = GAME_CATEGORIES.find((c) => c.category === "client")!.heading;
+// Experiences: HELIX is ours and leads; the old Games page's three banners come next.
+const BANNERS: Record<string, string> = {
+  "harry-potter-the-exhibition": "portfolio/harry-potter-the-exhibition-banner.jpg",
+  saebovr: "portfolio/saebovr-banner.jpg",
+  realize: "portfolio/realize-banner.jpg",
+};
+const experiences = gamesIn("experience").filter((g) => g.slug !== "helix");
+const banners = Object.keys(BANNERS).map((slug) => experiences.find((g) => g.slug === slug)!);
+const moreExperiences = experiences.filter((g) => !(g.slug in BANNERS));
+// Image cards for every project with art; the rest are compact text cards after them.
+const expWithArt = moreExperiences.filter((g) => g.wide ?? g.cover);
+const expText = moreExperiences.filter((g) => !(g.wide ?? g.cover));
+
+// Jam and small games, with the old Games page's square icons where the itch cover is not square.
+const JAM_ART: Record<string, string> = {
+  "plan-c": "games/plan-c/wp-icon-250.jpg",
+  "turbo-hobo-cannon": "games/turbo-hobo-cannon/wp-icon-512.jpg",
+};
+// Rowan of Bramblebrook is highlighted ahead of the tiles, so it is not a tile as well.
+const ROWAN = "rowan-of-bramblebrook";
+const rowan = game(ROWAN);
+const jams = gamesIn("jam").filter((g) => g.slug !== ROWAN);
+// Wide screenshots of a dark UI read better whole than cropped square: Madlads shows its
+// title, board, and buttons.
+const JAM_WHOLE = new Set(["madlads-tic-tac-toe"]);
+const interns = gamesIn("internship");
+const ssAward = AWARDS.find((a) => a.subjectSlug === "scriptable-sheets");
+
+const jump = [
+  ["Our games", "#our-games"],
+  ["Published", "#published"],
+  ["Worked on", "#client-games"],
+  ["Experiences", "#experiences"],
+  ["Game jams", "#game-jams"],
+  ["Interns", "#internships"],
+];
+
+// JSON-LD: the page as a collection, listing the games that have a page here.
+const listed = ["sheep-tag-2", "hypno-halo", "paralily", "the-brave-hearts-ii-false-skies", "haberdashery", "target-crack"].map(game);
+const jsonLd = {
+  "@type": "CollectionPage",
+  "@id": `${abs("/games/")}#page`,
+  name: "Our games and projects",
+  description,
+  url: abs("/games/"),
+  isPartOf: { "@id": WEBSITE_ID },
+  publisher: { "@id": ORG_ID },
+  inLanguage: "en-US",
+  mainEntity: {
+    "@type": "ItemList",
+    name: "Games made or published by Luna Wolf Studios",
+    numberOfItems: listed.length,
+    itemListElement: listed.map((g, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: abs(g.page!),
+      item: {
+        "@type": "VideoGame",
+        // The same node the game page defines (Sheep Tag 2's lives on its own site).
+        "@id": g.slug === "sheep-tag-2" ? "https://www.sheeptag2.com/#game" : `${abs(g.page!)}#game`,
+        name: g.title,
+        url: abs(g.page!),
+      },
+    })),
+  },
+  hasPart: [...listed, helix].map((g) => ({ "@type": "WebPage", url: abs(g.page!), name: g.title })),
+};
+---
+
+<BaseLayout title={title} description={description} breadcrumbs={[{ label: "Games", href: "/games/" }]} jsonLd={jsonLd}>
+  <PageHero
+    eyebrow="Games"
+    title="Our games and projects"
+    lead="The games we make and publish, the games and health projects we have worked on, and our game jam, side, and intern games."
+    class="games-hero"
+  >
+    <nav class="jump" aria-label="On this page">
+      <ul role="list">
+        {
+          jump.map(([label, href]) => (
+            <li>
+              <a href={href}>{label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href="/contact/">Start a project <Icon name="arrowRight" size={18} /></a>
+      <a class="btn btn--secondary" href="/publishing/">Pitch your game</a>
+    </Fragment>
+    <ul slot="media" class="hero-caps" role="list" aria-label="Our games">
+      {
+        [st2, hh, pl, bh].map((g) => (
+          <li>
+            <a href={g.page} class="cap">
+              <Image
+                src={image(g.cover!)}
+                alt={g.title}
+                widths={[160, 240, 320]}
+                sizes="(max-width: 900px) 22vw, 140px"
+                loading="eager"
+              />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </PageHero>
+
+  {/* ─── Our games ─── */}
+  <Section id="our-games" eyebrow="Made by Luna Wolf Studios" title="Our games">
+    <div class="ours">
+      <HubFeature
+        game={st2}
+        variant="lead"
+        kicker="Our game · Coming to Steam"
+        badge={{ label: "Early Access 2027", tone: "gold" }}
+        line="Sheep vs. Wolves strategy and survival, free to play, for up to 32 players online or solo against bots. The Sheep build farms to survive; the Wolves hunt them down."
+        stores={[
+          {
+            kind: "steam",
+            href: LINKS.sheepTag2Steam,
+            verb: "Wishlist on",
+            price: { slug: "sheep-tag-2", store: "steam", unreleasedLabel: "Free to play", freeLabel: "Free to play" },
+          },
+        ]}
+        trailer="ABIVaCo3QX4"
+      />
+      <div class="grid grid--2 ours-pair">
+        <HubFeature game={hh} kicker="Our game · 2025" badge={{ label: "Out now" }} stores={[steam(LINKS.hypnoHaloSteam, "hypno-halo"), eshop(LINKS.hypnoHaloSwitch, "hypno-halo")]} trailer="GiCsebs_FK4" />
+        <HubFeature
+          game={pl}
+          kicker="Our game · 2021"
+          badge={{ label: "Out now" }}
+          credit="Made by Team ParaLily: artist Nate Flynn and our co-founder Jeff"
+          stores={[steam(LINKS.paralilySteam, "paralily"), eshop(LINKS.paralilySwitch, "paralily")]}
+          trailer="JcMM36wFX1U"
+        />
+      </div>
+      <p class="fine">{PRICE_REGION_NOTE}</p>
+    </div>
+  </Section>
+
+  {/* ─── Published, and tools ─── */}
+  <section id="published" class="section section--raised" aria-label="Published by Luna Wolf Studios, and tools">
+    <div class="wrap duo">
+      <div class="duo-col">
+        <header class="duo-head" data-reveal>
+          <p class="eyebrow">Publishing</p>
+          <h2>Published by Luna Wolf Studios</h2>
+        </header>
+        <HubFeature
+          game={bh}
+          kicker="Published by us · 2026"
+          badge={{ label: "Out now" }}
+          credit="Developed by Connor Butler, who came through our internship"
+          stores={[steam(LINKS.braveHearts2Steam, "the-brave-hearts-ii-false-skies")]}
+        >
+          <a class="link-arrow hf-steam-trailer" href={withUtm(LINKS.braveHearts2Steam, "games")} target="_blank" rel="noopener">
+            <Icon name="play" size={14} /> Watch the trailer on Steam
+            <span class="visually-hidden"> (opens in a new tab)</span>
+          </a>
+        </HubFeature>
+        <p class="duo-note">
+          Making a game? We publish indie games on Steam and Nintendo Switch.
+          <a class="link-arrow" href="/publishing/">How publishing works <Icon name="arrowRight" size={16} /></a>
+        </p>
+      </div>
+      <div class="duo-col">
+        <header class="duo-head" data-reveal>
+          <p class="eyebrow">Tools</p>
+          <h2>Our Unity tool</h2>
+        </header>
+        <HubFeature
+          game={SCRIPTABLE_SHEETS}
+          kicker="Unity Asset Store tool · 2024"
+          linkLabel="About Scriptable Sheets"
+          stores={[{ kind: "unity", href: LINKS.scriptableSheets, verb: "Get it on the", price: { slug: "scriptable-sheets", store: "unity" } }]}
+          trailer="r_FJBZjHUpA"
+        >
+          {ssAward && <AwardBadge award={ssAward} size="sm" class="ss-award" />}
+        </HubFeature>
+        <p class="duo-note">
+          Need a tool built for your team's Unity project?
+          <a class="link-arrow" href="/services/unity-editor-tools/">Custom Unity editor tools <Icon name="arrowRight" size={16} /></a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ─── Client and partner games ─── */}
+  <Section
+    id="client-games"
+    eyebrow="Partners"
+    title={clientsHeading}
+    lead="Games by other studios that we have worked on. Each card names the studio."
+  >
+    <a slot="actions" class="link-arrow" href="/services/game-development/">Game development services <Icon name="arrowRight" size={16} /></a>
+    <div class="cards cards--4">
+      {
+        clients.map((g, i) => (
+          <div class:list={["cell", { "cell--wide": i === 0 }]} data-reveal style={`--reveal-delay:${Math.min(i, 7) * 40}ms`}>
+            <CreditCard game={g} size={i === 0 ? "wide" : "default"} />
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  {/* ─── Experiences ─── */}
+  <Section
+    id="experiences"
+    tone="raised"
+    eyebrow="Health and VR"
+    title="Health, VR, and interactive experiences"
+    lead="Therapy and training software, VR, and exhibitions: our own HELIX, and projects we have worked on."
+  >
+    <Fragment slot="actions">
+      <a class="link-arrow" href="/services/serious-games/">Serious games services <Icon name="arrowRight" size={16} /></a>
+      <a class="link-arrow" href="/services/vr-ar-development/">VR and AR development <Icon name="arrowRight" size={16} /></a>
+    </Fragment>
+    <HubFeature
+      game={helix}
+      variant="lead"
+      kicker="Our project · With Nemours Children's Hospital"
+      line="A VR hearing assessment for auditory processing disorder: digits-in-noise, pure-tone, and sound-localization tests as VR games on Meta Quest 2, a HIPAA-compliant AWS backend, and a web dashboard for providers. Pilot study with about 30 subjects in 2023."
+      linkLabel="How HELIX works"
+      stores={[]}
+    />
+    <div class="cards cards--3 banners">
+      {
+        banners.map((g, i) => (
+          <div class="cell" data-reveal style={`--reveal-delay:${i * 60}ms`}>
+            <CreditCard game={g} art={BANNERS[g.slug]} shape="banner" />
+          </div>
+        ))
+      }
+    </div>
+    <h3 class="sub">More health, training, and VR work</h3>
+    <div class="cards cards--art">
+      {
+        expWithArt.map((g, i) => (
+          <div class="cell" data-slug={g.slug} data-reveal style={`--reveal-delay:${Math.min(i, 7) * 40}ms`}>
+            <CreditCard game={g} headingLevel={4} />
+          </div>
+        ))
+      }
+    </div>
+    <div class="cards cards--text">
+      {
+        expText.map((g, i) => (
+          <div class="cell" data-reveal style={`--reveal-delay:${Math.min(i, 7) * 40}ms`}>
+            <CreditCard game={g} art={false} headingLevel={4} />
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  {/* ─── Game jams and small games ─── */}
+  <Section
+    id="game-jams"
+    eyebrow="Game jam graveyard"
+    title="Game jams and small games"
+    lead="Jam entries, small releases, and side projects. Most of them play on itch.io and Newgrounds."
+  >
+    <Fragment slot="actions">
+      <StoreButton kind="itch" href={LINKS.itch} verb="Play on" size="sm" placement="games" />
+      <StoreButton kind="newgrounds" href={LINKS.newgrounds} verb="Play on" size="sm" placement="games" />
+    </Fragment>
+    <div class="jam-lead">
+      <HubFeature
+        game={rowan}
+        variant="lead"
+        kicker={`${rowan.jam!.name} · In development`}
+        credit="By our co-founder Jeremy Bregermann"
+        line={rowan.tagline}
+        stores={[{ kind: "itch", href: LINKS.rowanOfBramblebrookItch, verb: "Play on" }]}
+        trailer={rowan.videoId}
+      />
+      <div class="jam-reel" data-reveal>
+        <VideoCard id={JAM_REEL.id} poster={JAM_REEL.poster} title="Our 2017 hype trailer" meta={`Video, ${JAM_REEL.length}`} />
+      </div>
+    </div>
+    <ul class="jams" role="list">
+      {
+        jams.map((g, i) => (
+          <li data-reveal style={`--reveal-delay:${Math.min(i, 7) * 40}ms`}>
+            <JamTile game={g} art={JAM_ART[g.slug]} whole={JAM_WHOLE.has(g.slug)} />
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  {/* ─── Student internship projects ─── */}
+  <Section
+    id="internships"
+    tone="raised"
+    eyebrow="Student internships"
+    title="Student internship projects"
+    lead="Teams of three to six student interns designed, built, and released these games with us."
+  >
+    <a slot="actions" class="link-arrow" href="/bootcamp/">Internships and bootcamp <Icon name="arrowRight" size={16} /></a>
+    <ul class="interns" role="list">
+      {
+        interns.map((g, i) => {
+          const art = image(g.wide ?? g.cover!);
+          return (
+            <li class="card intern" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+              <div class="in-art">
+                <Image src={art} alt="" widths={[400, 600, 800]} sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 380px" loading="lazy" decoding="async" />
+                <span class="badge in-term">{g.releaseNote}</span>
+              </div>
+              <div class="in-body">
+                <h3 class="in-title">{g.title}</h3>
+                <p class="in-line">{g.tagline}</p>
+                {g.team && <p class="in-team">{g.team}</p>}
+                <div class="in-actions">
+                  <StoreButton link={g.links[0]} verb="Play on" size="sm" placement="games" />
+                  {g.videoId && (
+                    <a class="link-arrow in-watch" href={`https://www.youtube.com/watch?v=${g.videoId}`} data-video-id={g.videoId} data-video-title={`${g.title} trailer`} target="_blank" rel="noopener">
+                      <Icon name="play" size={14} /> <span class="visually-hidden">{g.title} </span>Trailer
+                    </a>
+                  )}
+                </div>
+              </div>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </Section>
+
+  <CtaBand
+    title="Have a game you want built or published?"
+    lead="Tell us about your game, tool, or training app. Or send us your game to publish."
+    primary={{ label: "Start a project", href: "/contact/" }}
+    secondary={{ label: "Pitch your game", href: "/publishing/" }}
+  />
+</BaseLayout>
+
+<style>
+  /* Hero: an "on this page" row under the lead. */
+  .jump ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0.25rem 0 0;
+    padding: 0;
+  }
+  .jump a {
+    display: inline-block;
+    padding: 0.35em 0.85em;
+    border-radius: var(--lw-radius-pill);
+    border: 1px solid var(--lw-border-strong);
+    color: var(--lw-ink-muted);
+    font-size: var(--lw-text-sm);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color var(--lw-fast) ease, border-color var(--lw-fast) ease, background-color var(--lw-fast) ease;
+  }
+  .jump a:hover {
+    color: var(--lw-accent);
+    border-color: var(--lw-accent-line);
+    background: var(--lw-accent-tint);
+  }
+
+  .hero-caps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(0.5rem, 1.4vw, 1rem);
+    margin: 0;
+    padding: 0;
+  }
+  .hero-caps li:nth-child(even) {
+    transform: translateY(1.75rem);
+  }
+  .cap {
+    display: block;
+    border-radius: var(--lw-radius);
+    overflow: hidden;
+    border: 1px solid var(--lw-border);
+    box-shadow: var(--lw-shadow-lg);
+    transition: transform 0.2s var(--lw-ease), border-color 0.2s ease;
+  }
+  .cap:hover {
+    transform: translateY(-4px);
+    border-color: var(--lw-accent-line);
+  }
+  .cap :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+  }
+  @media (max-width: 900px) {
+    .hero-caps {
+      margin-bottom: 1.75rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cap:hover {
+      transform: none;
+    }
+  }
+
+  .ours {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+  }
+  .fine {
+    font-size: var(--lw-text-xs);
+    color: var(--lw-ink-subtle);
+  }
+
+  /* Published and tools, side by side */
+  .duo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .duo-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .duo-col > :global(.hub-feature) {
+    flex: 1;
+  }
+  .duo-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+  .duo-head h2 {
+    font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.2rem);
+  }
+  .duo-note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.75rem;
+    color: var(--lw-ink-muted);
+  }
+  .hf-steam-trailer {
+    font-size: 0.95rem;
+    color: var(--lw-ink-muted);
+  }
+  :global(.ss-award) {
+    margin-top: 0.25rem;
+  }
+  @media (max-width: 900px) {
+    .duo {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Card grids */
+  .cards {
+    display: grid;
+    gap: clamp(0.85rem, 2vw, 1.25rem);
+  }
+  .cards--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .cards--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .cell--wide {
+    grid-column: span 2;
+  }
+  /* Health and VR projects with art: nine cards, three across in three full rows (five by
+     Barron Associates and Flex Sledding, then the three Relevate Health Games). */
+  .cards--art {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  /* GRASP's glove is at the right of its picture: keep it in view when a phone crops the art
+     to a narrow panel beside the text. */
+  .cards--art > [data-slug="grasp"] :global(.cc-img) {
+    object-position: 88% 50%;
+  }
+  /* Projects with no art on record: compact text cards, three across, after the pictures. */
+  .cards--text {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: clamp(0.85rem, 2vw, 1.25rem);
+  }
+  .banners {
+    margin-top: clamp(1rem, 2.2vw, 1.5rem);
+  }
+  .sub {
+    margin: clamp(2.5rem, 5vw, 3.5rem) 0 1.1rem;
+    font-size: var(--lw-h4);
+    color: var(--lw-ink-muted);
+  }
+  @media (max-width: 1000px) {
+    .cards--4,
+    .cards--art {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .cards--text {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 760px) {
+    .cards--3 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .cards--4,
+    .cards--art {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .cell--wide,
+    .cards--art > .cell:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+  }
+  /* Phones: one card per row (CreditCard lays its art beside the text there). */
+  @media (max-width: 520px) {
+    .cards--4,
+    .cards--art,
+    .cards--text {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Rowan of Bramblebrook and the 2017 hype trailer lead the section. */
+  .jam-lead {
+    display: grid;
+    grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr);
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+    align-items: stretch;
+    margin-bottom: clamp(1.25rem, 2.6vw, 1.75rem);
+  }
+  /* The reel's poster grows to the height of the Rowan card beside it. */
+  .jam-reel :global(.video-card) {
+    height: 100%;
+  }
+  .jam-reel :global(.vc-poster) {
+    flex: 1;
+    aspect-ratio: auto;
+    min-height: 200px;
+  }
+  @media (max-width: 900px) {
+    .jam-lead {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .jam-reel :global(.vc-poster) {
+      aspect-ratio: 16 / 9;
+      min-height: 0;
+    }
+  }
+
+  /* Jam tiles: 12 tiles, six across on wide screens. */
+  .jams {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: clamp(0.6rem, 1.4vw, 0.9rem);
+    margin: 0;
+    padding: 0;
+  }
+  @media (max-width: 1100px) {
+    .jams {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .jams {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* Intern cards */
+  .interns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+  }
+  .intern {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .in-art {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--lw-media-bg);
+  }
+  .in-art :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .in-term {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: rgba(4, 7, 10, 0.75);
+    color: #81ebe1;
+    border-color: rgba(129, 235, 225, 0.35);
+  }
+  .in-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+    padding: 1.1rem 1.2rem 1.25rem;
+  }
+  .in-title {
+    font-size: 1.25rem;
+  }
+  .in-line {
+    color: var(--lw-ink-muted);
+  }
+  .in-team {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+  .in-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+  }
+  .in-watch {
+    font-size: 0.95rem;
+    color: var(--lw-ink-muted);
+  }
+  .in-watch:hover {
+    color: var(--lw-accent);
+  }
+  @media (max-width: 1000px) {
+    .interns {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .interns {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

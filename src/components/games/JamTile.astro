@@ -1,0 +1,235 @@
+---
+/**
+ * A square tile for the hub's "Game jams and small games" grid: art, title, the jam and year
+ * (and the result where the data records one), linking to the game's page on this site or to
+ * where it can be played. With `video`, the tile plays that YouTube id in the shared theater.
+ *
+ *   <JamTile game={game("plan-c")} />
+ *   <JamTile title="2017 hype trailer" art="..." video="sRHOBF1CzfI" meta="..." />
+ */
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import type { Game } from "../../data/types";
+import { image } from "../../lib/images";
+import { withUtm } from "../../data/links";
+
+interface Props {
+  game?: Game;
+  /** Overrides for a tile that is not a game (the hype trailer). */
+  title?: string;
+  art?: string;
+  meta?: string;
+  video?: string;
+  /** Show wide art whole on the dark panel instead of cropping it square. */
+  whole?: boolean;
+}
+
+const { game } = Astro.props;
+// A game whose only link is a YouTube video (Chess) plays it in the theater.
+const video = Astro.props.video ?? (game?.links[0]?.kind === "youtube" ? game.videoId : undefined);
+const title = Astro.props.title ?? game?.title ?? "";
+const artRef = Astro.props.art ?? game?.icon ?? game?.cover ?? game?.wide;
+const src = artRef ? image(artRef) : undefined;
+const href = video
+  ? `https://www.youtube.com/watch?v=${video}`
+  : (game?.page ?? (game?.links[0] ? withUtm(game.links[0].url, "games") : undefined));
+const external = video ? true : Boolean(game && !game.page && href);
+const jam = game?.jam;
+const KIND_LABEL: Record<string, string> = { itch: "itch.io", newgrounds: "Newgrounds", youtube: "Watch the video", kickstarter: "Kickstarter", web: "Browser" };
+const where = game?.page || Astro.props.video ? "" : game?.links[0] ? (KIND_LABEL[game.links[0].kind] ?? "") : "";
+const meta =
+  Astro.props.meta ??
+  (jam ? [jam.name, jam.year && !jam.name.includes(String(jam.year)) ? jam.year : undefined].filter(Boolean).join(", ") : game?.year ? String(game.year) : "");
+const by = game?.owner && game.owner !== "Luna Wolf Studios" ? game.owner : undefined;
+---
+
+<article class:list={["jam-tile", "card", "card--link", { "jam-tile--video": video }]}>
+  <div class="jt-art">
+    {
+      src ? (
+        <Image
+          src={src}
+          alt=""
+          widths={[200, 300, 400].filter((w) => w <= src.width)}
+          sizes="(max-width: 640px) calc(50vw - 24px), (max-width: 1100px) 23vw, 190px"
+          loading="lazy"
+          decoding="async"
+          class:list={["jt-img", { "jt-img--whole": Astro.props.whole }]}
+        />
+      ) : (
+        /* No art on record: a title card in the night palette, set like a game's title
+           screen, so the tile reads as designed rather than as a missing picture. */
+        <span class="jt-fallback sky" aria-hidden="true">
+          <Icon name="gamepad" size={26} />
+          <span class="jt-fallback-title">{title}</span>
+        </span>
+      )
+    }
+    {
+      video && (
+        <span class="jt-play" aria-hidden="true">
+          <Icon name="play" size={22} />
+        </span>
+      )
+    }
+    {jam?.result && <span class="badge badge--gold jt-result">{jam.result}</span>}
+  </div>
+  <div class="jt-body">
+    <h3 class="jt-title">
+      {
+        href ? (
+          <a
+            class="jt-link"
+            href={href}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noopener" : undefined}
+            data-video-id={video}
+            data-video-title={video ? title : undefined}
+          >
+            {title}
+            {external && !video && <span class="visually-hidden"> (opens in a new tab)</span>}
+          </a>
+        ) : (
+          title
+        )
+      }
+    </h3>
+    {meta && <p class="jt-meta">{meta}</p>}
+    {by && <p class="jt-meta">By {by}</p>}
+    {where && <p class="jt-where">{where} <Icon name={video ? "play" : "arrowUpRight"} size={13} /></p>}
+  </div>
+</article>
+
+<style>
+  .jam-tile {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: var(--lw-radius);
+  }
+  .jt-art {
+    position: relative;
+    aspect-ratio: 1;
+    background: #070d12;
+    overflow: hidden;
+  }
+  .jt-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--lw-ease);
+  }
+  .jt-img--whole {
+    object-fit: contain;
+  }
+  .jam-tile:hover .jt-img {
+    transform: scale(1.04);
+  }
+  .jt-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    height: 100%;
+    padding: 1rem;
+    background:
+      radial-gradient(70% 55% at 50% 30%, rgba(129, 235, 225, 0.22), transparent 70%),
+      linear-gradient(to bottom, #0b1820, #04070a);
+    color: #eef7f7;
+    text-align: center;
+  }
+  .jt-fallback :global(svg) {
+    color: #81ebe1;
+  }
+  .jt-fallback-title {
+    font-family: var(--lw-font-display);
+    font-weight: 700;
+    font-size: clamp(1.15rem, 0.9rem + 0.8vw, 1.5rem);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+  }
+  .jt-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: inline-grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    padding-left: 3px;
+    border-radius: 50%;
+    border: 1px solid rgba(238, 247, 247, 0.3);
+    background: rgba(4, 7, 10, 0.68);
+    color: #eef7f7;
+    transform: translate(-50%, -50%);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .jam-tile:hover .jt-play {
+    background: #81ebe1;
+    color: #04070a;
+  }
+  .jt-result {
+    position: absolute;
+    left: 0.5rem;
+    bottom: 0.5rem;
+    background: rgba(4, 7, 10, 0.8);
+    color: #ffc96b;
+    border-color: rgba(255, 201, 107, 0.45);
+  }
+  .jt-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1;
+    padding: 0.7rem 0.8rem 0.8rem;
+  }
+  .jt-title {
+    font-size: 0.98rem;
+    line-height: 1.25;
+  }
+  .jt-link {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .jt-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .jt-link:focus-visible {
+    outline: none;
+  }
+  .jam-tile:has(.jt-link:focus-visible) {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: 3px;
+  }
+  .jam-tile:hover .jt-link {
+    color: var(--lw-accent);
+  }
+  .jt-meta {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--lw-ink-subtle);
+  }
+  .jt-where {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: auto;
+    padding-top: 0.3rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--lw-accent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .jam-tile:hover .jt-img {
+      transform: none;
+    }
+  }
+</style>
