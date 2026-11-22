@@ -93,7 +93,10 @@ async function send(form: HTMLFormElement, data: Record<string, string>): Promis
     const json = (await res.json().catch(() => ({}))) as { success?: string | boolean; message?: string };
     // FormSubmit answers {"success":"true"} (a string) on success.
     if (res.ok && String(json.success) === "true") return { ok: true };
-    return { ok: false, message: json.message };
+    // FormSubmit's refusals are written for the site owner ("This form needs Activation ..."),
+    // so the visitor gets our own message and the relay's goes to the console.
+    if (json.message) console.warn(`[forms] The relay answered: ${json.message}`);
+    return { ok: false };
   } catch {
     return { ok: false };
   }
