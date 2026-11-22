@@ -1,0 +1,94 @@
+---
+/**
+ * Home page. In order: the animated hero with the offer, the two featured products, client
+ * services, recognition, games, the Anatomy of Play body map (a click-to-load embed), partners,
+ * reviews, and the closing call to action, then the footer's newsletter signup. Page-specific
+ * components live in src/components/home/.
+ *
+ * Two things here are load-bearing for the rest of the site:
+ * - the WordPress ?p= / ?page_id= forwarder in the head (old short links), and
+ * - headerOverlay with a dark full-bleed first section (`.bleed-under-header`, in HomeHero).
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import PartnerCloud from "../components/PartnerCloud.astro";
+import CtaBand from "../components/CtaBand.astro";
+import AnatomyOfPlay from "../components/AnatomyOfPlay.astro";
+import Icon from "../components/Icon.astro";
+import HomeHero from "../components/home/HomeHero.astro";
+import HomeFeatured from "../components/home/HomeFeatured.astro";
+import HomeServices from "../components/home/HomeServices.astro";
+import HomeRecognition from "../components/home/HomeRecognition.astro";
+import HomeGames from "../components/home/HomeGames.astro";
+import HomeReviews from "../components/home/HomeReviews.astro";
+import { wpQueryRedirectScript } from "../data/legacy";
+import { PARTNERS } from "../data/partners";
+import { SITE } from "../data/site";
+import { abs, ORG_ID, WEBSITE_ID } from "../lib/seo";
+
+const title = "Game and software development studio";
+const description =
+  "Luna Wolf Studios builds games, Unity tools, VR apps, and custom software for clients and ships its own games. An independent studio in Newark, Delaware.";
+
+const jsonLd = {
+  "@type": "WebPage",
+  "@id": `${SITE.url}/#webpage`,
+  url: abs("/"),
+  name: `${title} | ${SITE.name}`,
+  description,
+  inLanguage: "en-US",
+  isPartOf: { "@id": WEBSITE_ID },
+  about: { "@id": ORG_ID },
+  publisher: { "@id": ORG_ID },
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd} headerOverlay>
+  {/* Old WordPress short links (/?p=440, /?page_id=1533) forward before first paint. */}
+  <script is:inline slot="head" set:html={wpQueryRedirectScript()} />
+
+  <HomeHero
+    eyebrow="Luna Wolf Studios · Newark, Delaware"
+    title={title}
+    lead="We build games, Unity tools, VR apps, and custom software for clients, and we ship our own games on Steam and Nintendo Switch."
+    proof={["Two nominations at the 17th Unity Awards", "Founded in 2015", "Games on Steam and Nintendo Switch"]}
+  />
+
+  <HomeFeatured />
+  <HomeServices />
+  <HomeRecognition />
+  <HomeGames />
+
+  {/* Anatomy of Play, our web app, is a picture until someone presses its button. */}
+  <Section
+    id="anatomy-of-play"
+    tone="raised"
+    eyebrow="Anatomy of Play"
+    title="Serious games we've worked on, mapped to the body"
+    lead="Pick a body part to open the game behind it, with pictures, video, and what it does. Each game names the company it belongs to."
+  >
+    <Fragment slot="actions">
+      <a class="link-arrow" href="/services/serious-games/">Serious game development <Icon name="arrowRight" size={16} /></a>
+    </Fragment>
+    <AnatomyOfPlay />
+  </Section>
+
+  <Section
+    id="pack"
+    align="center"
+    eyebrow="Clients and partners"
+    title="Our Trusted Pack"
+    lead="Companies, schools, and organizations we have worked with."
+  >
+    <PartnerCloud partners={PARTNERS} label="Clients and partners" />
+  </Section>
+
+  <HomeReviews />
+
+  {/* The newsletter signup is the footer's "Follow the pack" band, straight after this. */}
+  <CtaBand
+    title="Let's create experiences that matter"
+    primary={{ label: "Start a project", href: "/contact/" }}
+    secondary={{ label: "About the studio", href: "/about/" }}
+  />
+</BaseLayout>

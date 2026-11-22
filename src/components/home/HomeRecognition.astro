@@ -1,0 +1,46 @@
+---
+/**
+ * The studio's recognition as a compact strip, worded exactly as src/data/awards.ts words it
+ * (the Unity Awards nominations lead; founders' personal awards are left out). AwardBadge
+ * shows the awarding body and the title; the subject goes on the year line, so a jam win
+ * never reads as the studio's.
+ */
+import Section from "../Section.astro";
+import AwardBadge from "../AwardBadge.astro";
+import { STUDIO_AWARDS } from "../../data/awards";
+---
+
+<Section id="recognition" tone="sky" align="center" tight eyebrow="Recognition" title="Awards and recognition">
+  <ul class="awards" role="list">
+    {
+      STUDIO_AWARDS.map((a, i) => (
+        <li data-reveal="fade" style={`--reveal-delay:${Math.min(i, 6) * 60}ms`}>
+          <AwardBadge
+            label={a.body}
+            title={a.title}
+            year={`${a.subject} · ${a.year}`}
+            href={a.url}
+            size="sm"
+            tone={a.body === "17th Unity Awards" ? "gold" : "accent"}
+          />
+        </li>
+      ))
+    }
+  </ul>
+</Section>
+
+<style>
+  .awards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem clamp(1.25rem, 3vw, 2.5rem);
+    margin: 0;
+    padding: 0;
+  }
+  .awards > li {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+  }
+</style>

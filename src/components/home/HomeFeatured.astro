@@ -1,0 +1,123 @@
+---
+/**
+ * The two products the studio pushes hardest, with equal weight: Scriptable Sheets and
+ * Sheep Tag 2. Facts: src/data/games.ts, archive/research/scriptable-sheets.md. Prices come
+ * from the store snapshot through the Price component; nothing here names a price.
+ */
+import Section from "../Section.astro";
+import StoreButton from "../StoreButton.astro";
+import Price from "../Price.astro";
+import AwardBadge from "../AwardBadge.astro";
+import Icon from "../Icon.astro";
+import ProductPanel from "./ProductPanel.astro";
+import ssLogo from "../../assets/scriptable-sheets/logo.png";
+import st2Logo from "../../assets/games/sheep-tag-2/logo.png";
+import st2KeyArt from "../../assets/games/sheep-tag-2/key-art.jpg";
+import { LINKS, withUtm } from "../../data/links";
+import { AWARDS } from "../../data/awards";
+import { game } from "../../data/games";
+import { SCRIPTABLE_SHEETS_INTRO, SHEEP_TAG_2_VIDEOS } from "../../data/videos";
+/* Posters without the product's own title art: the panel's masthead already shows the logo. */
+import ssPoster from "../../assets/scriptable-sheets/screenshot-09.jpg";
+import st2Poster from "../../assets/games/sheep-tag-2/video-poster-sheep-survive-wolves-hunt.jpg";
+
+const ssAward = AWARDS.find((a) => a.subjectSlug === "scriptable-sheets" && a.body === "17th Unity Awards")!;
+const st2 = game("sheep-tag-2");
+// The first sentence of the games.ts summary, word for word: what the gameplay poster shows.
+const st2Sentence = st2.summary.split(/(?<=\.)\s/)[0];
+const st2Trailer = SHEEP_TAG_2_VIDEOS[0];
+const st2Next = SHEEP_TAG_2_VIDEOS.find((v) => v.id === st2Trailer.next);
+---
+
+<Section
+  id="products"
+  eyebrow="Made by Luna Wolf Studios"
+  title="Our own games and tools"
+  lead="We make our own products too: a Unity editor tool on the Unity Asset Store and a multiplayer game coming to Steam."
+  tone="glow"
+>
+  <div class="products">
+    <div data-reveal>
+      <ProductPanel
+        id="ss"
+        name="Scriptable Sheets"
+        kicker="Unity Asset Store tool"
+        logo={ssLogo}
+        logoHeight={76}
+        pitch="View and edit your Unity assets in a spreadsheet-like table inside the Editor, and change them in bulk."
+        video={SCRIPTABLE_SHEETS_INTRO}
+        poster={ssPoster}
+        facts={[
+          "ScriptableObjects, Prefabs, and Components in one sortable, filterable table",
+          "Import and export CSV, TSV, and JSON, and pull data from Google Sheets",
+          "Editor only, stripped from your builds; Unity 2020.3 LTS and later",
+        ]}
+      >
+        <AwardBadge slot="badge" award={ssAward} size="sm" tone="gold" />
+        <Fragment slot="buy">
+          <StoreButton kind="unity" href={LINKS.scriptableSheets} variant="primary" placement="home" />
+          <Price slug="scriptable-sheets" store="unity" />
+        </Fragment>
+        <Fragment slot="links">
+          <a class="link-arrow" href="/scriptable-sheets/">
+            Scriptable Sheets features and tutorials <Icon name="arrowRight" size={16} />
+          </a>
+        </Fragment>
+      </ProductPanel>
+    </div>
+
+    <div data-reveal style="--reveal-delay: 90ms">
+      <ProductPanel
+        id="st2"
+        name="Sheep Tag 2"
+        kicker="Online multiplayer game"
+        logo={st2Logo}
+        logoHeight={100}
+        backdrop={st2KeyArt}
+        pitch={st2.tagline}
+        detail={st2Sentence}
+        video={st2Trailer}
+        poster={st2Poster}
+        videoMeta={st2Next ? `Followed by the ${st2Next.title}` : undefined}
+        facts={["Free to play", "Up to 32 players", "Windows, macOS, and Linux"]}
+      >
+        <span slot="badge" class="badge badge--gold st2-badge">{st2.releaseNote}</span>
+        <Fragment slot="buy">
+          <StoreButton kind="steam" href={LINKS.sheepTag2Steam} verb="Wishlist on" variant="primary" placement="home" />
+          <Price slug="sheep-tag-2" store="steam" />
+        </Fragment>
+        <Fragment slot="links">
+          <a class="link-arrow" href="/sheep-tag-2/">
+            Sheep Tag 2 game page <Icon name="arrowRight" size={16} />
+          </a>
+          <a class="link-arrow" href={withUtm(LINKS.sheepTag2Site, "home")} target="_blank" rel="noopener">
+            sheeptag2.com<span class="visually-hidden"> (opens in a new tab)</span> <Icon name="external" size={15} />
+          </a>
+        </Fragment>
+      </ProductPanel>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .products {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2.4vw, 1.75rem);
+  }
+  .products > div {
+    min-width: 0;
+  }
+  .st2-badge {
+    font-size: 0.85rem;
+    padding: 0.45em 0.95em;
+    background: rgba(4, 7, 10, 0.7);
+  }
+  @media (max-width: 900px) {
+    .products {
+      grid-template-columns: minmax(0, 1fr);
+      max-width: 640px;
+      margin-inline: auto;
+    }
+  }
+</style>

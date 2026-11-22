@@ -1,0 +1,373 @@
+---
+/**
+ * The studio's other games, each with its live store prices (a sale shows as a gold badge on
+ * the art and in the price), then "Games we've worked on": picture cards, each labelled with
+ * the company that owns the game, and HELIX, the studio's own project with Nemours.
+ *
+ * The shared GameCard has no place for a price, so the studio games use a card of their own.
+ */
+import { Image } from "astro:assets";
+import Section from "../Section.astro";
+import Price from "../Price.astro";
+import Icon from "../Icon.astro";
+import { game } from "../../data/games";
+import { image } from "../../lib/images";
+import { getOffers, isOnSale, STORE_NAMES } from "../../lib/store";
+import { withUtm } from "../../data/links";
+
+const OWN = ["hypno-halo", "paralily", "the-brave-hearts-ii-false-skies"].map((slug) => {
+  const g = game(slug);
+  const offers = getOffers(slug);
+  const sale = offers
+    .filter((o) => isOnSale(o.offer))
+    .sort((a, b) => b.offer.discountPercent - a.offer.discountPercent)[0];
+  const kicker = g.category === "published" ? "Published by us" : "Our game";
+  const credit = g.developer && g.developer !== "Luna Wolf Studios" ? `Developed by ${g.developer}` : undefined;
+  return { g, offers, sale, kicker, credit, art: image(g.wide ?? g.cover!, `games/${slug}`) };
+});
+
+/* Games we've worked on, each named with its owner, then HELIX, our own project with Nemours. */
+const PARTNER = [
+  ...["lanebreak", "cell-to-singularity", "travelers-refrain", "citytopia"].map((slug) => {
+    const g = game(slug);
+    return { g, owner: `By ${g.owner}`, href: withUtm(g.links[0].url, "home"), external: true };
+  }),
+  (() => {
+    const g = game("save-samia");
+    return { g, owner: `For ${g.owner}`, href: withUtm(g.links[0].url, "home"), external: true };
+  })(),
+  (() => {
+    const g = game("helix");
+    return { g, owner: "Our project, with Nemours Children's Hospital", href: g.page!, external: false };
+  })(),
+];
+---
+
+<Section
+  id="games"
+  eyebrow="Games"
+  title="Games we make and publish"
+  lead="Our own games on Steam and Nintendo Switch, and a game we publish for a developer from our internship program."
+>
+  <Fragment slot="actions">
+    <a class="link-arrow" href="/games/">All games and projects <Icon name="arrowRight" size={16} /></a>
+  </Fragment>
+
+  <ul class="own" role="list">
+    {
+      OWN.map(({ g, offers, sale, kicker, credit, art }, i) => (
+        <li data-reveal style={`--reveal-delay:${i * 80}ms`}>
+          <article class="og card card--link">
+            <div class="og-art">
+              <Image
+                src={art}
+                alt=""
+                widths={[400, 600, 800]}
+                sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 1000px) 50vw, 380px"
+                loading="lazy"
+                decoding="async"
+                class="og-img"
+              />
+              {sale && (
+                <span class="og-sale">
+                  &minus;{sale.offer.discountPercent}% on {STORE_NAMES[sale.store]}
+                </span>
+              )}
+            </div>
+            <div class="og-body">
+              <p class="og-kicker">{kicker}</p>
+              <h3 class="og-title">
+                <a href={g.page} class="og-link">
+                  {g.title}
+                </a>
+              </h3>
+              <p class="og-tagline">{g.tagline}</p>
+              {credit && <p class="og-credit">{credit}</p>}
+              <ul class="og-prices" role="list" aria-label={`${g.title} prices`}>
+                {offers.map(({ store, offer }) => (
+                  <li>
+                    <span class="og-store">{STORE_NAMES[store]}</span>
+                    <Price offer={offer} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h3 class="partner-head">Games we've worked on</h3>
+  <ul class="partner" role="list">
+    {
+      PARTNER.map(({ g, owner, href, external }, i) => (
+        <li data-reveal="fade" style={`--reveal-delay:${(i % 3) * 60}ms`}>
+          <article class="pt card card--link">
+            <div class="pt-art">
+              <Image
+                src={image(g.wide ?? g.cover!, `games/${g.slug}`)}
+                alt=""
+                widths={[320, 480, 640, 800]}
+                sizes="(max-width: 640px) calc(50vw - 1.5rem), (max-width: 1000px) calc(50vw - 3rem), 380px"
+                loading="lazy"
+                decoding="async"
+                class="pt-img"
+              />
+            </div>
+            <div class="pt-body">
+              <h4 class="pt-title">
+                <a href={href} class="pt-link" target={external ? "_blank" : undefined} rel={external ? "noopener" : undefined}>
+                  {g.title}
+                  {external && <span class="visually-hidden"> (opens in a new tab)</span>}
+                </a>
+              </h4>
+              <p class="pt-owner">{owner}</p>
+            </div>
+            <Icon name={external ? "external" : "arrowRight"} size={16} class="pt-go" />
+          </article>
+        </li>
+      ))
+    }
+  </ul>
+</Section>
+
+<style>
+  .own {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+  }
+  .own > li {
+    min-width: 0;
+  }
+  .og {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .og-art {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--lw-media-bg);
+    overflow: hidden;
+  }
+  .og-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--lw-ease);
+  }
+  .og:hover .og-img {
+    transform: scale(1.035);
+  }
+  /* On art, so the dark palette in both themes. */
+  .og-sale {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.35em 0.8em;
+    border-radius: var(--lw-radius-pill);
+    background: #ffc96b;
+    color: #04070a;
+    font-family: var(--lw-font-display);
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  }
+  .og-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+    padding: 1.1rem 1.25rem 1.25rem;
+  }
+  .og-kicker {
+    font-size: var(--lw-text-xs);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--lw-ink-subtle);
+  }
+  .og-title {
+    font-size: 1.3rem;
+  }
+  .og-link {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .og-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .og-link:focus-visible {
+    outline: none;
+  }
+  .og:has(.og-link:focus-visible) {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: 3px;
+  }
+  .og:hover .og-link {
+    color: var(--lw-accent);
+  }
+  .og-tagline {
+    color: var(--lw-ink-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .og-credit {
+    font-size: var(--lw-text-sm);
+    color: var(--lw-ink-subtle);
+  }
+  .og-prices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin: auto 0 0;
+    padding: 0.85rem 0 0;
+    border-top: 1px solid var(--lw-border);
+  }
+  .og-prices li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  .og-store {
+    font-size: var(--lw-text-xs);
+    color: var(--lw-ink-subtle);
+  }
+
+  .partner-head {
+    margin: clamp(2.5rem, 5vw, 3.5rem) 0 1.1rem;
+    font-size: var(--lw-h3);
+  }
+  .partner {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.75rem, 1.8vw, 1.25rem);
+    margin: 0;
+    padding: 0;
+  }
+  .partner > li {
+    min-width: 0;
+  }
+  .pt {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .pt-art {
+    aspect-ratio: 16 / 9;
+    background: var(--lw-media-bg);
+    overflow: hidden;
+  }
+  .pt-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--lw-ease);
+  }
+  .pt:hover .pt-img {
+    transform: scale(1.035);
+  }
+  .pt-body {
+    min-width: 0;
+    padding: 0.75rem 2.5rem 0.9rem 1rem;
+  }
+  .pt-title {
+    font-size: 1.05rem;
+    line-height: 1.25;
+  }
+  .pt-link {
+    color: var(--lw-ink);
+    text-decoration: none;
+  }
+  .pt-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .pt-link:focus-visible {
+    outline: none;
+  }
+  .pt:has(.pt-link:focus-visible) {
+    outline: 2px solid var(--lw-accent);
+    outline-offset: 3px;
+  }
+  .pt:hover .pt-link {
+    color: var(--lw-accent);
+  }
+  .pt-owner {
+    margin-top: 0.15rem;
+    font-size: var(--lw-text-sm);
+    line-height: 1.35;
+    color: var(--lw-ink-muted);
+  }
+  .pt :global(.pt-go) {
+    position: absolute;
+    right: 0.9rem;
+    bottom: 1rem;
+    color: var(--lw-ink-subtle);
+  }
+  .pt:hover :global(.pt-go) {
+    color: var(--lw-accent);
+  }
+
+  @media (max-width: 1000px) {
+    .partner {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .own {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    /* Three cards on two columns: the third spans, art beside text. */
+    .own > li:last-child {
+      grid-column: 1 / -1;
+    }
+    .own > li:last-child .og {
+      flex-direction: row;
+    }
+    .own > li:last-child .og-art {
+      width: 50%;
+      aspect-ratio: auto;
+      min-height: 100%;
+    }
+  }
+  @media (max-width: 640px) {
+    .own {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .pt-body {
+      padding: 0.6rem 0.75rem 0.75rem;
+    }
+    .pt-title {
+      font-size: 0.98rem;
+    }
+    .pt :global(.pt-go) {
+      display: none;
+    }
+    .own > li:last-child .og {
+      flex-direction: column;
+    }
+    .own > li:last-child .og-art {
+      width: auto;
+      min-height: 0;
+      aspect-ratio: 16 / 9;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .og:hover .og-img,
+    .pt:hover .pt-img {
+      transform: none;
+    }
+  }
+</style>
