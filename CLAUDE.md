@@ -189,7 +189,8 @@ design, not an inversion.
   stand alone (a game's developer, an award). In a sentence he is "Jeremy".
 - Contact: support@lunawolfstudios.com.
 - Sheep Tag 2, Hypno Halo, ParaLily, and The Brave Hearts II: False Skies are Unity games
-  (the owner's word, November 2026; `engine` in `src/data/games.ts`).
+  (the owner's word, November 2026; `engine` in `src/data/games.ts`). So are the three
+  internship games: Coppervalle Rush, RAILBOUND, and On the Rocks.
 - Everything else is in `src/data/` and `archive/`.
 
 - Engines: the site says "Unity, Unreal, Godot, and more" (the owner's wording). Not

@@ -1181,7 +1181,6 @@ const onTheRocks: GamePageData = {
     { label: "Released", value: "August 31, 2026" },
     { label: "Platform", value: "Windows" },
     { label: "Genre", value: "3D simulation" },
-    { label: "Engine", value: "Unity" },
     { label: "Players", value: "Single player" },
     { label: "Play", html: ext(tagged(LINKS.onTheRocksItch), "On the Rocks on itch.io") },
   ],
