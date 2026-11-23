@@ -208,9 +208,23 @@ at it.
 4. **Links elsewhere.** Addresses have not changed, so existing links keep working. Update
    the website field on Steam, the Unity Asset Store publisher page, itch.io, the social
    profiles, and the GitHub organization to `https://lunawolfstudios.com/`.
-5. **Keep HostGator** for 30 to 60 days as a fallback, then cancel. Before cancelling,
-   remove the old Google Analytics property and reCAPTCHA keys, and disconnect the WordPress
-   site from Jetpack.
+5. **HostGator** stays, with the old site on `legacy.lunawolfstudios.com` (next section).
+   Before the plan is ever cancelled, remove the old Google Analytics property and
+   reCAPTCHA keys, and disconnect the WordPress site from Jetpack.
+
+## The old site: legacy.lunawolfstudios.com
+
+The WordPress site is kept on HostGator and answers at <https://legacy.lunawolfstudios.com/>.
+
+| Piece | Where |
+|---|---|
+| DNS | Squarespace: `A` `legacy` → `192.254.184.77` |
+| Hosting | cPanel > Domains: `legacy.lunawolfstudios.com`, document root `public_html` (the WordPress folder). AutoSSL issues its certificate |
+| WordPress | `wp-content/mu-plugins/lws-legacy-host.php`. For requests to the legacy name only, it answers with that name as the site address, rewrites links and images saved with the old address, and sends `noindex, nofollow` (header and meta tag). Delete the file to undo |
+
+The `cpanel` and `ftp` CNAMEs point at `mail.lunawolfstudios.com`, which stays on
+HostGator, so they did not follow the apex to GitHub. HostGator can no longer renew its own
+certificate for `lunawolfstudios.com`; that is expected, since GitHub serves that name now.
 
 ## Rollback
 
@@ -218,4 +232,5 @@ at it.
    has no IPv6 address, so a leftover AAAA would keep sending some visitors to GitHub), and
    restore `A` `@` → `192.254.184.77`.
 2. Delete the `www` CNAME.
-3. With a TTL of 300, most visitors are back on the old site within minutes.
+3. Visitors are back on the old site once the records' TTL runs out: minutes at a TTL of
+   300, up to 4 hours at Squarespace's default of 4 hours, which is what the records have.

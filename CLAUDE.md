@@ -97,6 +97,10 @@ Redirects (static meta-refresh pages, set in `astro.config.mjs`): `/press/`, `/p
 `/bootcamp/`; `/our-blog/`, `/blog/` and the five old blog posts → the closest page. The old
 blog is not published; it lives in `archive/blog/`.
 
+The old WordPress site is kept on HostGator at `legacy.lunawolfstudios.com`, marked
+`noindex`. This site does not link to it. DNS is at Squarespace Domains; how the records and
+the legacy host are set up is in `docs/launch.md`.
+
 ## Design system
 
 The look is the studio's own splash screen: a night sky, a teal moon, a wolf. Calm, confident,
