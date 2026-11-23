@@ -1,6 +1,6 @@
 # Luna Wolf Studios
 
-> Luna Wolf Studios, LLC is an independent game and software studio in Newark, Delaware, USA, founded in January 2015 by three Wilmington University students. It builds games, Unity software and editor tools, VR and AR apps, serious games for health and education, and custom software for clients, and works with clients remotely. It also makes and publishes its own games and tools, publishes games by independent developers, and runs a remote game development internship and bootcamp. The studio has worked on games and software with Peloton, Cartoon Network, Barron Associates, Legends of Learning, and Nemours Children's Health. It works in Unity, Unreal, Godot, and more.
+> Luna Wolf Studios, LLC is an independent game and software studio in Newark, Delaware, USA, founded in January 2015 by three Wilmington University students. For clients it builds games, Unity software and editor tools, VR and AR apps, serious games for health and education, and custom software, for PC, console, mobile, and the web. It works with clients remotely. It also makes and publishes its own games and tools, publishes games by independent developers, and runs a remote game development internship and bootcamp. The studio has worked on games and software with Peloton, Cartoon Network, Barron Associates, Legends of Learning, and Nemours Children's Health. It works in Unity, Unreal, Godot, and more.
 
 ## Services
 
