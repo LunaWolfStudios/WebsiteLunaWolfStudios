@@ -26,7 +26,7 @@ import { SERVICES, ADJACENT_OFFERS } from "../../data/services";
     {
       SERVICES.map((s, i) => (
         <li data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
-          <ServiceCard service={s} summary={s.short} bullets={false} cta="See the service" />
+          <ServiceCard service={s} summary={s.short} bullets={false} cta="See more" />
         </li>
       ))
     }
