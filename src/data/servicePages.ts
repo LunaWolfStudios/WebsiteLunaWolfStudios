@@ -29,9 +29,11 @@
  * - Lanebreak leads the co-development copy. What we built on it is the owner's list: the
  *   MIDI level editor, the F# level validator, the Perlin noise prop generation, and the
  *   interface screens. It ran on the Peloton Bike and Tread.
- * - The platform and online features we integrate (Steam Workshop, Timeline, stats and
- *   leaderboards, Steam login, accounts, friends, chat, microtransactions, live service,
- *   PlayFab, Azure, AWS, accessibility options) are the owner's list too.
+ * - The platform and online features we integrate (Workshop and user-generated content,
+ *   stats and leaderboards, achievements, Steam Cloud, Timeline and highlights, controller
+ *   support, player accounts and social features, chat, microtransactions and DLC, live
+ *   service, PlayFab, Azure, AWS, accessibility options) are the owner's list too. "Steam"
+ *   is not repeated on every item.
  * - Pictures over paragraphs: every project with art in src/assets/ shows it.
  * - No prices, durations, team sizes, guarantees or contract terms. FAQs whose honest answer
  *   is an owner decision (code ownership, maintenance terms, small-business policy) are left
@@ -210,7 +212,7 @@ const gameDevelopment: ServicePageContent = {
       { title: "Online multiplayer", text: "Networked play with prediction and rollback, regional servers, and bots, as in Sheep Tag 2." },
       { title: "Interfaces and controls", text: "Menus, HUDs, and full controller and touch screen support, as Hypno Halo ships with." },
       { title: "Level editors and mods", text: "In-game level editors with sharing on the Steam Workshop, like the one built into Sheep Tag 2." },
-      { title: "Steam integration", text: "Steam Workshop, Steam Timeline, stats and leaderboards, achievements, Steam Cloud, and Steam login." },
+      { title: "Steam integration", text: "Workshop and user-generated content, stats and leaderboards, achievements, Steam Cloud, and Timeline highlights." },
       { title: "Nintendo Switch releases", text: "We released Hypno Halo and ParaLily on Nintendo Switch as their publisher." },
       { title: "Testing and optimization", text: "Debugging, performance work, build verification, and release quality assurance." },
       { title: "Updates after launch", text: "Patches, content updates, and post-release support once players are in." },
@@ -263,13 +265,15 @@ const gameDevelopment: ServicePageContent = {
       ],
       pointsTitle: "What we integrate",
       points: [
-        "Steam Workshop",
-        "Steam Timeline",
-        "Steam stats and leaderboards",
-        "Achievements and Steam Cloud",
-        "Steam login, player accounts, and account settings",
-        "Friends, text chat, and voice chat",
-        "Microtransactions",
+        "Workshop and user-generated content",
+        "Stats and leaderboards",
+        "Achievements",
+        "Steam Cloud",
+        "Steam Timeline and highlights",
+        "Controller support",
+        "Player accounts and social features",
+        "Text chat and voice chat",
+        "Microtransactions and DLC",
         "Live service games",
         "Backend services on PlayFab, Azure, and AWS",
         "Accessibility options",
@@ -320,8 +324,8 @@ const gameDevelopment: ServicePageContent = {
       { label: "Engines and languages", items: ["Unity", "C#", "Unreal Engine 5", "C++"] },
       { label: "Online", items: ["Photon Quantum", "Prediction and rollback", "Regional servers", "Bots"] },
       { label: "Platforms", items: ["Windows", "macOS", "Linux", "Nintendo Switch", "iOS", "Android", "Web"] },
-      { label: "Steam", items: ["Steam Workshop", "Steam Timeline", "Stats and leaderboards", "Achievements", "Steam Cloud", "Steam login"] },
-      { label: "Backend", items: ["PlayFab", "Azure", "AWS", "Text and voice chat", "Microtransactions"] },
+      { label: "Steam", items: ["Workshop", "Stats and leaderboards", "Achievements", "Steam Cloud", "Timeline and highlights"] },
+      { label: "Backend", items: ["PlayFab", "Azure", "AWS", "Player accounts", "Text and voice chat", "Microtransactions and DLC"] },
       { label: "Workflow", items: ["Git and GitHub", "ChatGPT and Codex", "Automated testing"] },
     ],
   },
