@@ -4,32 +4,56 @@
  * (the Unity Awards nominations lead; founders' personal awards are left out). AwardBadge
  * shows the awarding body and the title; the subject goes on the year line, so a jam win
  * never reads as the studio's.
+ *
+ * All three Unity Awards nominations are here: the studio's two, then the one for Lanebreak,
+ * a game we worked on. Its year line names its owner ("Lanebreak, by Peloton").
  */
 import Section from "../Section.astro";
 import AwardBadge from "../AwardBadge.astro";
-import { STUDIO_AWARDS } from "../../data/awards";
+import { ALL_AWARDS, STUDIO_AWARDS } from "../../data/awards";
+import type { Award } from "../../data/types";
+
+const isUnity = (a: Award) => /Unity Awards$/.test(a.body);
+// Two groups, so the Unity Awards nominations hold the first row and the rest wrap evenly.
+const groups = [
+  [...STUDIO_AWARDS.filter(isUnity), ...ALL_AWARDS.filter((a) => isUnity(a) && a.owner)],
+  STUDIO_AWARDS.filter((a) => !isUnity(a)),
+];
 ---
 
 <Section id="recognition" tone="sky" align="center" tight eyebrow="Recognition" title="Awards and recognition">
-  <ul class="awards" role="list">
+  <div class="award-groups">
     {
-      STUDIO_AWARDS.map((a, i) => (
-        <li data-reveal="fade" style={`--reveal-delay:${Math.min(i, 6) * 60}ms`}>
-          <AwardBadge
-            label={a.body}
-            title={a.title}
-            year={`${a.subject} · ${a.year}`}
-            href={a.url}
-            size="sm"
-            tone={a.body === "17th Unity Awards" ? "gold" : "accent"}
-          />
-        </li>
+      groups.map((group, g) => (
+        <ul class:list={["awards", { "awards--rest": g > 0 }]} role="list">
+          {group.map((a, i) => (
+            <li data-reveal="fade" style={`--reveal-delay:${Math.min(i + g * 3, 6) * 60}ms`}>
+              <AwardBadge
+                label={a.body}
+                title={a.title}
+                year={`${a.owner ? `${a.subject}, by ${a.owner}` : a.subject} · ${a.year}`}
+                href={a.url}
+                size="sm"
+                tone={isUnity(a) ? "gold" : "accent"}
+              />
+            </li>
+          ))}
+        </ul>
       ))
     }
-  </ul>
+  </div>
 </Section>
 
 <style>
+  .award-groups {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: center;
+  }
+  /* Narrow enough that five badges sit three over two, never four over one. */
+  .awards--rest {
+    max-width: 960px;
+  }
   .awards {
     display: flex;
     flex-wrap: wrap;
