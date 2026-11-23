@@ -1,0 +1,7 @@
+---
+/** /railbound/: the game page. Content: src/data/gamePages.ts and src/data/games.ts; layout: GamePage. */
+import GamePage from "../components/games/GamePage.astro";
+import { GAME_PAGES } from "../data/gamePages";
+---
+
+<GamePage page={GAME_PAGES["railbound"]} />

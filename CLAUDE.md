@@ -82,6 +82,7 @@ did it and do the same.
 | `/helix/` | Project page |
 | `/haberdashery/` | Game page |
 | `/target-crack/` | Game page |
+| `/coppervalle-rush/`, `/railbound/`, `/on-the-rocks/` | Internship game pages (new) |
 | `/about/` | Studio |
 | `/about-jeff/`, `/about-jeremy/`, `/about-olivia/` | Founder pages |
 | `/publishing/` | Publishing |

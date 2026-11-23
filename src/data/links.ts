@@ -91,6 +91,7 @@ export const LINKS = {
   freshCatch: "https://tools.lunawolfstudios.com/fresh-catch/",
   lifeQuest: "https://games.lunawolfstudios.com/lifequest-the-next-level/dist/index.html",
   madladsTicTacToe: "https://games.lunawolfstudios.com/madlads-tic-tac-toe/",
+  stemQuestGalaxyAcademy: "https://games.lunawolfstudios.com/stem-quest-galaxy-academy/dist/index.html",
 
   // The American Heart Association's telehealth game, on its Professional Education Hub
   ahaTelehealthGame: "https://store.education.heart.org/core-concepts-in-telehealth-interactive-game",

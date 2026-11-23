@@ -305,8 +305,8 @@ const headingId = (b: Block) => `${b.id}`;
         <Image
           src={image(page.about.art.src)}
           alt={page.about.art.alt}
-          widths={[300, 450, 600]}
-          sizes="(max-width: 760px) 60vw, 300px"
+          widths={page.about.art.shape === "wide" ? [480, 720, 960] : [300, 450, 600]}
+          sizes={page.about.art.shape === "wide" ? "(max-width: 900px) calc(100vw - 2rem), 480px" : "(max-width: 760px) 60vw, 300px"}
           loading="lazy"
           decoding="async"
         />
@@ -743,6 +743,20 @@ const headingId = (b: Block) => `${b.id}`;
   }
   .about--square {
     grid-template-columns: minmax(0, 1fr) 220px;
+  }
+  /* A logo banner: wide enough to read, and it leads the section on narrower screens. */
+  .about--wide {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+    align-items: center;
+  }
+  @media (max-width: 900px) {
+    .about--wide {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .about--wide .about-art {
+      display: block;
+      order: -1;
+    }
   }
   .about-text {
     display: flex;

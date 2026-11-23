@@ -51,6 +51,7 @@ Project facts live in `archive/research/portfolio.md` and `portfolio.json`.
 | `fresh-catch.png` | Fresh Catch | Screenshot of https://tools.lunawolfstudios.com/fresh-catch/ | Luna Wolf Studios | 1280x800 |
 | `lifequest.png` | LifeQuest: The Next Level | Screenshot of https://games.lunawolfstudios.com/lifequest-the-next-level/dist/index.html | Luna Wolf Studios | 1280x800 |
 | `madlads-tic-tac-toe.png` | Madlads Tic Tac Toe | Screenshot of https://games.lunawolfstudios.com/madlads-tic-tac-toe/ taken after dismissing the How to Play dialog (second pass) | Luna Wolf Studios | 1280x800 |
+| `stem-quest-galaxy-academy.png` | STEM Quest: Galaxy Academy | Screenshot of https://games.lunawolfstudios.com/stem-quest-galaxy-academy/dist/index.html as the game opens (the galaxy map), 2026-11-23 | Luna Wolf Studios | 1280x800 |
 | `witch-hunter-the-invisible-world.jpg` | Witch Hunter: The Invisible World | https://m.media-amazon.com/images/I/71OQDGcX1pL._SL1357_.jpg (Amazon product page) | Alligator Alley Entertainment (book cover) | 900x1357 (portrait) |
 | `the-underground-a-sam-and-fuzzy-rpg.jpg` | The Underground: A Sam & Fuzzy RPG | https://i.kickstarter.com/assets/011/926/863/8ab27c2d3293128323fc657904b74d8b_original.png (Kickstarter twitter:image, 1024x576 crop, signed URL) | Damocles Thread Development | 1024x576 |
 | `tempters-an-infernally-clever-board-game.jpg` | Tempters | https://s3.amazonaws.com/ksr/projects/1009421/photo-main.jpg (Kickstarter project photo) | Damocles Thread Development | 640x480 |

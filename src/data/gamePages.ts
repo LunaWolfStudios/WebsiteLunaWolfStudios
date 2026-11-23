@@ -1,6 +1,7 @@
 /**
  * Long-form content for the game and project pages: /sheep-tag-2/, /hypno-halo/, /paralily/,
- * /the-brave-hearts-ii-false-skies/, /haberdashery/, /target-crack/. The GamePage template
+ * /the-brave-hearts-ii-false-skies/, /haberdashery/, /target-crack/, and the internship
+ * games /coppervalle-rush/, /railbound/, /on-the-rocks/. The GamePage template
  * (src/components/games/GamePage.astro) renders one entry; the card facts (title, platforms,
  * store links, credits, feature lines) stay in games.ts and are read from there.
  *
@@ -17,6 +18,9 @@
  * - Haberdashery and Target Crack: archive/wordpress/pages/{haberdashery,target-crack}.md
  *   (carried over in full), archive/research/small-games-and-videos.md and
  *   reviews-partners-history.md (history, platforms).
+ * - Coppervalle Rush, RAILBOUND and On the Rocks: the games' own itch.io pages, as recorded
+ *   in archive/research/small-games-and-videos.md (descriptions, features, controls, dates).
+ *   Interns are not named.
  *
  * Rules: no prices here (Price reads src/data/store.json); no review scores or ratings; Jeff
  * by first name only; quotes come from reviews.ts. Strings marked `html` are trusted markup.
@@ -145,7 +149,8 @@ export interface GamePageData {
     paragraphs: string[];
     /** A highlighted note under the paragraphs (photosensitivity warning). */
     note?: { title: string; text: string };
-    art: { src: string; alt: string; shape?: "portrait" | "square" };
+    /** "wide": a logo banner, drawn larger beside the text and kept (above it) on phones. */
+    art: { src: string; alt: string; shape?: "portrait" | "square" | "wide" };
     /** Show this game's awards from awards.ts beside the text. */
     awards?: boolean;
   };
@@ -954,6 +959,245 @@ const targetCrack: GamePageData = {
   },
 };
 
+// ─── Internship games ────────────────────────────────────────────────────────────────────
+const INTERN_CTA = {
+  title: "Want to make a game with us?",
+  lead: "Our remote internship takes a small team of students from a concept to a released demo.",
+  primary: { label: "Internships and bootcamp", href: "/bootcamp/" },
+  secondary: { label: "Start a project", href: "/contact/" },
+};
+
+const coppervalleRush: GamePageData = {
+  slug: "coppervalle-rush",
+  path: "/coppervalle-rush/",
+  seo: {
+    title: "Coppervalle Rush: 2D minecart platformer",
+    description:
+      "Coppervalle Rush is a fast 2D minecart platformer: ride through six levels as Otis, a retired miner, to rescue his daughter Jade. Made by three student interns.",
+  },
+  h1: "Coppervalle Rush",
+  eyebrow: "Internship game · Summer 2025",
+  lead: "A fast-paced 2D minecart platformer full of hazards, upgrades, humor, and heart.",
+  credit: `Made by three student interns in our <a href="/bootcamp/">Summer 2025 internship</a>.`,
+  status: ["Windows", "Keyboard and mouse, or a controller"],
+  stores: [{ kind: "itch", href: LINKS.coppervalleRushItch, verb: "Download on", label: "itch.io" }],
+  hero: { kind: "video", videoId: "_BF9B-jiC7k", title: "Coppervalle Rush demo trailer", poster: "games/coppervalle-rush/screenshot-01.jpg" },
+  about: {
+    title: "About Coppervalle Rush",
+    paragraphs: [
+      "Play as Otis, a retired miner who jumps back into a runaway minecart to rescue his missing daughter, Jade. She has gone deep into the Coppervalle Mines without him, and Otis follows through collapsing tunnels and lava-filled caverns.",
+      "The minecart never stops. Jump the gaps, duck under hazards, and use a slingshot to break rocks and scare off bats. Between levels, spend what you collect on upgrades.",
+      "Three interns from Wilmington University and Harrisburg University designed, built, and released it during our Summer 2025 internship.",
+    ],
+    art: {
+      src: "games/coppervalle-rush/header.png",
+      alt: "The Coppervalle Rush logo beside Otis, a miner in a yellow helmet with glasses and an orange mustache, above a row of gems.",
+      shape: "wide",
+    },
+  },
+  features: {
+    title: "Features",
+    style: "icons",
+    items: [
+      { icon: "layers", title: "Six handcrafted levels", text: "From a sun-scorched desert to diamond caverns to lava, without the cart ever stopping." },
+      { icon: "wrench", title: "Tools of the trade", text: "Jump, crouch, and fire a slingshot at rocks and bats. Upgrade your gear between levels." },
+      { icon: "heartPulse", title: "Collect, upgrade, survive", text: "Hearts for health, shields for protection, and monocles that widen your field of view." },
+      { icon: "gamepad", title: "Three game modes", text: "Story Mode, FreePlay Mode on a level of your choice, and Endless Mode, where the speed keeps climbing." },
+      { icon: "star", title: "A soundtrack for every level", text: "Each level has its own music." },
+      { icon: "monitor", title: "Play your way", text: "Keyboard and mouse, or a controller." },
+    ],
+  },
+  screenshots: {
+    title: "Screenshots",
+    items: [
+      { src: "games/coppervalle-rush/screenshot-01.jpg", alt: "A miner in a minecart rolls across a wooden trestle in a desert, with orange mountains and a low sun behind." },
+      { src: "games/coppervalle-rush/screenshot-02.jpg", alt: "The minecart jumps between wooden platforms in a dark brown cave, above a trestle wrapped in fog." },
+      { src: "games/coppervalle-rush/screenshot-03.jpg", alt: "The cart passes under a pale blue beam of light in a night-time cavern, heading for a boulder on the track." },
+      { src: "games/coppervalle-rush/screenshot-04.jpg", alt: "A slingshot shot bursts in orange beside the cart on a green hillside, with a boulder on a ledge above and a blue bat overhead." },
+      { src: "games/coppervalle-rush/screenshot-05.jpg", alt: "The cart leaps through a cloud of smoke in a bright pink cavern, with a bat and a boulder ahead." },
+      { src: "games/coppervalle-rush/screenshot-06.jpg", alt: "The cart, inside a shield bubble, crosses a river of lava while bats fly around an orange blast." },
+    ],
+  },
+  facts: [
+    { label: "Developer", value: "Luna Wolf Studios: three interns from Wilmington University and Harrisburg University" },
+    { label: "Made in", html: `Our <a href="/bootcamp/">Summer 2025 internship</a>` },
+    { label: "Released", value: "August 20, 2025" },
+    { label: "Platform", value: "Windows" },
+    { label: "Genre", value: "2D platformer" },
+    { label: "Game modes", value: "Story, FreePlay, and Endless" },
+    {
+      label: "Controls",
+      value:
+        "Space to jump, Left Shift to crouch, and Escape to pause. Hold and drag the left mouse button to shoot the slingshot; right mouse button to use the monocle. A controller works too.",
+    },
+    { label: "Play", html: ext(tagged(LINKS.coppervalleRushItch), "Coppervalle Rush on itch.io") },
+  ],
+  getIt: {
+    title: "Play Coppervalle Rush",
+    logos: [{ platform: "itch", href: LINKS.coppervalleRushItch }],
+  },
+  related: ["on-the-rocks", "railbound", "the-brave-hearts-ii-false-skies"],
+  cta: INTERN_CTA,
+  ld: {
+    genre: ["Platformer"],
+    playMode: ["SinglePlayer"],
+    datePublished: "2025-08-20",
+  },
+};
+
+const railbound: GamePageData = {
+  slug: "railbound",
+  path: "/railbound/",
+  seo: {
+    title: "RAILBOUND: a 2D roguelike on a train",
+    description:
+      "RAILBOUND is a fast 2D roguelike action game: fight through procedurally generated railcars with parry, dash, and wall jump. Made by five student interns.",
+  },
+  h1: "RAILBOUND",
+  eyebrow: "Internship game · Spring 2026",
+  lead: "A fast-paced 2D roguelike action game aboard an infested train.",
+  credit: `Made by five student interns in our <a href="/bootcamp/">Spring 2026 internship</a>.`,
+  status: ["Windows", "Full controller support"],
+  stores: [{ kind: "itch", href: LINKS.railboundItch, verb: "Download on", label: "itch.io" }],
+  hero: { kind: "video", videoId: "X0YH8xkue6o", title: "RAILBOUND demo trailer", poster: "games/railbound/screenshot-02.jpg" },
+  about: {
+    title: "About RAILBOUND",
+    paragraphs: [
+      "An alien symbiote has infested the railways that link the colonies' cities and mining facilities. You play Veronica, an operative of the RailBound Response Division, sent to exterminate the infestation and reach Haven, the steel city on the horizon.",
+      "Fight through the train car by car. Every railcar holds traps and enemies, the levels are procedurally generated, and no two runs are the same. Some railcars are riskier and pay better, so you choose your route.",
+      "Five interns from Wilmington University designed, built, and released it during our Spring 2026 internship.",
+    ],
+    art: {
+      src: "games/railbound/header.png",
+      alt: "The RAILBOUND logo in green over orange mountains and pine forest at sunset, with a train in silhouette along the bottom.",
+      shape: "wide",
+    },
+  },
+  features: {
+    title: "Features",
+    style: "icons",
+    items: [
+      { icon: "layers", title: "Procedurally generated railcars", text: "Layouts, enemies, and hazards change on every ride." },
+      { icon: "gamepad", title: "Parry, dash, wall jump, wall slide", text: "Parry to open an enemy up for a counterattack, dash to close the gap or get clear, and use the walls to climb and to control your fall." },
+      { icon: "wrench", title: "Weapon and ability upgrades", text: "Collect scrap and resources to upgrade your weapons and abilities between runs." },
+      { icon: "alert", title: "Risk or safety", text: "Some railcars offer safer routes. Others offer more rewards at greater risk." },
+      { icon: "award", title: "Achievements", text: "Unlock achievements as you progress." },
+      { icon: "monitor", title: "Full controller support", text: "Keyboard and mouse, or an Xbox or PlayStation style controller." },
+    ],
+  },
+  screenshots: {
+    title: "Screenshots",
+    items: [
+      { src: "games/railbound/screenshot-01.jpg", alt: "Veronica drops between railcar ledges hung with vines, above a red glow, with a treasure chest on a ledge overhead." },
+      { src: "games/railbound/screenshot-02.jpg", alt: "Veronica swings a blade into an enemy that flashes white, in a dining car lined with red seats." },
+      { src: "games/railbound/screenshot-03.jpg", alt: "Veronica strikes an enemy at close range in a railcar, under a row of candles." },
+      { src: "games/railbound/screenshot-04.jpg", alt: "Veronica stands on a ledge beside a sword that glows green, in a railcar lit by candles." },
+      { src: "games/railbound/screenshot-05.jpg", alt: "A swirling orange creature hangs in the air of a railcar among hanging vines." },
+      { src: "games/railbound/screenshot-06.jpg", alt: "Two decks of a railcar with sunset in the windows: an enemy with a health bar on the upper deck, Veronica on the lower." },
+    ],
+  },
+  facts: [
+    { label: "Developer", value: "Luna Wolf Studios: five interns from Wilmington University" },
+    { label: "Made in", html: `Our <a href="/bootcamp/">Spring 2026 internship</a>` },
+    { label: "Released", value: "April 29, 2026" },
+    { label: "Platform", value: "Windows" },
+    { label: "Genre", value: "2D roguelike action" },
+    {
+      label: "Keyboard and mouse",
+      value: "Move with W, A, S, and D. Jump with Space, dash with Shift, parry with Q, and attack with the left mouse button.",
+    },
+    {
+      label: "Controller",
+      value: "Move with the left stick or D-pad. Jump with A or Cross, dash with B or Circle, parry with Y or Triangle, and attack with X or Square.",
+    },
+    { label: "Play", html: ext(tagged(LINKS.railboundItch), "RAILBOUND on itch.io") },
+  ],
+  getIt: {
+    title: "Play RAILBOUND",
+    logos: [{ platform: "itch", href: LINKS.railboundItch }],
+  },
+  related: ["on-the-rocks", "coppervalle-rush", "the-brave-hearts-ii-false-skies"],
+  cta: INTERN_CTA,
+  ld: {
+    genre: ["Roguelike", "Action"],
+    playMode: ["SinglePlayer"],
+    datePublished: "2026-04-29",
+  },
+};
+
+const onTheRocks: GamePageData = {
+  slug: "on-the-rocks",
+  path: "/on-the-rocks/",
+  seo: {
+    title: "On the Rocks: 3D cashier simulation",
+    description:
+      "On the Rocks is a 3D cashier simulation set in a rundown liquor store: scan purchases, inspect IDs, and catch fakes to keep your job. Made by six interns.",
+  },
+  h1: "On the Rocks",
+  eyebrow: "Internship game · Summer 2026",
+  lead: "A 3D cashier simulation set in a rundown liquor store.",
+  credit: `Made by six student interns in our <a href="/bootcamp/">Summer 2026 internship</a>.`,
+  status: ["Windows", "Single player"],
+  stores: [{ kind: "itch", href: LINKS.onTheRocksItch, verb: "Download on", label: "itch.io" }],
+  hero: { kind: "video", videoId: "0uA_8o4aLjQ", title: "On the Rocks demo trailer", poster: "games/on-the-rocks/screenshot-01.jpg" },
+  about: {
+    title: "About On the Rocks",
+    paragraphs: [
+      "Take your place behind the counter of a rundown liquor store and serve a cast of strange customers. Scan their purchases, inspect their identification, look for suspicious details, and decide whether they walk away with their order. Some customers have more in mind than buying a drink.",
+      "Every decision counts toward your shift. Follow store policy, catch fake IDs, and keep the line moving. Mistakes can cost you your job, and careful, quick work raises your shift rank.",
+      "Six interns from Wilmington University, Harrisburg University, George Mason University, and Old Dominion University designed, built, and released it during our Summer 2026 internship.",
+    ],
+    art: {
+      src: "games/on-the-rocks/header.png",
+      alt: "The On the Rocks logo on an amber background of bubbles, with a tipped glass for the O in Rocks, beside the line Pour decisions welcome.",
+      shape: "wide",
+    },
+  },
+  features: {
+    title: "Features",
+    style: "icons",
+    items: [
+      { icon: "check", title: "Run the register", text: "Scan each customer's purchases and keep the line moving." },
+      { icon: "alert", title: "Check every ID", text: "Inspect identification, look for suspicious information, and decide who gets served." },
+      { icon: "users", title: "Strange customers", text: "Some of them have more in mind than buying a drink." },
+      { icon: "award", title: "Shift ranks", text: "Each shift ends with a rank. Mistakes can cost you the job." },
+      { icon: "calendar", title: "A week of shifts", text: "Complete your shifts and track your progress through the week." },
+    ],
+  },
+  screenshots: {
+    title: "Screenshots",
+    items: [
+      { src: "games/on-the-rocks/screenshot-01.jpg", alt: "A training shift: a customer at the counter says to point the scanner at a bottle and scan it. A register, a tip jar, and scissors sit on the counter." },
+      { src: "games/on-the-rocks/screenshot-02.jpg", alt: "A customer in a green shirt waits at the counter with a bottle while the player holds the scanner. The shift rating reads D." },
+      { src: "games/on-the-rocks/screenshot-03.jpg", alt: "The player holds scissors at the counter with two customers waiting and the shift rating at D." },
+      { src: "games/on-the-rocks/screenshot-04.jpg", alt: "A June 2009 calendar: Saturday the 27th is circled, and Friday the 3rd is marked Rent due." },
+      { src: "games/on-the-rocks/screenshot-05.jpg", alt: "The store tinted red after the panic button was misused. A message says the tools are locked." },
+      { src: "games/on-the-rocks/screenshot-06.jpg", alt: "The results screen: Shift failed, shift rank F, with totals for earnings, customers, checkout, and security." },
+    ],
+  },
+  facts: [
+    { label: "Developer", value: "Luna Wolf Studios: six interns from Wilmington University, Harrisburg University, George Mason University, and Old Dominion University" },
+    { label: "Made in", html: `Our <a href="/bootcamp/">Summer 2026 internship</a>` },
+    { label: "Released", value: "August 31, 2026" },
+    { label: "Platform", value: "Windows" },
+    { label: "Genre", value: "3D simulation" },
+    { label: "Engine", value: "Unity" },
+    { label: "Players", value: "Single player" },
+    { label: "Play", html: ext(tagged(LINKS.onTheRocksItch), "On the Rocks on itch.io") },
+  ],
+  getIt: {
+    title: "Play On the Rocks",
+    logos: [{ platform: "itch", href: LINKS.onTheRocksItch }],
+  },
+  related: ["railbound", "coppervalle-rush", "the-brave-hearts-ii-false-skies"],
+  cta: INTERN_CTA,
+  ld: {
+    genre: ["Simulation"],
+    playMode: ["SinglePlayer"],
+    datePublished: "2026-08-31",
+  },
+};
+
 export const GAME_PAGES = {
   "sheep-tag-2": sheepTag2,
   "hypno-halo": hypnoHalo,
@@ -961,6 +1205,9 @@ export const GAME_PAGES = {
   "the-brave-hearts-ii-false-skies": braveHearts,
   haberdashery,
   "target-crack": targetCrack,
+  "coppervalle-rush": coppervalleRush,
+  railbound,
+  "on-the-rocks": onTheRocks,
 } satisfies Record<string, GamePageData>;
 
 export type GamePageSlug = keyof typeof GAME_PAGES;

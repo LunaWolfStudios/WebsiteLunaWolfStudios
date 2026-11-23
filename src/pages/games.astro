@@ -98,8 +98,8 @@ const jams = gamesIn("jam")
   .filter((g) => !NOT_TILES.has(g.slug))
   .sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
 // Wide screenshots of a dark UI read better whole than cropped square: Madlads shows its
-// title, board, and buttons.
-const JAM_WHOLE = new Set(["madlads-tic-tac-toe"]);
+// title, board, and buttons, and STEM Quest its galaxy map.
+const JAM_WHOLE = new Set(["madlads-tic-tac-toe", "stem-quest-galaxy-academy"]);
 const interns = gamesIn("internship");
 const ssAward = AWARDS.find((a) => a.subjectSlug === "scriptable-sheets");
 
@@ -402,12 +402,13 @@ const jsonLd = {
           const art = image(g.wide ?? g.cover!);
           return (
             <li class="card intern" data-reveal style={`--reveal-delay:${i * 70}ms`}>
-              <div class="in-art">
+              {/* The art repeats the title's link, so it is out of the tab order and unnamed. */}
+              <a class="in-art" href={g.page} tabindex="-1" aria-hidden="true">
                 <Image src={art} alt="" widths={[400, 600, 800]} sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 380px" loading="lazy" decoding="async" />
                 <span class="badge in-term">{g.releaseNote}</span>
-              </div>
+              </a>
               <div class="in-body">
-                <h3 class="in-title">{g.title}</h3>
+                <h3 class="in-title"><a href={g.page}>{g.title}</a></h3>
                 <p class="in-line">{g.tagline}</p>
                 {g.team && <p class="in-team">{g.team}</p>}
                 <div class="in-actions">
@@ -661,7 +662,7 @@ const jsonLd = {
     margin-top: clamp(1rem, 2.2vw, 1.5rem);
   }
 
-  /* Jam tiles: 11 tiles, six across on wide screens. */
+  /* Jam tiles: 12 tiles, six across on wide screens. */
   .jams {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -694,6 +695,7 @@ const jsonLd = {
     overflow: hidden;
   }
   .in-art {
+    display: block;
     position: relative;
     aspect-ratio: 16 / 9;
     background: var(--lw-media-bg);
@@ -720,6 +722,13 @@ const jsonLd = {
   }
   .in-title {
     font-size: 1.25rem;
+  }
+  .in-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .in-title a:hover {
+    color: var(--lw-accent);
   }
   .in-line {
     color: var(--lw-ink-muted);
