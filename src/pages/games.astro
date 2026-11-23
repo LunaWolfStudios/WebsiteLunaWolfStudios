@@ -89,11 +89,13 @@ const JAM_ART: Record<string, string> = {
   "turbo-hobo-cannon": "games/turbo-hobo-cannon/wp-icon-512.jpg",
 };
 // Rowan of Bramblebrook has a section of its own below The Brave Hearts II (the owner's
-// placement), so it is not a tile here. The tiles run newest first, undated ones last.
+// placement), so it is not a tile here. Dead Air is shown on Jeremy's page only. The tiles
+// run newest first, undated ones last.
 const ROWAN = "rowan-of-bramblebrook";
 const rowan = game(ROWAN);
+const NOT_TILES = new Set([ROWAN, "dead-air"]);
 const jams = gamesIn("jam")
-  .filter((g) => g.slug !== ROWAN)
+  .filter((g) => !NOT_TILES.has(g.slug))
   .sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
 // Wide screenshots of a dark UI read better whole than cropped square: Madlads shows its
 // title, board, and buttons.
@@ -659,7 +661,7 @@ const jsonLd = {
     margin-top: clamp(1rem, 2.2vw, 1.5rem);
   }
 
-  /* Jam tiles: 12 tiles, six across on wide screens. */
+  /* Jam tiles: 11 tiles, six across on wide screens. */
   .jams {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
