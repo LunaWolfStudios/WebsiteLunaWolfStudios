@@ -532,8 +532,12 @@ const loopStart = hero.desktop.loopStart;
     }
   }
   @media (orientation: portrait) and (max-width: 640px) {
-    /* The copy ends above the pause button, so the two never meet on a narrow phone. */
+    /* The copy ends above the pause button, so the two never meet on a narrow phone. It
+       also starts below the wolf, whose chest fur ends about 88% of the width down the art: on a
+       short screen the hero grows past the fold instead of laying the title over the face.
+       (The hero already starts one header height down inside, under the overlaid header.) */
     .hero-inner {
+      padding-top: calc(88vw - var(--lw-header-h, 68px));
       padding-bottom: calc(44px + 1.5rem);
     }
     .hero-copy {
