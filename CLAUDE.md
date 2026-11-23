@@ -218,8 +218,8 @@ The service copy speaks as the studio, not as its founders.
   label on a service page's project card.
 - Everywhere else founders are named as before: `/about/`, the founder pages, the bootcamp's
   mentors, the press kit's team, product and project pages (the Scriptable Sheets pitch,
-  Sheep Tag 2's history, HELIX's team, a game's credits), a photo caption, and a quote that
-  names them.
+  Sheep Tag 2's history, a game's credits), a photo caption, and a quote that names them.
+  The HELIX page credits Nemours Children's Hospital and names no founder.
 
 ## Whose work it is
 
