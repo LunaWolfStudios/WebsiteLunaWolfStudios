@@ -71,7 +71,7 @@ export const TIMELINE: TimelineEntry[] = [
   {
     date: "2016-11",
     when: "November 2016",
-    text: "The studio shows Haberdashery and Turbo Hobo Cannon at GameACon 2016 at the Tropicana in Atlantic City.",
+    text: "The studio shows Haberdashery at GameACon 2016 at the Tropicana in Atlantic City.",
     slug: "haberdashery",
     photo: "studio/gameacon-2016-team-at-booth.jpg",
     caption: "The Luna Wolf Studios booth at GameACon 2016 in Atlantic City.",
