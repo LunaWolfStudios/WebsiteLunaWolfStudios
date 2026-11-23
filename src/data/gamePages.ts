@@ -595,7 +595,8 @@ const paralily: GamePageData = {
       eyebrow: "Team ParaLily",
       title: "Who made it",
       paragraphs: [
-        `Team ParaLily is artist Nate Flynn and our co-founder <a href="/about-jeff/">Jeff</a>, who programs the game. Nate brought Jeff a prototype in early 2017; they had made games together before.`,
+        // Nate's role at Mega Cat Studios is the owner's fact (November 2026).
+        `Team ParaLily is artist Nate Flynn, lead creative director at ${ext(tagged("https://megacatstudios.com/"), "Mega Cat Studios")}, and our co-founder <a href="/about-jeff/">Jeff</a>, who programmed the game. Nate brought Jeff a prototype in early 2017; they had made games together before.`,
         "ParaLily was first playable at A Video Game Con in September 2017 and won Best in Show at Replay FX in Pittsburgh in July 2018. It came out on Steam on November 9, 2021, and on Nintendo Switch on February 2, 2022.",
         `Luna Wolf Studios publishes ParaLily on Nintendo Switch and co-publishes it with Team ParaLily on Steam. ${ext(tagged(LINKS.paralily), "paralilygame.com")} has the devlog and the ${ext(LINKS.paralilyPresskit, "press kit")}.`,
       ],
