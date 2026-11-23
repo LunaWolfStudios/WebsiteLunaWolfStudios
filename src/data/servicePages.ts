@@ -26,6 +26,12 @@
  *   plainly, the owner's way: every render pipeline, versions back to Unity 4, and modern
  *   versions (2022 and up) by preference. No list of which project uses which pipeline.
  *   Warcodes is credited to Emergent Worlds only.
+ * - Lanebreak leads the co-development copy. What we built on it is the owner's list: the
+ *   MIDI level editor, the F# level validator, the Perlin noise prop generation, and the
+ *   interface screens. It ran on the Peloton Bike and Tread.
+ * - The platform and online features we integrate (Steam Workshop, Timeline, stats and
+ *   leaderboards, Steam login, accounts, friends, chat, microtransactions, live service,
+ *   PlayFab, Azure, AWS, accessibility options) are the owner's list too.
  * - Pictures over paragraphs: every project with art in src/assets/ shows it.
  * - No prices, durations, team sizes, guarantees or contract terms. FAQs whose honest answer
  *   is an owner decision (code ownership, maintenance terms, small-business policy) are left
@@ -204,7 +210,7 @@ const gameDevelopment: ServicePageContent = {
       { title: "Online multiplayer", text: "Networked play with prediction and rollback, regional servers, and bots, as in Sheep Tag 2." },
       { title: "Interfaces and controls", text: "Menus, HUDs, and full controller and touch screen support, as Hypno Halo ships with." },
       { title: "Level editors and mods", text: "In-game level editors with sharing on the Steam Workshop, like the one built into Sheep Tag 2." },
-      { title: "Steam integration", text: "Achievements, leaderboards, Steam Cloud saves, and the store setup a release needs." },
+      { title: "Steam integration", text: "Steam Workshop, Steam Timeline, stats and leaderboards, achievements, Steam Cloud, and Steam login." },
       { title: "Nintendo Switch releases", text: "We released Hypno Halo and ParaLily on Nintendo Switch as their publisher." },
       { title: "Testing and optimization", text: "Debugging, performance work, build verification, and release quality assurance." },
       { title: "Updates after launch", text: "Patches, content updates, and post-release support once players are in." },
@@ -214,7 +220,16 @@ const gameDevelopment: ServicePageContent = {
     {
       title: "Co-development: we join your team and your pipeline",
       html: [
-        `Not every game needs a whole studio. We can work in your repository, tools, and schedule and take on a defined part: a system, a platform, a release. For Warcodes, a mobile game by Emergent Worlds, we built achievement systems, progression logic, reusable C# data structures, and interfaces. We have also worked on Cell to Singularity by Computer Lunch and Traveler's Refrain by Red Essence Games. ${int("/games/", "See every game we've worked on")}.`,
+        `We work in your repository, tools, and schedule and take on a defined part: a system, a platform, a release. We worked on Lanebreak, Peloton's gaming-inspired workout, through its release on the Peloton Bike and Tread. We have also worked on Warcodes by Emergent Worlds, Cell to Singularity by Computer Lunch, and Traveler's Refrain by Red Essence Games. ${int("/games/", "See every game we've worked on")}.`,
+      ],
+      image: "portfolio/lanebreak.jpg",
+      imageAlt: "Peloton Lanebreak: a glowing blue wheel throws sparks as it rolls along a dark track marked with blue beats.",
+      pointsTitle: "What we built on Lanebreak",
+      points: [
+        "A level editor that turns designers' MIDI files into Unity levels",
+        "A level validator in F# for playability and fitness metrics",
+        "Procedural background props from Perlin noise density maps",
+        "Post-ride summaries, metric panels, blast gauges, and difficulty selection",
       ],
     },
     {
@@ -236,10 +251,29 @@ const gameDevelopment: ServicePageContent = {
     {
       title: "Releasing on Steam and Nintendo Switch",
       html: [
-        `We released ${int("/hypno-halo/", "Hypno Halo")} on Steam in October 2025 and on Nintendo Switch in November 2025 as its developer and publisher, with 50+ achievements and leaderboards. We publish ${int("/paralily/", "ParaLily")} on Nintendo Switch, and for ${int("/the-brave-hearts-ii-false-skies/", "The Brave Hearts II: False Skies")}, by Connor Butler, we handled Steam publishing, platform integration, Windows build verification, achievements, Steam Cloud, controller usability, and release quality assurance. Want a publisher instead? See ${int("/publishing/", "indie game publishing")}.`,
+        `We released ${int("/hypno-halo/", "Hypno Halo")} on Steam in October 2025 and on Nintendo Switch in November 2025 as its developer and publisher, with 50+ achievements and leaderboards. We published ${int("/paralily/", "ParaLily")} on Nintendo Switch and ${int("/the-brave-hearts-ii-false-skies/", "The Brave Hearts II: False Skies")}, by Connor Butler, on Steam, where we handled platform integration, Windows build verification, controller usability, and release quality assurance. Want a publisher instead? See ${int("/publishing/", "indie game publishing")}.`,
       ],
       image: "games/hypno-halo/wp-screenshot-medium-98.jpg",
       imageAlt: "Hypno Halo, round 98 on medium: teal and purple rings nest toward the centre over a field of spinning stars.",
+    },
+    {
+      title: "Steam features, online services, and live games",
+      html: [
+        "We integrate platform features and set up the backend services a live game runs on.",
+      ],
+      pointsTitle: "What we integrate",
+      points: [
+        "Steam Workshop",
+        "Steam Timeline",
+        "Steam stats and leaderboards",
+        "Achievements and Steam Cloud",
+        "Steam login, player accounts, and account settings",
+        "Friends, text chat, and voice chat",
+        "Microtransactions",
+        "Live service games",
+        "Backend services on PlayFab, Azure, and AWS",
+        "Accessibility options",
+      ],
     },
   ],
   work: {
@@ -286,7 +320,8 @@ const gameDevelopment: ServicePageContent = {
       { label: "Engines and languages", items: ["Unity", "C#", "Unreal Engine 5", "C++"] },
       { label: "Online", items: ["Photon Quantum", "Prediction and rollback", "Regional servers", "Bots"] },
       { label: "Platforms", items: ["Windows", "macOS", "Linux", "Nintendo Switch", "iOS", "Android", "Web"] },
-      { label: "Steam", items: ["Achievements", "Leaderboards", "Steam Cloud", "Steam Workshop"] },
+      { label: "Steam", items: ["Steam Workshop", "Steam Timeline", "Stats and leaderboards", "Achievements", "Steam Cloud", "Steam login"] },
+      { label: "Backend", items: ["PlayFab", "Azure", "AWS", "Text and voice chat", "Microtransactions"] },
       { label: "Workflow", items: ["Git and GitHub", "ChatGPT and Codex", "Automated testing"] },
     ],
   },
@@ -1319,7 +1354,7 @@ export const HUB = {
     },
     {
       q: "Can you join a project that is already in progress?",
-      a: "Yes, especially Unity projects, as co-development. We built game systems for Warcodes, a mobile game by Emergent Worlds, and worked on Cell to Singularity by Computer Lunch.",
+      a: "Yes, especially Unity projects, as co-development. We worked on Lanebreak, Peloton's gaming-inspired workout, and on Warcodes by Emergent Worlds and Cell to Singularity by Computer Lunch.",
     },
     {
       q: "Which engines do you work in?",
