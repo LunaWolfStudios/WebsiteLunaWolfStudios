@@ -457,10 +457,18 @@ const jsonLd = [
     font-size: 1rem;
     margin-bottom: 0.85rem;
   }
+  /* Two columns that each pack their own lines, so a wrapped point on one side leaves no
+     gap on the other. */
   .focus-aside .focus-points--2 {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.6rem 1.5rem;
+    display: block;
+    columns: 2;
+    column-gap: 1.5rem;
+  }
+  .focus-aside .focus-points--2 li {
+    break-inside: avoid;
+  }
+  .focus-aside .focus-points--2 li + li {
+    margin-top: 0.6rem;
   }
   @media (max-width: 900px) {
     .focus {
@@ -469,7 +477,7 @@ const jsonLd = [
   }
   @media (max-width: 640px) {
     .focus-aside .focus-points--2 {
-      grid-template-columns: minmax(0, 1fr);
+      columns: 1;
     }
   }
   .focus-points {
