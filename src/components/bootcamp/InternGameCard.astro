@@ -3,6 +3,7 @@
  * One internship project for /bootcamp/: the itch.io cover, the cohort's term, title, one
  * line, team size, and two actions ("Play on itch.io" and "Watch trailer", which opens the
  * shared theater). GameCard is one big link, so it cannot hold two actions; this card can.
+ * The art and the title link to the game's page on this site when it has one.
  * Interns are not named (src/data/games.ts).
  */
 import { Image } from "astro:assets";
@@ -24,15 +25,19 @@ const art = game.cover ? image(game.cover, `games/${game.slug}`) : undefined;
 const widths = art ? [360, 540, 720].filter((w) => w <= art.width).concat(art.width < 720 ? [art.width] : []) : [];
 const itch = game.links.find((l) => l.kind === "itch");
 const trailer = trailerFor(game.slug);
+// The art repeats the title's link, so as a link it is out of the tab order and unnamed.
+// (Typed loosely: the tag is one of two, and only the link takes an href.)
+const Art: any = game.page ? "a" : "div";
+const artLink = game.page ? { href: game.page, tabindex: "-1", "aria-hidden": "true" } : {};
 ---
 
 <article class="card ig-card">
-  <div class="ig-art">
+  <Art class="ig-art" {...artLink}>
     {
       art && (
         <Image
           src={art}
-          alt={`${game.title} cover art`}
+          alt={game.page ? "" : `${game.title} cover art`}
           widths={[...new Set(widths)]}
           sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1000px) 50vw, 380px"
           loading="lazy"
@@ -42,9 +47,9 @@ const trailer = trailerFor(game.slug);
       )
     }
     <span class="badge ig-term">{term}</span>
-  </div>
+  </Art>
   <div class="ig-body">
-    <h3 class="ig-title">{game.title}</h3>
+    <h3 class="ig-title">{game.page ? <a href={game.page}>{game.title}</a> : game.title}</h3>
     <p class="ig-tagline">{game.tagline}</p>
     <p class="ig-team"><Icon name="users" size={16} /> Made by {team}</p>
     <div class="ig-actions">
@@ -75,6 +80,7 @@ const trailer = trailerFor(game.slug);
     overflow: hidden;
   }
   .ig-art {
+    display: block;
     position: relative;
     aspect-ratio: 630 / 500;
     background: var(--lw-media-bg);
@@ -103,6 +109,13 @@ const trailer = trailerFor(game.slug);
   }
   .ig-title {
     font-size: 1.25rem;
+  }
+  .ig-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .ig-title a:hover {
+    color: var(--lw-accent);
   }
   .ig-tagline {
     color: var(--lw-ink-muted);
