@@ -429,7 +429,8 @@ const PWC_VR: Evidence = {
 
 /** Virtual reality in stroke rehabilitation (Cochrane systematic review). */
 const COCHRANE_VR: Evidence = {
-  text: "“The addition of virtual reality to usual care or rehabilitation … probably increases arm functioning.” A review of 190 studies and 7,188 people after stroke.",
+  n: "190 studies",
+  text: "of 7,188 people after stroke. Adding virtual reality to usual care improved arm function (moderate-certainty evidence).",
   source:
     "Virtual reality for stroke rehabilitation, Cochrane Database of Systematic Reviews, 2025, plain language summary: cochrane.org/evidence/CD008349_virtual-reality-stroke-rehabilitation",
 };
@@ -699,7 +700,7 @@ export const DECKS: Deck[] = [
       // publishes specs for advertiser playables.
       items: [
         { icon: "code", title: "Unity or HTML5", text: "Built in Unity or HTML5, whichever the idea and the networks need." },
-        { icon: "globe", title: "On the networks that take playables", text: "We can build for and run on Unity Ads, InMobi, AppLovin, Google Ads, Meta, Mintegral, Liftoff, TikTok, and Moloco." },
+        { icon: "globe", title: "On the networks that take playables", text: "We can build for and run on Unity Ads, InMobi, AppLovin, Google Ads, Meta, and TikTok Ad Network." },
         { icon: "users", title: "Your audience", text: "Targeting from MAID lists: lists of the mobile advertising IDs of the people you want to reach." },
         { icon: "sheet", title: "Analytics", text: "Click-throughs, engagement, and more, for every version." },
         { icon: "layers", title: "A/B tests", text: "Run versions side by side and keep the one that works best." },
