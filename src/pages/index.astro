@@ -26,7 +26,9 @@ import { PARTNERS } from "../data/partners";
 import { SITE } from "../data/site";
 import { abs, ORG_ID, WEBSITE_ID } from "../lib/seo";
 
-const title = "Game and software development studio";
+/** The <title> leads with the studio's name (SITE.title); the h1 says what the studio is. */
+const title = SITE.title;
+const heading = SITE.tagline;
 const description =
   "Luna Wolf Studios builds games, Unity tools, VR apps, and software for PC, console, mobile, and the web. An independent studio in Newark, Delaware.";
 
@@ -34,7 +36,7 @@ const jsonLd = {
   "@type": "WebPage",
   "@id": `${SITE.url}/#webpage`,
   url: abs("/"),
-  name: `${title} | ${SITE.name}`,
+  name: title,
   description,
   inLanguage: "en-US",
   isPartOf: { "@id": WEBSITE_ID },
@@ -49,7 +51,7 @@ const jsonLd = {
 
   <HomeHero
     eyebrow="Luna Wolf Studios · Newark, Delaware"
-    title={title}
+    title={heading}
     lead="We build games, Unity tools, VR apps, and software. We ship our own, and we can build yours."
     proof={["Three Unity Awards nominations", "Founded in 2015", "PC, console, mobile, VR, and web"]}
   />

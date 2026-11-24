@@ -7,8 +7,12 @@ export const SITE = {
   legalName: "Luna Wolf Studios, LLC",
   url: "https://lunawolfstudios.com",
   email: "support@lunawolfstudios.com",
-  /** Default <title> and description, used only when a page passes none (every page should). */
-  title: "Luna Wolf Studios | Game and software development studio",
+  /**
+   * The home page's <title>: the studio's name leads there, so a browser tab and a search
+   * result open with it. Every other page puts its subject first and the name last. Also the
+   * default title and description for a page that passes none (every page should).
+   */
+  title: "Luna Wolf Studios | Game and software development",
   description:
     "Luna Wolf Studios is an independent game and software development studio in Newark, Delaware. We build games, Unity tools, VR and AR, and serious games.",
   tagline: "Game and software development studio",
