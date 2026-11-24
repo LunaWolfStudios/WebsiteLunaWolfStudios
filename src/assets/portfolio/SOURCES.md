@@ -83,6 +83,9 @@ Unlike the rows above, some of these are re-encoded or cropped, as noted.
 | `../games/helix/helix-portal-temple.jpg` | HELIX | Anatomy of Play app media (web-tools repo, `helix_04.jpg`), copied as is | Luna Wolf Studios | 1280x720 |
 | `../games/helix/helix-portal-gate.jpg` | HELIX | Anatomy of Play app media (web-tools repo, `helix_03.jpg`), copied as is | Luna Wolf Studios | 1280x720 |
 | `../games/helix/helix-pure-tone-perfect.jpg` | HELIX | Anatomy of Play app media (web-tools repo, `helix_08.jpg`), copied as is | Luna Wolf Studios | 1280x720 |
+| `../games/helix/meta-quest-2-headset.jpg` | HELIX (the headset it runs on) | Anatomy of Play app media (web-tools repo, `helix_02.jpg`): re-encoded, JPEG q90, metadata removed. A Meta Quest 2 product photo | Not recorded | 768x418 |
+| `icare-anaglyph-glasses.jpg` | iCare (the red-cyan glasses) | Anatomy of Play app media (web-tools repo, `icare_00.jpg`): re-encoded, JPEG q90, metadata removed | Barron Associates | 959x1279 |
+| `neurosparks-emg-sensors.jpg` | NeuroSPARKS and KneeBRIGHT (the wireless EMG sensors) | Anatomy of Play app media (web-tools repo, `neurosparks_01.jpg`; the same photo is `kneebright_01.jpg`): re-encoded, JPEG q90, metadata removed | Barron Associates | 959x1279 |
 | `../games/helix/helix-drums.jpg` | HELIX | Anatomy of Play app media (web-tools repo, `helix_07.jpg`), copied as is | Luna Wolf Studios | 1280x720 |
 
 No cover was found for EMPATHIE, Eternia: The Quest, Preston & Steve Campout for Hunger, or

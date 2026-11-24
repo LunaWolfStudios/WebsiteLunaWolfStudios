@@ -41,6 +41,7 @@ did it and do the same.
 | `npm run preview` | Serve `dist/` |
 | `npm run check` | Prebuild, then `astro check` |
 | `npm run lint:links` | Check every internal link and asset in `dist/` |
+| `npm run decks` | Regenerate the pitch decks' HTML and print their PDFs into `public/decks/` (needs Edge) |
 
 ## Layout
 
@@ -55,6 +56,7 @@ did it and do the same.
 | `src/assets/` | Images processed at build time |
 | `public/` | Files served at a fixed URL |
 | `scripts/` | Build and maintenance scripts |
+| `scripts/decks/` | The pitch deck generator (`build.mts`) and the decks' content (`content.mts`) |
 | `archive/` | Not built. The old WordPress site (`wordpress/`), the old blog (`blog/`), and research notes with sources (`research/`) |
 
 ## URL rules
@@ -92,6 +94,8 @@ did it and do the same.
 | `/presskit/` | Press kit (studio) |
 | `/presskit/sheep-tag-2/`, `/presskit/hypno-halo/`, `/presskit/paralily/`, `/presskit/the-brave-hearts-ii-false-skies/`, `/presskit/scriptable-sheets/`, `/presskit/helix/` | Project press kits (new), one template: `src/pages/presskit/[slug].astro` |
 | `/privacy-policy/` | Privacy policy |
+| `/decks/` | Pitch deck index (new, unlisted) |
+| `/decks/health-games/`, `/decks/serious-games/`, `/decks/playable-ads/`, `/decks/mobile-games/`, `/decks/vr-ar/`, `/decks/unity-development/` | Pitch decks (new, unlisted), each with its PDF at `/decks/luna-wolf-studios-<slug>.pdf` |
 
 Redirects (static meta-refresh pages, set in `astro.config.mjs`): `/press/`, `/press-kit/` →
 `/presskit/`; `/privacy/`, `/privacy.html` → `/privacy-policy/`; `/internships/` →
@@ -279,6 +283,42 @@ and the projects on Anatomy of Play. Older projects are shown with care.
   and his choices; `src/data/photos.ts` holds the set, his captions, and the row layout
   (`Gallery`'s `rows`, which shows portrait and landscape photos together without cropping).
   A photo he removed is not used anywhere. No photo shows a child's face.
+
+## Pitch decks
+
+Short, generic decks, one per service, at `/decks/<slug>/`, each with a PDF. They are
+attached to a first email to someone who has never heard of the studio.
+
+- Generic: no prospect or lead is named anywhere in a deck.
+- `src/data/decks.ts` is the one record of each deck's slug, cover, lead, slide count, and
+  picture; the `/decks/` index and the generator (`scripts/decks/build.mts`) both read it,
+  and the build fails if a deck's slides no longer match its count.
+- Each deck leads with the reader: the case for the category (the problem, why this kind of
+  product answers it, and the evidence), what we build, the work that proves it, who we are,
+  and how to start.
+- Every fact comes from `src/data/`, the service pages, this file, or Anatomy of Play.
+  Evidence is either a result recorded for a project the deck shows, worded as recorded and
+  named with its owner, or a published figure quoted exactly, with its publisher, year, and
+  URL on the slide. No unsourced figure, and no promise about a future client's results.
+- A company appears only as the owner label of a project or award the deck shows, in the
+  "Our Trusted Pack" logo row, or in a line the site itself words. Never as a text-only
+  client mention.
+- Grants are worded as funding for the project ("funded by", "supported by"), as
+  `src/data/games.ts` words them, never as the studio's own award.
+- No founder is named, no studio photos, no prices.
+- Device terms, stated plainly (the owner): the studio's work uses EMG sensors, anaglyph
+  glasses, motion capture, computer vision and head tracking, smart toys with LEDs, haptics,
+  and 9-axis sensors, and IoT smart devices and Bluetooth in general. A specific spec stays
+  with the project that records it.
+- Playable ads, stated plainly (the owner): built in Unity or HTML5; run on the ad networks
+  that take playables, Unity Ads and InMobi among them; audiences targeted from MAID lists; a
+  call to action to a game, an app, a website, or a product, in any field; deferred deep
+  links that can carry a reward; analytics for click-throughs and engagement; A/B tests.
+  Networks are named in text only, never with their logos or as a partnership.
+- Unlisted: every deck page and the index are `noindex`, `/decks/` is out of the sitemap,
+  and nothing else on the site links to them.
+- The HTML is generated at prebuild (gitignored). The PDFs are committed: run
+  `npm run decks` after changing a deck's content or the data a deck shows, and commit them.
 
 ## Notes and commit messages
 

@@ -25,6 +25,8 @@ const UNLISTED = new Set([
   ...Object.keys(REDIRECTS).map((from) => `${SITE}${BASE}${from}/`),
   `${SITE}${BASE}/404/`,
   `${SITE}${BASE}/styleguide/`,
+  // The pitch decks are unlisted (src/data/decks.ts); the deck pages themselves are files in public/.
+  `${SITE}${BASE}/decks/`,
 ]);
 
 /**

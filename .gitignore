@@ -9,6 +9,8 @@ dist/
 public/press/
 public/wp-content/
 public/store-data.json
+# deck HTML pages; the deck PDFs beside them are committed (`npm run decks`)
+public/decks/*/
 
 # per-agent or scratch build output
 dist-*/

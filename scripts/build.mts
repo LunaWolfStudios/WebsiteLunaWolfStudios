@@ -16,11 +16,14 @@
  *    from brand/ in public/press/logos/ and luna-wolf-studios-logos.zip, the studio photos
  *    zip, and per product the original screenshots and art in public/press/<slug>/ with a
  *    press kit zip and a screenshots zip (lists in src/data/presskit.ts).
+ * 4. decks: the pitch decks' HTML, public/decks/<slug>/index.html (scripts/decks/build.mts).
+ *    The deck PDFs beside them are committed and refreshed with `npm run decks`.
  */
 import { copyFile, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { crc32 } from "node:zlib";
 import { runStoreData } from "./store-data.mts";
+import { buildDecks } from "./decks/build.mts";
 
 const ROOT = process.cwd();
 const PUBLIC_DIR = path.join(ROOT, "public");
@@ -241,6 +244,7 @@ const STEPS: Array<[name: string, run: () => Promise<void>]> = [
   ["legacy-uploads", legacyUploads],
   ["store-data", storeData],
   ["press", press],
+  ["decks", () => buildDecks({ log: (m) => console.log(`[build] decks: ${m}`) })],
 ];
 
 for (const [name, run] of STEPS) {

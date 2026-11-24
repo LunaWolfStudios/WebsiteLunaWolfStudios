@@ -19,7 +19,8 @@
     "store:test": "tsx scripts/store-data.mts --self-test",
     "check:data": "tsx scripts/check-data.mts",
     "assets:shrink": "node scripts/optimize-sources.mjs",
-    "brand": "tsx scripts/brand-assets.mts"
+    "brand": "tsx scripts/brand-assets.mts",
+    "decks": "tsx scripts/decks/build.mts --pdf"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.6",
