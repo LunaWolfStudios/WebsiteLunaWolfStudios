@@ -62,12 +62,19 @@ export interface Game {
   summary: string;
   /**
    * What the studio or a founder did, in the old site's own words. Undefined when the old site
-   * states no role (it only credits the owner, "Lanebreak by Peloton"). For the Kodeco
-   * tutorials it is the credit the tutorial page shows.
+   * states no role (it only names the company the work was for). For the Kodeco tutorials it
+   * is the credit the tutorial page shows.
    */
   role?: string;
   /** Who owns the IP when it is not the studio (client or developer name). */
   owner?: string;
+  /**
+   * Whether the project is client work: made for `owner`, labelled "For <owner>" (games.ts
+   * `clientLabel`). Left out, it follows the category: a "client" game, or an "experience"
+   * with an owner. False where the record does not say what the project was; its label then
+   * names the owner alone.
+   */
+  clientWork?: boolean;
   /** Developer as the store or official page names it. */
   developer?: string;
   /** Publisher as the store or official page names it. */
@@ -151,7 +158,10 @@ export interface Review {
   /** Publication, platform or organisation. */
   source: string;
   url?: string;
-  /** What the review is about, crediting the owner where it is not ours ("Lanebreak by Peloton"). */
+  /**
+   * What the review is about, naming the owner where it is not ours ("Lanebreak by Peloton"):
+   * the review is of that company's product, so it keeps the owner's credit, as an award does.
+   */
   about: string;
   /** Slug of the game or project in games.ts ("studio" for the studio, "internship" for the program). */
   aboutSlug?: string;

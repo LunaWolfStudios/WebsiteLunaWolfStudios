@@ -3,8 +3,8 @@
  * by first name only, Jeremy Bregermann in full. Facts and links come from
  * archive/wordpress/pages/about-jeff.md, about-jeremy.md and about-olivia.md.
  *
- * FOUNDER_PORTFOLIO reproduces the project lists on the old founder pages, with the credit
- * line each page prints ("by Peloton"), plus four projects from the owner's Anatomy of Play
+ * FOUNDER_PORTFOLIO reproduces the project lists on the old founder pages, with a credit line
+ * for each (client work reads "For Peloton"), plus four projects from the owner's Anatomy of Play
  * app (GRASP, Expression Lab, Level One, Discover TD). Jeremy's keeps his page's order; Jeff's
  * is in the owner's order, latest work first (November 2026). games.ts derives every entry's
  * `listedBy` from it, so the two never disagree.
@@ -67,9 +67,10 @@ export const founder = (slug: FounderSlug): Founder => FOUNDERS.find((f) => f.sl
 
 /**
  * One line on a founder page's project list. `slug` points into GAMES or PROJECTS (games.ts);
- * `credit` is the text after the title on the old page ("by Barron Associates", "Rose Tinted
- * Games"); `url` overrides the project's own first link where the founder page linked
- * somewhere else. A line with `label` and no slug is a plain link or text the page carried.
+ * `credit` is the line under the title: "For <company>" for client work ("For Barron
+ * Associates"), else the old page's text ("by Luna Wolf Studios"); `url` overrides the
+ * project's own first link where the founder page linked somewhere else. A line with `label`
+ * and no slug is a plain link or text the page carried.
  */
 export interface PortfolioItem {
   slug?: string;
@@ -87,7 +88,7 @@ export const FOUNDER_PORTFOLIO: Record<FounderSlug, PortfolioGroup[]> = {
   // about-jeff.md, "My Portfolio", in the owner's order (November 2026), not the old page's:
   // the latest work first (Sheep Tag 2, Scriptable Sheets, Hypno Halo, ParaLily), then the
   // projects on his Anatomy of Play app, then everything else newest first, game jams last.
-  // Every line the old page had is still here; the credit lines are the old page's. Each
+  // Every line the old page had is still here; client work is labelled "For <company>". Each
   // project is listed once. The old page closes with "…and many many more."
   jeff: [
     {
@@ -106,36 +107,36 @@ export const FOUNDER_PORTFOLIO: Record<FounderSlug, PortfolioGroup[]> = {
       heading: "Health, fitness, and education games",
       items: [
         { slug: "helix", credit: "by Luna Wolf Studios" },
-        { slug: "lanebreak", credit: "by Peloton" },
-        { slug: "level-one", credit: "by Relevate Health Games" },
-        { slug: "discover-td", credit: "by Relevate Health Games" },
-        { slug: "expression-lab", credit: "by Relevate Health Games" },
-        { slug: "neurosparks", credit: "by Barron Associates" },
-        { slug: "grasp", credit: "by Barron Associates" },
-        { slug: "kneebright", credit: "by Barron Associates" },
-        { slug: "move-it", credit: "by Barron Associates" },
-        { slug: "icare", credit: "by Barron Associates" },
+        { slug: "lanebreak", credit: "For Peloton" },
+        { slug: "level-one", credit: "For Relevate Health Games" },
+        { slug: "discover-td", credit: "For Relevate Health Games" },
+        { slug: "expression-lab", credit: "For Relevate Health Games" },
+        { slug: "neurosparks", credit: "For Barron Associates" },
+        { slug: "grasp", credit: "For Barron Associates" },
+        { slug: "kneebright", credit: "For Barron Associates" },
+        { slug: "move-it", credit: "For Barron Associates" },
+        { slug: "icare", credit: "For Barron Associates" },
       ],
     },
     {
       heading: "More health and education games",
       items: [
-        { slug: "core-concepts-in-telehealth", credit: "for the American Heart Association" },
+        { slug: "core-concepts-in-telehealth", credit: "For the American Heart Association" },
         {
           slug: "saebovr",
-          credit: "by Barron Associates",
+          credit: "For Barron Associates",
           url: "https://www.barron-associates.com/about/projects/saebovr-upper-extremity-therapy-software/",
         },
-        { slug: "empathie", credit: "by Barron Associates" },
-        { slug: "lab-rat", credit: "by Legends of Learning" },
+        { slug: "empathie", credit: "For Barron Associates" },
+        { slug: "lab-rat", credit: "For Legends of Learning" },
       ],
     },
     {
       heading: "More games",
       items: [
-        { slug: "travelers-refrain", credit: "by Red Essence Games" },
-        { slug: "cell-to-singularity", credit: "by Computer Lunch" },
-        { slug: "save-samia", credit: "by LaToya Forever" },
+        { slug: "travelers-refrain", credit: "For Red Essence Games" },
+        { slug: "cell-to-singularity", credit: "For Computer Lunch" },
+        { slug: "save-samia", credit: "For LaToya Forever" },
         { slug: "haberdashery", credit: "by Luna Wolf Studios" },
         { slug: "target-crack", credit: "by Luna Wolf Studios" },
         { slug: "madlads-tic-tac-toe", credit: "by Luna Wolf Studios" },
@@ -172,7 +173,7 @@ export const FOUNDER_PORTFOLIO: Record<FounderSlug, PortfolioGroup[]> = {
         { slug: "plan-c", credit: "by Luna Wolf Studios" },
         { slug: "turbo-hobo-cannon", credit: "by Luna Wolf Studios" },
         { slug: "fungeon-crawler", credit: "by Luna Wolf Studios" },
-        { slug: "ok-ko-under-siege", credit: "by Cartoon Network" },
+        { slug: "ok-ko-under-siege", credit: "For Cartoon Network" },
         { slug: "a-world-apart", credit: "by Luna Wolf Studios" },
       ],
     },
@@ -207,14 +208,14 @@ export const FOUNDER_PORTFOLIO: Record<FounderSlug, PortfolioGroup[]> = {
       heading: "Health and VR games",
       items: [
         { slug: "helix", credit: "Luna Wolf Studios" },
-        { slug: "flexsledding", label: "Flex Sledding", credit: "mTrigger" },
+        { slug: "flexsledding", label: "Flex Sledding", credit: "For mTrigger" },
         { slug: "preston-and-steve-campout-for-hunger", credit: "Wilmington University" },
       ],
     },
     {
       heading: "Educational games",
       items: [
-        { slug: "lab-rat", credit: "Legends of Learning" },
+        { slug: "lab-rat", credit: "For Legends of Learning" },
         { slug: "eternia-the-quest", credit: "Luna Wolf Studios" },
       ],
     },
@@ -223,12 +224,12 @@ export const FOUNDER_PORTFOLIO: Record<FounderSlug, PortfolioGroup[]> = {
       items: [
         { slug: "the-brave-hearts-ii-false-skies", credit: "Developed by Connor Butler; published by Luna Wolf Studios" },
         { slug: "rowan-of-bramblebrook", credit: "Jeremy Bregermann / Luna Wolf Studios" },
-        { slug: "genfanad", credit: "Rose Tinted Games" },
+        { slug: "genfanad", credit: "For Rose Tinted Games" },
         { slug: "sheep-tag-2", credit: "Luna Wolf Studios" },
-        { slug: "robo-puzzle-smash", credit: "Pxlplz" },
-        { slug: "save-samia", credit: "LaToya Forever" },
+        { slug: "robo-puzzle-smash", credit: "For Pxlplz" },
+        { slug: "save-samia", credit: "For LaToya Forever" },
         { slug: "haberdashery", credit: "Luna Wolf Studios" },
-        { slug: "fruit-slinger", credit: "Exalt Games" },
+        { slug: "fruit-slinger", credit: "For Exalt Games" },
       ],
     },
     {
@@ -247,7 +248,7 @@ export const FOUNDER_PORTFOLIO: Record<FounderSlug, PortfolioGroup[]> = {
     {
       heading: "Game jams",
       items: [
-        { slug: "ok-ko-under-siege", credit: "Cartoon Network" },
+        { slug: "ok-ko-under-siege", credit: "For Cartoon Network" },
         { slug: "rowan-of-bramblebrook", credit: "Official Unity Game Jam 2026" },
         { slug: "dead-air", credit: "Brackeys Game Jam 2026.2" },
         { slug: "turbo-hobo-cannon", credit: "Luna Wolf Studios" },
@@ -258,7 +259,7 @@ export const FOUNDER_PORTFOLIO: Record<FounderSlug, PortfolioGroup[]> = {
     {
       heading: "Apps and interactive software",
       items: [
-        { slug: "realize", credit: "Realize Design" },
+        { slug: "realize", credit: "For Realize Design" },
         { label: "Healthcare, pharmaceutical, XR, and simulation software developed through professional contract engagements" },
       ],
     },

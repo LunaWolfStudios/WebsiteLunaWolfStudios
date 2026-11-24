@@ -20,8 +20,9 @@
  * - Cards show wide store or video art where it exists. The old site's square icons and
  *   600x900 covers (Lanebreak, Cell to Singularity, Traveler's Refrain, Save Samia, OK K.O.!,
  *   Lab Rat, Chess) are kept as `icon` and `cover` data and in src/assets/, not all rendered.
- * - Work for other companies is shown as "what we've worked on" (the owner's framing), each
- *   card naming the company that owns the product. No employment or contract labels.
+ * - Work for other companies is client work: we made it for them, and it is theirs. Every card
+ *   labels it "For <company>" (`clientLabel`), and a summary never says the client developed
+ *   or made it ("Built for Barron Associates"). No employment or contract labels.
  * - `listedBy` is derived from FOUNDER_PORTFOLIO in team.ts; do not set it by hand.
  */
 import { LINKS } from "./links";
@@ -219,7 +220,7 @@ const GAME_LIST: Game[] = [
     // Year left out: the current iOS listing is dated 2019 and the Steam release is Nov 3, 2021.
     tagline: "An idle clicker about the evolution of life, from one cell to the singularity.",
     summary:
-      "Start as a single cell and upgrade biology, intellect, and technology until a civilization reaches the brink of technological singularity. Made by Computer Lunch for mobile, PC, and the web.",
+      "Start as a single cell and upgrade biology, intellect, and technology until a civilization reaches the brink of technological singularity. Built for Computer Lunch, on mobile, PC, and the web.",
     owner: "Computer Lunch",
     developer: "Computer Lunch",
     platforms: ["iOS", "Android", "Windows", "macOS", "Web"],
@@ -241,7 +242,7 @@ const GAME_LIST: Game[] = [
     status: "released",
     tagline: "A song-casting, story-driven action RPG.",
     summary:
-      "Wield a magical instrument, explore a forbidden forest, and help Traveler reunite with his lost love while defying the mecha-goddesses of fate. Developed by Red Essence Games and published by indie.io.",
+      "Wield a magical instrument, explore a forbidden forest, and help Traveler reunite with his lost love while defying the mecha-goddesses of fate. Built for Red Essence Games and published by indie.io.",
     owner: "Red Essence Games",
     developer: "Red Essence Games",
     publisher: "indie.io",
@@ -261,7 +262,7 @@ const GAME_LIST: Game[] = [
     // "To be announced".
     tagline: "An MMORPG and trading card game hybrid with bosses, dungeons, and co-op quests.",
     summary:
-      "Deckbuilding meets bosses, dungeons, and cooperative quests: players level skills, upgrade gear, and collect cards. Made by Rose Tinted Games.",
+      "Deckbuilding meets bosses, dungeons, and cooperative quests: players level skills, upgrade gear, and collect cards. Built for Rose Tinted Games.",
     owner: "Rose Tinted Games",
     developer: "Rose Tinted Games",
     platforms: ["Windows", "macOS", "Linux"],
@@ -278,7 +279,7 @@ const GAME_LIST: Game[] = [
     status: "released",
     tagline: "A competitive block-dropping puzzle game.",
     summary:
-      "Drop blocks, rotate your field to match colors, and set up combos against an opponent. Made by Pxlplz; Jeremy worked on it as PR and community consultant.",
+      "Drop blocks, rotate your field to match colors, and set up combos against an opponent. A Pxlplz game; Jeremy worked on it as PR and community consultant.",
     role: "PR & Community Consultant",
     owner: "Pxlplz",
     developer: "Pxlplz",
@@ -316,7 +317,7 @@ const GAME_LIST: Game[] = [
     status: "archived",
     tagline: "A Wild West target-practice game: sling fruit at moving targets.",
     summary:
-      "Help Sheriff Larry the Lemur by slinging fruit at moving targets, with 60+ unlockable challenges and four play modes. Made by Exalt Games for iOS and Android; no store listing survives.",
+      "Help Sheriff Larry the Lemur by slinging fruit at moving targets, with 60+ unlockable challenges and four play modes. Built for Exalt Games, on iOS and Android; no store listing survives.",
     owner: "Exalt Games",
     developer: "Exalt Games",
     platforms: ["iOS", "Android"],
@@ -408,7 +409,7 @@ const GAME_LIST: Game[] = [
     category: "experience",
     tagline: "Upper-extremity rehabilitation software for stroke survivors, tracked with Kinect.",
     summary:
-      "A Microsoft Kinect tracks shoulder and elbow movement while a virtual assistant guides patients through simulated self-care tasks with real-time feedback. Developed by Barron Associates and sold by Saebo.",
+      "A Microsoft Kinect tracks shoulder and elbow movement while a virtual assistant guides patients through simulated self-care tasks with real-time feedback. Built for Barron Associates and sold by Saebo.",
     owner: "Barron Associates",
     developer: "Barron Associates",
     platforms: ["Microsoft Kinect (PC)"],
@@ -428,7 +429,7 @@ const GAME_LIST: Game[] = [
     category: "experience",
     tagline: "Game-based home therapy for knee osteoarthritis, guided by EMG biofeedback.",
     summary:
-      "KneeBRIGHT (Knee Biofeedback Rehabilitation Interface for Game-based Home Therapy) pairs wireless electromyography sensors with video games to guide muscle-strengthening exercise at home. It was supported by NIH NIAMS and developed by Barron Associates.",
+      "KneeBRIGHT (Knee Biofeedback Rehabilitation Interface for Game-based Home Therapy) pairs wireless electromyography sensors with video games to guide muscle-strengthening exercise at home. It was supported by NIH NIAMS and built for Barron Associates.",
     owner: "Barron Associates",
     developer: "Barron Associates",
     links: [{ kind: "web", url: "https://www.barron-associates.com/about/projects/kneebright/", label: "Barron Associates" }],
@@ -443,7 +444,7 @@ const GAME_LIST: Game[] = [
     // Year left out: Barron dates the NIH award 2020; the studio's Anatomy of Play says 2018.
     tagline: "Telehealth therapy games and a smart toy for children with hemiplegia.",
     summary:
-      "MOVE-IT (Motivating Occupational Virtual Experiences In Therapy for kids) pairs therapy software with a custom smart toy for home exercise, with remote monitoring. It was funded by an NIH Phase II SBIR grant and developed by Barron Associates.",
+      "MOVE-IT (Motivating Occupational Virtual Experiences In Therapy for kids) pairs therapy software with a custom smart toy for home exercise, with remote monitoring. It was funded by an NIH Phase II SBIR grant and built for Barron Associates.",
     owner: "Barron Associates",
     developer: "Barron Associates",
     links: [
@@ -466,7 +467,7 @@ const GAME_LIST: Game[] = [
     category: "experience",
     tagline: "Vision therapy games for children, played with anaglyph glasses and a webcam.",
     summary:
-      "A video game system for vision therapy in children with amblyopia or convergence insufficiency: a webcam tracks red-cyan glasses so the mini-games keep a steady visual challenge, and progress unlocks an open world. Developed by Barron Associates.",
+      "A video game system for vision therapy in children with amblyopia or convergence insufficiency: a webcam tracks red-cyan glasses so the mini-games keep a steady visual challenge, and progress unlocks an open world. Built for Barron Associates.",
     owner: "Barron Associates",
     developer: "Barron Associates",
     links: [{ kind: "web", url: "https://www.barron-associates.com/about/projects/vision-therapy-based-on-computer-gaming/", label: "Barron Associates" }],
@@ -481,7 +482,7 @@ const GAME_LIST: Game[] = [
     // Year left out: Barron cites a 2022 award; the studio's Anatomy of Play says 2021.
     tagline: "Middle school science games controlled by arm-muscle sensors.",
     summary:
-      "An NIH-funded game system for middle school science, played with sensors that read arm muscle activity. It includes Neurobots for life science and Total Energy for physical science, and won a 2022 Tech & Learning Award of Excellence. Developed by Barron Associates.",
+      "An NIH-funded game system for middle school science, played with sensors that read arm muscle activity. It includes Neurobots for life science and Total Energy for physical science, and won a 2022 Tech & Learning Award of Excellence. Built for Barron Associates.",
     owner: "Barron Associates",
     developer: "Barron Associates",
     links: [{ kind: "web", url: "https://www.barron-associates.com/about/projects/neurosparks/", label: "Barron Associates" }],
@@ -498,7 +499,7 @@ const GAME_LIST: Game[] = [
     // Year left out: Barron's GRASP post is dated March 31, 2019; the studio's Anatomy of Play says 2020.
     tagline: "Stroke rehabilitation games played with a sensor glove, built on everyday tasks.",
     summary:
-      "GRASP (Glove Rehabilitation Application for Stroke Patients) pairs a sensor glove with motion tracking, so patients practice grip and hand use by preparing meals, gardening, shopping, and caring for animals in the game. It was supported by an NIH Fast-Track SBIR grant and developed by Barron Associates.",
+      "GRASP (Glove Rehabilitation Application for Stroke Patients) pairs a sensor glove with motion tracking, so patients practice grip and hand use by preparing meals, gardening, shopping, and caring for animals in the game. It was supported by an NIH Fast-Track SBIR grant and built for Barron Associates.",
     owner: "Barron Associates",
     developer: "Barron Associates",
     links: [
@@ -519,7 +520,7 @@ const GAME_LIST: Game[] = [
     category: "experience",
     tagline: "An educational game about life with a motor disability, played with an EMG sensor.",
     summary:
-      "A game that gives middle school students a look at life with a motor disability and teaches design thinking about mobility, controlled by a wireless EMG sensor. A pilot with 48 students showed significant learning gains. Developed by Barron Associates.",
+      "A game that gives middle school students a look at life with a motor disability and teaches design thinking about mobility, controlled by a wireless EMG sensor. A pilot with 48 students showed significant learning gains. Built for Barron Associates.",
     owner: "Barron Associates",
     developer: "Barron Associates",
     links: [
@@ -551,7 +552,7 @@ const GAME_LIST: Game[] = [
     wide: "portfolio/flexsledding.jpg",
     icon: "portfolio/flexsledding-icon.png",
   },
-  // Relevate Health Games. We have worked on dozens of its training and education projects,
+  // Relevate Health Games. We have worked on dozens of training and education projects for it,
   // playable ads among them (the owner, 22 November 2026); the site names these few and no
   // drug brand. The owner's Anatomy of Play files the first three under Education. Their media
   // are phone screens (portrait), so each card picture is three of them side by side.
@@ -563,7 +564,7 @@ const GAME_LIST: Game[] = [
     // January 7, 2026; the studio's Anatomy of Play says 2025.
     tagline: "Anatomy training that links each facial expression to the muscles behind it.",
     summary:
-      "An interactive anatomy training game: pick the facial muscles behind an expression, zoom in on each one to learn what it does, and use Explore mode for an overview of the face. Allergan Medical Institute introduced it in January 2026. Developed by Relevate Health Games.",
+      "An interactive anatomy training game: pick the facial muscles behind an expression, zoom in on each one to learn what it does, and use Explore mode for an overview of the face. Allergan Medical Institute introduced it in January 2026. Built for Relevate Health Games.",
     owner: "Relevate Health Games",
     developer: "Relevate Health Games",
     links: [{ kind: "web", url: "https://www.instagram.com/p/DTOUkzcEv1V/", label: "Instagram" }],
@@ -581,7 +582,7 @@ const GAME_LIST: Game[] = [
     year: 2025,
     tagline: "A free mobile game that teaches type 1 diabetes management in bite-sized levels.",
     summary:
-      "Players tap to give insulin before meals and juice when blood sugar drops, and watch insulin and sugar move through the bloodstream as they learn carb counting, insulin doses, and how to handle highs and lows. It is free on iOS and Android, for people with type 1 diabetes and the family, teachers, and nurses who support them. Developed by Relevate Health Games.",
+      "Players tap to give insulin before meals and juice when blood sugar drops, and watch insulin and sugar move through the bloodstream as they learn carb counting, insulin doses, and how to handle highs and lows. It is free on iOS and Android, for people with type 1 diabetes and the family, teachers, and nurses who support them. Built for Relevate Health Games.",
     owner: "Relevate Health Games",
     developer: "Relevate Health Games",
     platforms: ["iOS", "Android"],
@@ -598,7 +599,7 @@ const GAME_LIST: Game[] = [
     year: 2026,
     tagline: "Case-based training that teaches clinicians to recognize tardive dyskinesia.",
     summary:
-      "An educational experience for US healthcare professionals: learn the Abnormal Involuntary Movement Scale (AIMS) exam, then talk with and examine virtual patients to tell tardive dyskinesia (TD) apart from other drug-induced movement disorders, with scored case challenges. Neurocrine Biosciences sponsors it. Developed by Relevate Health Games.",
+      "An educational experience for US healthcare professionals: learn the Abnormal Involuntary Movement Scale (AIMS) exam, then talk with and examine virtual patients to tell tardive dyskinesia (TD) apart from other drug-induced movement disorders, with scored case challenges. Neurocrine Biosciences sponsors it. Built for Relevate Health Games.",
     owner: "Relevate Health Games",
     developer: "Relevate Health Games",
     platforms: ["Web"],
@@ -719,6 +720,8 @@ const GAME_LIST: Game[] = [
     summary:
       "Listed on Jeremy's page as a Wilmington University project. Camp Out for Hunger is WMMR radio's annual Preston & Steve food drive for Philabundance in Philadelphia.",
     owner: "Wilmington University",
+    // Not on record whether it was made for the university: its label names it alone.
+    clientWork: false,
     // The old link is a Facebook video that logged-out visitors cannot see: no link.
     links: [],
   },
@@ -1373,9 +1376,8 @@ export const PROJECTS: Project[] = PROJECT_LIST;
 export const GAME_CATEGORIES: Array<{ category: GameCategory; heading: string }> = [
   { category: "studio", heading: "Our games" },
   { category: "published", heading: "Games we publish" },
-  // Games we have worked on that belong to another company. Each card still names
-  // the company that owns the game.
-  { category: "client", heading: "Games we've worked on" },
+  // Games we built for another company. Each card is labelled "For <company>".
+  { category: "client", heading: "Games we've built for clients" },
   { category: "experience", heading: "Health, education, and training projects" },
   { category: "jam", heading: "Game jams, prototypes, and legacy projects" },
   { category: "internship", heading: "Intern games" },
@@ -1407,7 +1409,17 @@ export function game(slug: string): Game {
   return hit;
 }
 
-/** The cards the home page shows: studio and published games first, then partner projects. */
+/**
+ * Client work: a project made for its `owner`. A "client" game, or an "experience" with an
+ * owner, unless the record sets `clientWork`.
+ */
+export const isClientWork = (w: Game | Project): boolean =>
+  Boolean(w.owner) && (w.clientWork ?? (w.category === "client" || w.category === "experience"));
+
+/** The label under a client project's name on every card: "For Peloton". */
+export const clientLabel = (w: Game | Project): string | undefined => (isClientWork(w) ? `For ${w.owner}` : undefined);
+
+/** The cards the home page shows: studio and published games first, then client projects. */
 export const FEATURED_GAMES: Game[] = GAMES.filter((g) => g.featured);
 
 /** Scriptable Sheets, the studio's Unity Asset Store tool. */

@@ -227,29 +227,53 @@ The service copy speaks as the studio, not as its founders.
 
 ## Whose work it is
 
-We make games, and the site shows what we have worked on, with no credit, role,
-employment, or contractor bookkeeping.
+We make games, and the site shows what we have made, with no credit, role, employment, or
+contractor bookkeeping. Work the studio did for another company is client work: the company
+was our client, we made the thing for them, and it is theirs.
 
-- Say "we", plainly: "Games we've worked on", "We worked on Lanebreak, by Peloton." The
-  studio is its founders, and their work is its body of work. No hedging ("on Jeff's
-  portfolio", "where our records say") and no employment or contract labels ("contractor",
-  "employee", "Jeremy's role:"). No founder's name as a label or link on a project card
-  either ("Jeremy's experience").
-- Every project names the company that owns it, as a plain label. No sentence says the
-  studio owns, built alone, or published another company's product: "we worked on
-  Lanebreak", never "we built Lanebreak" or "our game Lanebreak".
+- Say "we", plainly. The studio is its founders, and their work is its body of work. No
+  hedging ("on Jeff's portfolio", "where our records say") and no employment or contract
+  labels ("contractor", "employee", "Jeremy's role:"). No founder's name as a label or link
+  on a project card either ("Jeremy's experience").
+- Label: under a client project's name, on every card, tile, list row, and caption, on the
+  site and in the decks, the label is `For <company>`: "For Peloton", "For Barron
+  Associates", "For Relevate Health Games", "For mTrigger", "For Legends of Learning". One
+  wording for every company; no "by" or "with" variants. In a caption that runs on from the
+  name it reads "KneeBRIGHT, for Barron Associates". `clientLabel` in `src/data/games.ts`
+  builds it: a `client` game, or an `experience` with an `owner`, unless the record sets
+  `clientWork: false` (a project whose record does not say what it was keeps its owner's
+  name alone).
+- Headings that introduce client work say we built it. A list that is only client work:
+  "… we've built for clients" ("Games we've built for clients", "Mobile games and apps we've
+  built for clients"). A list that mixes our own projects with client work: "… we've built"
+  ("Health and fitness games we've built"), and the labels tell them apart. Never "Games
+  we've worked on".
+- In a sentence, "for <company>": "We worked on Lanebreak for Peloton." A describing phrase
+  may read "MOVE-IT, built for Barron Associates". A summary never says the client company
+  developed or made the project ("Built for Barron Associates and sold by Saebo", not
+  "Developed by Barron Associates").
+- Never say the studio owns or published a client's product ("our game Lanebreak", "our
+  MOVE-IT"). Structured data keeps who owns what: a client is never the studio's `author`
+  or `creator`, and the studio is never the client product's owner.
+- What keeps its own credit: the studio's own projects and their collaborators ("Our
+  project · with Nemours", "Our game · by Team ParaLily"); the developers of games the
+  studio publishes or hosts ("Developed by Connor Butler"), the intern and jam teams ("Made
+  by six student interns"), and tutorial credits ("Author, Kodeco"); and awards, reviews,
+  and nominations of another company's product, which are that company's and name it as
+  owner: "Lanebreak, by Peloton".
 - The studio's own: Sheep Tag 2, Hypno Halo, ParaLily ("our game", made by Team ParaLily:
   artist Nate Flynn and Jeff), Scriptable Sheets, HELIX (with Nemours Children's Hospital),
   Haberdashery, Target Crack, the jam and intern games. Published by the studio: The Brave
   Hearts II (developer Connor Butler).
 - The "FDA-approved treatments" line in Jeff's bio refers to the Barron Associates projects.
-- Relevate Health Games: we have worked on dozens of its training and education projects,
-  playable ads among them, for patients and for healthcare providers (HCPs) (the owner,
+- Relevate Health Games: we have worked on dozens of training and education projects for
+  it, playable ads among them, for patients and for healthcare providers (HCPs) (the owner,
   November 2026). The site names a few (Discover TD, Level One, Expression Lab, and the CORE
   Concepts in Telehealth Interactive Game for the American Heart Association), never every
-  one, and never a drug's brand name. Playable ads are a service we offer
-  in any field, described at `/services/serious-games/#playable-ads`. The healthcare ones
-  are experience we bring, credited to Relevate Health Games: the copy never reads as
+  one, and never a drug's brand name. Their labels read "For Relevate Health Games" ("For
+  the American Heart Association" for the CORE Concepts game). Playable ads are a service we
+  offer in any field, described at `/services/serious-games/#playable-ads`. The healthcare
+  ones are experience we bring, built for Relevate Health Games: the copy never reads as
   competing with them.
 - "Our Trusted Pack" is the owner's list of partners.
 
@@ -298,9 +322,11 @@ attached to a first email to someone who has never heard of the studio.
   and how to start.
 - Every fact comes from `src/data/`, the service pages, this file, or Anatomy of Play.
   Evidence is either a result recorded for a project the deck shows, worded as recorded and
-  named with its owner, or a published figure quoted exactly, with its publisher, year, and
+  named with the company it was built for ("KneeBRIGHT, built for Barron Associates"), or a
+  published figure quoted exactly, with its publisher, year, and
   URL on the slide. No unsourced figure, and no promise about a future client's results.
-- A company appears only as the owner label of a project or award the deck shows, in the
+- A company appears only as the label of a project the deck shows ("For Peloton", for
+  client work), as the owner of an award the deck shows ("Lanebreak, by Peloton"), in the
   "Our Trusted Pack" logo row, or in a line the site itself words. Never as a text-only
   client mention.
 - Grants are worded as funding for the project ("funded by", "supported by"), as

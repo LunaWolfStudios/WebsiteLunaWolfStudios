@@ -4,10 +4,9 @@
  * (archive/wordpress/pages/about-jeff.md, about-jeremy.md, about-olivia.md) or the projects in
  * games.ts show. `proof` lists slugs from GAMES or PROJECTS.
  *
- * The owner's rule: the studio's body of work includes what its founders worked on, so the
- * copy says "we", names the company that owns each project, and puts no founder's name on a
- * project as a label. Those companies are never called "our clients", and Olivia's employers
- * are never named.
+ * The studio's body of work includes what its founders worked on, so the copy says "we",
+ * treats work for another company as client work ("for Barron Associates"), and puts no
+ * founder's name on a project as a label. Olivia's employers are never named.
  */
 import type { Service } from "./types";
 
@@ -116,7 +115,7 @@ export const SERVICES: Service[] = [
     title: "Serious games",
     short: "Therapy, training, and learning games, plus playable ads",
     summary:
-      "We design and build serious games for therapy, fitness, assessment, and learning, working with clinicians and researchers. HELIX, our VR hearing assessment, was made with Nemours, and we have worked on training games and playable ads by Relevate Health Games and on therapy and education games by Barron Associates.",
+      "We design and build serious games for therapy, fitness, assessment, and learning, working with clinicians and researchers. HELIX, our VR hearing assessment, was made with Nemours, and we have worked on training games and playable ads for Relevate Health Games and on therapy and education games for Barron Associates.",
     icon: "heartPulse",
     bullets: [
       "Assessment games that report results to clinicians, like HELIX for hearing",

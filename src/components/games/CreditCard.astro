@@ -1,8 +1,8 @@
 ---
 /**
- * A card for a game or project we worked on that belongs to another company (it names the
- * company), or that has no page of its own: art when there is any, the owner, the title,
- * one line, the role where the data records one, and an outbound link. The whole card is one
+ * A card for a game or project we built for another company (labelled "For <company>"), or
+ * that has no page of its own: art when there is any, the label, the title, one line, the
+ * role where the data records one, and an outbound link. The whole card is one
  * link when there is somewhere to go; a project with no working page is a plain card.
  *
  * size="wide" spans two grid columns and lays the title over the art, so the card is as
@@ -17,6 +17,7 @@ import Icon from "../Icon.astro";
 import type { Game } from "../../data/types";
 import { image } from "../../lib/images";
 import { withUtm } from "../../data/links";
+import { clientLabel } from "../../data/games";
 
 interface Props {
   game: Game;
@@ -26,7 +27,7 @@ interface Props {
   size?: "default" | "wide";
   /** "banner" shows ~3:1 banner art whole (the old Games page's experience banners). */
   shape?: "default" | "banner";
-  /** Kicker text; defaults to the owner. */
+  /** Kicker text; defaults to "For <company>" for client work, else the owner. */
   kicker?: string;
   headingLevel?: 3 | 4;
 }
@@ -87,7 +88,7 @@ const widths = (size === "wide" ? [600, 900, 1200] : [400, 600, 800]).filter((w)
     )
   }
   <div class="cc-body">
-    <p class="cc-kicker">{kicker ?? game.owner ?? game.developer ?? game.platforms?.[0]}</p>
+    <p class="cc-kicker">{kicker ?? clientLabel(game) ?? game.owner ?? game.developer ?? game.platforms?.[0]}</p>
     <H class="cc-title">
       {
         href ? (

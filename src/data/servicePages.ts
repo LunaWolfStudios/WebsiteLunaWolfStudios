@@ -10,14 +10,14 @@
  * kit (S:\Unity\WebsiteSheepTag2\src\data\presskit.ts), and the owner's answers of 21 November
  * 2026. Rules that shaped the copy:
  *
- * - We make games, and the site shows what we have worked on. The studio's body of work
- *   includes what its founders worked on, so the copy says "we" plainly, with no credit
- *   bookkeeping ("on Jeff's portfolio", "contractor", "Jeremy's role:", "Jeremy's experience"
- *   under a card). Each project still
- *   names the company that owns it, and no sentence says the studio owns, built alone, or
- *   published another company's product: "we worked on Lanebreak", never "we built Lanebreak".
- *   Those companies are not called "our client" in a sentence about a project. Olivia's
- *   employers are never named. Nothing is said about what was done on Cell to Singularity.
+ * - Work for another company is client work: we made it for them, and it is theirs. The
+ *   studio's body of work includes what its founders worked on, so the copy says "we"
+ *   plainly, with no credit bookkeeping ("on Jeff's portfolio", "contractor", "Jeremy's role:",
+ *   "Jeremy's experience" under a card). Each card's kicker is "For <company>"; a heading over
+ *   client work says we built it ("Health and fitness games we've built"); a sentence says "for":
+ *   "We worked on Lanebreak for Peloton." No sentence says the studio owns or published another
+ *   company's product ("our game Lanebreak"). Olivia's employers are never named. Nothing
+ *   is said about what was done on Cell to Singularity.
  * - No founder is named in this copy, and there is no "who you'll work with" strip: the
  *   services speak as the studio ("we", "our team"). Product and project pages may still
  *   name a founder.
@@ -25,7 +25,7 @@
  *   are Unity games (games.ts `engine`). Unity versions and render pipelines are stated
  *   plainly, the owner's way: every render pipeline, versions back to Unity 4, and modern
  *   versions (2022 and up) by preference. No list of which project uses which pipeline.
- *   Warcodes is credited to Emergent Worlds only.
+ *   Warcodes is labelled for Emergent Worlds only.
  * - Lanebreak leads the co-development copy. What we built on it is the owner's list: the
  *   MIDI level editor, the F# level validator, the Perlin noise prop generation, and the
  *   interface screens. It ran on the Peloton Bike and Tread.
@@ -72,7 +72,7 @@ export interface ProofItem {
   slug?: string;
   /** Title for an item that is not in games.ts. */
   title?: string;
-  /** Whose project it is and what kind: "Our game", "Barron Associates". */
+  /** Whose project it is and what kind: "Our game", "For Barron Associates". */
   kicker: string;
   /** What the project proves for this service. Facts only. */
   note: string;
@@ -222,7 +222,7 @@ const gameDevelopment: ServicePageContent = {
     {
       title: "Co-development: we join your team and your pipeline",
       html: [
-        `We work in your repository, tools, and schedule and take on a defined part: a system, a platform, a release. We worked on Lanebreak, Peloton's gaming-inspired workout, through its release on the Peloton Bike and Tread. We have also worked on Warcodes by Emergent Worlds, Cell to Singularity by Computer Lunch, and Traveler's Refrain by Red Essence Games. ${int("/games/", "See every game we've worked on")}.`,
+        `We work in your repository, tools, and schedule and take on a defined part: a system, a platform, a release. For Peloton, we worked on Lanebreak, its gaming-inspired workout, through its release on the Peloton Bike and Tread. We have also worked on Warcodes for Emergent Worlds, Cell to Singularity for Computer Lunch, and Traveler's Refrain for Red Essence Games. ${int("/games/", "See every game we've built and published")}.`,
       ],
       image: "portfolio/lanebreak.jpg",
       imageAlt: "Peloton Lanebreak: a glowing blue wheel throws sparks as it rolls along a dark track marked with blue beats.",
@@ -281,8 +281,8 @@ const gameDevelopment: ServicePageContent = {
     },
   ],
   work: {
-    title: "Games we've worked on",
-    lead: "Our own games, the games we publish, and games by other studios we have worked on.",
+    title: "Games we've built and published",
+    lead: "Our own games, the games we publish, and games we built for other studios.",
     items: [
       {
         slug: "sheep-tag-2",
@@ -306,12 +306,12 @@ const gameDevelopment: ServicePageContent = {
       },
       {
         slug: "cell-to-singularity",
-        kicker: "Computer Lunch",
+        kicker: "For Computer Lunch",
         note: "An idle clicker about the evolution of life, for mobile, PC, and the web.",
       },
       {
         slug: "travelers-refrain",
-        kicker: "Red Essence Games",
+        kicker: "For Red Essence Games",
         note: "A song-casting action RPG on Steam, published by indie.io.",
       },
     ],
@@ -412,7 +412,7 @@ const unityDevelopment: ServicePageContent = {
     {
       title: "Joining your existing Unity project",
       html: [
-        "Most Unity work starts in someone else's codebase. We get your project building, learn how it is put together, and agree with you what to change before we change it. We have done that on Unity projects for five companies, and worked on Peloton's Lanebreak and Computer Lunch's Cell to Singularity.",
+        "Most Unity work starts in someone else's codebase. We get your project building, learn how it is put together, and agree with you what to change before we change it. We have done that on Unity projects for five companies, and worked on Lanebreak for Peloton and Cell to Singularity for Computer Lunch.",
       ],
       pointsTitle: "Unity projects we've joined",
       points: [
@@ -439,7 +439,7 @@ const unityDevelopment: ServicePageContent = {
     },
   ],
   work: {
-    title: "Unity projects we've built and worked on",
+    title: "Unity projects we've built",
     items: [
       {
         slug: "sheep-tag-2",
@@ -463,22 +463,22 @@ const unityDevelopment: ServicePageContent = {
       },
       {
         slug: "lanebreak",
-        kicker: "Peloton",
+        kicker: "For Peloton",
         note: "A gaming-inspired workout for the Peloton Bike and Bike+, built in Unity.",
       },
       {
         slug: "cell-to-singularity",
-        kicker: "Computer Lunch",
+        kicker: "For Computer Lunch",
         note: "An idle clicker for mobile, PC, and the web, built in Unity.",
       },
       {
         slug: "warcodes",
-        kicker: "Emergent Worlds",
+        kicker: "For Emergent Worlds",
         note: "Achievement systems, progression logic, reusable C# data structures, and interfaces for a mobile game.",
       },
       {
         slug: "realize",
-        kicker: "Realize Design",
+        kicker: "For Realize Design",
         note: "Unity UI systems, backend integrations, and HTTP and JSON features, tested on iOS and Android.",
       },
       {
@@ -488,7 +488,7 @@ const unityDevelopment: ServicePageContent = {
       },
       {
         slug: "syneos-health-unity-software",
-        kicker: "Syneos Health",
+        kicker: "For Syneos Health",
         note: "Healthcare and pharmaceutical Unity software: Apple Vision Pro Shader Graph materials, Figma-based interfaces, and Chinese localization.",
         icon: "cube",
       },
@@ -761,7 +761,7 @@ const vrArDevelopment: ServicePageContent = {
     {
       title: "VR training, mixed reality, and new headsets",
       html: [
-        "We have worked on headset software for other organizations too: VR soft-skills training for Asurion on Meta Quest 2, with 360-degree video, composited actors, activity tracking, and analytics; interactive mixed reality for Southern Methodist University that pairs Stereolabs ZED depth cameras with Meta Quest 2; and Apple Vision Pro Shader Graph materials in Unity software for Syneos Health.",
+        "We have built headset software for other organizations too: VR soft-skills training for Asurion on Meta Quest 2, with 360-degree video, composited actors, activity tracking, and analytics; interactive mixed reality for Southern Methodist University that pairs Stereolabs ZED depth cameras with Meta Quest 2; and Apple Vision Pro Shader Graph materials in Unity software for Syneos Health.",
       ],
     },
     {
@@ -781,24 +781,24 @@ const vrArDevelopment: ServicePageContent = {
       },
       {
         slug: "saebovr",
-        kicker: "Barron Associates",
+        kicker: "For Barron Associates",
         note: "Upper-extremity rehabilitation for stroke survivors: Kinect tracks the arm while a virtual assistant guides self-care tasks.",
       },
       {
         slug: "asurion-vr-soft-skills-training",
-        kicker: "Asurion",
+        kicker: "For Asurion",
         note: "VR soft-skills training on Meta Quest 2 with 360-degree video, composited actors, activity tracking, and analytics.",
         icon: "headset",
       },
       {
         slug: "smu-mixed-reality-software",
-        kicker: "Southern Methodist University",
+        kicker: "For Southern Methodist University",
         note: "Interactive mixed reality that integrates Stereolabs ZED depth cameras with Meta Quest 2.",
         icon: "layers",
       },
       {
         slug: "syneos-health-unity-software",
-        kicker: "Syneos Health",
+        kicker: "For Syneos Health",
         note: "Apple Vision Pro Shader Graph materials, Figma-based interfaces, and Chinese localization.",
         icon: "cube",
       },
@@ -841,7 +841,7 @@ const vrArDevelopment: ServicePageContent = {
       },
       {
         q: "Can VR be used for medical assessment or therapy?",
-        a: "Yes. <a href=\"/helix/\">HELIX</a> turns hearing tests into VR games to help assess auditory processing disorder, and it completed a pilot study with about 30 subjects in 2023. We also worked on SaeboVR by Barron Associates, upper-extremity therapy software for stroke survivors.",
+        a: "Yes. <a href=\"/helix/\">HELIX</a> turns hearing tests into VR games to help assess auditory processing disorder, and it completed a pilot study with about 30 subjects in 2023. We also worked on SaeboVR for Barron Associates, upper-extremity therapy software for stroke survivors.",
       },
       {
         q: "Can a VR app send results to a web dashboard?",
@@ -870,12 +870,12 @@ const seriousGames: ServicePageContent = {
   description:
     "We design and build serious games and training games for health and education, with clinicians and researchers, and playable ads. See HELIX, made with Nemours.",
   h1: "Serious game development for health, education, and training",
-  lead: "We design and build serious games that assess, treat, teach, and train, working with clinicians and researchers on healthcare and education projects. Our own HELIX was made with Nemours Children's Hospital. We have worked on dozens of training games and playable ads by Relevate Health Games, and on seven health and education projects by Barron Associates.",
+  lead: "We design and build serious games that assess, treat, teach, and train, working with clinicians and researchers on healthcare and education projects. Our own HELIX was made with Nemours Children's Hospital. We have worked on dozens of training games and playable ads for Relevate Health Games, and on seven health and education projects for Barron Associates.",
   hero: {
     image: "games/helix/helix-pure-tone-crop.jpg",
     alt: "The pure tone test in HELIX: cartoon animals stand along a path while the game asks which ear heard the tone.",
   },
-  proofLine: ["HELIX with Nemours", "Training games by Relevate Health Games", "Therapy games by Barron Associates"],
+  proofLine: ["HELIX with Nemours", "Training games for Relevate Health Games", "Therapy games for Barron Associates"],
   serviceType: "Serious game development",
   what: {
     title: "What a serious game is, and what we build",
@@ -913,13 +913,13 @@ const seriousGames: ServicePageContent = {
       imageAlt: "The digits-in-noise test in HELIX: a player's VR controllers in front of a keypad of large numbers.",
     },
     {
-      // Dozens of Relevate Health Games projects by now, playable ads among them, for patients
+      // Dozens of projects for Relevate Health Games by now, playable ads among them, for patients
       // and for healthcare providers, and a telehealth game for the AHA. The site names a few
       // of them, and no drug brand.
       id: "playable-ads",
       title: "Training games and playable ads",
       html: [
-        `We have worked on dozens of training and education projects by Relevate Health Games, for patients and for healthcare providers (HCPs). They include Discover TD, Level One, and Expression Lab, and the ${ext(LINKS.ahaTelehealthGame, "CORE Concepts in Telehealth Interactive Game")} for the American Heart Association, where learners practice telemedicine on five simulated patients.`,
+        `We have worked on dozens of training and education projects for Relevate Health Games, for patients and healthcare providers (HCPs). They include Discover TD, Level One, and Expression Lab, and the ${ext(LINKS.ahaTelehealthGame, "CORE Concepts in Telehealth Interactive Game")} for the American Heart Association, where learners practice telemedicine on five simulated patients.`,
         `<strong>Playable ads.</strong> Some of those projects are playable ads: short interactive ads that people play instead of watch. The ones we worked on teach patients and healthcare providers how a condition works and how a treatment helps. We bring that experience to playable ads in any field.`,
       ],
       image: "portfolio/discover-td-screens.jpg",
@@ -929,7 +929,7 @@ const seriousGames: ServicePageContent = {
     {
       title: "Games for therapy, rehabilitation, and learning",
       html: [
-        `We have worked on seven health and education projects by ${ext(BARRON, "Barron Associates")}: SaeboVR, GRASP, KneeBRIGHT, MOVE-IT, iCare, NeuroSPARKS, and EMPATHIE. Several were funded by NIH grants: KneeBRIGHT was supported by NIH NIAMS, MOVE-IT was funded by an NIH Phase II SBIR grant, GRASP by an NIH Fast-Track SBIR grant, and NeuroSPARKS was NIH-funded and won a 2022 Tech & Learning Award of Excellence. The Barron Associates projects we worked on helped launch FDA-approved treatments. We also worked on Flex Sledding for the mTrigger wireless EMG system and on educational games for Legends of Learning.`,
+        `We have worked on seven health and education projects for ${ext(BARRON, "Barron Associates")}: SaeboVR, GRASP, KneeBRIGHT, MOVE-IT, iCare, NeuroSPARKS, and EMPATHIE. Several were funded by NIH grants: KneeBRIGHT was supported by NIH NIAMS, MOVE-IT was funded by an NIH Phase II SBIR grant, GRASP by an NIH Fast-Track SBIR grant, and NeuroSPARKS was NIH-funded and won a 2022 Tech & Learning Award of Excellence. The projects we built for Barron Associates helped launch FDA-approved treatments. We also worked on Flex Sledding for the mTrigger wireless EMG system and on educational games for Legends of Learning.`,
       ],
       image: "portfolio/saebovr.jpg",
       imageAlt: "SaeboVR: a seated patient raises his arm while a Kinect sensor above the screen tracks it, and the game shows a hand placing a jug of milk in a fridge.",
@@ -946,13 +946,13 @@ const seriousGames: ServicePageContent = {
     {
       title: "Working with clinicians, researchers, and grant teams",
       html: [
-        `Serious games are built with experts, not just for them. HELIX was designed with audiologists and Nemours, and its dashboard gives organizations, researchers, providers, and patients each their own view of the data. We have also delivered real-time systems that integrate motion capture and electromyography, helped clinicians track patient progress remotely, and given kids with physical limitations a new way to engage with therapy. ${int("/games/#experiences", "See the health and VR projects we have worked on")}, or our ${int("/services/vr-ar-development/", "VR and AR app development")} service for the headset side.`,
+        `Serious games are built with experts, not just for them. HELIX was designed with audiologists and Nemours, and its dashboard gives organizations, researchers, providers, and patients each their own view of the data. We have also delivered real-time systems that integrate motion capture and electromyography, helped clinicians track patient progress remotely, and given kids with physical limitations a new way to engage with therapy. ${int("/games/#experiences", "See the health and VR projects we've built")}, or our ${int("/services/vr-ar-development/", "VR and AR app development")} service for the headset side.`,
       ],
     },
   ],
   explore: {
     title: "Explore the games on a body map",
-    lead: "Health and fitness games we have worked on, laid out by the part of the body each one works with.",
+    lead: "Health and fitness games we've built, laid out by the part of the body each one works with.",
   },
   work: {
     title: "Health, fitness, and education projects",
@@ -967,74 +967,74 @@ const seriousGames: ServicePageContent = {
       },
       {
         slug: "lanebreak",
-        kicker: "Peloton",
+        kicker: "For Peloton",
         note: "A gaming-inspired workout on the Peloton Bike and Bike+, released to All-Access Members in 2022.",
       },
       {
         slug: "discover-td",
-        kicker: "Relevate Health Games",
+        kicker: "For Relevate Health Games",
         note: "Case-based training that teaches clinicians to tell tardive dyskinesia from other movement disorders.",
       },
       {
         slug: "level-one",
-        kicker: "Relevate Health Games",
+        kicker: "For Relevate Health Games",
         note: "A free mobile game that teaches type 1 diabetes management in short, interactive levels.",
       },
       {
         slug: "expression-lab",
-        kicker: "Relevate Health Games",
+        kicker: "For Relevate Health Games",
         note: "Anatomy training that links each facial expression to the muscles behind it.",
       },
       {
         slug: "neurosparks",
-        kicker: "Barron Associates",
+        kicker: "For Barron Associates",
         note: "Middle school science games controlled by arm-muscle sensors; a 2022 Tech & Learning Award of Excellence.",
       },
       {
         slug: "grasp",
-        kicker: "Barron Associates",
+        kicker: "For Barron Associates",
         note: "Stroke rehabilitation with a sensor glove: patients practice grip by cooking, gardening, and shopping in the game.",
       },
       {
         slug: "kneebright",
-        kicker: "Barron Associates",
+        kicker: "For Barron Associates",
         note: "Game-based home therapy for knee osteoarthritis with EMG biofeedback, supported by NIH NIAMS.",
       },
       {
         slug: "move-it",
-        kicker: "Barron Associates",
+        kicker: "For Barron Associates",
         note: "Telehealth therapy games and a smart toy for children with hemiplegia, funded by an NIH Phase II SBIR grant.",
       },
       {
         slug: "icare",
-        kicker: "Barron Associates",
+        kicker: "For Barron Associates",
         note: "Vision therapy games for children, played with anaglyph glasses and a webcam.",
       },
       {
         slug: "saebovr",
-        kicker: "Barron Associates",
+        kicker: "For Barron Associates",
         note: "Upper-extremity rehabilitation for stroke survivors, tracked with Kinect, with real-time feedback.",
       },
       {
         slug: "flexsledding",
-        kicker: "mTrigger",
+        kicker: "For mTrigger",
         note: "A biofeedback therapy game for the mTrigger wireless EMG system, on Google Play and the App Store.",
       },
       {
         slug: "core-concepts-in-telehealth",
-        kicker: "American Heart Association",
+        kicker: "For the American Heart Association",
         note: "An interactive game for the AHA Center for Telehealth: learners practice telemedicine on five simulated patients.",
         icon: "heartPulse",
       },
       {
         slug: "lab-rat",
-        kicker: "Legends of Learning",
+        kicker: "For Legends of Learning",
         note: "Classroom science and math games hosted by Ratilda, the rat scientist.",
         icon: "graduationCap",
       },
       {
         slug: "empathie",
-        kicker: "Barron Associates",
+        kicker: "For Barron Associates",
         note: "A game about life with a motor disability, played with an EMG sensor; its pilot with 48 students showed significant learning gains.",
         icon: "graduationCap",
       },
@@ -1076,15 +1076,15 @@ const seriousGames: ServicePageContent = {
       },
       {
         q: "Do you make playable ads?",
-        a: "Yes. A playable ad is a short interactive ad that people play instead of watch. We have worked on playable ads by Relevate Health Games that teach patients and healthcare providers (HCPs) how a condition works and how a treatment helps. We bring that experience to playable ads in any field.",
+        a: "Yes. A playable ad is a short interactive ad that people play instead of watch. We have worked on playable ads for Relevate Health Games that teach patients and healthcare providers (HCPs) how a condition works and how a treatment helps. We bring that experience to playable ads in any field.",
       },
       {
         q: "Can video games help with physical therapy?",
-        a: "Games can guide and motivate therapy exercise. We have worked on therapy software by Barron Associates: SaeboVR and GRASP for stroke survivors, KneeBRIGHT for knee osteoarthritis, and MOVE-IT for children with hemiplegia. We also worked on Flex Sledding, a biofeedback game for the mTrigger EMG system.",
+        a: "Games can guide and motivate therapy exercise. We have worked on therapy software for Barron Associates: SaeboVR and GRASP for stroke survivors, KneeBRIGHT for knee osteoarthritis, and MOVE-IT for children with hemiplegia. We also worked on Flex Sledding, a biofeedback game for the mTrigger EMG system.",
       },
       {
         q: "Can you work with our clinical or research team?",
-        a: "Yes, that is how this work gets done. HELIX was built with audiologists and in collaboration with Nemours Children's Hospital, and it began with funding from the DBI CAT grant program. The Barron Associates projects we worked on were research-led, and several were funded by NIH grants.",
+        a: "Yes, that is how this work gets done. HELIX was built with audiologists and in collaboration with Nemours Children's Hospital, and it began with funding from the DBI CAT grant program. The projects we built for Barron Associates were research-led, and several were funded by NIH grants.",
       },
       {
         q: "Can the game track progress for clinicians or teachers?",
@@ -1092,15 +1092,15 @@ const seriousGames: ServicePageContent = {
       },
       {
         q: "Do you make educational games for schools?",
-        a: "Yes. We worked on Lab Rat, classroom science and math games for Legends of Learning, and on NeuroSPARKS and EMPATHIE, middle school games by Barron Associates. EMPATHIE's pilot with 48 students showed significant learning gains.",
+        a: "Yes. We worked on Lab Rat, classroom science and math games for Legends of Learning, and on NeuroSPARKS and EMPATHIE, middle school games for Barron Associates. EMPATHIE's pilot with 48 students showed significant learning gains.",
       },
       {
         q: "Can a serious game use motion tracking or other controllers?",
-        a: "Yes. We have delivered real-time systems that integrate motion capture, electromyography, and other alternative controls. The projects we worked on use Kinect tracking, wireless EMG sensors, a sensor glove, a smart toy, and webcam tracking of anaglyph glasses.",
+        a: "Yes. We have delivered real-time systems that integrate motion capture, electromyography, and other alternative controls. The projects we built use Kinect tracking, wireless EMG sensors, a sensor glove, a smart toy, and webcam tracking of anaglyph glasses.",
       },
       {
         q: "Do you build fitness games?",
-        a: "Yes. We worked on Lanebreak, Peloton's gaming-inspired workout for the Peloton Bike and Bike+. We also built Reel Gains, our own workout tracker web app with plans, an exercise library, and a consistency calendar.",
+        a: "Yes. For Peloton, we worked on Lanebreak, its gaming-inspired workout for the Peloton Bike and Bike+. We also built Reel Gains, our own workout tracker web app with plans, an exercise library, and a consistency calendar.",
       },
     ],
   },
@@ -1346,7 +1346,7 @@ export const HUB = {
   faq: [
     {
       q: "What does Luna Wolf Studios build for clients?",
-      a: "Six things: games, like our 32-player <a href=\"/sheep-tag-2/\">Sheep Tag 2</a>; Unity engineering, from gameplay to CI/CD and cloud streaming; custom Unity editor tools, like <a href=\"/scriptable-sheets/\">Scriptable Sheets</a>; VR and AR apps, like <a href=\"/helix/\">HELIX</a>; serious games for health and education, like HELIX and the Barron Associates therapy games we worked on; and web apps and backends, like the HELIX dashboard.",
+      a: "Six things: games, like our 32-player <a href=\"/sheep-tag-2/\">Sheep Tag 2</a>; Unity engineering, from gameplay to CI/CD and cloud streaming; custom Unity editor tools, like <a href=\"/scriptable-sheets/\">Scriptable Sheets</a>; VR and AR apps, like <a href=\"/helix/\">HELIX</a>; serious games for health and education, like HELIX and the therapy games we built for Barron Associates; and web apps and backends, like the HELIX dashboard.",
     },
     {
       q: "How much does a project cost?",
@@ -1358,7 +1358,7 @@ export const HUB = {
     },
     {
       q: "Can you join a project that is already in progress?",
-      a: "Yes, especially Unity projects, as co-development. We worked on Lanebreak, Peloton's gaming-inspired workout, and on Warcodes by Emergent Worlds and Cell to Singularity by Computer Lunch.",
+      a: "Yes, especially Unity projects, as co-development. We worked on Lanebreak for Peloton, Warcodes for Emergent Worlds, and Cell to Singularity for Computer Lunch.",
     },
     {
       q: "Which engines do you work in?",

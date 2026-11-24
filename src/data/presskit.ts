@@ -171,8 +171,8 @@ export const ANIMATED_LOGO: Array<{ label: string; file: string; what: string }>
 
 /**
  * One-line pitch, then a short description. The owner's direction (decisions.md, second
- * message): say plainly what the studio makes and who it has worked with; each partner is
- * named, and no sentence says the studio owns or built alone another company's product.
+ * message): say plainly what the studio makes and who it has built for; each client is
+ * named, and no sentence says the studio owns another company's product.
  * HELIX is the studio's own project, made with Nemours.
  */
 export const PITCH =
@@ -180,7 +180,7 @@ export const PITCH =
 
 export const DESCRIPTION = [
   "It makes its own games and tools, builds games and software for clients, and publishes games by independent developers. Sheep Tag 2, the standalone successor to the Warcraft III mod Sheep Tag, is coming to Early Access on Steam in 2027.",
-  "The studio has worked on games and software with Peloton, Cartoon Network, Barron Associates, Legends of Learning, and Nemours Children's Health. With Nemours Children's Hospital it developed HELIX, its own VR hearing assessment.",
+  "The studio has built games and software for Peloton, Cartoon Network, Barron Associates, and Legends of Learning. With Nemours Children's Hospital it developed HELIX, its own VR hearing assessment.",
 ];
 
 /**

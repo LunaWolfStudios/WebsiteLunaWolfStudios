@@ -4,7 +4,7 @@
  * (archive/wordpress/pages/games.md: Featured, Immersive Experiences, Game Jam Graveyard, the
  * itch.io and Newgrounds buttons) and adds what the owner asked for: the major releases, the
  * game jam and small games, and the student internship projects. Each card says whose game it
- * is: ours, published by us, or the company that owns a game we worked on. Pictures come
+ * is: ours, published by us, or "For <company>" for a game we built for a client. Pictures come
  * first: every project with art shows it; the few with none are compact text cards.
  *
  * Data: src/data/games.ts (GAMES by category), src/data/videos.ts (the 2017 hype trailer),
@@ -32,7 +32,7 @@ import { PRICE_REGION_NOTE } from "../lib/store";
 
 const title = "Luna Wolf Studios games and projects";
 const description =
-  "Games from Luna Wolf Studios: Sheep Tag 2, Hypno Halo, ParaLily, and The Brave Hearts II, plus projects with Peloton, Barron Associates, and Nemours.";
+  "Games from Luna Wolf Studios: Sheep Tag 2, Hypno Halo, ParaLily, and The Brave Hearts II, plus HELIX with Nemours and work for Peloton and Barron Associates.";
 
 const steam = (href: string, slug: string, verb = "Buy on"): StoreEntry => ({ kind: "steam", href, verb, price: { slug, store: "steam" } });
 const eshop = (href: string, slug: string): StoreEntry => ({ kind: "switch", href, verb: "Buy on", price: { slug, store: "switch" } });
@@ -43,7 +43,7 @@ const pl = game("paralily");
 const bh = game("the-brave-hearts-ii-false-skies");
 const helix = game("helix");
 
-// Games we've worked on, the newest first (the owner's rule: nothing old leads). The first
+// Games we built for clients, the newest first (the owner's rule: nothing old leads). The first
 // two are double width, so ten games fill twelve slots: three rows of four.
 const CLIENT_ORDER = [
   "lanebreak",
@@ -78,7 +78,7 @@ const moreExperiences = experiences.filter((g) => !(g.slug in BANNERS));
 const EXPERIENCE_ORDER = ["discover-td", "level-one", "expression-lab", "neurosparks", "grasp", "kneebright", "move-it", "icare", "flexsledding"];
 const expWithArt = moreExperiences.filter((g) => g.wide ?? g.cover).sort(byOrder(EXPERIENCE_ORDER));
 // One project with no art is called out in a strip under the pictures; the others without
-// art are the text cards at the foot of the section.
+// art are the text cards at the foot of the section. The strip's owner takes "the" in its label.
 const EXP_STRIP = "core-concepts-in-telehealth";
 const expStrip = game(EXP_STRIP);
 const expText = moreExperiences.filter((g) => !(g.wide ?? g.cover) && g.slug !== EXP_STRIP);
@@ -107,7 +107,7 @@ const jump = [
   ["Our games", "#our-games"],
   ["Published", "#published"],
   ["In development", "#rowan-of-bramblebrook"],
-  ["Worked on", "#client-games"],
+  ["For clients", "#client-games"],
   ["Experiences", "#experiences"],
   ["Jams and prototypes", "#game-jams"],
   ["Interns", "#internships"],
@@ -149,7 +149,7 @@ const jsonLd = {
   <PageHero
     eyebrow="Games"
     title="Our games and projects"
-    lead="The games we make and publish, the games and health projects we have worked on, and our game jam, side, and intern games."
+    lead="The games we make and publish, the games and health projects we've built for clients, and our game jam, side, and intern games."
     class="games-hero"
   >
     <nav class="jump" aria-label="On this page">
@@ -280,13 +280,13 @@ const jsonLd = {
     />
   </Section>
 
-  {/* ─── Client and partner games ─── */}
+  {/* ─── Client games ─── */}
   <Section
     id="client-games"
     tone="raised"
-    eyebrow="Partners"
+    eyebrow="Client work"
     title={clientsHeading}
-    lead="Games by other studios that we have worked on."
+    lead="Games we built for other studios and companies."
   >
     <a slot="actions" class="link-arrow" href="/services/game-development/">Game development services <Icon name="arrowRight" size={16} /></a>
     <div class="cards cards--4">
@@ -305,7 +305,7 @@ const jsonLd = {
     id="experiences"
     eyebrow="Health and VR"
     title="Health, VR, and interactive experiences"
-    lead="Therapy and training software, playable ads, VR, and exhibitions: our own HELIX, and projects we have worked on."
+    lead="Therapy and training software, playable ads, VR, and exhibitions: our own HELIX, and projects we've built for clients."
   >
     <Fragment slot="actions">
       <a class="link-arrow" href="/services/serious-games/">Serious games services <Icon name="arrowRight" size={16} /></a>
@@ -329,7 +329,7 @@ const jsonLd = {
       }
     </div>
     <div class="exp-strip" data-reveal>
-      <CreditCard game={expStrip} art={false} />
+      <CreditCard game={expStrip} art={false} kicker={`For the ${expStrip.owner}`} />
     </div>
     <h3 class="sub">More training, VR, and exhibition work</h3>
     <div class="cards cards--3 banners">

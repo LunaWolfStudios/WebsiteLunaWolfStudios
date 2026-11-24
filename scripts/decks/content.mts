@@ -12,9 +12,10 @@
  *
  * Copy follows CLAUDE.md: "we" for the studio, no founder named, newest work first, the
  * Anatomy of Play projects leading any list of health, fitness, and education work, no
- * prices, reviews quoted exactly. A company appears only as the owner label of a project or
- * award the deck shows, in the "Our Trusted Pack" logo row, in the lines the site itself words
- * about a project's partner, or as a review's source; never as a text-only client mention.
+ * prices, reviews quoted exactly. A company appears only as the label of a project the deck
+ * shows ("For Peloton", for client work), as the owner of an award ("Lanebreak, by Peloton"),
+ * in the "Our Trusted Pack" logo row, in the lines the site itself words about a project's
+ * client or partner, or as a review's source; never as a text-only client mention.
  * Grants are worded as funding for the project, as src/data words them.
  *
  * Image paths are under src/assets/. Alt text is the site's own where it has one
@@ -30,7 +31,7 @@ const cover = (slug: string) => {
 
 export interface Card {
   title: string;
-  /** Plain label: whose project it is ("by Peloton", "Our game"). */
+  /** Plain label: whose project it is ("For Peloton", "Our game"). */
   owner: string;
   /** Year from games.ts `year` or `releaseNote`, when it has one. */
   year?: string;
@@ -197,7 +198,7 @@ const C: Record<string, Card> = {
   },
   lanebreak: {
     title: "Lanebreak",
-    owner: "by Peloton",
+    owner: "For Peloton",
     year: "2022",
     desc: "Gaming-inspired workout",
     img: "portfolio/lanebreak.jpg",
@@ -206,7 +207,7 @@ const C: Record<string, Card> = {
   },
   discoverTd: {
     title: "Discover TD",
-    owner: "by Relevate Health Games",
+    owner: "For Relevate Health Games",
     year: "2026",
     desc: "Case-based training for clinicians",
     img: "portfolio/discover-td-screens.jpg",
@@ -215,7 +216,7 @@ const C: Record<string, Card> = {
   },
   levelOne: {
     title: "Level One",
-    owner: "by Relevate Health Games",
+    owner: "For Relevate Health Games",
     year: "2025",
     desc: "Teaches type 1 diabetes care",
     img: "portfolio/level-one-screens.jpg",
@@ -223,49 +224,49 @@ const C: Record<string, Card> = {
   },
   expressionLab: {
     title: "Expression Lab",
-    owner: "by Relevate Health Games",
+    owner: "For Relevate Health Games",
     desc: "Facial anatomy training",
     img: "portfolio/expression-lab-screens.jpg",
     alt: "Three phone screens from Expression Lab: a Game On title card and two screens of a 3D face with its facial muscles marked.",
   },
   neurosparks: {
     title: "NeuroSPARKS",
-    owner: "by Barron Associates",
+    owner: "For Barron Associates",
     desc: "Science games for middle school",
     img: "portfolio/neurosparks-emg-sensor.jpg",
     alt: "A rendered student wears an arm sensor whose signal drives the Neurobots science game on a screen beside her.",
   },
   grasp: {
     title: "GRASP",
-    owner: "by Barron Associates",
+    owner: "For Barron Associates",
     desc: "Stroke rehab with a sensor glove",
     img: "portfolio/grasp-glove.jpg",
     alt: "A player's hand in the GRASP sensor glove, in front of a garden level on a large screen.",
   },
   kneebright: {
     title: "KneeBRIGHT",
-    owner: "by Barron Associates",
+    owner: "For Barron Associates",
     desc: "Knee therapy with EMG biofeedback",
     img: "portfolio/kneebright.jpg",
     alt: "KneeBRIGHT: a boat crosses a lake while a Speed Boost prompt asks the player to extend the impaired leg.",
   },
   moveIt: {
     title: "MOVE-IT",
-    owner: "by Barron Associates",
+    owner: "For Barron Associates",
     desc: "Therapy games and a smart toy",
     img: "portfolio/move-it-smart-toy-photo.jpg",
     alt: "The MOVE-IT smart toy, its three round ends lit red, green, and blue.",
   },
   icare: {
     title: "iCare",
-    owner: "by Barron Associates",
+    owner: "For Barron Associates",
     desc: "Vision therapy games for children",
     img: "portfolio/icare.png",
     alt: "iCare: a low-poly dragon in a green field beside a floating panel of shapes to pick from.",
   },
   saebovr: {
     title: "SaeboVR",
-    owner: "by Barron Associates",
+    owner: "For Barron Associates",
     desc: "Stroke rehab tracked with Kinect",
     img: "portfolio/saebovr.jpg",
     // servicePages.ts, serious-games focus[2].imageAlt
@@ -273,7 +274,7 @@ const C: Record<string, Card> = {
   },
   flexsledding: {
     title: "mTrigger Flex Sledding",
-    owner: "by mTrigger",
+    owner: "For mTrigger",
     year: "2019",
     desc: "Biofeedback therapy game",
     img: "portfolio/flexsledding.jpg",
@@ -316,7 +317,7 @@ const C: Record<string, Card> = {
   },
   warcodes: {
     title: "Warcodes",
-    owner: "by Emergent Worlds",
+    owner: "For Emergent Worlds",
     year: "2025",
     desc: "Mobile monster battler",
     img: "portfolio/warcodes.jpg",
@@ -324,14 +325,14 @@ const C: Record<string, Card> = {
   },
   cellToSingularity: {
     title: "Cell to Singularity",
-    owner: "by Computer Lunch",
+    owner: "For Computer Lunch",
     desc: "Idle clicker for mobile, PC, and web",
     img: "portfolio/cell-to-singularity.jpg",
     alt: "Cell to Singularity art: a tardigrade floats among cells, DNA strands, and a virus.",
   },
   realize: {
     title: "Realize",
-    owner: "by Realize Design",
+    owner: "For Realize Design",
     year: "2020",
     desc: "Room design app for iPhone and iPad",
     img: "portfolio/realize-banner.jpg",
@@ -339,7 +340,7 @@ const C: Record<string, Card> = {
   },
   saveSamia: {
     title: "Save Samia",
-    owner: "by LaToya Forever",
+    owner: "For LaToya Forever",
     year: "2016",
     desc: "Endless runner, iOS and Android",
     img: "portfolio/save-samia.jpg",
@@ -347,7 +348,7 @@ const C: Record<string, Card> = {
   },
   labRat: {
     title: "Lab Rat",
-    owner: "by Legends of Learning",
+    owner: "For Legends of Learning",
     desc: "Classroom science and math games",
     img: "portfolio/lab-rat.png",
     alt: "Lab Rat: Molecule Maker title art, with Ratilda the rat scientist holding a ruler.",
@@ -475,18 +476,18 @@ export const DECKS: Deck[] = [
           // servicePages.ts vr-ar focus[0] ("Traditional hearing tests can be boring and repetitive")
           "Standard tests can be boring and repetitive. A game gives each repetition a goal, as HELIX does with hearing tests.",
           // Anatomy of Play: MOVE-IT ("In-game performance metrics strongly correlate with clinical motor assessments"), GRASP ("Strong correlation with clinical assessments")
-          "The game measures while the patient plays: in MOVE-IT and GRASP, by Barron Associates, in-game metrics correlate strongly with clinical assessments.",
+          "The game measures while the patient plays: in MOVE-IT and GRASP, built for Barron Associates, in-game metrics correlate strongly with clinical assessments.",
           // services.ts serious-games bullets
           "Results reach clinicians remotely, so they can follow patients at home.",
         ],
         evidence: [
           // Anatomy of Play, KneeBRIGHT highlights
-          { n: "+25%", text: "knee torque against control in KneeBRIGHT, by Barron Associates.", source: "Anatomy of Play, our web app: tools.lunawolfstudios.com/anatomy-of-play/" },
+          { n: "+25%", text: "knee torque against control in KneeBRIGHT, built for Barron Associates.", source: "Anatomy of Play, our web app: tools.lunawolfstudios.com/anatomy-of-play/" },
           // Anatomy of Play, iCare highlights
-          { n: "20 min/day", text: "Equivalent clinical effectiveness to patching therapy, in 20 minutes a day against hours of traditional therapy: iCare, by Barron Associates.", source: "Anatomy of Play, our web app: tools.lunawolfstudios.com/anatomy-of-play/" },
+          { n: "20 min/day", text: "Equivalent clinical effectiveness to patching therapy, in 20 minutes a day against hours of traditional therapy: iCare, built for Barron Associates.", source: "Anatomy of Play, our web app: tools.lunawolfstudios.com/anatomy-of-play/" },
           COCHRANE_VR,
         ],
-        picture: { src: "portfolio/kneebright.jpg", alt: "KneeBRIGHT: a boat crosses a lake while a Speed Boost prompt asks the player to extend the impaired leg.", caption: "KneeBRIGHT, by Barron Associates" },
+        picture: { src: "portfolio/kneebright.jpg", alt: "KneeBRIGHT: a boat crosses a lake while a Speed Boost prompt asks the player to extend the impaired leg.", caption: "KneeBRIGHT, for Barron Associates" },
       },
     ],
     what: {
@@ -507,7 +508,7 @@ export const DECKS: Deck[] = [
     work: {
       kind: "cards",
       eyebrow: "Selected work",
-      title: "Health and fitness games we've worked on",
+      title: "Health and fitness games we've built",
       imgH: 122,
       // The Anatomy of Play ten lead, in the order CLAUDE.md and servicePages.ts give them.
       // desc: the condition or subject (Anatomy of Play summary); hw: the hardware or platform
@@ -557,7 +558,7 @@ export const DECKS: Deck[] = [
           { body: "Tech & Learning Awards of Excellence", title: "Winner, Primary Education", subject: "NeuroSPARKS, by Barron Associates · 2022" },
         ],
         // servicePages.ts serious-games focus[2]
-        notes: ["The Barron Associates projects we worked on helped launch FDA-approved treatments."],
+        notes: ["The projects we built for Barron Associates helped launch FDA-approved treatments."],
       },
     ],
     processFrom: "serious-games",
@@ -584,7 +585,7 @@ export const DECKS: Deck[] = [
           "It runs where your learners are: the web, phones, and VR headsets.",
         ],
         evidence: [GAME_TRAINING_META, PWC_VR],
-        picture: { src: "portfolio/discover-td-screens.jpg", alt: C.discoverTd.alt, caption: "Discover TD, by Relevate Health Games" },
+        picture: { src: "portfolio/discover-td-screens.jpg", alt: C.discoverTd.alt, caption: "Discover TD, for Relevate Health Games" },
       },
     ],
     what: {
@@ -602,13 +603,13 @@ export const DECKS: Deck[] = [
       picture: {
         src: "portfolio/discover-td-screens.jpg",
         alt: C.discoverTd.alt,
-        caption: "Discover TD, by Relevate Health Games",
+        caption: "Discover TD, for Relevate Health Games",
       },
     },
     work: {
       kind: "cards",
       eyebrow: "Selected work",
-      title: "Training and education games we've worked on",
+      title: "Training and education games we've built",
       cards: [
         withDesc(C.helix, "Hearing tests as VR games"),
         C.lanebreak,
@@ -625,11 +626,11 @@ export const DECKS: Deck[] = [
         title: "Training and education work, by the numbers",
         stats: [
           // servicePages.ts serious-games lead and focus[1]
-          { n: "Dozens", text: "of training and education projects by Relevate Health Games that we have worked on" },
+          { n: "Dozens", text: "of training and education projects we have worked on for Relevate Health Games" },
           // servicePages.ts serious-games focus[1]; games.ts core-concepts-in-telehealth
           { n: "5", text: "simulated patients in the CORE Concepts in Telehealth game for the American Heart Association" },
           // games.ts empathie.summary
-          { n: "48", text: "students in the EMPATHIE pilot, by Barron Associates, with significant learning gains" },
+          { n: "48", text: "students in the EMPATHIE pilot, for Barron Associates, with significant learning gains" },
           // games.ts helix.summary
           { n: "About 30", text: "subjects in the HELIX pilot study, with Nemours Children's Hospital, in 2023" },
         ],
@@ -686,11 +687,11 @@ export const DECKS: Deck[] = [
         // The studio's statement on playable ads (CLAUDE.md "Pitch decks"); servicePages.ts serious-games focus[1]
         points: [
           "Lead anywhere: the call to action can open a game, your app, a website, or a product.",
-          "Any field: we have worked on playable ads by Relevate Health Games that teach patients and healthcare providers how a condition works and how a treatment helps.",
+          "Any field: we have worked on playable ads for Relevate Health Games that teach patients and healthcare providers how a condition works and how a treatment helps.",
           "Welcome new users: deferred deep links take a new user to the right place in your app, with a reward waiting.",
           "Measure it: click-throughs and engagement, with A/B tests to compare versions.",
         ],
-        picture: { src: "portfolio/level-one-screens.jpg", alt: C.levelOne.alt, caption: "Level One, by Relevate Health Games" },
+        picture: { src: "portfolio/level-one-screens.jpg", alt: C.levelOne.alt, caption: "Level One, for Relevate Health Games" },
       },
     ],
     what: {
@@ -714,9 +715,9 @@ export const DECKS: Deck[] = [
     work: {
       kind: "cards",
       eyebrow: "Selected work",
-      title: "Projects we've worked on by Relevate Health Games",
+      title: "Projects we've built for Relevate Health Games",
       // servicePages.ts serious-games focus[1], word for word
-      lead: "We have worked on dozens of training and education projects by Relevate Health Games, for patients and for healthcare providers (HCPs). Some of those projects are playable ads. We bring that experience to playable ads in any field.",
+      lead: "We have worked on dozens of training and education projects for Relevate Health Games, for patients and healthcare providers (HCPs). Some of those projects are playable ads. We bring that experience to playable ads in any field.",
       cards: [C.discoverTd, C.levelOne, C.expressionLab],
       imgH: 268,
     },
@@ -764,7 +765,7 @@ export const DECKS: Deck[] = [
           "Player accounts, purchases, and live service are part of the build.",
         ],
         evidence: [NEWZOO_MOBILE, UNITY_SHARE],
-        picture: { src: "portfolio/warcodes.jpg", alt: C.warcodes.alt, caption: "Warcodes, by Emergent Worlds" },
+        picture: { src: "portfolio/warcodes.jpg", alt: C.warcodes.alt, caption: "Warcodes, for Emergent Worlds" },
       },
     ],
     what: {
@@ -780,12 +781,12 @@ export const DECKS: Deck[] = [
         // servicePages.ts game-development focus[0]
         { icon: "layers", title: "Co-development", text: "We work in your repository, tools, and schedule and take on a defined part." },
       ],
-      picture: { src: C.levelOne.img, alt: C.levelOne.alt, caption: "Level One, by Relevate Health Games" },
+      picture: { src: C.levelOne.img, alt: C.levelOne.alt, caption: "Level One, for Relevate Health Games" },
     },
     work: {
       kind: "cards",
       eyebrow: "Selected work",
-      title: "Mobile games and apps we've worked on",
+      title: "Mobile games and apps we've built for clients",
       // Newest first by games.ts `year`; Cell to Singularity has no year there.
       cards: [C.warcodes, withDesc(C.levelOne, "Type 1 diabetes care, iOS and Android"), C.cellToSingularity, C.realize, C.flexsledding, C.saveSamia],
     },
@@ -828,7 +829,7 @@ export const DECKS: Deck[] = [
           // games.ts saebovr, grasp; Anatomy of Play KneeBRIGHT, MOVE-IT
           "A device turns movement into data: Kinect, a sensor glove, EMG sensors, and a smart toy measure what a patient does.",
           // Anatomy of Play MOVE-IT
-          "Those measures hold up: in MOVE-IT, by Barron Associates, in-game metrics correlate strongly with clinical motor assessments.",
+          "Those measures hold up: in-game metrics in MOVE-IT, built for Barron Associates, correlate strongly with clinical motor assessments.",
           // servicePages.ts vr-ar what.items and focus[2]
           "A headset puts a learner in the room with 360-degree video, and results go to a dashboard for providers or trainers.",
         ],
@@ -874,7 +875,7 @@ export const DECKS: Deck[] = [
           img: "portfolio/saebovr.jpg",
           alt: "SaeboVR: a seated patient raises his arm while a Kinect sensor above the screen tracks it, and the game shows a hand placing a jug of milk in a fridge.",
           project: "SaeboVR",
-          owner: "by Barron Associates",
+          owner: "For Barron Associates",
           // games.ts saebovr.summary
           text: "Tracks shoulder and elbow movement in stroke rehabilitation.",
         },
@@ -884,7 +885,7 @@ export const DECKS: Deck[] = [
           alt: "A pair of paper red-cyan anaglyph glasses lying on a desk.",
           pos: "50% 30%",
           project: "iCare",
-          owner: "by Barron Associates",
+          owner: "For Barron Associates",
           // Anatomy of Play iCare summary
           text: "A webcam and computer vision track anaglyph (red-cyan) glasses for head tracking in vision therapy.",
         },
@@ -893,7 +894,7 @@ export const DECKS: Deck[] = [
           img: "portfolio/grasp-glove.jpg",
           alt: "A player's hand in the GRASP sensor glove, in front of a garden level on a large screen.",
           project: "GRASP",
-          owner: "by Barron Associates",
+          owner: "For Barron Associates",
           // games.ts grasp.summary; Anatomy of Play GRASP ("Glove-based motion tracking")
           text: "Glove-based motion tracking as stroke patients practice grip and hand use.",
         },
@@ -919,7 +920,7 @@ export const DECKS: Deck[] = [
             img: "portfolio/move-it-smart-toy-photo.jpg",
             alt: "The MOVE-IT smart toy, its three round ends lit red, green, and blue.",
             project: "MOVE-IT",
-            owner: "by Barron Associates",
+            owner: "For Barron Associates",
             // Anatomy of Play MOVE-IT highlights
             text: "A 9-axis sensor, LED cues, and haptic feedback guide arm movement for hemiplegic cerebral palsy.",
           },
@@ -929,7 +930,7 @@ export const DECKS: Deck[] = [
             alt: "Two small blue wireless muscle sensors, one turned over to show its three electrode snaps.",
             pos: "50% 45%",
             project: "NeuroSPARKS and KneeBRIGHT",
-            owner: "by Barron Associates",
+            owner: "For Barron Associates",
             // Anatomy of Play NeuroSPARKS ("Bluetooth-enabled sensor") and KneeBRIGHT ("EMG-controlled gameplay")
             text: "A Bluetooth muscle sensor drives science games; EMG guides knee osteoarthritis therapy.",
           },
@@ -938,7 +939,7 @@ export const DECKS: Deck[] = [
             img: "portfolio/flexsledding.jpg",
             alt: "The mTrigger Flex Sledding menu, with Play, Settings, How To Play, and Testing Mode, over a snowy sled track.",
             project: "mTrigger Flex Sledding",
-            owner: "by mTrigger",
+            owner: "For mTrigger",
             // games.ts flexsledding.summary
             text: "Patients flex to steer a sled, on the mTrigger wireless EMG system for iOS and Android.",
           },
@@ -947,7 +948,7 @@ export const DECKS: Deck[] = [
             img: "portfolio/lanebreak.jpg",
             alt: "Peloton Lanebreak: a glowing blue wheel throws sparks as it rolls along a dark track marked with blue beats.",
             project: "Lanebreak",
-            owner: "by Peloton",
+            owner: "For Peloton",
             // Anatomy of Play Lanebreak ("Real-time resistance + cadence control"); games.ts lanebreak.summary
             text: "The bike's resistance and cadence steer a wheel through music-driven levels.",
           },
@@ -1032,7 +1033,7 @@ export const DECKS: Deck[] = [
     work: {
       kind: "cards",
       eyebrow: "Selected work",
-      title: "Unity projects we've built and worked on",
+      title: "Unity projects we've built",
       cards: [
         withDesc(C.sheepTag2, "32-player online multiplayer"),
         withDesc(C.hypnoHalo, "On Steam and Nintendo Switch"),

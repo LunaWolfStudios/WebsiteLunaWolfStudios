@@ -18,6 +18,7 @@ import Icon from "./Icon.astro";
 import type { Game } from "../data/types";
 import { image as resolveImage } from "../lib/images";
 import { withUtm, type LinkPlacement } from "../data/links";
+import { clientLabel } from "../data/games";
 
 interface Props {
   game: Game;
@@ -58,6 +59,8 @@ const status = game.status
     ? { label: game.releaseNote, cls: "badge--gold" }
     : STATUS[game.status]
   : undefined;
+// Client work reads "For <company>"; everything else, its category and any owner.
+const kicker = clientLabel(game) ?? `${CATEGORY[game.category]}${game.owner ? ` · ${game.owner}` : ""}`;
 const meta = [game.year, game.role].filter(Boolean).join(" · ");
 const widths = variant === "wide" ? [480, 720, 960] : [300, 450, 600];
 const sizes =
@@ -89,7 +92,7 @@ const sizes =
     {status && <span class:list={["badge", "gc-status", status.cls]}>{status.label}</span>}
   </div>
   <div class="gc-body">
-    <p class="gc-kicker">{CATEGORY[game.category]}{game.owner && ` · ${game.owner}`}</p>
+    <p class="gc-kicker">{kicker}</p>
     <H class="gc-title">
       <a
         href={href}
