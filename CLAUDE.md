@@ -229,7 +229,7 @@ The service copy speaks as the studio, not as its founders.
 
 We make games, and the site shows what we have made, with no credit, role, employment, or
 contractor bookkeeping. Work the studio did for another company is client work: the company
-was our client, we made the thing for them, and it is theirs.
+was our client, we worked on the thing for them, and it is theirs.
 
 - Say "we", plainly. The studio is its founders, and their work is its body of work. No
   hedging ("on Jeff's portfolio", "where our records say") and no employment or contract
@@ -243,15 +243,19 @@ was our client, we made the thing for them, and it is theirs.
   builds it: a `client` game, or an `experience` with an `owner`, unless the record sets
   `clientWork: false` (a project whose record does not say what it was keeps its owner's
   name alone).
-- Headings that introduce client work say we built it. A list that is only client work:
-  "… we've built for clients" ("Games we've built for clients", "Mobile games and apps we've
-  built for clients"). A list that mixes our own projects with client work: "… we've built"
-  ("Health and fitness games we've built"), and the labels tell them apart. Never "Games
-  we've worked on".
+- Headings. A list that is only client work: "… we've worked on for clients" ("Games we've
+  worked on for clients", "Mobile games and apps we've worked on for clients"). A list that
+  mixes our own projects with client work: "… we've worked on" ("Health and fitness games
+  we've worked on", "Serious games we've worked on, mapped to the body"), and the labels tell
+  them apart. "Unity projects we've built and worked on" covers both kinds.
 - In a sentence, "for <company>": "We worked on Lanebreak for Peloton." A describing phrase
-  may read "MOVE-IT, built for Barron Associates". A summary never says the client company
-  developed or made the project ("Built for Barron Associates and sold by Saebo", not
-  "Developed by Barron Associates").
+  drops the verb: "MOVE-IT, for Barron Associates". A summary never says the client company
+  developed or made the project; it says we worked on it for them ("We worked on it for
+  Barron Associates, and Saebo sells it", not "Developed by Barron Associates").
+- "Built" is for the studio's own work (our games, Scriptable Sheets, HELIX) and for named
+  pieces we built inside a project (the level editor and validator under "What we built on
+  Lanebreak", CI/CD pipelines). Never "built for <client>" as a blanket claim about a
+  client's product.
 - Never say the studio owns or published a client's product ("our game Lanebreak", "our
   MOVE-IT"). Structured data keeps who owns what: a client is never the studio's `author`
   or `creator`, and the studio is never the client product's owner.
@@ -273,7 +277,7 @@ was our client, we made the thing for them, and it is theirs.
   one, and never a drug's brand name. Their labels read "For Relevate Health Games" ("For
   the American Heart Association" for the CORE Concepts game). Playable ads are a service we
   offer in any field, described at `/services/serious-games/#playable-ads`. The healthcare
-  ones are experience we bring, built for Relevate Health Games: the copy never reads as
+  ones are experience we bring, worked on for Relevate Health Games: the copy never reads as
   competing with them.
 - "Our Trusted Pack" is the owner's list of partners.
 
@@ -322,7 +326,7 @@ attached to a first email to someone who has never heard of the studio.
   and how to start.
 - Every fact comes from `src/data/`, the service pages, this file, or Anatomy of Play.
   Evidence is either a result recorded for a project the deck shows, worded as recorded and
-  named with the company it was built for ("KneeBRIGHT, built for Barron Associates"), or a
+  named with the company it was for ("KneeBRIGHT, for Barron Associates"), or a
   published figure quoted exactly, with its publisher, year, and
   URL on the slide. No unsourced figure, and no promise about a future client's results.
 - A company appears only as the label of a project the deck shows ("For Peloton", for

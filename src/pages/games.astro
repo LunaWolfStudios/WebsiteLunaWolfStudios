@@ -4,7 +4,7 @@
  * (archive/wordpress/pages/games.md: Featured, Immersive Experiences, Game Jam Graveyard, the
  * itch.io and Newgrounds buttons) and adds what the owner asked for: the major releases, the
  * game jam and small games, and the student internship projects. Each card says whose game it
- * is: ours, published by us, or "For <company>" for a game we built for a client. Pictures come
+ * is: ours, published by us, or "For <company>" for a game we worked on for a client. Pictures come
  * first: every project with art shows it; the few with none are compact text cards.
  *
  * Data: src/data/games.ts (GAMES by category), src/data/videos.ts (the 2017 hype trailer),
@@ -43,7 +43,7 @@ const pl = game("paralily");
 const bh = game("the-brave-hearts-ii-false-skies");
 const helix = game("helix");
 
-// Games we built for clients, the newest first (the owner's rule: nothing old leads). The first
+// Games we worked on for clients, the newest first (the owner's rule: nothing old leads). The first
 // two are double width, so ten games fill twelve slots: three rows of four.
 const CLIENT_ORDER = [
   "lanebreak",
@@ -149,7 +149,7 @@ const jsonLd = {
   <PageHero
     eyebrow="Games"
     title="Our games and projects"
-    lead="The games we make and publish, the games and health projects we've built for clients, and our game jam, side, and intern games."
+    lead="The games we make and publish, the games and health projects we've worked on for clients, and our game jam, side, and intern games."
     class="games-hero"
   >
     <nav class="jump" aria-label="On this page">
@@ -286,7 +286,7 @@ const jsonLd = {
     tone="raised"
     eyebrow="Client work"
     title={clientsHeading}
-    lead="Games we built for other studios and companies."
+    lead="Games we've worked on for other studios and companies."
   >
     <a slot="actions" class="link-arrow" href="/services/game-development/">Game development services <Icon name="arrowRight" size={16} /></a>
     <div class="cards cards--4">
@@ -305,7 +305,7 @@ const jsonLd = {
     id="experiences"
     eyebrow="Health and VR"
     title="Health, VR, and interactive experiences"
-    lead="Therapy and training software, playable ads, VR, and exhibitions: our own HELIX, and projects we've built for clients."
+    lead="Therapy and training software, playable ads, VR, and exhibitions: our own HELIX, and projects we've worked on for clients."
   >
     <Fragment slot="actions">
       <a class="link-arrow" href="/services/serious-games/">Serious games services <Icon name="arrowRight" size={16} /></a>

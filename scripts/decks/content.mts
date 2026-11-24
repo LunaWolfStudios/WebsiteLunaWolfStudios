@@ -476,15 +476,15 @@ export const DECKS: Deck[] = [
           // servicePages.ts vr-ar focus[0] ("Traditional hearing tests can be boring and repetitive")
           "Standard tests can be boring and repetitive. A game gives each repetition a goal, as HELIX does with hearing tests.",
           // Anatomy of Play: MOVE-IT ("In-game performance metrics strongly correlate with clinical motor assessments"), GRASP ("Strong correlation with clinical assessments")
-          "The game measures while the patient plays: in MOVE-IT and GRASP, built for Barron Associates, in-game metrics correlate strongly with clinical assessments.",
+          "The game measures while the patient plays: in MOVE-IT and GRASP, for Barron Associates, in-game metrics correlate strongly with clinical assessments.",
           // services.ts serious-games bullets
           "Results reach clinicians remotely, so they can follow patients at home.",
         ],
         evidence: [
           // Anatomy of Play, KneeBRIGHT highlights
-          { n: "+25%", text: "knee torque against control in KneeBRIGHT, built for Barron Associates.", source: "Anatomy of Play, our web app: tools.lunawolfstudios.com/anatomy-of-play/" },
+          { n: "+25%", text: "knee torque against control in KneeBRIGHT, for Barron Associates.", source: "Anatomy of Play, our web app: tools.lunawolfstudios.com/anatomy-of-play/" },
           // Anatomy of Play, iCare highlights
-          { n: "20 min/day", text: "Equivalent clinical effectiveness to patching therapy, in 20 minutes a day against hours of traditional therapy: iCare, built for Barron Associates.", source: "Anatomy of Play, our web app: tools.lunawolfstudios.com/anatomy-of-play/" },
+          { n: "20 min/day", text: "Equivalent clinical effectiveness to patching therapy, in 20 minutes a day against hours of traditional therapy: iCare, for Barron Associates.", source: "Anatomy of Play, our web app: tools.lunawolfstudios.com/anatomy-of-play/" },
           COCHRANE_VR,
         ],
         picture: { src: "portfolio/kneebright.jpg", alt: "KneeBRIGHT: a boat crosses a lake while a Speed Boost prompt asks the player to extend the impaired leg.", caption: "KneeBRIGHT, for Barron Associates" },
@@ -508,7 +508,7 @@ export const DECKS: Deck[] = [
     work: {
       kind: "cards",
       eyebrow: "Selected work",
-      title: "Health and fitness games we've built",
+      title: "Health and fitness games we've worked on",
       imgH: 122,
       // The Anatomy of Play ten lead, in the order CLAUDE.md and servicePages.ts give them.
       // desc: the condition or subject (Anatomy of Play summary); hw: the hardware or platform
@@ -558,7 +558,7 @@ export const DECKS: Deck[] = [
           { body: "Tech & Learning Awards of Excellence", title: "Winner, Primary Education", subject: "NeuroSPARKS, by Barron Associates · 2022" },
         ],
         // servicePages.ts serious-games focus[2]
-        notes: ["The projects we built for Barron Associates helped launch FDA-approved treatments."],
+        notes: ["The projects we worked on for Barron Associates helped launch FDA-approved treatments."],
       },
     ],
     processFrom: "serious-games",
@@ -609,7 +609,7 @@ export const DECKS: Deck[] = [
     work: {
       kind: "cards",
       eyebrow: "Selected work",
-      title: "Training and education games we've built",
+      title: "Training and education games we've worked on",
       cards: [
         withDesc(C.helix, "Hearing tests as VR games"),
         C.lanebreak,
@@ -715,7 +715,7 @@ export const DECKS: Deck[] = [
     work: {
       kind: "cards",
       eyebrow: "Selected work",
-      title: "Projects we've built for Relevate Health Games",
+      title: "Projects we've worked on for Relevate Health Games",
       // servicePages.ts serious-games focus[1], word for word
       lead: "We have worked on dozens of training and education projects for Relevate Health Games, for patients and healthcare providers (HCPs). Some of those projects are playable ads. We bring that experience to playable ads in any field.",
       cards: [C.discoverTd, C.levelOne, C.expressionLab],
@@ -786,7 +786,7 @@ export const DECKS: Deck[] = [
     work: {
       kind: "cards",
       eyebrow: "Selected work",
-      title: "Mobile games and apps we've built for clients",
+      title: "Mobile games and apps we've worked on for clients",
       // Newest first by games.ts `year`; Cell to Singularity has no year there.
       cards: [C.warcodes, withDesc(C.levelOne, "Type 1 diabetes care, iOS and Android"), C.cellToSingularity, C.realize, C.flexsledding, C.saveSamia],
     },
@@ -829,7 +829,7 @@ export const DECKS: Deck[] = [
           // games.ts saebovr, grasp; Anatomy of Play KneeBRIGHT, MOVE-IT
           "A device turns movement into data: Kinect, a sensor glove, EMG sensors, and a smart toy measure what a patient does.",
           // Anatomy of Play MOVE-IT
-          "Those measures hold up: in-game metrics in MOVE-IT, built for Barron Associates, correlate strongly with clinical motor assessments.",
+          "Those measures hold up: in-game metrics in MOVE-IT, for Barron Associates, correlate strongly with clinical motor assessments.",
           // servicePages.ts vr-ar what.items and focus[2]
           "A headset puts a learner in the room with 360-degree video, and results go to a dashboard for providers or trainers.",
         ],
@@ -843,12 +843,12 @@ export const DECKS: Deck[] = [
       items: [
         // servicePages.ts vr-ar-development what.items (headsets, mixed reality, Apple Vision Pro, training)
         { icon: "headset", title: "VR headsets", text: "Meta Quest 2 apps like HELIX, and Shader Graph materials in Unity for Apple Vision Pro." },
-        { icon: "layers", title: "Mixed reality and depth cameras", text: "We have built mixed reality with Stereolabs ZED depth cameras and Meta Quest 2." },
+        { icon: "layers", title: "Mixed reality and depth cameras", text: "We have worked on mixed reality with Stereolabs ZED depth cameras and Meta Quest 2." },
         // games.ts saebovr, grasp; Anatomy of Play iCare ("A webcam tracks red-cyan anaglyph glasses to measure patient position")
         { icon: "users", title: "Motion capture, computer vision, and head tracking", text: "Microsoft Kinect, a sensor glove with motion tracking, and a webcam that tracks anaglyph glasses." },
         // Anatomy of Play: NeuroSPARKS ("Bluetooth-enabled sensor"), KneeBRIGHT (EMG), MOVE-IT (9-axis sensor, LEDs, haptics)
         { icon: "heartPulse", title: "IoT, Bluetooth sensors, and smart toys", text: "EMG sensors, including a Bluetooth muscle sensor, and a smart toy with a 9-axis sensor, LEDs, and haptics." },
-        { icon: "graduationCap", title: "VR training", text: "We have built VR soft-skills training with 360-degree video, composited actors, activity tracking, and analytics." },
+        { icon: "graduationCap", title: "VR training", text: "We have worked on VR soft-skills training with 360-degree video, composited actors, activity tracking, and analytics." },
       ],
       picture: {
         src: "games/helix/meta-quest-2-headset.jpg",
@@ -1033,7 +1033,7 @@ export const DECKS: Deck[] = [
     work: {
       kind: "cards",
       eyebrow: "Selected work",
-      title: "Unity projects we've built",
+      title: "Unity projects we've built and worked on",
       cards: [
         withDesc(C.sheepTag2, "32-player online multiplayer"),
         withDesc(C.hypnoHalo, "On Steam and Nintendo Switch"),

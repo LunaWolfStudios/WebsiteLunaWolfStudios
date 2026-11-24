@@ -1,7 +1,7 @@
 ---
 /**
  * The studio's other games, each with its live store prices (a sale shows as a gold badge on
- * the art and in the price), then "More games we've built": picture cards of client games, each
+ * the art and in the price), then "Games we've worked on": picture cards of client games, each
  * labelled "For <company>", and HELIX, the studio's own project with Nemours.
  *
  * The shared GameCard has no place for a price, so the studio games use a card of their own.
@@ -26,7 +26,7 @@ const OWN = ["hypno-halo", "paralily", "the-brave-hearts-ii-false-skies"].map((s
   return { g, offers, sale, kicker, credit, art: image(g.wide ?? g.cover!, `games/${slug}`) };
 });
 
-/* Games we built for clients, each labelled "For <company>", then HELIX, our own project with Nemours. */
+/* Games we worked on for clients, each labelled "For <company>", then HELIX, our own project with Nemours. */
 const PARTNER = [
   // The owner's rule: the latest work first, and nothing old leads.
   ...["lanebreak", "travelers-refrain", "warcodes", "cell-to-singularity", "level-one"].map((slug) => {
@@ -95,7 +95,7 @@ const PARTNER = [
     }
   </ul>
 
-  <h3 class="partner-head">More games we've built</h3>
+  <h3 class="partner-head">Games we've worked on</h3>
   <ul class="partner" role="list">
     {
       PARTNER.map(({ g, owner, href, external }, i) => (

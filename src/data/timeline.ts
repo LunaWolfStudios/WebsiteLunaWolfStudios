@@ -56,7 +56,7 @@ export const TIMELINE: TimelineEntry[] = [
   {
     date: "2016-10",
     when: "October 2016",
-    text: "Save Samia, an endless runner built for YouTube creator LaToya Forever, comes out on iOS, Android, and Facebook, with Luna Wolf Studios leading development.",
+    text: "Save Samia, an endless runner for YouTube creator LaToya Forever, comes out on iOS, Android, and Facebook, with Luna Wolf Studios leading development.",
     slug: "save-samia",
     source: "studio",
   },
