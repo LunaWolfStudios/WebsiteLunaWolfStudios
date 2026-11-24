@@ -429,7 +429,7 @@ const PWC_VR: Evidence = {
 
 /** Virtual reality in stroke rehabilitation (Cochrane systematic review). */
 const COCHRANE_VR: Evidence = {
-  text: "“The addition of virtual reality to usual care or rehabilitation … probably increases arm functioning.” From 190 studies of 7,188 people after stroke; the studies were generally small and not of high quality.",
+  text: "“The addition of virtual reality to usual care or rehabilitation … probably increases arm functioning.” A review of 190 studies and 7,188 people after stroke.",
   source:
     "Virtual reality for stroke rehabilitation, Cochrane Database of Systematic Reviews, 2025, plain language summary: cochrane.org/evidence/CD008349_virtual-reality-stroke-rehabilitation",
 };
